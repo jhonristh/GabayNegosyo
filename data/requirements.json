@@ -1,0 +1,1221 @@
+[
+  {
+    "id": "bir-cor",
+    "agencyId": "bir",
+    "name": "Certificate of Registration (COR / BIR Form 2303)",
+    "description": "BIR Form 2303 (Certificate of Registration) is issued by the BIR upon successful registration, confirming the taxpayer's TIN, registered business name, address, and applicable tax types.",
+    "whoItAppliesTo": "Every business owner, regardless of type or structure, before starting operations.",
+    "applicabilityRules": {
+      "status": [
+        "planning",
+        "newly_registered",
+        "operating"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 2303 (Certificate of Registration)",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Receive the Certificate of Registration (BIR Form 2303).",
+      "Confirm the Taxpayer Identification Number (TIN) on the certificate.",
+      "Verify the registered business name and address.",
+      "Confirm the tax types and filing frequency shown on the certificate.",
+      "Display the Certificate of Registration (COR) at the business premises."
+    ],
+    "deadlineDescription": "Before starting business operations",
+    "deadlineMonth": 1,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "tutorialId": "tut-bir-registration",
+    "lastVerified": "2026-09-20",
+    "complianceStage": "BIR Compliance",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "sss-employer-reg",
+    "agencyId": "sss",
+    "name": "SSS Employer Registration (R-1)",
+    "description": "Registers your business as an SSS-covered employer so you can remit contributions for your staff.",
+    "whoItAppliesTo": "Any business owner with at least one employee.",
+    "applicabilityRules": {
+      "hasEmployees": true,
+      "minEmployeeCount": 1
+    },
+    "requiredDocuments": [
+      {
+        "name": "DTI/SEC registration",
+        "description": "Business registration document"
+      },
+      {
+        "name": "Business permit",
+        "description": "Mayor's Permit or proof of application"
+      }
+    ],
+    "instructions": [
+      "Create an account on the My.SSS employer portal.",
+      "Accomplish the Employer Registration (R-1) form.",
+      "Submit required documents online or at an SSS branch.",
+      "Receive your SSS Employer Number.",
+      "Register each employee (R-1A) before their first contribution."
+    ],
+    "deadlineDescription": "Before the first employee's first day of work",
+    "deadlineMonth": 1,
+    "deadlineDay": 30,
+    "penaltyRule": {
+      "type": "monthly_percentage",
+      "monthlyRate": 0.02,
+      "description": "2% penalty per month on unpaid/late contributions, plus possible legal action for non-remittance."
+    },
+    "officialUrl": "https://www.sss.gov.ph/sss/appmanager/pages.jsp?page=eregistration",
+    "tutorialId": "tut-sss-registration",
+    "lastVerified": "2026-08-01",
+    "contentSource": "prototype_placeholder"
+  },
+  {
+    "id": "sss-contribution",
+    "agencyId": "sss",
+    "name": "Monthly SSS Contribution Remittance",
+    "description": "Ongoing monthly remittance of employee and employer SSS contributions.",
+    "whoItAppliesTo": "Registered employers with active employees.",
+    "applicabilityRules": {
+      "hasEmployees": true,
+      "minEmployeeCount": 1
+    },
+    "requiredDocuments": [
+      {
+        "name": "SSS Contribution Schedule",
+        "description": "Based on employee salary bracket"
+      }
+    ],
+    "instructions": [
+      "Compute contributions based on the current SSS contribution table.",
+      "Deduct the employee share from payroll.",
+      "Pay the combined employer + employee share via My.SSS or accredited payment channels.",
+      "Keep payment confirmation for your records."
+    ],
+    "deadlineDescription": "Monthly, based on your SSS payment schedule",
+    "deadlineMonth": 12,
+    "deadlineDay": 31,
+    "penaltyRule": {
+      "type": "monthly_percentage",
+      "monthlyRate": 0.02,
+      "description": "2% penalty per month on unpaid contributions."
+    },
+    "officialUrl": "https://www.sss.gov.ph",
+    "tutorialId": "tut-sss-contribution",
+    "lastVerified": "2026-08-01",
+    "contentSource": "prototype_placeholder"
+  },
+  {
+    "id": "philhealth-employer-reg",
+    "agencyId": "philhealth",
+    "name": "PhilHealth Employer Registration (ER1)",
+    "description": "Registers your business with PhilHealth so you can enroll and remit contributions for your employees.",
+    "whoItAppliesTo": "Any business owner with at least one employee.",
+    "applicabilityRules": {
+      "hasEmployees": true,
+      "minEmployeeCount": 1
+    },
+    "requiredDocuments": [
+      {
+        "name": "DTI/SEC registration",
+        "description": "Business registration document"
+      },
+      {
+        "name": "Business permit",
+        "description": "Mayor's Permit or proof of application"
+      }
+    ],
+    "instructions": [
+      "Download and accomplish the ER1 form from the PhilHealth website.",
+      "Submit to your nearest PhilHealth Local Health Insurance Office.",
+      "Receive your PhilHealth Employer Number (PEN).",
+      "Enroll each employee under your employer account."
+    ],
+    "deadlineDescription": "Within 30 days of hiring your first employee",
+    "deadlineMonth": 2,
+    "deadlineDay": 28,
+    "penaltyRule": {
+      "type": "monthly_percentage",
+      "monthlyRate": 0.03,
+      "description": "3% penalty per month on unpaid contributions."
+    },
+    "officialUrl": "https://www.philhealth.gov.ph",
+    "tutorialId": "tut-philhealth-registration",
+    "lastVerified": "2026-08-01",
+    "contentSource": "prototype_placeholder"
+  },
+  {
+    "id": "pagibig-employer-reg",
+    "agencyId": "pagibig",
+    "name": "Pag-IBIG Employer Registration",
+    "description": "Registers your business with Pag-IBIG Fund for employee membership and contribution remittance.",
+    "whoItAppliesTo": "Any business owner with at least one employee.",
+    "applicabilityRules": {
+      "hasEmployees": true,
+      "minEmployeeCount": 1
+    },
+    "requiredDocuments": [
+      {
+        "name": "DTI/SEC registration",
+        "description": "Business registration document"
+      },
+      {
+        "name": "Business permit",
+        "description": "Mayor's Permit or proof of application"
+      }
+    ],
+    "instructions": [
+      "Register your business via the Pag-IBIG Virtual Pag-IBIG portal.",
+      "Submit business registration documents.",
+      "Receive your Pag-IBIG Employer ID Number.",
+      "Enroll employees and begin monthly remittance."
+    ],
+    "deadlineDescription": "Before the first remittance is due",
+    "deadlineMonth": 2,
+    "deadlineDay": 28,
+    "penaltyRule": {
+      "type": "monthly_percentage",
+      "monthlyRate": 0.02,
+      "description": "2% penalty per month on unpaid contributions."
+    },
+    "officialUrl": "https://www.pagibigfund.gov.ph",
+    "tutorialId": "tut-pagibig-registration",
+    "lastVerified": "2026-08-01",
+    "contentSource": "prototype_placeholder"
+  },
+  {
+    "id": "lgu-permit-renewal",
+    "agencyId": "lgu",
+    "name": "Business Permit Renewal (Mayor's Permit)",
+    "description": "Annual renewal of your local business permit, required to legally continue operating in your city/municipality.",
+    "whoItAppliesTo": "Every operating business, regardless of type or structure.",
+    "applicabilityRules": {
+      "status": [
+        "operating"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "Prior year's business permit",
+        "description": "Original or copy"
+      },
+      {
+        "name": "Barangay clearance",
+        "description": "From your barangay hall"
+      },
+      {
+        "name": "Proof of gross sales/receipts",
+        "description": "For computing local business tax"
+      }
+    ],
+    "instructions": [
+      "Secure your barangay clearance for the current year.",
+      "Visit or use the online portal of your city/municipality's Business Permits and Licensing Office.",
+      "Submit renewal requirements and pay the local business tax and fees.",
+      "Claim your renewed Mayor's Permit."
+    ],
+    "deadlineDescription": "Annually, on or before January 20",
+    "deadlineMonth": 1,
+    "deadlineDay": 20,
+    "penaltyRule": {
+      "type": "percentage_surcharge_plus_monthly_interest",
+      "surchargeRate": 0.25,
+      "monthlyRate": 0.02,
+      "description": "25% surcharge plus 2% monthly interest on unpaid local business tax. Exact rates vary by LGU ordinance — confirm with your city/municipality."
+    },
+    "officialUrl": "https://www.dilg.gov.ph",
+    "tutorialId": "tut-lgu-renewal",
+    "lastVerified": "2026-08-01",
+    "contentSource": "prototype_placeholder"
+  },
+  {
+    "id": "dti-business-name-reg",
+    "agencyId": "dti",
+    "name": "DTI Business Name Registration",
+    "description": "Registers a sole proprietorship's business name with the Department of Trade and Industry. This is a pre-registration step before BIR registration for sole proprietors.",
+    "whoItAppliesTo": "Sole proprietors registering a new business.",
+    "applicabilityRules": {
+      "businessStructure": [
+        "sole_proprietor"
+      ],
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Valid government-issued ID of the owner",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Register Sole Proprietorship with DTI"
+    ],
+    "complianceStage": "Pre-Registration",
+    "deadlineDescription": "Before applying for BIR registration.",
+    "deadlineMonth": 1,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.dti.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "sec-registration",
+    "agencyId": "sec",
+    "name": "SEC Registration (Partnership / Corporation)",
+    "description": "Registers a partnership or corporation with the Securities and Exchange Commission. This is a pre-registration step before BIR registration for non-sole-proprietor structures.",
+    "whoItAppliesTo": "Partnerships and corporations registering a new business.",
+    "applicabilityRules": {
+      "businessStructure": [
+        "partnership",
+        "corporation"
+      ],
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Articles of Partnership / Incorporation",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Register Partnership or Corporation with SEC"
+    ],
+    "complianceStage": "Pre-Registration",
+    "deadlineDescription": "Before applying for BIR registration.",
+    "deadlineMonth": 1,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.sec.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "cda-registration",
+    "agencyId": "cda",
+    "name": "CDA Registration (Cooperative)",
+    "description": "Registers a cooperative with the Cooperative Development Authority. This is a pre-registration step before BIR registration for cooperatives.",
+    "whoItAppliesTo": "Cooperatives registering a new business.",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Certificate of Registration (CDA)",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Register Cooperative with CDA"
+    ],
+    "complianceStage": "Pre-Registration",
+    "deadlineDescription": "Before applying for BIR registration.",
+    "deadlineMonth": 1,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.cda.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "lgu-barangay-mayors-clearance",
+    "agencyId": "lgu",
+    "name": "Barangay Clearance & Mayor's Permit",
+    "description": "Local government clearances required before BIR registration: Barangay Clearance from the barangay office covering the business address, and the Mayor's Permit from the City/Municipal Hall. Business address is also verified at this stage.",
+    "whoItAppliesTo": "All businesses registering with a physical business address.",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Barangay Clearance",
+        "description": ""
+      },
+      {
+        "name": "Mayor's Permit",
+        "description": ""
+      },
+      {
+        "name": "Lease Contract / Land Title (to confirm business location and address)",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Secure Barangay Clearance from the Barangay Office covering the business address.",
+      "Apply for the Mayor's Permit at the City / Municipal Hall.",
+      "Confirm business location and address (Lease Contract or Land Title)."
+    ],
+    "complianceStage": "Pre-Registration",
+    "deadlineDescription": "Before applying for BIR registration.",
+    "deadlineMonth": 1,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.dilg.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-registration-filing",
+    "agencyId": "bir",
+    "name": "BIR Registration Filing (Form 1901 / 1903)",
+    "description": "Submits the business's registration application to the Revenue District Office (RDO) that has jurisdiction over the business address, determines the applicable tax type, and registers the business for income tax and (if applicable) withholding tax.",
+    "whoItAppliesTo": "All businesses registering with the BIR.",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 1901 (sole proprietors/self-employed) or 1903 (corporations/partnerships)",
+        "description": ""
+      },
+      {
+        "name": "Registration Documents (DTI/SEC/CDA certificate, barangay clearance, mayor's permit)",
+        "description": ""
+      },
+      {
+        "name": "Sales Projection (for tax type determination — Non-VAT 3% or VAT-registered 12%)",
+        "description": ""
+      },
+      {
+        "name": "Payroll Records (if registering withholding tax for employees)",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Submit registration application to the RDO covering the business address.",
+      "File within 30 days from DTI/SEC/CDA registration.",
+      "Determine if the taxpayer is Non-VAT (3% percentage tax) based on sales projection.",
+      "Determine if the taxpayer is VAT-registered (12%) based on sales projection.",
+      "Register the business for Income Tax.",
+      "Register for Withholding Tax if the business has employees."
+    ],
+    "complianceStage": "BIR Registration",
+    "deadlineDescription": "Within 30 days from DTI/SEC/CDA registration.",
+    "deadlineMonth": 2,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-books-of-accounts",
+    "agencyId": "bir",
+    "name": "Books of Accounts Registration",
+    "description": "Registers the business's accounting system (Manual, Loose-Leaf, or Computerized Accounting System) and the minimum required books (General Journal, General Ledger), plus additional books such as Cash Receipts/Disbursements and, for VAT taxpayers, Sales and Purchase Journals.",
+    "whoItAppliesTo": "Businesses with self-employment, business, or mixed income (not purely compensation earners).",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession",
+        "purely_business",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "Bound Books (Manual system)",
+        "description": ""
+      },
+      {
+        "name": "Loose-Leaf Books (Loose-Leaf system)",
+        "description": ""
+      },
+      {
+        "name": "CAS Approval Documents (Computerized Accounting System)",
+        "description": ""
+      },
+      {
+        "name": "General Journal",
+        "description": ""
+      },
+      {
+        "name": "General Ledger",
+        "description": ""
+      },
+      {
+        "name": "Cash Receipts Book",
+        "description": ""
+      },
+      {
+        "name": "Cash Disbursements Book",
+        "description": ""
+      },
+      {
+        "name": "Sales Journal (VAT taxpayers)",
+        "description": ""
+      },
+      {
+        "name": "Purchase Journal (VAT taxpayers)",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Choose an accounting system: Manual, Loose-Leaf, or Computerized Accounting System (CAS).",
+      "Register the General Journal and General Ledger (minimum requirement).",
+      "Register the Cash Receipts Book and Cash Disbursements Book.",
+      "If VAT-registered, also register the Sales Journal and Purchase Journal."
+    ],
+    "complianceStage": "Books Registration",
+    "deadlineDescription": "Before starting business operations.",
+    "deadlineMonth": 1,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-orus-registration",
+    "agencyId": "bir",
+    "name": "ORUS Registration of Books",
+    "description": "Applies for registration of Books of Accounts electronically through BIR's Online Registration and Update System (ORUS), including encoding book details and, for Loose-Leaf/CAS, uploading supporting documents.",
+    "whoItAppliesTo": "Businesses with self-employment, business, or mixed income (not purely compensation earners).",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession",
+        "purely_business",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "ORUS Registration Details",
+        "description": ""
+      },
+      {
+        "name": "ORUS Application Form",
+        "description": ""
+      },
+      {
+        "name": "Accounting System Details",
+        "description": ""
+      },
+      {
+        "name": "Book Information (type, volumes, pages)",
+        "description": ""
+      },
+      {
+        "name": "Supporting Files (for Loose-Leaf or CAS)",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Create an ORUS account.",
+      "Apply for registration of Books of Accounts.",
+      "Select accounting system: Manual / Loose-Leaf / CAS.",
+      "Enter book type, volumes, and pages.",
+      "Upload supporting documents for Loose-Leaf or CAS.",
+      "Receive electronic approval (ORUS Approval Notice)."
+    ],
+    "complianceStage": "ORUS Registration",
+    "deadlineDescription": "Before starting business operations.",
+    "deadlineMonth": 1,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1906-authority-to-print",
+    "agencyId": "bir",
+    "name": "Authority to Print Receipts/Invoices (BIR Form 1906)",
+    "description": "Applies for Authority to Print (ATP) official receipts or sales invoices, coordinates with a BIR-accredited printer, and issues official receipts for every transaction once printed.",
+    "whoItAppliesTo": "Businesses with self-employment, business, or mixed income (not purely compensation earners).",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession",
+        "purely_business",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 1906",
+        "description": ""
+      },
+      {
+        "name": "Receipt Layout",
+        "description": ""
+      },
+      {
+        "name": "Printer Accreditation",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Apply for Authority to Print using BIR Form 1906.",
+      "Submit a sample layout of the receipt/invoice.",
+      "Coordinate with a BIR-accredited printer.",
+      "Issue an official receipt for each transaction once printed."
+    ],
+    "complianceStage": "Receipt Compliance",
+    "deadlineDescription": "Before issuing receipts/invoices.",
+    "deadlineMonth": 1,
+    "deadlineDay": 1,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/BIR/pdf/1906%20October%202025%20ENCS%20Final.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-2000-dst",
+    "agencyId": "bir",
+    "name": "Documentary Stamp Tax Return (BIR Form 2000)",
+    "description": "BIR Form 2000 reports and pays the Documentary Stamp Tax (DST) on documents, instruments, loan agreements, and papers evidencing the acceptance, assignment, sale, or transfer of an obligation, right, or property — such as a signed lease contract.",
+    "whoItAppliesTo": "Taxpayers who executed a taxable document (e.g. a notarized lease, loan, or deed of sale). This prototype applies it to businesses that indicated they lease their business space.",
+    "applicabilityRules": {
+      "hasLease": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Notarized contract (e.g., Lease, Loan, Deed of Sale)",
+        "description": ""
+      },
+      {
+        "name": "BIR Form 2303 (Certificate of Registration)",
+        "description": ""
+      },
+      {
+        "name": "eBIRForms / eFPS account",
+        "description": ""
+      },
+      {
+        "name": "Financial records or contract value",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Ensure a taxable document exists (signed contract or agreement).",
+      "Confirm a valid TIN and Certificate of Registration.",
+      "Ensure access to BIR eBIRForms or eFPS.",
+      "Prepare records showing transaction value or consideration.",
+      "File within 5 days after the close of the month of the transaction.",
+      "Open eBIRForms or eFPS and select BIR Form 2000.",
+      "Enter TIN, RDO Code, and Registered Name.",
+      "Enter the month and year the taxable document was executed.",
+      "Indicate if filing is ONETT or regular filing.",
+      "Enter the value or consideration of the transaction.",
+      "Select the correct Alphanumeric Tax Code (ATC) for the document type.",
+      "Apply the applicable DST rate to the taxable base.",
+      "Compute total DST due, including penalties if late.",
+      "Pay through an Authorized Agent Bank or online channel (GCash, Maya, LandBank Link.Biz).",
+      "Attach proof of payment to the original document (constructive stamping)."
+    ],
+    "complianceStage": "BIR Compliance",
+    "deadlineDescription": "Within 5 days after the close of the month the taxable document was executed.",
+    "deadlineMonth": 12,
+    "deadlineDay": 5,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source. Specific DST rates per ATC and penalty rates for late filing are not itemized in the source."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2000-DST%20Jan%202018%20final.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1700-compensation",
+    "agencyId": "bir",
+    "name": "Annual Income Tax Return — Compensation Income (BIR Form 1700)",
+    "description": "BIR Form 1700 is the annual income tax return for individuals earning purely compensation income.",
+    "whoItAppliesTo": "Individuals earning purely compensation income (employees).",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "purely_compensation"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "Payroll records / BIR Form 2316",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Confirm income is purely compensation income.",
+      "Determine if you had more than one employer during the year.",
+      "Check if qualified for substituted filing (BIR Form 2316).",
+      "Encode BIR Form 1700 using eBIRForms or eFPS.",
+      "Enter TIN, RDO Code, and Registered Name.",
+      "Enter compensation income from BIR Form 2316.",
+      "Report taxes already withheld by the employer.",
+      "Pay any remaining tax due before April 15.",
+      "Keep copies of the filed return and BIR Form 2316."
+    ],
+    "complianceStage": "Individual Taxpayers",
+    "deadlineDescription": "Annually, on or before April 15.",
+    "deadlineMonth": 4,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1701-self-employed",
+    "agencyId": "bir",
+    "name": "Annual Income Tax Return — Self-Employed / Mixed Income (BIR Form 1701)",
+    "description": "BIR Form 1701 is for self-employed individuals and mixed-income earners to report and pay annual income tax.",
+    "whoItAppliesTo": "Self-employed individuals and mixed-income earners.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 2303",
+        "description": ""
+      },
+      {
+        "name": "General Journal / Ledger",
+        "description": ""
+      },
+      {
+        "name": "Official receipts / invoices",
+        "description": ""
+      },
+      {
+        "name": "Financial statements",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Ensure the taxpayer is registered with the BIR.",
+      "Maintain registered books of accounts.",
+      "Collect receipts, invoices, and income records.",
+      "Report total income earned for the year.",
+      "Choose Itemized Deduction or Optional Standard Deduction (OSD).",
+      "Compute taxable income and tax due.",
+      "Pay remaining tax due before April 15.",
+      "Maintain copies of returns and supporting documents."
+    ],
+    "complianceStage": "Individual Taxpayers",
+    "deadlineDescription": "Annually, on or before April 15.",
+    "deadlineMonth": 4,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1701q-quarterly",
+    "agencyId": "bir",
+    "name": "Quarterly Income Tax Return (BIR Form 1701Q)",
+    "description": "BIR Form 1701Q is the quarterly income tax return for self-employed taxpayers and mixed-income earners.",
+    "whoItAppliesTo": "Self-employed individuals and mixed-income earners, filed quarterly.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "Sales records",
+        "description": ""
+      },
+      {
+        "name": "Expense receipts",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Track income earned during the quarter.",
+      "Record allowable expenses.",
+      "Prepare BIR Form 1701Q through eBIRForms.",
+      "Report income earned during the quarter.",
+      "Compute quarterly income tax due.",
+      "Pay quarterly income tax if applicable.",
+      "Maintain copies of quarterly returns."
+    ],
+    "complianceStage": "Individual Taxpayers",
+    "deadlineDescription": "Quarterly (specific calendar due dates per quarter are not itemized in the current content source; shown here as an approximate annual anchor).",
+    "deadlineMonth": 5,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701Q%20Jan%202018%20final%20rev2_copy.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1701a-8percent",
+    "agencyId": "bir",
+    "name": "Annual Income Tax Return — 8% Flat Rate / OSD (BIR Form 1701A)",
+    "description": "BIR Form 1701A is a simplified annual return for individuals using the 8% income tax rate or the Optional Standard Deduction (OSD), with no mixed income.",
+    "whoItAppliesTo": "Self-employed individuals or purely-business taxpayers who qualify for the 8% flat rate or OSD option (not mixed-income earners).",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession",
+        "purely_business"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "Income records",
+        "description": ""
+      },
+      {
+        "name": "BIR Form 2303",
+        "description": ""
+      },
+      {
+        "name": "Sales records",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Confirm the taxpayer qualifies for the 8% or OSD option.",
+      "Confirm business registration with BIR.",
+      "Encode BIR Form 1701A via eBIRForms.",
+      "Enter gross income earned during the year.",
+      "Apply the 8% tax rate or OSD option.",
+      "Pay computed tax due before April 15.",
+      "Keep copies of the return and financial records."
+    ],
+    "complianceStage": "Individual Taxpayers",
+    "deadlineDescription": "Annually, on or before April 15.",
+    "deadlineMonth": 4,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701A%20Jan%202018%20v5%20with%20rates.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-0619f-monthly-final",
+    "agencyId": "bir",
+    "name": "Monthly Remittance of Final Withholding Tax (BIR Form 0619-F)",
+    "description": "BIR Form 0619-F is the monthly tax return used by withholding agents to report and remit Final Withholding Taxes (FWT) deducted from payments such as interest, dividends, and other income subject to final tax.",
+    "whoItAppliesTo": "Businesses acting as withholding agents on payments subject to final tax (e.g. interest, dividends). The exact qualifying condition is not detailed in the current content source — shown here for business/mixed-income taxpayers; please verify applicability with the BIR.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "purely_business",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 2303",
+        "description": ""
+      },
+      {
+        "name": "Payee records",
+        "description": ""
+      },
+      {
+        "name": "Contracts / payment records",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Ensure the business is registered for Final Withholding Tax.",
+      "Maintain records of payee TIN, name, and address.",
+      "Collect documents showing payments subject to final tax.",
+      "Prepare BIR Form 0619-F using eBIRForms or eFPS.",
+      "Compute final tax withheld for the month.",
+      "Remit withheld tax to the BIR.",
+      "Maintain filed return and payment proof."
+    ],
+    "complianceStage": "Final Withholding Tax",
+    "deadlineDescription": "Monthly (specific due date not specified in the current content source).",
+    "deadlineMonth": 12,
+    "deadlineDay": 31,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1601fq-quarterly-final",
+    "agencyId": "bir",
+    "name": "Quarterly Return of Final Withholding Tax (BIR Form 1601-FQ)",
+    "description": "BIR Form 1601-FQ is the quarterly return that summarizes and reports the total Final Withholding Taxes withheld during the quarter, including a detailed list of payees and amounts withheld.",
+    "whoItAppliesTo": "Businesses acting as withholding agents on payments subject to final tax, filed quarterly.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "purely_business",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "Monthly withholding records",
+        "description": ""
+      },
+      {
+        "name": "Alphalist file",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Compile all final taxes withheld during the quarter.",
+      "Prepare BIR Form 1601-FQ via eBIRForms or eFPS.",
+      "Report total final withholding taxes for the quarter.",
+      "Prepare alphalist of payees and taxes withheld.",
+      "Submit the quarterly return to the BIR.",
+      "Maintain copies of filed returns and supporting documents."
+    ],
+    "complianceStage": "Final Withholding Tax",
+    "deadlineDescription": "Quarterly (specific calendar due date not specified in the current content source).",
+    "deadlineMonth": 5,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1601eq-quarterly-expanded",
+    "agencyId": "bir",
+    "name": "Quarterly Expanded Withholding Tax Return (BIR Form 1601-EQ)",
+    "description": "BIR Form 1601-EQ is the quarterly tax return used by businesses to report and remit Expanded Withholding Taxes (EWT) deducted from payments to suppliers, professionals, and service providers.",
+    "whoItAppliesTo": "Businesses that pay suppliers, professionals, or service providers subject to expanded withholding tax.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "purely_business",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 2303",
+        "description": ""
+      },
+      {
+        "name": "Supplier master list",
+        "description": ""
+      },
+      {
+        "name": "Official receipts / invoices",
+        "description": ""
+      },
+      {
+        "name": "ATC reference table",
+        "description": ""
+      },
+      {
+        "name": "Alphalist data file",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Ensure the business is registered for Expanded Withholding Tax (EWT).",
+      "Maintain supplier TIN, name, and address records.",
+      "Collect invoices and payment records for services, rent, or professional fees.",
+      "Determine the correct Alphanumeric Tax Code (ATC) for each transaction.",
+      "Prepare BIR Form 1601-EQ using eBIRForms or eFPS.",
+      "Report payments made to suppliers subject to withholding tax.",
+      "Compute EWT withheld for each supplier.",
+      "Prepare alphalist of payees and taxes withheld.",
+      "Remit withheld tax to the BIR.",
+      "Maintain copies of returns and supporting documents."
+    ],
+    "complianceStage": "Expanded Withholding Tax",
+    "deadlineDescription": "Quarterly (specific calendar due date not specified in the current content source).",
+    "deadlineMonth": 5,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1601-EQ%20January%202019%20ENCS%20final.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-0619e-monthly-expanded",
+    "agencyId": "bir",
+    "name": "Monthly Remittance of Expanded Withholding Tax (BIR Form 0619-E)",
+    "description": "BIR Form 0619-E (Monthly Remittance Form of Creditable Income Taxes Withheld — Expanded) is used to remit taxes withheld from suppliers of goods or services (e.g. professional fees or rentals) during the first two months of every quarter.",
+    "whoItAppliesTo": "Businesses that pay suppliers, professionals, or service providers subject to expanded withholding tax, in the first two months of each quarter.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "purely_business",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 2303 showing EWT tax type",
+        "description": ""
+      },
+      {
+        "name": "Supplier registration details",
+        "description": ""
+      },
+      {
+        "name": "Supplier invoices / official receipts",
+        "description": ""
+      },
+      {
+        "name": "ATC reference list (e.g., WI120, WI100)",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Ensure the business is registered for Expanded Withholding Tax.",
+      "Collect supplier TIN, Registered Name, and Address.",
+      "Keep invoices or receipts from suppliers.",
+      "Determine the correct ATC for the transaction.",
+      "File on or before the 10th of the following month.",
+      "Encode and prepare BIR Form 0619-E using eBIRForms or eFPS.",
+      "Pay through an Authorized Agent Bank or online channel.",
+      "Note: the 3rd month of the quarter requires BIR Form 1601-EQ instead.",
+      "Enter the month and year being reported.",
+      "Enter TIN, RDO Code, and Registered Name.",
+      "Enter total Expanded Withholding Tax withheld for the month.",
+      "For amended returns, enter previously remitted tax.",
+      "Compute surcharge, interest, and compromise penalty if late.",
+      "Issue BIR Form 2307 to the supplier.",
+      "Maintain copies of returns, receipts, and withholding records."
+    ],
+    "complianceStage": "Expanded Withholding Tax",
+    "deadlineDescription": "Monthly (1st and 2nd month of each quarter), on or before the 10th of the following month.",
+    "deadlineMonth": 12,
+    "deadlineDay": 10,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source. Surcharge/interest/compromise penalty computation is referenced but rates are not itemized in the source."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/0619-E%20Jan%202018%20rev%20final.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-2307-certificate",
+    "agencyId": "bir",
+    "name": "Certificate of Creditable Tax Withheld (BIR Form 2307)",
+    "description": "BIR Form 2307 is the certificate issued by the withholding agent to the payee showing the amount of tax withheld from their income. The recipient uses this certificate as proof of tax credit when filing their own income tax return.",
+    "whoItAppliesTo": "Businesses that withheld expanded withholding tax from a supplier and must issue proof of the withholding.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "purely_business",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "Supplier invoice / contract",
+        "description": ""
+      },
+      {
+        "name": "Supplier records",
+        "description": ""
+      },
+      {
+        "name": "Payment records",
+        "description": ""
+      },
+      {
+        "name": "Withholding computation",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Confirm the payment is subject to Expanded Withholding Tax.",
+      "Verify the supplier's TIN and registered name.",
+      "Prepare BIR Form 2307 for the supplier.",
+      "Enter the total payment amount subject to withholding.",
+      "Enter the amount of tax withheld.",
+      "Provide the signed BIR Form 2307 to the supplier.",
+      "Include withheld taxes in the BIR Form 1601-EQ filing.",
+      "Maintain copies of issued certificates."
+    ],
+    "complianceStage": "Expanded Withholding Tax",
+    "deadlineDescription": "Issued at the time each covered payment is made.",
+    "deadlineMonth": 12,
+    "deadlineDay": 31,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1601c-monthly-compensation",
+    "agencyId": "bir",
+    "name": "Monthly Remittance of Withholding Tax on Compensation (BIR Form 1601-C)",
+    "description": "BIR Form 1601-C is the monthly tax return used by employers to report and remit income taxes withheld from employee salaries to the BIR.",
+    "whoItAppliesTo": "Employers with at least one employee.",
+    "applicabilityRules": {
+      "hasEmployees": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 2303",
+        "description": ""
+      },
+      {
+        "name": "Employee records",
+        "description": ""
+      },
+      {
+        "name": "Payroll reports",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Ensure the business is registered as an employer with BIR.",
+      "Maintain employee TIN and payroll information.",
+      "Maintain payroll records for salary payments.",
+      "Prepare BIR Form 1601-C using eBIRForms or eFPS.",
+      "Enter TIN, RDO Code, and Registered Name.",
+      "Compute tax withheld from employee salaries.",
+      "Remit withheld taxes to the BIR.",
+      "Maintain copies of payroll records and filed returns."
+    ],
+    "complianceStage": "Compensation Withholding",
+    "deadlineDescription": "Monthly (specific due date not specified in the current content source).",
+    "deadlineMonth": 12,
+    "deadlineDay": 31,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1601C%20final%20Jan%202018%20with%20DPA.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-1604c-annual-compensation",
+    "agencyId": "bir",
+    "name": "Annual Information Return of Compensation Withheld (BIR Form 1604-C)",
+    "description": "BIR Form 1604-C is the annual summary return that consolidates all compensation taxes withheld from employees during the year, including submission of the employee alphalist.",
+    "whoItAppliesTo": "Employers with at least one employee, filed annually.",
+    "applicabilityRules": {
+      "hasEmployees": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Payroll summary report",
+        "description": ""
+      },
+      {
+        "name": "Employee master list",
+        "description": ""
+      },
+      {
+        "name": "Employee alphalist file",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Prepare an annual summary of employee compensation and taxes withheld.",
+      "Verify employee TIN, names, and compensation records.",
+      "Prepare BIR Form 1604-C via eBIRForms or eFPS.",
+      "Report total compensation income and taxes withheld for all employees.",
+      "Attach the employee compensation data file (alphalist).",
+      "Submit the annual return to the BIR.",
+      "Maintain copies of the filed return and alphalist."
+    ],
+    "complianceStage": "Compensation Withholding",
+    "deadlineDescription": "Annually (specific calendar due date not specified in the current content source).",
+    "deadlineMonth": 1,
+    "deadlineDay": 31,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1604-C%20Jan%202018%20Final.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  },
+  {
+    "id": "bir-2316-certificate",
+    "agencyId": "bir",
+    "name": "Certificate of Compensation Payment / Tax Withheld (BIR Form 2316)",
+    "description": "BIR Form 2316 is the certificate issued by the employer to each employee showing their total compensation income and taxes withheld for the year, serving as proof of tax payment for the employee.",
+    "whoItAppliesTo": "Employers with at least one employee, issued once per employee per year.",
+    "applicabilityRules": {
+      "hasEmployees": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Payroll records",
+        "description": ""
+      },
+      {
+        "name": "Payroll summary",
+        "description": ""
+      },
+      {
+        "name": "Payroll computation",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Prepare annual payroll records per employee.",
+      "Prepare BIR Form 2316 for each employee.",
+      "Report the employee's total compensation income.",
+      "Report taxes withheld from the employee's salary.",
+      "Provide the signed BIR Form 2316 to the employee.",
+      "Include 2316 details in the annual filing (BIR Form 1604-C).",
+      "Maintain copies of issued certificates."
+    ],
+    "complianceStage": "Compensation Withholding",
+    "deadlineDescription": "Annually, issued to each employee (specific calendar due date not specified in the current content source).",
+    "deadlineMonth": 1,
+    "deadlineDay": 31,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Information not provided in the current content source."
+    },
+    "officialUrl": "https://www.bir.gov.ph",
+    "lastVerified": "2026-09-20",
+    "contentSource": "flowchart_final_workbook"
+  }
+]

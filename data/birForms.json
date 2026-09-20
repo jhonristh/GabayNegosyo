@@ -1,0 +1,15 @@
+[
+  { "code": "1901", "title": "Application for Registration (Self-Employed/Mixed Income/Estates/Trusts)", "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1901%20October%202025%20ENCS%20Final.pdf" },
+  { "code": "1905", "title": "Application for Registration Information Update/Correction/Cancellation", "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1905%20October%202025%20ENCS%20Final.pdf" },
+  { "code": "1900", "title": "Application for Authority to Use Computerized Accounting System / Components", "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1900%20October%202025%20ENCS%20Final.pdf" },
+  { "code": "1906", "title": "Application for Authority to Print Receipts/Invoices", "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1906%20October%202025%20ENCS%20Final.pdf" },
+  { "code": "2000", "title": "Documentary Stamp Tax Declaration/Return", "url": "https://bir-cdn.bir.gov.ph/local/pdf/2000-DST%20Jan%202018%20final.pdf" },
+  { "code": "0619-E", "title": "Monthly Remittance Form of Creditable Income Taxes Withheld (Expanded)", "url": "https://bir-cdn.bir.gov.ph/local/pdf/0619-E%20Jan%202018%20rev%20final.pdf" },
+  { "code": "1601-C", "title": "Monthly Remittance Return of Income Taxes Withheld on Compensation", "url": "https://bir-cdn.bir.gov.ph/local/pdf/1601C%20final%20Jan%202018%20with%20DPA.pdf" },
+  { "code": "1601-EQ", "title": "Quarterly Remittance Return of Creditable Income Taxes Withheld (Expanded)", "url": "https://bir-cdn.bir.gov.ph/local/pdf/1601-EQ%20January%202019%20ENCS%20final.pdf" },
+  { "code": "2551Q", "title": "Quarterly Percentage Tax Return", "url": "https://bir-cdn.bir.gov.ph/local/pdf/2551Q%20Jan%202018%20ENCS%20final%20rev%203_copy.pdf" },
+  { "code": "1701Q", "title": "Quarterly Income Tax Return for Self-Employed, Estates and Trusts", "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701Q%20Jan%202018%20final%20rev2_copy.pdf" },
+  { "code": "1604-C", "title": "Annual Information Return of Income Taxes Withheld on Compensation", "url": "https://bir-cdn.bir.gov.ph/local/pdf/1604-C%20Jan%202018%20Final.pdf" },
+  { "code": "1604-E", "title": "Annual Information Return of Creditable Income Taxes Withheld (Expanded)", "url": "https://bir-cdn.bir.gov.ph/local/pdf/1604E%20Jan%202018%20ENCS%20Final2.pdf" },
+  { "code": "1701A", "title": "Annual Income Tax Return for Individuals (8% Flat Rate / OSD, No Mixed Income)", "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701A%20Jan%202018%20v5%20with%20rates.pdf" }
+]

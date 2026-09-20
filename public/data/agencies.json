@@ -1,0 +1,32 @@
+[
+  {
+    "id": "bir",
+    "name": "Bureau of Internal Revenue (BIR)",
+    "description": "The national tax agency. Handles business registration, tax filing, and official receipts/invoices.",
+    "officialUrl": "https://www.bir.gov.ph"
+  },
+  {
+    "id": "sss",
+    "name": "Social Security System (SSS)",
+    "description": "Provides social insurance for employees and self-employed individuals.",
+    "officialUrl": "https://www.sss.gov.ph"
+  },
+  {
+    "id": "philhealth",
+    "name": "Philippine Health Insurance Corporation (PhilHealth)",
+    "description": "National health insurance program for employees and self-employed individuals.",
+    "officialUrl": "https://www.philhealth.gov.ph"
+  },
+  {
+    "id": "pagibig",
+    "name": "Pag-IBIG Fund (HDMF)",
+    "description": "Home Development Mutual Fund — savings and housing loan program for employees and members.",
+    "officialUrl": "https://www.pagibigfund.gov.ph"
+  },
+  {
+    "id": "lgu",
+    "name": "Local Government Unit (LGU)",
+    "description": "Your city or municipality — issues and renews your business permit (Mayor's Permit).",
+    "officialUrl": "https://www.dilg.gov.ph"
+  }
+]

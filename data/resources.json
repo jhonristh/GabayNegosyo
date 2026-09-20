@@ -1,0 +1,198 @@
+[
+  {
+    "id": "res-bir-2303",
+    "title": "BIR Form 2303 — Certificate of Registration",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official form/output confirming your business registration with the BIR.",
+    "url": "https://www.bir.gov.ph/registration-requirements",
+    "relatedRequirementId": "bir-cor",
+    "lastVerified": "2026-08-01"
+  },
+  {
+    "id": "res-ebirforms",
+    "title": "eBIRForms Offline Package",
+    "resourceType": "official_website",
+    "agencyId": "bir",
+    "description": "Official BIR e-filing software for individuals and businesses.",
+    "url": "https://www.bir.gov.ph/eBIRForms",
+    "relatedRequirementId": "bir-1701a",
+    "lastVerified": "2026-08-01"
+  },
+  {
+    "id": "res-sss-r1",
+    "title": "SSS Form R-1 — Employer Registration",
+    "resourceType": "form",
+    "agencyId": "sss",
+    "description": "Registration form for new SSS-covered employers.",
+    "url": "https://www.sss.gov.ph",
+    "relatedRequirementId": "sss-employer-reg",
+    "lastVerified": "2026-08-01"
+  },
+  {
+    "id": "res-sss-contribution-table",
+    "title": "SSS Contribution Schedule",
+    "resourceType": "guide",
+    "agencyId": "sss",
+    "description": "Current contribution table by salary bracket.",
+    "url": "https://www.sss.gov.ph",
+    "relatedRequirementId": "sss-contribution",
+    "lastVerified": "2026-08-01"
+  },
+  {
+    "id": "res-philhealth-er1",
+    "title": "PhilHealth Form ER1 — Employer Data Record",
+    "resourceType": "form",
+    "agencyId": "philhealth",
+    "description": "Employer registration form for PhilHealth.",
+    "url": "https://www.philhealth.gov.ph",
+    "relatedRequirementId": "philhealth-employer-reg",
+    "lastVerified": "2026-08-01"
+  },
+  {
+    "id": "res-pagibig-employer",
+    "title": "Virtual Pag-IBIG Employer Portal",
+    "resourceType": "official_website",
+    "agencyId": "pagibig",
+    "description": "Online portal for employer registration and contribution remittance.",
+    "url": "https://www.pagibigfund.gov.ph",
+    "relatedRequirementId": "pagibig-employer-reg",
+    "lastVerified": "2026-08-01"
+  },
+  {
+    "id": "res-lgu-bplo-guide",
+    "title": "Business Permit Renewal Guide",
+    "resourceType": "guide",
+    "agencyId": "lgu",
+    "description": "General overview of the annual renewal process; requirements vary by LGU.",
+    "url": "https://www.dilg.gov.ph",
+    "relatedRequirementId": "lgu-permit-renewal",
+    "lastVerified": "2026-08-01"
+  },
+  {
+    "id": "res-dti-bnr",
+    "title": "DTI Business Name Registration",
+    "resourceType": "official_website",
+    "agencyId": "bir",
+    "description": "Register your business name with the DTI before BIR registration (sole proprietors).",
+    "url": "https://bnrs.dti.gov.ph",
+    "lastVerified": "2026-08-01"
+  },
+  {
+    "id": "res-bir-1901",
+    "title": "BIR Form 1901 — Application for Registration (Self-Employed/Mixed Income/Estates/Trusts)",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1901 PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1901%20October%202025%20ENCS%20Final.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1905",
+    "title": "BIR Form 1905 — Application for Registration Information Update/Correction/Cancellation",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1905 PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1905%20October%202025%20ENCS%20Final.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1900",
+    "title": "BIR Form 1900 — Application for Authority to Use Computerized Accounting System / Components",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1900 PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1900%20October%202025%20ENCS%20Final.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1906",
+    "title": "BIR Form 1906 — Application for Authority to Print Receipts/Invoices",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1906 PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1906%20October%202025%20ENCS%20Final.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-2000",
+    "title": "BIR Form 2000 — Documentary Stamp Tax Declaration/Return",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 2000 PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/2000-DST%20Jan%202018%20final.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-0619e",
+    "title": "BIR Form 0619-E — Monthly Remittance Form of Creditable Income Taxes Withheld (Expanded)",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 0619-E PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/0619-E%20Jan%202018%20rev%20final.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1601c",
+    "title": "BIR Form 1601-C — Monthly Remittance Return of Income Taxes Withheld on Compensation",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1601-C PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1601C%20final%20Jan%202018%20with%20DPA.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1601eq",
+    "title": "BIR Form 1601-EQ — Quarterly Remittance Return of Creditable Income Taxes Withheld (Expanded)",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1601-EQ PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1601-EQ%20January%202019%20ENCS%20final.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-2551q",
+    "title": "BIR Form 2551Q — Quarterly Percentage Tax Return",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 2551Q PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/2551Q%20Jan%202018%20ENCS%20final%20rev%203_copy.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1701q",
+    "title": "BIR Form 1701Q — Quarterly Income Tax Return for Self-Employed, Estates and Trusts",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1701Q PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701Q%20Jan%202018%20final%20rev2_copy.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1604c",
+    "title": "BIR Form 1604-C — Annual Information Return of Income Taxes Withheld on Compensation",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1604-C PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1604-C%20Jan%202018%20Final.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1604e",
+    "title": "BIR Form 1604-E — Annual Information Return of Creditable Income Taxes Withheld (Expanded)",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1604-E PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1604E%20Jan%202018%20ENCS%20Final2.pdf",
+    "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-bir-1701a",
+    "title": "BIR Form 1701A — Annual Income Tax Return for Individuals (8% Flat Rate / OSD, No Mixed Income)",
+    "resourceType": "form",
+    "agencyId": "bir",
+    "description": "Official BIR form 1701A PDF, as listed in the client-provided registration wizard content source.",
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701A%20Jan%202018%20v5%20with%20rates.pdf",
+    "lastVerified": "2026-09-20"
+  }
+]

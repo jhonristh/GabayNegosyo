@@ -1,0 +1,642 @@
+[
+  {
+    "barangay": "Alicia",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Amihan",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Apolonio Samson",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Aurora",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Baesa",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Bagbag",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Bagong Lipunan ng Crame",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Bagong Pag-asa",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Bagong Silangan",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Bagumbayan",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Bagumbuhay",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Bahay Toro",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Balingasa",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Balong Bato",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Batasan Hills",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Bayanihan",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Blue Ridge A",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Blue Ridge B",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Botocan",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Bungad",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Camp Aguinaldo",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Capri",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Central",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Claro",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Claro (Quirino 3-B)",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Commonwealth",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Commowealth",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Culiat",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Damar",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Damayan",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Damayang Lagi",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Del Monte",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Dioquino Zobel",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Don Manuel",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Dona Aurora",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Dona Imelda",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Dona Josefa",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Doña Imelda",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Doña Josefa",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Duyan-Duyan",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "E. Rodriguez",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "East Kamias",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Escopa I",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Escopa II",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Escopa III",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Escopa IV",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Fairview",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Greater Lagro",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Gulod",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Holy Spirit",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Horseshoe",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Immaculate Conception",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Kaligayahan",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Kalusugan",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Kamuning",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Katipunan",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Kaunlaran",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Kristong Hari",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Krus na Ligas",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Laging Handa",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Libis",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Lourdes",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Loyola Heights",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Maharlika",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Malaya",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Mangga",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Manresa",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Mariana",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Mariblo",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Marilag",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Masagana",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Masambong",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Matandang Balara",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Milagrosa",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "N.S. Amoranto",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Nagkaisang Nayon",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Nayong Kanluran",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "New Era",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "North Fairview",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Novaliches Proper",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Obrero",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Old Capitol Site",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Paang Bundok",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Pag-ibig sa Nayon",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Pagibig sa Nayon",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Paligsahan",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Paltok",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Pansol",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Paong Putik Proper",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Paraiso",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Pasong Putik Proper",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Pasong Tamo",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Payatas",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Phil-Am",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Pinagkaisahan",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Pinyahan",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Project 6",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Quirino 2-A",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Quirino 2-B",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Quirino 2-C",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Quirino 3-A",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Quirion 2-A",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Ramon Magsaysay",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Roxas",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Sacred Heart",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Saint Peter",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Salvacion",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "San Agustin",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "San Antonio",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "San Bartolome",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "San Isidro",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "San Isidro Labrador",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "San Jose",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "San Martin de Porres",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "San Roque",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "San Vicente",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Sangandaan",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Santa Cruz",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Santa Lucia",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Santa Monica",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Santa Teresita",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Santo Cristo",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Santo Domingo",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Santol",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Sauyo",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Sienna",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Sikatuna",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Sikatuna Village",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Silangan",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Socorro",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "South Triangle",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "St. Ignatius",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "St. Peter",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Sta. Cruz",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Sta. Lucia",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Sta. Monica",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Sta. Teresita",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Sto. Cristo",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Sto. Domingo",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Sto. Nino",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Tagumpay",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Talayan",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Talipapa",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Tandang Sora",
+    "rdoCode": "RDO 28"
+  },
+  {
+    "barangay": "Tatalon",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Teachers Village East",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Teachers Village West",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "U.P. Campus",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "U.P. Village",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "UP Campus",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "UP Village",
+    "rdoCode": "RDO 39"
+  },
+  {
+    "barangay": "Ugong Norte",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Unang Sigaw",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Valencia",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "Vasra",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Veterans Village",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "Villa Maria Clara",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "West Kamias",
+    "rdoCode": "RDO 40"
+  },
+  {
+    "barangay": "West Triangle",
+    "rdoCode": "RDO 38"
+  },
+  {
+    "barangay": "White Plains",
+    "rdoCode": "RDO 40"
+  }
+]

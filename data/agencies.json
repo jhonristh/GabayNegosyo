@@ -1,0 +1,50 @@
+[
+  {
+    "id": "bir",
+    "name": "Bureau of Internal Revenue (BIR)",
+    "description": "The national tax agency. Handles business registration, tax filing, and official receipts/invoices.",
+    "officialUrl": "https://www.bir.gov.ph"
+  },
+  {
+    "id": "sss",
+    "name": "Social Security System (SSS)",
+    "description": "Provides social insurance for employees and self-employed individuals.",
+    "officialUrl": "https://www.sss.gov.ph"
+  },
+  {
+    "id": "philhealth",
+    "name": "Philippine Health Insurance Corporation (PhilHealth)",
+    "description": "National health insurance program for employees and self-employed individuals.",
+    "officialUrl": "https://www.philhealth.gov.ph"
+  },
+  {
+    "id": "pagibig",
+    "name": "Pag-IBIG Fund (HDMF)",
+    "description": "Home Development Mutual Fund — savings and housing loan program for employees and members.",
+    "officialUrl": "https://www.pagibigfund.gov.ph"
+  },
+  {
+    "id": "lgu",
+    "name": "Local Government Unit (LGU)",
+    "description": "Your city or municipality — issues and renews your business permit (Mayor's Permit).",
+    "officialUrl": "https://www.dilg.gov.ph"
+  },
+  {
+    "id": "dti",
+    "name": "Department of Trade and Industry (DTI)",
+    "description": "Registers business names for sole proprietorships, a pre-registration step before BIR registration.",
+    "officialUrl": "https://www.dti.gov.ph"
+  },
+  {
+    "id": "sec",
+    "name": "Securities and Exchange Commission (SEC)",
+    "description": "Registers partnerships and corporations as juridical entities, a pre-registration step before BIR registration.",
+    "officialUrl": "https://www.sec.gov.ph"
+  },
+  {
+    "id": "cda",
+    "name": "Cooperative Development Authority (CDA)",
+    "description": "Registers cooperatives, a pre-registration step before BIR registration.",
+    "officialUrl": "https://www.cda.gov.ph"
+  }
+]
