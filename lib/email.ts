@@ -1,15 +1,36 @@
 import type { SentEmail } from "./types";
 import { db } from "./db";
+import { getSupabase } from "./supabase";
 
 /**
- * Email service layer. In local/demo mode (no EMAIL_PROVIDER_API_KEY set),
- * "sending" an email logs it to the local sent-mail log instead of making
- * a network call. Swap the body of sendEmail() for a real provider
- * (Resend, SendGrid, AWS SES, etc.) using the env vars in .env.example —
- * no caller code needs to change.
+ * Email service layer (reminders).
+ *
+ * The browser never talks to the email provider directly — that would expose
+ * the provider's API key. Instead it calls our own server route
+ * (app/api/send-email/route.ts), which:
+ *   1. verifies the caller's Supabase login,
+ *   2. checks they are Premium/Admin,
+ *   3. sends to the caller's OWN email address only,
+ *   4. falls back to "mock" (nothing actually sent) if no provider key is set.
+ *
+ * The `to` argument is kept so existing callers don't change, but the server
+ * ignores it and always uses the signed-in user's verified email.
  */
 export async function sendEmail(to: string, subject: string, body: string): Promise<SentEmail> {
-  const providerConfigured = Boolean(process.env.NEXT_PUBLIC_EMAIL_PROVIDER);
+  const { data } = await getSupabase().auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new Error("You need to be logged in to send email.");
+
+  const res = await fetch("/api/send-email", {
+    method: "POST",
+    headers: { "Content-Type": "application/json", Authorization: `Bearer ${token}` },
+    body: JSON.stringify({ subject, body }),
+  });
+
+  if (!res.ok) {
+    const payload = await res.json().catch(() => ({}));
+    throw new Error(payload.error ?? `Email request failed (${res.status})`);
+  }
 
   const record: SentEmail = {
     id: `email-${Date.now()}`,
@@ -18,17 +39,7 @@ export async function sendEmail(to: string, subject: string, body: string): Prom
     body,
     sentAt: new Date().toISOString(),
   };
-
-  if (!providerConfigured) {
-    // Mock mode: persist to local log so the UI can show "reminder sent".
-    console.info("[mock email] to:", to, "| subject:", subject);
-    db.appendSentEmail(record);
-    return record;
-  }
-
-  // Real provider integration point (not implemented in the prototype):
-  // await fetch(process.env.EMAIL_PROVIDER_ENDPOINT, { ... })
-  db.appendSentEmail(record);
+  db.appendSentEmail(record); // logged to Supabase so the admin dashboard can show it
   return record;
 }
 

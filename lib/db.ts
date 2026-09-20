@@ -2,6 +2,7 @@ import agenciesSeed from "../data/agencies.json";
 import requirementsSeed from "../data/requirements.json";
 import resourcesSeed from "../data/resources.json";
 import tutorialsSeed from "../data/tutorials.json";
+import { getSupabase } from "./supabase";
 import type {
   Agency,
   Requirement,
@@ -14,26 +15,29 @@ import type {
 } from "./types";
 
 /**
- * DATA / SERVICE LAYER
- * ────────────────────
- * This is the single point of contact between UI and data. In this
- * prototype it reads seed JSON (the "database") and persists user-specific
- * state (business profiles, checklist progress, admin edits, reminders,
- * sent-mail log) to localStorage under one namespaced key.
+ * DATA / SERVICE LAYER  (Supabase-backed user data)
+ * ─────────────────────────────────────────────────
+ * The UI still talks to this one object and still reads synchronously.
+ * What changed under the hood:
  *
- * To move to Supabase later: reimplement the functions in this file to
- * call `supabase.from(...)` instead of localStorage, keeping the same
- * function signatures. No UI code should need to change. See
- * database/schema.sql for the target relational structure.
+ *  USER DATA  (business profile, checklist progress, reminders, sent emails)
+ *    - Lives in Supabase (tables protected by Row Level Security).
+ *    - db.hydrate(userId) loads it into an in-memory cache right after login
+ *      (lib/auth.tsx calls this), so reads below stay synchronous.
+ *    - Every write updates the cache immediately AND is sent to Supabase
+ *      (write-through). Failures are logged to the console.
+ *    - db.clearUserData() empties the cache on logout.
+ *
+ *  CONTENT  (agencies, requirements, resources, tutorials + admin edits)
+ *    - Unchanged for now: seed JSON in /data plus admin overrides in this
+ *      browser's localStorage. Moving this to Supabase tables is the next
+ *      stage — see docs/SUPABASE_SETUP.md, "What is still local".
  */
 
 const STORE_KEY = "gn_store_v1";
 
+/** localStorage store — now ONLY holds admin content overrides. */
 interface Store {
-  businessProfiles: Record<string, BusinessProfile>; // by userId
-  checklistProgress: Record<string, ChecklistItem>; // by requirementId (single-user demo)
-  reminderConfigs: Record<string, ReminderConfig>; // by requirementId
-  sentEmails: SentEmail[];
   adminOverrides: {
     agencies: Record<string, Partial<Agency>>;
     requirements: Record<string, Partial<Requirement>>;
@@ -48,10 +52,6 @@ interface Store {
 
 function emptyStore(): Store {
   return {
-    businessProfiles: {},
-    checklistProgress: {},
-    reminderConfigs: {},
-    sentEmails: [],
     adminOverrides: {
       agencies: {},
       requirements: {},
@@ -71,7 +71,7 @@ function readStore(): Store {
     const raw = window.localStorage.getItem(STORE_KEY);
     if (!raw) return emptyStore();
     const parsed = JSON.parse(raw);
-    return { ...emptyStore(), ...parsed, adminOverrides: { ...emptyStore().adminOverrides, ...parsed.adminOverrides } };
+    return { adminOverrides: { ...emptyStore().adminOverrides, ...parsed.adminOverrides } };
   } catch {
     return emptyStore();
   }
@@ -80,6 +80,30 @@ function readStore(): Store {
 function writeStore(store: Store) {
   if (typeof window === "undefined") return;
   window.localStorage.setItem(STORE_KEY, JSON.stringify(store));
+}
+
+/** In-memory copy of the signed-in user's rows from Supabase. */
+interface UserData {
+  businessProfile: BusinessProfile | null;
+  checklistProgress: Record<string, ChecklistItem>;
+  reminderConfigs: Record<string, ReminderConfig>;
+  sentEmails: SentEmail[];
+}
+
+function emptyUserData(): UserData {
+  return { businessProfile: null, checklistProgress: {}, reminderConfigs: {}, sentEmails: [] };
+}
+
+let currentUserId: string | null = null;
+let userData: UserData = emptyUserData();
+
+/** Fire-and-forget a Supabase write; log instead of crashing the UI if it fails. */
+function persist(label: string, request: PromiseLike<{ error: { message: string } | null }>) {
+  Promise.resolve(request)
+    .then(({ error }) => {
+      if (error) console.error(`[db] ${label} failed:`, error.message);
+    })
+    .catch((err) => console.error(`[db] ${label} failed:`, err));
 }
 
 function mergeWithOverrides<T extends { id: string; archived?: boolean }>(
@@ -189,67 +213,160 @@ export const db = {
     writeStore(s);
   },
 
-  // ---- Business profile (single-user demo, keyed by userId) ----
+  // ---- Session lifecycle (called by lib/auth.tsx) ----
+  async hydrate(userId: string): Promise<void> {
+    const supabase = getSupabase();
+    const [profileRes, progressRes, remindersRes, emailsRes] = await Promise.all([
+      supabase.from("business_profiles").select("data").eq("user_id", userId).maybeSingle(),
+      supabase.from("checklist_progress").select("*").eq("user_id", userId),
+      supabase.from("reminder_configs").select("*").eq("user_id", userId),
+      // RLS decides what comes back: a normal user gets their own rows, an admin gets everyone's.
+      supabase.from("sent_emails").select("*").order("sent_at", { ascending: false }).limit(50),
+    ]);
+
+    const firstError = [profileRes, progressRes, remindersRes, emailsRes].find((r) => r.error)?.error;
+    if (firstError) throw new Error(firstError.message);
+
+    const next = emptyUserData();
+    next.businessProfile = (profileRes.data?.data as BusinessProfile | undefined) ?? null;
+
+    for (const row of progressRes.data ?? []) {
+      next.checklistProgress[row.requirement_id] = {
+        requirementId: row.requirement_id,
+        businessId: row.business_id,
+        status: row.status,
+        dueDate: row.due_date,
+        completedAt: row.completed_at ?? undefined,
+      };
+    }
+    for (const row of remindersRes.data ?? []) {
+      next.reminderConfigs[row.requirement_id] = {
+        requirementId: row.requirement_id,
+        enabled: row.enabled,
+        daysBefore: row.days_before,
+      };
+    }
+    next.sentEmails = (emailsRes.data ?? []).map((row) => ({
+      id: row.id,
+      to: row.to_email,
+      subject: row.subject,
+      body: row.body,
+      sentAt: row.sent_at,
+    }));
+
+    currentUserId = userId;
+    userData = next;
+  },
+  clearUserData() {
+    currentUserId = null;
+    userData = emptyUserData();
+  },
+
+  // ---- Business profile (one per user) ----
   getBusinessProfile(userId: string): BusinessProfile | null {
-    const s = readStore();
-    return s.businessProfiles[userId] ?? null;
+    return userId === currentUserId ? userData.businessProfile : null;
   },
   saveBusinessProfile(profile: BusinessProfile) {
-    const s = readStore();
-    s.businessProfiles[profile.userId] = profile;
-    writeStore(s);
+    userData.businessProfile = profile;
+    persist(
+      "saveBusinessProfile",
+      getSupabase()
+        .from("business_profiles")
+        .upsert({ user_id: profile.userId, data: profile, updated_at: new Date().toISOString() }, { onConflict: "user_id" })
+    );
   },
 
   // ---- Checklist progress ----
   getProgress(): Record<string, ChecklistItem> {
-    return readStore().checklistProgress;
+    return userData.checklistProgress;
   },
   markComplete(requirementId: string, businessId: string, dueDate: string) {
-    const s = readStore();
-    s.checklistProgress[requirementId] = {
+    if (!currentUserId) return;
+    const completedAt = new Date().toISOString();
+    userData.checklistProgress[requirementId] = {
       requirementId,
       businessId,
       status: "completed",
       dueDate,
-      completedAt: new Date().toISOString(),
+      completedAt,
     };
-    writeStore(s);
+    persist(
+      "markComplete",
+      getSupabase().from("checklist_progress").upsert(
+        {
+          user_id: currentUserId,
+          requirement_id: requirementId,
+          business_id: businessId,
+          status: "completed",
+          due_date: dueDate,
+          completed_at: completedAt,
+        },
+        { onConflict: "user_id,requirement_id" }
+      )
+    );
   },
   markIncomplete(requirementId: string) {
-    const s = readStore();
-    if (s.checklistProgress[requirementId]) {
-      delete s.checklistProgress[requirementId].completedAt;
-      s.checklistProgress[requirementId].status = "upcoming";
-    }
-    writeStore(s);
+    if (!currentUserId) return;
+    const item = userData.checklistProgress[requirementId];
+    if (!item) return;
+    delete item.completedAt;
+    item.status = "upcoming";
+    persist(
+      "markIncomplete",
+      getSupabase()
+        .from("checklist_progress")
+        .update({ status: "upcoming", completed_at: null })
+        .eq("user_id", currentUserId)
+        .eq("requirement_id", requirementId)
+    );
   },
 
   // ---- Reminders ----
   getReminderConfig(requirementId: string): ReminderConfig {
-    const s = readStore();
-    return s.reminderConfigs[requirementId] ?? { requirementId, enabled: false, daysBefore: 7 };
+    return userData.reminderConfigs[requirementId] ?? { requirementId, enabled: false, daysBefore: 7 };
   },
   setReminderConfig(config: ReminderConfig) {
-    const s = readStore();
-    s.reminderConfigs[config.requirementId] = config;
-    writeStore(s);
+    if (!currentUserId) return;
+    userData.reminderConfigs[config.requirementId] = config;
+    persist(
+      "setReminderConfig",
+      getSupabase().from("reminder_configs").upsert(
+        {
+          user_id: currentUserId,
+          requirement_id: config.requirementId,
+          enabled: config.enabled,
+          days_before: config.daysBefore,
+        },
+        { onConflict: "user_id,requirement_id" }
+      )
+    );
   },
   getAllReminderConfigs(): ReminderConfig[] {
-    return Object.values(readStore().reminderConfigs);
+    return Object.values(userData.reminderConfigs);
   },
 
   // ---- Email log ----
   appendSentEmail(email: SentEmail) {
-    const s = readStore();
-    s.sentEmails.unshift(email);
-    writeStore(s);
+    userData.sentEmails.unshift(email);
+    if (!currentUserId) return;
+    persist(
+      "appendSentEmail",
+      getSupabase().from("sent_emails").insert({
+        user_id: currentUserId,
+        to_email: email.to,
+        subject: email.subject,
+        body: email.body,
+        sent_at: email.sentAt,
+      })
+    );
   },
   getSentEmails(): SentEmail[] {
-    return readStore().sentEmails;
+    return userData.sentEmails;
   },
 
-  // ---- Reset (useful for demo/testing) ----
+  // ---- Reset (local only: clears admin content edits + the in-memory cache; does NOT delete Supabase rows) ----
   resetAll() {
     writeStore(emptyStore());
+    userData = emptyUserData();
   },
 };
