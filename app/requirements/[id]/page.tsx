@@ -4,6 +4,8 @@ import { useEffect, useMemo, useState } from "react";
 import { useParams, useRouter } from "next/navigation";
 import Link from "next/link";
 import AuthGuard from "../../../components/AuthGuard";
+import TutorialCard from "../../../components/TutorialCard";
+import FormPreviewCard from "../../../components/FormPreviewCard";
 import PremiumGate from "../../../components/PremiumGate";
 import StatusBadge from "../../../components/StatusBadge";
 import { useAuth } from "../../../lib/auth";
@@ -19,6 +21,7 @@ function RequirementDetailInner() {
   const requirement = useMemo(() => db.getRequirements().find((r) => r.id === id), [id]);
   const agency = useMemo(() => (requirement ? db.getAgencies().find((a) => a.id === requirement.agencyId) : null), [requirement]);
   const tutorial = useMemo(() => (requirement?.tutorialId ? db.getTutorials().find((t) => t.id === requirement.tutorialId) : null), [requirement]);
+  const relatedForms = useMemo(() => db.getResources().filter((r) => r.resourceType === "form" && r.relatedRequirementId === id), [id]);
   const [, forceRerender] = useState(0);
 
   useEffect(() => {
@@ -103,15 +106,8 @@ function RequirementDetailInner() {
           </ol>
         </section>
 
-        {tutorial && (
-          <section className="req-detail-section">
-            <h2>Tutorial</h2>
-            <p className="source-tag">External content: {tutorial.isPlaceholder ? "placeholder link for this prototype" : "curated video"}</p>
-            <a href={tutorial.videoUrl} target="_blank" rel="noreferrer" className="tutorial-link">
-              Watch Tutorial: {tutorial.title}
-            </a>
-          </section>
-        )}
+        {relatedForms.length > 0 && <section className="req-detail-section"><h2>Related forms</h2><div className="v06-media-grid">{relatedForms.map((form) => <FormPreviewCard key={form.id} resource={form} />)}</div></section>}
+        {tutorial && <section className="req-detail-section"><h2>Tutorial</h2><TutorialCard tutorial={tutorial} /></section>}
 
         <section className="req-detail-section">
           <h2>Official Resource</h2>

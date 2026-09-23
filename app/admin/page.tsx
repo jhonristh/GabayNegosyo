@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useMemo } from "react";
 import AdminGuard from "../../components/AdminGuard";
 import { db } from "../../lib/db";
@@ -36,6 +37,9 @@ function AdminInner() {
         <p className="source-tag">Platform-wide figures below are demo/illustrative data. Content counts are live.</p>
       </header>
 
+      <section className="v07-admin-links" aria-label="Admin sections">
+        {[ ["Users", "/admin/users", "Review Free, Premium, and Admin accounts"], ["Requirements", "/admin/requirements", "Inspect stages and content status"], ["Agencies", "/admin/agencies", "Manage agency references"], ["Resources", "/admin/resources", "Review source links and forms"], ["Tutorials", "/admin/tutorials", "Review learning material"] ].map(([title,href,description]) => <Link key={href} href={href}><strong>{title} ↗</strong><span>{description}</span></Link>)}
+      </section>
       <section className="metric-grid">
         <div className="metric-card">
           <p className="metric-label">Total users (demo)</p>
@@ -64,6 +68,8 @@ function AdminInner() {
       </section>
 
       <section className="dashboard-section">
+        <h2>Content health</h2>
+        <p className="hint">{requirements.filter(r=>r.contentSource==="prototype_placeholder").length} requirements still carry prototype content · {tutorials.filter(t=>t.isPlaceholder).length} tutorials await verified videos.</p>
         <h2>Live content counts</h2>
         <div className="metric-grid">
           <div className="metric-card">

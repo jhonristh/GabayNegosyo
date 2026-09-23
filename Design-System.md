@@ -14,3 +14,9 @@ Primary button: forest green with white text, visible hover/pressed/focus and di
 
 ## Responsive and accessibility
 At 859px, hero and summary columns stack; the authenticated bottom navigation takes over. At 520px, hero actions fill width and quick actions form a compact grid. Keep tap targets comfortable, avoid horizontal overflow, preserve visible keyboard focus, support reduced motion and never remove zoom. The existing contrast-check script is the starting gate for token changes.
+
+## v0.6 surfaces and media
+Use the existing cream/forest-green tokens. `--v06-shadow-rest` and `--v06-shadow-hover` define card elevation; reserve deeper shadows for the native PDF dialog. Cards move at most 3px on hover; all new transitions disable under `prefers-reduced-motion`. Form graphics are abstract document representations, not thumbnails of actual forms. Only verified direct PDF URLs from the existing resource data open the inline PDF viewer. Video previews require direct video IDs; placeholder searches show an unavailable state.
+
+## v0.7 views
+Progress ring color is paired with numeric completion text and clickable filter labels. The deadline calendar uses a seven-column grid and individual labeled buttons. Account and plan cards collapse to a single column below 700px. Status counts and labels remain visible without relying on color. New controls inherit shared focus outlines and avoid continuous motion.

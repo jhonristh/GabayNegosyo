@@ -25,6 +25,7 @@ export default function Navbar() {
         <nav>
           <Link href="/#how-it-works">How it works</Link>
           <Link href="/#features">Features</Link>
+          <Link href="/#plans">Plans</Link>
           <Link href="/login">Log in</Link>
           <Link href="/signup" className="primary-btn nav-cta">
             Get started ↗

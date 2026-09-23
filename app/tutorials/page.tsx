@@ -1,6 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
+import TutorialCard from "../../components/TutorialCard";
 import AuthGuard from "../../components/AuthGuard";
 import { db } from "../../lib/db";
 
@@ -18,7 +19,7 @@ export default function TutorialsPage() {
 
   return (
     <AuthGuard>
-      <main className="screen">
+      <main className="screen v06-library">
         <header className="intro">
           <h1>Learning hub</h1>
           <p>Step-by-step guides and curated videos for every requirement.</p>
@@ -35,23 +36,13 @@ export default function TutorialsPage() {
           ))}
         </div>
 
+        {filtered.length === 0 && <p className="v06-unavailable">No tutorials are available for this agency yet.</p>}
         {Object.entries(grouped).map(([agencyId, items]) => {
           const agency = agencies.find((a) => a.id === agencyId);
           return (
             <section key={agencyId} className="agency-group">
               <h2>{agency?.name ?? agencyId}</h2>
-              {items.map((t) => (
-                <article key={t.id} className="checklist-card">
-                  <h3>{t.title}</h3>
-                  <p className="docs">{t.description}</p>
-                  <p className="source-tag">
-                    External content{t.isPlaceholder ? ": placeholder link for this prototype" : ""}, category: {t.category}
-                  </p>
-                  <a href={t.videoUrl} target="_blank" rel="noreferrer" className="tutorial-link">
-                    Watch tutorial
-                  </a>
-                </article>
-              ))}
+              <div className="v06-media-grid">{items.map((t) => <TutorialCard key={t.id} tutorial={t} />)}</div>
             </section>
           );
         })}

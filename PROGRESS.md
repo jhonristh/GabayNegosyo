@@ -216,3 +216,18 @@ tests/ruleEngine.test.js` 5/5 passing.
 Verified this session: `npm run build` clean (18/18 routes incl. sitemap +
 custom 404), `node --test tests/ruleEngine.test.js` 5/5 passing, TypeScript
 strict check clean.
+
+## v0.6 visual experience update
+- Added reusable visual resource cards and a native dialog PDF preview for BIR PDF URLs already present in the approved local resource dataset. Generic agency home pages remain external links; no preview or Drive link is invented.
+- Added reusable tutorial cards. Existing tutorial data contains only YouTube search placeholders, so these display an honest unavailable state rather than a misleading video thumbnail or watch action. Verified direct video URLs can display a thumbnail automatically.
+- Expanded resource library to a responsive card grid with existing search, agency/type filters, and sort preserved; requirement details surface related forms and tutorials inside the existing Premium gate.
+- Introduced shared surface elevation, interaction feedback, focus styling, reduced-motion handling and mobile document viewer layout. Supabase, API, domain data, rule engine, and authentication code remain unchanged.
+- Browser QA with an authenticated Supabase project and live official PDF responses remains outstanding; external PDF embedding depends on source headers/browser support and has an explicit official-source fallback.
+
+## v0.7 workspace release
+- Checklist progress donut reports completion as text and offers controls that filter completed, overdue and all items. It uses the existing progress records and applicability rules.
+- Deadlines displays a navigable monthly calendar of computed, incomplete deadlines. A selected day lists linked requirements. Reminder settings retain existing premium gating.
+- Account adds a local-only profile picture (PNG/JPEG/WebP, 500 KB cap) scoped to the signed-in user ID, plus grouped business, plan, preference and legal destinations. No Supabase Storage or profile schema changes were made.
+- Admin dashboard surfaces its actual management routes and content health; Users adds a page-local role filter and a working retry action, preserving read-only Supabase RLS behavior.
+- Landing adds explicit Free/Premium comparison and a transparent study/website attribution section. Names were absent from provided project material and are not asserted.
+- Backend, Supabase auth/data access, SQL, eligibility, content records and payments remain untouched. Browser QA with configured credentials remains necessary for auth-specific flows.

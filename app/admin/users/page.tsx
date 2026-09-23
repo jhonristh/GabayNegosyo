@@ -35,6 +35,8 @@ function UsersInner() {
   const [rows, setRows] = useState<ProfileRow[]>([]);
   const [total, setTotal] = useState<number | null>(null);
   const [page, setPage] = useState(0);
+  const [filter, setFilter] = useState<"all" | "free" | "premium" | "admin">("all");
+  const [retry, setRetry] = useState(0);
   const [state, setState] = useState<LoadState>("loading");
   const [errorMessage, setErrorMessage] = useState("");
 
@@ -73,7 +75,7 @@ function UsersInner() {
     return () => {
       cancelled = true;
     };
-  }, [page]);
+  }, [page, retry]);
 
   const hasNextPage = total !== null && (page + 1) * PAGE_SIZE < total;
 
@@ -97,12 +99,14 @@ function UsersInner() {
         <div className="state-block state-block-error">
           <p>We couldn't load the user list.</p>
           <p className="hint">{errorMessage}</p>
-          <button type="button" className="secondary-btn" onClick={() => setPage((p) => p)}>
+          <button type="button" className="secondary-btn" onClick={() => setRetry((n) => n + 1)}>
             Try again
           </button>
         </div>
       )}
 
+      <div className="filter-row" role="group" aria-label="Filter account roles on this page">{(["all","free","premium","admin"] as const).map(role=><button type="button" key={role} className={`filter-chip ${filter===role?"selected":""}`} onClick={()=>setFilter(role)}>{role === "all" ? "All roles" : role}</button>)}</div>
+      <p className="hint">Role filters apply to this page of {PAGE_SIZE} accounts. Total account counts are unfiltered.</p>
       {rows.length > 0 && (
         <>
           <section className="dashboard-section">
@@ -119,7 +123,8 @@ function UsersInner() {
           </section>
 
           <section className="dashboard-section">
-            {rows.map((u) => (
+            {rows.filter(u => filter === "all" || u.role === filter).length === 0 && <p className="hint">No {filter} accounts on this page.</p>}
+            {rows.filter(u => filter === "all" || u.role === filter).map((u) => (
               <article key={u.id} className="checklist-card">
                 <div className="checklist-card-header">
                   <div>

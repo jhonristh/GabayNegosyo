@@ -11,3 +11,6 @@ This release edits presentational components (`app/page.tsx`, `app/dashboard/pag
 
 ## Verification
 Run `npm ci`, `npm run lint`, `npm test`, `npm run contrast-check`, and `npm run build` with valid environment settings. Production prebuild requires a real site URL and contact address. Manually inspect desktop/mobile landing, signup navigation, wizard, dashboard with and without a profile, checklist and admin access against a configured Supabase project.
+
+## v0.7 frontend additions
+The checklist progress component receives counts and filter callbacks from the checklist route. The deadline calendar receives the existing computed due dates and links to requirement detail; it does not write data. Account pictures are stored as small data URLs in this browser's localStorage under a user-specific key and are never uploaded. The admin role filter applies to the current paginated results only. No database tables, RLS policies, API handlers, auth service, or billing integrations changed.

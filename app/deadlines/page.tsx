@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import AuthGuard from "../../components/AuthGuard";
+import DeadlineCalendar from "../../components/DeadlineCalendar";
 import StatusBadge from "../../components/StatusBadge";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
@@ -70,6 +71,8 @@ function DeadlinesInner() {
         <h1>Deadlines</h1>
         <p>Track every upcoming requirement and configure reminders.</p>
       </header>
+
+      <DeadlineCalendar entries={items.filter(i => i.status !== "completed").map(i => ({ id: i.req.id, name: i.req.name, date: i.dueDate, status: i.status }))} />
 
       {items.map(({ req, dueDate, status }) => {
         const agency = agencies.find((a) => a.id === req.agencyId)?.name ?? req.agencyId;

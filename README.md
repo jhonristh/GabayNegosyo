@@ -204,3 +204,6 @@ demonstration. It does not replace official government services. Always
 verify current forms, deadlines, and penalty rates directly with BIR, SSS,
 PhilHealth, Pag-IBIG, and your local government unit before filing or paying
 anything.
+
+## v0.7 interface update
+The checklist has a progress ring with status filters; Deadlines offers a monthly view. Account picture upload is a **browser-only personalization** (PNG/JPEG/WebP under 500 KB), not a synced Supabase avatar. Free/Premium plan boundaries and academic-project context appear on the landing page. Contributor names must be added after the study and web team confirm their preferred attribution. Admin Users role filters operate on the currently loaded page and do not alter Supabase roles.

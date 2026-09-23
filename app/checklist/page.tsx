@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import AuthGuard from "../../components/AuthGuard";
-import RequirementCard from "../../components/RequirementCard";
+import ChecklistProgress from "../../components/ChecklistProgress";
 import StatusBadge from "../../components/StatusBadge";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
@@ -118,6 +118,8 @@ function ChecklistInner() {
           {counts.completed} of {counts.all} requirements completed.
         </p>
       </header>
+
+      <ChecklistProgress completed={counts.completed} total={counts.all} overdue={counts.overdue} onShow={setStatusFilter} />
 
       <input
         type="search"
