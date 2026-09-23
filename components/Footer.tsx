@@ -12,7 +12,10 @@ export default function Footer() {
     <footer className="site-footer">
       <div className="site-footer-inner">
         <span className="site-footer-brand">GabayNegosyo</span>
-        <nav className="site-footer-links" aria-label="Legal">
+        <nav className="site-footer-links" aria-label="Footer">
+          <Link href="/">Home</Link>
+          <Link href="/#how-it-works">How it works</Link>
+          <Link href="/#features">Features</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/disclaimer">Disclaimer</Link>

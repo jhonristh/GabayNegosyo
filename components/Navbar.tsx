@@ -5,11 +5,11 @@ import { usePathname } from "next/navigation";
 import { useAuth } from "../lib/auth";
 
 const USER_LINKS = [
-  { href: "/dashboard", label: "Home", mobileLabel: "Home" },
+  { href: "/dashboard", label: "Overview", mobileLabel: "Overview" },
   { href: "/checklist", label: "Checklist", mobileLabel: "Checklist" },
   { href: "/resources", label: "Resources", mobileLabel: "Resources" },
   { href: "/deadlines", label: "Deadlines", mobileLabel: "Alerts" },
-  { href: "/account", label: "Profile", mobileLabel: "Profile" },
+  { href: "/account", label: "Account", mobileLabel: "Account" },
 ];
 
 export default function Navbar() {
@@ -23,9 +23,11 @@ export default function Navbar() {
           GabayNegosyo
         </Link>
         <nav>
+          <Link href="/#how-it-works">How it works</Link>
+          <Link href="/#features">Features</Link>
           <Link href="/login">Log in</Link>
           <Link href="/signup" className="primary-btn nav-cta">
-            Sign up
+            Get started ↗
           </Link>
         </nav>
       </header>
@@ -60,7 +62,7 @@ export default function Navbar() {
         </Link>
         <nav>
           <Link href="/dashboard" className={pathname === "/dashboard" ? "active" : ""}>
-            Home
+            Overview
           </Link>
           <Link href="/checklist" className={pathname === "/checklist" ? "active" : ""}>
             Checklist
@@ -75,7 +77,7 @@ export default function Navbar() {
             Deadlines
           </Link>
           <Link href="/account" className={pathname === "/account" ? "active" : ""}>
-            Profile
+            Account
           </Link>
         </nav>
       </header>

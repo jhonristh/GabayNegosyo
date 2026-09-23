@@ -17,7 +17,7 @@ function DashboardInner() {
   const [profile, setProfile] = useState<BusinessProfile | null | undefined>(undefined);
   const requirements = useMemo(() => db.getRequirements(), []);
   const agencies = useMemo(() => db.getAgencies(), []);
-  const [progressVersion, setProgressVersion] = useState(0);
+  
 
   useEffect(() => {
     if (!user) return;
@@ -81,9 +81,11 @@ function DashboardInner() {
   }
 
   return (
-    <main className="screen">
-      <header className="intro">
-        <h1>Welcome back, {user?.name.split(" ")[0]}</h1>
+    <main className="screen v05-dashboard">
+      <header className="intro v05-dash-intro">
+        <p className="v05-kicker">YOUR BUSINESS OVERVIEW</p>
+        <h1>Welcome back, {user?.name.split(" ")[0]}.</h1>
+        <p>Here’s where your compliance journey stands today.</p>
         <div className="business-chip-row">
           <span className="business-name">{profile.businessName}</span>
           <span className="chip">{profile.taxpayerType.replace(/_/g, " ")}</span>
@@ -91,14 +93,22 @@ function DashboardInner() {
         </div>
       </header>
 
-      <section className="dashboard-progress">
-        <p className="question-label">Compliance Progress</p>
-        <ProgressBar percent={percent} />
-        <p className="hint">
-          {completed.length} of {items.length} requirements completed
-        </p>
-      </section>
-
+      <div className="v05-dash-hero">
+        <section className="dashboard-progress">
+          <p className="v05-kicker">YOUR PROGRESS</p>
+          <strong className="v05-progress-number">{percent}<small>%</small></strong>
+          <ProgressBar percent={percent} />
+          <p className="hint">{completed.length} of {items.length} requirements completed</p>
+        </section>
+        <section className="v05-next-card">
+          <p className="v05-kicker">UP NEXT</p>
+          {([...overdue, ...dueSoon, ...upcoming][0]) ? <>
+            <h2>{[...overdue, ...dueSoon, ...upcoming][0].req.name}</h2>
+            <p>{agencyName([...overdue, ...dueSoon, ...upcoming][0].req.agencyId)} · {dueLabel([...overdue, ...dueSoon, ...upcoming][0].dueDate)}</p>
+            <Link href={`/requirements/${[...overdue, ...dueSoon, ...upcoming][0].req.id}`}>View requirement <span aria-hidden="true">↗</span></Link>
+          </> : <><h2>All caught up.</h2><p>There are no pending items in your checklist.</p><Link href="/checklist">View checklist ↗</Link></>}
+        </section>
+      </div>
       {(overdue.length > 0 || dueSoon.length > 0) && (
         <section className="dashboard-alert-group">
           {overdue.length > 0 && (
@@ -114,7 +124,7 @@ function DashboardInner() {
         </section>
       )}
 
-      <section className="quick-actions">
+      <section className="quick-actions" aria-label="Quick actions">
         <Link href="/checklist" className="quick-action-btn">
           Full checklist
         </Link>
@@ -129,7 +139,7 @@ function DashboardInner() {
         </Link>
       </section>
 
-      <section className="dashboard-section">
+      <section className="dashboard-section v05-pending">
         <div className="checklist-card-header">
           <h2>Pending &amp; upcoming</h2>
           <Link href="/checklist" className="tutorial-link">
