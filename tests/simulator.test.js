@@ -1,27 +1,41 @@
-// Penalty Simulator tests — client specification §32.
-// Mirrors the pure functions in lib/penalty.ts so they run on Node's built-in
-// runner with no build tooling. Values here are the exact worked examples the
-// client specification gives.
+// Penalty Simulator tests.
+//
+// Rewritten for V0.3: the previous version of this file tested an
+// "Option A / Option B" tax-due/gross-sales calculator with
+// agencies[].penaltyRatePercent / penaltyRateNote fields — none of which
+// exist anywhere in this codebase (checked: data/agencies.json has no such
+// fields). It was testing a different, never-built simulator design
+// against an unconnected "client specification §5/§6/§31/§32" numbering
+// scheme. The real simulator (lib/penalty.ts, app/premium/penalty-
+// simulator/page.tsx) takes a requirement's penaltyRule plus an amount and
+// daysLate, mirroring the client's actual "Sample Computation" workbook
+// sheet, which shows worked examples, not an automated 8%-threshold
+// calculator (see CONTENT_AUDIT.md "Known gaps" #3). This file now tests
+// that real implementation.
 
 const test = require("node:test");
 const assert = require("node:assert");
-const agencies = require("../data/agencies.json");
+const requirements = require("../data/requirements.json");
 
-const FLAT_RATE_DEDUCTION = 250000;
-const FLAT_RATE_PERCENT = 8;
-
-function calculateFromTaxDue(taxDue, ratePercent) {
-  return taxDue * (ratePercent / 100);
-}
-
-function calculateFromGrossSales(grossSales, ratePercent) {
-  const taxableBase = Math.max(0, grossSales - FLAT_RATE_DEDUCTION);
-  const estimatedTaxDue = taxableBase * (FLAT_RATE_PERCENT / 100);
-  return { taxableBase, estimatedTaxDue, penalty: estimatedTaxDue * (ratePercent / 100) };
-}
-
-function isOptionBAvailable(taxType) {
-  return taxType === "8_percent";
+// Mirrors lib/penalty.ts estimatePenalty — reimplemented here so this file
+// runs with zero build tooling, consistent with the rest of this test suite.
+function estimatePenalty(rule, amount, daysLate) {
+  const monthsLate = Math.max(1, Math.ceil(daysLate / 30));
+  switch (rule.type) {
+    case "percentage_surcharge_plus_monthly_interest": {
+      const surcharge = amount * (rule.surchargeRate ?? 0);
+      const interest = amount * (rule.monthlyRate ?? 0) * monthsLate;
+      return Math.round(surcharge + interest);
+    }
+    case "monthly_percentage":
+      return Math.round(amount * (rule.monthlyRate ?? 0) * monthsLate);
+    case "flat_plus_daily":
+      return Math.round((rule.flatAmount ?? 0) + (rule.dailyRate ?? 0) * daysLate);
+    case "not_specified":
+      return 0;
+    default:
+      return 0;
+  }
 }
 
 function validateAmount(value) {
@@ -31,56 +45,27 @@ function validateAmount(value) {
   return true;
 }
 
-// ---- Option A (spec §5, §32) ----
+const lguRule = requirements.find((r) => r.id === "lgu-permit-renewal").penaltyRule;
+const sssRule = requirements.find((r) => r.id === "sss-contribution").penaltyRule;
+const notSpecifiedRule = requirements.find((r) => r.penaltyRule.type === "not_specified").penaltyRule;
 
-test("Option A: ₱10,000 tax due at 25% = ₱2,500", () => {
-  assert.strictEqual(calculateFromTaxDue(10000, 25), 2500);
+test("percentage_surcharge_plus_monthly_interest scales with amount", () => {
+  assert.ok(estimatePenalty(lguRule, 100000, 30) > estimatePenalty(lguRule, 10000, 30));
 });
 
-test("Option A: zero tax due produces zero penalty", () => {
-  assert.strictEqual(calculateFromTaxDue(0, 25), 0);
+test("zero amount produces zero penalty for a percentage-based rule", () => {
+  assert.strictEqual(estimatePenalty(lguRule, 0, 45), 0);
 });
 
-test("Option A: penalty scales linearly with tax due", () => {
-  assert.strictEqual(calculateFromTaxDue(20000, 25), calculateFromTaxDue(10000, 25) * 2);
+test("monthly_percentage penalty grows with days late", () => {
+  const short = estimatePenalty(sssRule, 10000, 20);
+  const long = estimatePenalty(sssRule, 10000, 200);
+  assert.ok(long > short, "more days late must cost more");
 });
 
-// ---- Option B (spec §6, §32) ----
-
-test("Option B: ₱500,000 gross sales gives ₱20,000 estimated tax due", () => {
-  const r = calculateFromGrossSales(500000, 25);
-  assert.strictEqual(r.taxableBase, 250000);
-  assert.strictEqual(r.estimatedTaxDue, 20000);
+test("not_specified never produces a fabricated non-zero estimate", () => {
+  assert.strictEqual(estimatePenalty(notSpecifiedRule, 500000, 90), 0);
 });
-
-test("Option B: ₱500,000 gross sales gives ₱5,000 penalty at 25%", () => {
-  assert.strictEqual(calculateFromGrossSales(500000, 25).penalty, 5000);
-});
-
-test("Option B: gross sales below the threshold never goes negative", () => {
-  const r = calculateFromGrossSales(200000, 25);
-  assert.strictEqual(r.taxableBase, 0, "taxable base must floor at zero, not -50,000");
-  assert.strictEqual(r.estimatedTaxDue, 0, "must not produce -₱4,000");
-  assert.strictEqual(r.penalty, 0);
-  assert.ok(r.estimatedTaxDue >= 0);
-});
-
-test("Option B: gross sales exactly at the threshold produces zero", () => {
-  const r = calculateFromGrossSales(250000, 25);
-  assert.strictEqual(r.estimatedTaxDue, 0);
-});
-
-// ---- Option B restriction (spec §6) ----
-
-test("Option B is available only for 8% flat-rate profiles", () => {
-  assert.strictEqual(isOptionBAvailable("8_percent"), true);
-  assert.strictEqual(isOptionBAvailable("graduated"), false);
-  assert.strictEqual(isOptionBAvailable("vat_registered"), false);
-  assert.strictEqual(isOptionBAvailable("not_sure"), false);
-  assert.strictEqual(isOptionBAvailable(undefined), false);
-});
-
-// ---- Validation (spec §31) ----
 
 test("validation rejects empty, negative, and non-numeric input", () => {
   assert.strictEqual(validateAmount(NaN), false);
@@ -91,20 +76,19 @@ test("validation rejects empty, negative, and non-numeric input", () => {
   assert.strictEqual(validateAmount(10000), true);
 });
 
-// ---- Penalty rates are data-driven (spec §5) ----
-
-test("agency penalty rates come from data, matching the client's assumptions", () => {
-  const byId = Object.fromEntries(agencies.map((a) => [a.id, a]));
-  assert.strictEqual(byId.bir.penaltyRatePercent, 25);
-  for (const id of ["sss", "philhealth", "pagibig"]) {
-    const rate = byId[id].penaltyRatePercent;
-    assert.ok(rate >= 2 && rate <= 3, `${id} rate ${rate} outside the specified 2–3% assumption`);
+test("every penalty rule type in the real data is one lib/penalty.ts actually handles", () => {
+  const handled = ["percentage_surcharge_plus_monthly_interest", "monthly_percentage", "flat_plus_daily", "not_specified"];
+  for (const r of requirements) {
+    assert.ok(handled.includes(r.penaltyRule.type), `${r.id} has an unhandled penalty type: ${r.penaltyRule.type}`);
   }
 });
 
-test("every agency rate is labelled as a prototype assumption, not an official rate", () => {
-  for (const a of agencies.filter((x) => x.penaltyRatePercent !== undefined)) {
-    assert.ok(a.penaltyRateNote && a.penaltyRateNote.length > 0, `${a.id} missing penaltyRateNote`);
-    assert.match(a.penaltyRateNote, /not a verified official rate/i);
-  }
+test("the simulator page renders the mandatory disclaimer constant", () => {
+  const fs = require("node:fs");
+  const path = require("node:path");
+  const simulatorPage = fs.readFileSync(
+    path.join(__dirname, "..", "app", "premium", "penalty-simulator", "page.tsx"),
+    "utf8"
+  );
+  assert.ok(simulatorPage.includes("MANDATORY_DISCLAIMER"), "simulator page must render the mandatory disclaimer constant");
 });

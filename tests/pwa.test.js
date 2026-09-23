@@ -34,3 +34,17 @@ test("service worker exists and defines install/activate/fetch handlers", () => 
     assert.ok(sw.includes(`addEventListener("${evt}"`), `sw.js missing ${evt} handler`);
   }
 });
+
+test("service worker never intercepts cross-origin, /api/*, or Authorization-bearing requests (K3 fix)", () => {
+  const sw = fs.readFileSync(path.join(root, "public", "sw.js"), "utf8");
+  assert.ok(sw.includes('startsWith("/api/")'), "must bypass /api/* routes");
+  assert.ok(sw.includes("isSameOrigin"), "must check same-origin before caching");
+  assert.ok(sw.includes('has("authorization")'), "must bypass requests carrying an Authorization header");
+});
+
+test("service worker does not precache authenticated routes", () => {
+  const sw = fs.readFileSync(path.join(root, "public", "sw.js"), "utf8");
+  for (const authedRoute of ['"/dashboard"', '"/account"', '"/deadlines"']) {
+    assert.ok(!sw.includes(authedRoute), `sw.js must not precache ${authedRoute}`);
+  }
+});

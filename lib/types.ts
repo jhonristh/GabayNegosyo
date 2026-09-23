@@ -151,7 +151,7 @@ export interface Tutorial {
   archived?: boolean;
 }
 
-export type RequirementStatus = "upcoming" | "due_soon" | "overdue" | "completed";
+export type RequirementStatus = "upcoming" | "due_soon" | "due_today" | "overdue" | "completed";
 
 export interface ChecklistItem {
   requirementId: string;

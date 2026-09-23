@@ -160,7 +160,7 @@ running or demonstrating the prototype.
 ## Phase 13 — Real Content Migration (Flowchart.FINAL.xlsx)
 
 - [x] Audited all 26 sheets of the client-provided `Flowchart.FINAL.xlsx` and the
-      registration-wizard txt content source (see `CONTENT_AUDIT.md` for the
+      registration-wizard txt content source (see `docs/CONTENT_AUDIT.md` for the
       full sheet-by-sheet mapping and known gaps)
 - [x] Replaced the Registration Wizard with the real 7-question flow (new
       business? / taxpayer type / barangay+RDO / lease? / employees? /
@@ -176,7 +176,7 @@ running or demonstrating the prototype.
       doesn't specify — new `"not_specified"` penalty type, honest UI message
 - [x] Required Filipino penalty-simulator disclaimer wording applied verbatim
 - [ ] Flowchart images (17 embedded PNGs across the per-form sheets) not yet
-      transcribed — see `CONTENT_AUDIT.md` §Known gaps
+      transcribed — see `docs/CONTENT_AUDIT.md` §Known gaps
 - [ ] No automatic VAT/8%-vs-graduated tax-type calculator (source shows a
       manual sample computation only, no stated threshold rule to encode)
 - [ ] SSS / PhilHealth / Pag-IBIG / LGU-renewal requirements are still MVP
@@ -196,7 +196,7 @@ tests/ruleEngine.test.js` 5/5 passing.
 - [x] Rebuilt the color system on the product's own established brand
       (deep green / clay orange / warm sand) instead of a generic
       blue-violet-teal SaaS palette; verified WCAG contrast on every
-      text/background pair in use (see `DESIGN.md` §2) rather than eyeballing
+      text/background pair in use (see `docs/DESIGN.md` §2) rather than eyeballing
 - [x] Added real button states — hover, press, focus-visible, disabled,
       loading — replacing the "hover fade only" pattern §1 rules out
 - [x] Kept the sound structural ideas from the rejected draft: glass
@@ -211,7 +211,7 @@ tests/ruleEngine.test.js` 5/5 passing.
 - [ ] Backend/infra items from §2 of the constraints doc (analytics, rate
       limiting, DB scale planning, monitoring, backups) are explicitly out
       of scope — this prototype has no real backend or deployment yet; see
-      `DESIGN.md` §9 for the full list rather than faking any of it
+      `docs/DESIGN.md` §9 for the full list rather than faking any of it
 
 Verified this session: `npm run build` clean (18/18 routes incl. sitemap +
 custom 404), `node --test tests/ruleEngine.test.js` 5/5 passing, TypeScript

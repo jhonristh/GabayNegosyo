@@ -4,6 +4,7 @@ import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
+import { trackConversion } from "../../lib/webAnalytics";
 
 function AccountInner() {
   const { user, logout, upgradeToPremium } = useAuth();
@@ -11,6 +12,11 @@ function AccountInner() {
 
   if (!user) return null;
   const profile = db.getBusinessProfile(user.id);
+
+  async function handleUpgrade() {
+    await upgradeToPremium();
+    trackConversion("premium_upgrade_simulated");
+  }
 
   return (
     <main className="screen">
@@ -41,9 +47,9 @@ function AccountInner() {
           <p className="premium-lock-title">Upgrade to Premium</p>
           <p className="premium-lock-body">
             Unlock full requirement details, tutorials, the penalty simulator, and email reminders.
-            (Demo mode — no real payment is processed.)
+            (Demo mode: no real payment is processed.)
           </p>
-          <button type="button" className="primary-btn premium-lock-btn" onClick={upgradeToPremium}>
+          <button type="button" className="primary-btn premium-lock-btn" onClick={handleUpgrade}>
             Upgrade now (demo)
           </button>
         </section>

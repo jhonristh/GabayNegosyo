@@ -1,7 +1,7 @@
 [
   {
     "id": "res-bir-2303",
-    "title": "BIR Form 2303 — Certificate of Registration",
+    "title": "BIR Form 2303: Certificate of Registration",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official form/output confirming your business registration with the BIR.",
@@ -21,7 +21,7 @@
   },
   {
     "id": "res-sss-r1",
-    "title": "SSS Form R-1 — Employer Registration",
+    "title": "SSS Form R-1: Employer Registration",
     "resourceType": "form",
     "agencyId": "sss",
     "description": "Registration form for new SSS-covered employers.",
@@ -41,7 +41,7 @@
   },
   {
     "id": "res-philhealth-er1",
-    "title": "PhilHealth Form ER1 — Employer Data Record",
+    "title": "PhilHealth Form ER1: Employer Data Record",
     "resourceType": "form",
     "agencyId": "philhealth",
     "description": "Employer registration form for PhilHealth.",
@@ -80,7 +80,7 @@
   },
   {
     "id": "res-bir-1901",
-    "title": "BIR Form 1901 — Application for Registration (Self-Employed/Mixed Income/Estates/Trusts)",
+    "title": "BIR Form 1901: Application for Registration (Self-Employed/Mixed Income/Estates/Trusts)",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1901 PDF, as listed in the client-provided registration wizard content source.",
@@ -89,7 +89,7 @@
   },
   {
     "id": "res-bir-1905",
-    "title": "BIR Form 1905 — Application for Registration Information Update/Correction/Cancellation",
+    "title": "BIR Form 1905: Application for Registration Information Update/Correction/Cancellation",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1905 PDF, as listed in the client-provided registration wizard content source.",
@@ -98,7 +98,7 @@
   },
   {
     "id": "res-bir-1900",
-    "title": "BIR Form 1900 — Application for Authority to Use Computerized Accounting System / Components",
+    "title": "BIR Form 1900: Application for Authority to Use Computerized Accounting System / Components",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1900 PDF, as listed in the client-provided registration wizard content source.",
@@ -107,7 +107,7 @@
   },
   {
     "id": "res-bir-1906",
-    "title": "BIR Form 1906 — Application for Authority to Print Receipts/Invoices",
+    "title": "BIR Form 1906: Application for Authority to Print Receipts/Invoices",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1906 PDF, as listed in the client-provided registration wizard content source.",
@@ -116,7 +116,7 @@
   },
   {
     "id": "res-bir-2000",
-    "title": "BIR Form 2000 — Documentary Stamp Tax Declaration/Return",
+    "title": "BIR Form 2000: Documentary Stamp Tax Declaration/Return",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 2000 PDF, as listed in the client-provided registration wizard content source.",
@@ -125,7 +125,7 @@
   },
   {
     "id": "res-bir-0619e",
-    "title": "BIR Form 0619-E — Monthly Remittance Form of Creditable Income Taxes Withheld (Expanded)",
+    "title": "BIR Form 0619-E: Monthly Remittance Form of Creditable Income Taxes Withheld (Expanded)",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 0619-E PDF, as listed in the client-provided registration wizard content source.",
@@ -134,7 +134,7 @@
   },
   {
     "id": "res-bir-1601c",
-    "title": "BIR Form 1601-C — Monthly Remittance Return of Income Taxes Withheld on Compensation",
+    "title": "BIR Form 1601-C: Monthly Remittance Return of Income Taxes Withheld on Compensation",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1601-C PDF, as listed in the client-provided registration wizard content source.",
@@ -143,7 +143,7 @@
   },
   {
     "id": "res-bir-1601eq",
-    "title": "BIR Form 1601-EQ — Quarterly Remittance Return of Creditable Income Taxes Withheld (Expanded)",
+    "title": "BIR Form 1601-EQ: Quarterly Remittance Return of Creditable Income Taxes Withheld (Expanded)",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1601-EQ PDF, as listed in the client-provided registration wizard content source.",
@@ -152,7 +152,7 @@
   },
   {
     "id": "res-bir-2551q",
-    "title": "BIR Form 2551Q — Quarterly Percentage Tax Return",
+    "title": "BIR Form 2551Q: Quarterly Percentage Tax Return",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 2551Q PDF, as listed in the client-provided registration wizard content source.",
@@ -161,7 +161,7 @@
   },
   {
     "id": "res-bir-1701q",
-    "title": "BIR Form 1701Q — Quarterly Income Tax Return for Self-Employed, Estates and Trusts",
+    "title": "BIR Form 1701Q: Quarterly Income Tax Return for Self-Employed, Estates and Trusts",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1701Q PDF, as listed in the client-provided registration wizard content source.",
@@ -170,7 +170,7 @@
   },
   {
     "id": "res-bir-1604c",
-    "title": "BIR Form 1604-C — Annual Information Return of Income Taxes Withheld on Compensation",
+    "title": "BIR Form 1604-C: Annual Information Return of Income Taxes Withheld on Compensation",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1604-C PDF, as listed in the client-provided registration wizard content source.",
@@ -179,7 +179,7 @@
   },
   {
     "id": "res-bir-1604e",
-    "title": "BIR Form 1604-E — Annual Information Return of Creditable Income Taxes Withheld (Expanded)",
+    "title": "BIR Form 1604-E: Annual Information Return of Creditable Income Taxes Withheld (Expanded)",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1604-E PDF, as listed in the client-provided registration wizard content source.",
@@ -188,7 +188,7 @@
   },
   {
     "id": "res-bir-1701a",
-    "title": "BIR Form 1701A — Annual Income Tax Return for Individuals (8% Flat Rate / OSD, No Mixed Income)",
+    "title": "BIR Form 1701A: Annual Income Tax Return for Individuals (8% Flat Rate / OSD, No Mixed Income)",
     "resourceType": "form",
     "agencyId": "bir",
     "description": "Official BIR form 1701A PDF, as listed in the client-provided registration wizard content source.",

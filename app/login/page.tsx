@@ -124,7 +124,7 @@ export default function LoginPage() {
               disabled={submitting}
               onClick={() => handleDemo(a.email)}
             >
-              <strong>{a.role.toUpperCase()}</strong> — {a.name}
+              <strong>{a.role.toUpperCase()}</strong>: {a.name}
               <br />
               <span className="hint">{a.blurb}</span>
             </button>

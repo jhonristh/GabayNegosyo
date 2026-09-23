@@ -20,13 +20,13 @@
   {
     "id": "pagibig",
     "name": "Pag-IBIG Fund (HDMF)",
-    "description": "Home Development Mutual Fund — savings and housing loan program for employees and members.",
+    "description": "Home Development Mutual Fund: savings and housing loan program for employees and members.",
     "officialUrl": "https://www.pagibigfund.gov.ph"
   },
   {
     "id": "lgu",
     "name": "Local Government Unit (LGU)",
-    "description": "Your city or municipality — issues and renews your business permit (Mayor's Permit).",
+    "description": "Your city or municipality; issues and renews your business permit (Mayor's Permit).",
     "officialUrl": "https://www.dilg.gov.ph"
   },
   {

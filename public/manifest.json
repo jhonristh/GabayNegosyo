@@ -1,7 +1,7 @@
 {
   "name": "GabayNegosyo",
   "short_name": "GabayNegosyo",
-  "description": "Your guide to business compliance — personalized BIR, SSS, PhilHealth, Pag-IBIG, and LGU checklists for Philippine micro-entrepreneurs.",
+  "description": "Your guide to business compliance: a personalized BIR checklist for Philippine micro-entrepreneurs, with SSS, PhilHealth, Pag-IBIG and LGU as outline content.",
   "start_url": "/",
   "display": "standalone",
   "background_color": "#FAF7F2",

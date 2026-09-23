@@ -346,19 +346,26 @@ export const db = {
   },
 
   // ---- Email log ----
-  appendSentEmail(email: SentEmail) {
-    userData.sentEmails.unshift(email);
+  // B2: no client-side appendSentEmail/write anymore — app/api/send-email
+  // writes the log row itself server-side (with the caller's own token) as
+  // part of enforcing its rate limit. This just re-reads that slice after
+  // a send, so the UI (and the admin dashboard's log) reflects the row the
+  // server just wrote, without a second, client-triggered insert.
+  async refreshSentEmails(): Promise<void> {
     if (!currentUserId) return;
-    persist(
-      "appendSentEmail",
-      getSupabase().from("sent_emails").insert({
-        user_id: currentUserId,
-        to_email: email.to,
-        subject: email.subject,
-        body: email.body,
-        sent_at: email.sentAt,
-      })
-    );
+    const { data, error } = await getSupabase()
+      .from("sent_emails")
+      .select("*")
+      .order("sent_at", { ascending: false })
+      .limit(50);
+    if (error) return; // best-effort; the send itself already succeeded
+    userData.sentEmails = (data ?? []).map((row) => ({
+      id: row.id,
+      to: row.to_email,
+      subject: row.subject,
+      body: row.body,
+      sentAt: row.sent_at,
+    }));
   },
   getSentEmails(): SentEmail[] {
     return userData.sentEmails;

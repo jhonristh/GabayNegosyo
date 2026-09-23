@@ -55,7 +55,7 @@ function RequirementsInner() {
       setError("");
       refresh();
     } catch {
-      setError("Invalid JSON — check the structure and try again.");
+      setError("Invalid JSON. Check the structure and try again.");
     }
   }
 
@@ -65,7 +65,7 @@ function RequirementsInner() {
         <h1>Manage requirements</h1>
         <p className="hint">
           Edit name, deadline label, official URL, and last-verified date inline. For structured
-          fields (documents, instructions, applicability, penalty), use the JSON form below —
+          fields (documents, instructions, applicability, penalty), use the JSON form below;
           this keeps the editable schema exactly aligned with database/schema.sql.
         </p>
       </header>

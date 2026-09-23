@@ -32,15 +32,22 @@ export async function sendEmail(to: string, subject: string, body: string): Prom
     throw new Error(payload.error ?? `Email request failed (${res.status})`);
   }
 
-  const record: SentEmail = {
-    id: `email-${Date.now()}`,
-    to,
-    subject,
-    body,
-    sentAt: new Date().toISOString(),
-  };
-  db.appendSentEmail(record); // logged to Supabase so the admin dashboard can show it
-  return record;
+  // B2: the route itself writes the sent_emails log row server-side (using
+  // the caller's own token) as part of enforcing the per-user rate limit —
+  // logging it again here would double-count against that limit and could
+  // let a modified client dodge it by skipping this call. Refresh the local
+  // cache from Supabase instead of appending a locally-built record.
+  await db.refreshSentEmails();
+  const [latest] = db.getSentEmails();
+  return (
+    latest ?? {
+      id: `email-${Date.now()}`,
+      to,
+      subject,
+      body,
+      sentAt: new Date().toISOString(),
+    }
+  );
 }
 
 export function buildReminderEmail(requirementName: string, dueDateLabel: string, daysBefore: number) {

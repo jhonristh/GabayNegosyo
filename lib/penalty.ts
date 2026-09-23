@@ -51,5 +51,5 @@ export function estimatePenalty(rule: PenaltyRule, input: PenaltyEstimateInput):
   }
 }
 
-export const PENALTY_DISCLAIMER =
+export const MANDATORY_DISCLAIMER =
   "Estimate lang ito para sa awareness. Hindi ito kapalit ng aktwal na computation ng isang accountant o ng BIR para sa opisyal na pag-file.";

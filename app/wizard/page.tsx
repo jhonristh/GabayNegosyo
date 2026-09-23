@@ -5,6 +5,7 @@ import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
+import { trackConversion } from "../../lib/webAnalytics";
 import barangayRdoData from "../../data/barangayRdo.json";
 import type { BusinessProfile, TaxpayerType } from "../../lib/types";
 
@@ -114,6 +115,7 @@ function WizardInner() {
       createdAt: new Date().toISOString(),
     };
     db.saveBusinessProfile(profile);
+    trackConversion("wizard_completed");
     router.push("/dashboard");
   }
 
@@ -163,7 +165,7 @@ function WizardInner() {
       {step === 2 && (
         <section className="question">
           <label className="question-label" htmlFor="barangay">
-            Business Location (in Quezon City) — Barangay
+            Business Location (in Quezon City): Barangay
           </label>
           <input
             id="barangay"
@@ -185,7 +187,7 @@ function WizardInner() {
           )}
           {barangay && !rdoCode && (
             <p className="hint">
-              We don't have an RDO Code on file for that barangay yet — double check the spelling, or continue and
+              We don't have an RDO Code on file for that barangay yet. Double-check the spelling, or continue and
               verify with your RDO directly.
             </p>
           )}
@@ -274,7 +276,7 @@ function WizardInner() {
             Business name
           </label>
           <input id="bizName" className="text-input" value={businessName} onChange={(e) => setBusinessName(e.target.value)} placeholder="e.g. Juana's Crochet Corner" />
-          <p className="hint">Not part of the registration questions — just so we can label your dashboard.</p>
+          <p className="hint">Not part of the registration questions; it's just so we can label your dashboard.</p>
         </section>
       )}
 
@@ -293,7 +295,7 @@ function WizardInner() {
             <dt>Leases business space?</dt>
             <dd>{hasLease ? "Yes" : "No"}</dd>
             <dt>Employees?</dt>
-            <dd>{hasEmployees ? `Yes — ${employeeCount}` : "No"}</dd>
+            <dd>{hasEmployees ? `Yes (${employeeCount})` : "No"}</dd>
             <dt>Projected annual gross sales</dt>
             <dd>₱{Number(projectedGrossSales || 0).toLocaleString()}</dd>
             <dt>Projected annual expenses</dt>

@@ -8,6 +8,7 @@ import PremiumGate from "../../../components/PremiumGate";
 import StatusBadge from "../../../components/StatusBadge";
 import { useAuth } from "../../../lib/auth";
 import { db } from "../../../lib/db";
+import { trackConversion } from "../../../lib/webAnalytics";
 import { computeNextDueDate, computeStatus } from "../../../lib/ruleEngine";
 import type { RequirementStatus } from "../../../lib/types";
 
@@ -44,6 +45,7 @@ function RequirementDetailInner() {
       db.markIncomplete(requirement!.id);
     } else {
       db.markComplete(requirement!.id, `biz-${user.id}`, dueDate.toISOString());
+      trackConversion("requirement_completed");
     }
     forceRerender((n) => n + 1);
   }
@@ -86,7 +88,7 @@ function RequirementDetailInner() {
           <ul className="doc-checklist">
             {requirement.requiredDocuments.map((doc) => (
               <li key={doc.name}>
-                <strong>{doc.name}</strong> — {doc.description}
+                <strong>{doc.name}</strong>: {doc.description}
               </li>
             ))}
           </ul>
@@ -104,7 +106,7 @@ function RequirementDetailInner() {
         {tutorial && (
           <section className="req-detail-section">
             <h2>Tutorial</h2>
-            <p className="source-tag">External content — {tutorial.isPlaceholder ? "placeholder link for this prototype" : "curated video"}</p>
+            <p className="source-tag">External content: {tutorial.isPlaceholder ? "placeholder link for this prototype" : "curated video"}</p>
             <a href={tutorial.videoUrl} target="_blank" rel="noreferrer" className="tutorial-link">
               Watch Tutorial: {tutorial.title}
             </a>
@@ -123,7 +125,7 @@ function RequirementDetailInner() {
               ? "Client-provided reference workbook (Flowchart.FINAL.xlsx)"
               : requirement.contentSource === "registration_wizard_txt"
                 ? "Client-provided registration wizard content"
-                : "Prototype placeholder content — not yet sourced from client material"}
+                : "Prototype placeholder content, not yet sourced from client material"}
             <br />
             Last verified: {requirement.lastVerified}
           </p>

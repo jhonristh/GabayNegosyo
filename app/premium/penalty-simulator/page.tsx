@@ -5,7 +5,7 @@ import AuthGuard from "../../../components/AuthGuard";
 import PremiumGate from "../../../components/PremiumGate";
 import { useAuth } from "../../../lib/auth";
 import { db } from "../../../lib/db";
-import { estimatePenalty, PENALTY_DISCLAIMER } from "../../../lib/penalty";
+import { estimatePenalty, MANDATORY_DISCLAIMER } from "../../../lib/penalty";
 import { assertPremium } from "../../../lib/authorization";
 
 function SimulatorForm() {
@@ -49,7 +49,7 @@ function SimulatorForm() {
           Relevant amount (₱)
         </label>
         <input id="amount" type="number" className="text-input" value={amount} onChange={(e) => setAmount(Number(e.target.value))} />
-        <p className="hint">Tax due, unpaid contribution, or assessed base amount — depends on the requirement.</p>
+        <p className="hint">Tax due, unpaid contribution, or assessed base amount; depends on the requirement.</p>
       </section>
 
       <section className="question">
@@ -72,7 +72,7 @@ function SimulatorForm() {
             ))}
           </ul>
           <p className="penalty" style={{ marginTop: 10 }}>
-            {PENALTY_DISCLAIMER}
+            {MANDATORY_DISCLAIMER}
           </p>
         </section>
       )}

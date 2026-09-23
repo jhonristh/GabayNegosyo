@@ -45,7 +45,7 @@ export default function TutorialsPage() {
                   <h3>{t.title}</h3>
                   <p className="docs">{t.description}</p>
                   <p className="source-tag">
-                    External content{t.isPlaceholder ? " — placeholder link for this prototype" : ""}, category: {t.category}
+                    External content{t.isPlaceholder ? ": placeholder link for this prototype" : ""}, category: {t.category}
                   </p>
                   <a href={t.videoUrl} target="_blank" rel="noreferrer" className="tutorial-link">
                     Watch tutorial

@@ -154,6 +154,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   async function logout() {
     await getSupabase().auth.signOut();
     await apply(null);
+    // K3/L13: purge the service worker's runtime cache so nothing from
+    // this session can be served to whoever uses this device next.
+    if (typeof navigator !== "undefined" && navigator.serviceWorker?.controller) {
+      navigator.serviceWorker.controller.postMessage("purge-runtime-cache");
+    }
   }
 
   /**

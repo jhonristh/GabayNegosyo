@@ -59,10 +59,11 @@ export function computeStatus(
   dueDate: Date,
   completedAt: string | undefined,
   today: Date = new Date()
-): "upcoming" | "due_soon" | "overdue" | "completed" {
+): "upcoming" | "due_soon" | "due_today" | "overdue" | "completed" {
   if (completedAt) return "completed";
   const daysUntil = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
   if (daysUntil < 0) return "overdue";
+  if (daysUntil === 0) return "due_today";
   if (daysUntil <= 14) return "due_soon";
   return "upcoming";
 }

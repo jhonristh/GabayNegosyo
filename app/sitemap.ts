@@ -1,15 +1,16 @@
 import type { MetadataRoute } from "next";
+import { siteConfig } from "../lib/siteConfig";
 
-// NOTE: base URL is a placeholder — swap for the real production domain
-// once this is deployed (see PROGRESS.md / DESIGN.md production checklist).
-const BASE_URL = "https://gabaynegosyo.example";
-
+// K5/L6: lists genuinely public routes only. /wizard, /resources and
+// /tutorials were removed — all three are wrapped in <AuthGuard> (verified
+// in their page.tsx files), so they are not actually public and should
+// never have been in a public sitemap.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/login", "/signup", "/wizard", "/resources", "/tutorials"];
+  const routes = ["", "/login", "/signup", "/privacy", "/terms", "/disclaimer"];
   return routes.map((route) => ({
-    url: `${BASE_URL}${route}`,
+    url: `${siteConfig.siteUrl}${route}`,
     lastModified: new Date(),
-    changeFrequency: "weekly",
+    changeFrequency: "weekly" as const,
     priority: route === "" ? 1 : 0.6,
   }));
 }

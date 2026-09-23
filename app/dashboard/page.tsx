@@ -25,6 +25,15 @@ function DashboardInner() {
     setProfile(p);
   }, [user]);
 
+  // K10: /dashboard#checklist used to BE the checklist (an anchor into this
+  // page). Now that /checklist is its own real route, redirect old links
+  // to it instead of leaving a dead anchor.
+  useEffect(() => {
+    if (typeof window !== "undefined" && window.location.hash === "#checklist") {
+      router.replace("/checklist");
+    }
+  }, [router]);
+
   if (profile === undefined) {
     return (
       <main className="screen">
@@ -106,6 +115,9 @@ function DashboardInner() {
       )}
 
       <section className="quick-actions">
+        <Link href="/checklist" className="quick-action-btn">
+          Full checklist
+        </Link>
         <Link href="/deadlines" className="quick-action-btn">
           View deadlines
         </Link>
@@ -117,10 +129,15 @@ function DashboardInner() {
         </Link>
       </section>
 
-      <section id="checklist" className="dashboard-section">
-        <h2>Pending &amp; upcoming</h2>
-        {[...overdue, ...dueSoon, ...upcoming].length === 0 && <p className="hint">Nothing pending — great work.</p>}
-        {[...overdue, ...dueSoon, ...upcoming].map(({ req, status, dueDate }) => (
+      <section className="dashboard-section">
+        <div className="checklist-card-header">
+          <h2>Pending &amp; upcoming</h2>
+          <Link href="/checklist" className="tutorial-link">
+            View full checklist
+          </Link>
+        </div>
+        {[...overdue, ...dueSoon, ...upcoming].length === 0 && <p className="hint">Nothing pending. Great work.</p>}
+        {[...overdue, ...dueSoon, ...upcoming].slice(0, 5).map(({ req, status, dueDate }) => (
           <RequirementCard key={req.id} requirement={req} status={status} dueLabel={dueLabel(dueDate)} agencyName={agencyName(req.agencyId)} />
         ))}
       </section>

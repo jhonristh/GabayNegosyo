@@ -6,7 +6,7 @@ import { useAuth } from "../lib/auth";
 
 const USER_LINKS = [
   { href: "/dashboard", label: "Home", mobileLabel: "Home" },
-  { href: "/dashboard#checklist", label: "Checklist", mobileLabel: "Checklist" },
+  { href: "/checklist", label: "Checklist", mobileLabel: "Checklist" },
   { href: "/resources", label: "Resources", mobileLabel: "Resources" },
   { href: "/deadlines", label: "Deadlines", mobileLabel: "Alerts" },
   { href: "/account", label: "Profile", mobileLabel: "Profile" },
@@ -62,6 +62,9 @@ export default function Navbar() {
           <Link href="/dashboard" className={pathname === "/dashboard" ? "active" : ""}>
             Home
           </Link>
+          <Link href="/checklist" className={pathname === "/checklist" ? "active" : ""}>
+            Checklist
+          </Link>
           <Link href="/resources" className={pathname === "/resources" ? "active" : ""}>
             Resources
           </Link>
@@ -82,7 +85,7 @@ export default function Navbar() {
           <Link
             key={link.href}
             href={link.href}
-            className={pathname === link.href.split("#")[0] ? "mobile-link active" : "mobile-link"}
+            className={pathname === link.href ? "mobile-link active" : "mobile-link"}
           >
             {link.mobileLabel}
           </Link>

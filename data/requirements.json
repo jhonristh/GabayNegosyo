@@ -229,7 +229,7 @@
       "type": "percentage_surcharge_plus_monthly_interest",
       "surchargeRate": 0.25,
       "monthlyRate": 0.02,
-      "description": "25% surcharge plus 2% monthly interest on unpaid local business tax. Exact rates vary by LGU ordinance — confirm with your city/municipality."
+      "description": "25% surcharge plus 2% monthly interest on unpaid local business tax. Exact rates vary by LGU ordinance; confirm with your city/municipality."
     },
     "officialUrl": "https://www.dilg.gov.ph",
     "tutorialId": "tut-lgu-renewal",
@@ -392,7 +392,7 @@
         "description": ""
       },
       {
-        "name": "Sales Projection (for tax type determination — Non-VAT 3% or VAT-registered 12%)",
+        "name": "Sales Projection (used to determine tax type: Non-VAT 3% or VAT-registered 12%)",
         "description": ""
       },
       {
@@ -593,7 +593,7 @@
     "id": "bir-2000-dst",
     "agencyId": "bir",
     "name": "Documentary Stamp Tax Return (BIR Form 2000)",
-    "description": "BIR Form 2000 reports and pays the Documentary Stamp Tax (DST) on documents, instruments, loan agreements, and papers evidencing the acceptance, assignment, sale, or transfer of an obligation, right, or property — such as a signed lease contract.",
+    "description": "BIR Form 2000 reports and pays the Documentary Stamp Tax (DST) on documents, instruments, loan agreements, and papers evidencing the acceptance, assignment, sale, or transfer of an obligation, right, or property, such as a signed lease contract.",
     "whoItAppliesTo": "Taxpayers who executed a taxable document (e.g. a notarized lease, loan, or deed of sale). This prototype applies it to businesses that indicated they lease their business space.",
     "applicabilityRules": {
       "hasLease": true
@@ -648,7 +648,7 @@
   {
     "id": "bir-1700-compensation",
     "agencyId": "bir",
-    "name": "Annual Income Tax Return — Compensation Income (BIR Form 1700)",
+    "name": "Annual Income Tax Return: Compensation Income (BIR Form 1700)",
     "description": "BIR Form 1700 is the annual income tax return for individuals earning purely compensation income.",
     "whoItAppliesTo": "Individuals earning purely compensation income (employees).",
     "applicabilityRules": {
@@ -688,7 +688,7 @@
   {
     "id": "bir-1701-self-employed",
     "agencyId": "bir",
-    "name": "Annual Income Tax Return — Self-Employed / Mixed Income (BIR Form 1701)",
+    "name": "Annual Income Tax Return: Self-Employed / Mixed Income (BIR Form 1701)",
     "description": "BIR Form 1701 is for self-employed individuals and mixed-income earners to report and pay annual income tax.",
     "whoItAppliesTo": "Self-employed individuals and mixed-income earners.",
     "applicabilityRules": {
@@ -783,7 +783,7 @@
   {
     "id": "bir-1701a-8percent",
     "agencyId": "bir",
-    "name": "Annual Income Tax Return — 8% Flat Rate / OSD (BIR Form 1701A)",
+    "name": "Annual Income Tax Return: 8% Flat Rate / OSD (BIR Form 1701A)",
     "description": "BIR Form 1701A is a simplified annual return for individuals using the 8% income tax rate or the Optional Standard Deduction (OSD), with no mixed income.",
     "whoItAppliesTo": "Self-employed individuals or purely-business taxpayers who qualify for the 8% flat rate or OSD option (not mixed-income earners).",
     "applicabilityRules": {
@@ -832,7 +832,7 @@
     "agencyId": "bir",
     "name": "Monthly Remittance of Final Withholding Tax (BIR Form 0619-F)",
     "description": "BIR Form 0619-F is the monthly tax return used by withholding agents to report and remit Final Withholding Taxes (FWT) deducted from payments such as interest, dividends, and other income subject to final tax.",
-    "whoItAppliesTo": "Businesses acting as withholding agents on payments subject to final tax (e.g. interest, dividends). The exact qualifying condition is not detailed in the current content source — shown here for business/mixed-income taxpayers; please verify applicability with the BIR.",
+    "whoItAppliesTo": "Businesses acting as withholding agents on payments subject to final tax (e.g. interest, dividends). The exact qualifying condition is not detailed in the current content source. Shown here for business/mixed-income taxpayers; please verify applicability with the BIR.",
     "applicabilityRules": {
       "taxpayerType": [
         "purely_business",
@@ -978,7 +978,7 @@
     "id": "bir-0619e-monthly-expanded",
     "agencyId": "bir",
     "name": "Monthly Remittance of Expanded Withholding Tax (BIR Form 0619-E)",
-    "description": "BIR Form 0619-E (Monthly Remittance Form of Creditable Income Taxes Withheld — Expanded) is used to remit taxes withheld from suppliers of goods or services (e.g. professional fees or rentals) during the first two months of every quarter.",
+    "description": "BIR Form 0619-E (Monthly Remittance Form of Creditable Income Taxes Withheld, Expanded) is used to remit taxes withheld from suppliers of goods or services (e.g. professional fees or rentals) during the first two months of every quarter.",
     "whoItAppliesTo": "Businesses that pay suppliers, professionals, or service providers subject to expanded withholding tax, in the first two months of each quarter.",
     "applicabilityRules": {
       "taxpayerType": [

@@ -1,18 +1,16 @@
-import type { ContentStatus } from "../lib/types";
+import type { ContentStatus } from "../lib/contentHealth";
 
 const LABELS: Record<ContentStatus, string> = {
-  verified: "Verified",
-  review_required: "Review required",
-  prototype: "Prototype content",
-  archived: "Archived",
+  workbook_verified: "Workbook-sourced",
+  needs_review: "Needs review",
+  placeholder: "Prototype placeholder",
 };
 
 /**
- * Content health indicator (V0.2 §22). Government compliance information
- * changes over time, so every requirement/resource/tutorial carries a
- * status. This is shown to admins on every CRUD row, and surfaced to users
- * on requirement detail so nobody mistakes unconfirmed prototype content
- * for verified official guidance.
+ * Content health indicator (WP14). Status is computed from real fields
+ * (contentSource, deadlineDescription — see lib/contentHealth.ts), never
+ * hand-set, so nobody mistakes an approximated deadline or placeholder
+ * content for confirmed official guidance.
  */
 export default function ContentStatusBadge({ status }: { status: ContentStatus }) {
   return <span className={`content-badge content-badge-${status}`}>{LABELS[status]}</span>;

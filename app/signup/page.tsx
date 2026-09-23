@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "../../lib/auth";
+import { trackConversion } from "../../lib/webAnalytics";
 
 const MIN_PASSWORD_LENGTH = 8;
 const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_LOGIN === "true";
@@ -31,6 +32,7 @@ export default function SignupPage() {
       setError(result.error ?? "Could not create your account. Please try again.");
       return;
     }
+    trackConversion("signup_completed");
     if (result.needsEmailConfirmation) {
       setCheckEmailFor(email.trim());
       return;
@@ -51,7 +53,7 @@ export default function SignupPage() {
           <h1>Check your email</h1>
           <p>
             We sent a confirmation link to <strong>{checkEmailFor}</strong>. Open it on this device to finish creating
-            your account — you&apos;ll land on the setup wizard.
+            your account, then land on the setup wizard.
           </p>
         </header>
         <p className="hint">
@@ -66,7 +68,7 @@ export default function SignupPage() {
     <main className="screen">
       <header className="intro">
         <h1>Create your account</h1>
-        <p>Free forever — upgrade later if you want the full detail.</p>
+        <p>Free forever. Upgrade later if you want the full detail.</p>
       </header>
 
       <section className="question">

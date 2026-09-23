@@ -46,14 +46,29 @@ test("employer gets all three agency registrations", () => {
   assert.ok(ids.includes("pagibig-employer-reg"));
 });
 
-test("tax type selects exactly one income tax return", () => {
-  const solo = applicable(soloFreelancer).map((r) => r.id);
-  assert.ok(solo.includes("bir-1701a"), "8% should get 1701A");
-  assert.ok(!solo.includes("bir-1701q"), "8% should not get 1701Q");
+test("taxpayer type selects a matching income tax return (client-sourced BIR forms, not the old MVP taxType field)", () => {
+  // rules.test.js pre-dates the real content migration (see CONTENT_AUDIT.md):
+  // "bir-1701a"/"bir-1701q" were placeholder MVP ids keyed off a `taxType`
+  // question the actual client wizard never asks. The real wizard asks
+  // `taxpayerType` (see lib/types.ts TaxpayerType), and the workbook-sourced
+  // requirements are "bir-1701a-8percent" / "bir-1701q-quarterly", matched
+  // on taxpayerType. Re-implementing that matcher here rather than importing
+  // lib/ruleEngine.ts, consistent with this file's own "zero build tooling"
+  // design (see file header).
+  function taxpayerTypeApplies(req, taxpayerType) {
+    const rule = req.applicabilityRules || {};
+    if (!rule.taxpayerType) return false;
+    return rule.taxpayerType.includes(taxpayerType);
+  }
 
-  const grad = applicable(employerRetail).map((r) => r.id);
-  assert.ok(grad.includes("bir-1701q"), "graduated should get 1701Q");
-  assert.ok(!grad.includes("bir-1701a"), "graduated should not get 1701A");
+  const eightPercentForm = requirements.find((r) => r.id === "bir-1701a-8percent");
+  const quarterlyForm = requirements.find((r) => r.id === "bir-1701q-quarterly");
+  assert.ok(eightPercentForm, "bir-1701a-8percent should exist in the real content");
+  assert.ok(quarterlyForm, "bir-1701q-quarterly should exist in the real content");
+
+  assert.ok(taxpayerTypeApplies(eightPercentForm, "purely_business"), "1701A should apply to a purely-business taxpayer");
+  assert.ok(!taxpayerTypeApplies(eightPercentForm, "purely_compensation"), "1701A should not apply to a purely-compensation taxpayer");
+  assert.ok(taxpayerTypeApplies(quarterlyForm, "self_employment_or_profession"), "1701Q should apply to a self-employed taxpayer");
 });
 
 test("every profile gets at least one requirement", () => {
@@ -92,20 +107,32 @@ test("penalty grows with days late", () => {
 });
 
 test("penalty scales with amount", () => {
-  const rule = requirements.find((r) => r.id === "bir-1701a").penaltyRule;
+  // bir-1701a-8percent's penalty is honestly "not_specified" (see
+  // CONTENT_AUDIT.md) — using lgu-permit-renewal instead, which does carry
+  // a real numeric rate from the original MVP seed data.
+  const rule = requirements.find((r) => r.id === "lgu-permit-renewal").penaltyRule;
   assert.ok(estimate(rule, 100000, 30) > estimate(rule, 10000, 30));
 });
 
 test("zero amount produces zero percentage-based penalty", () => {
-  const rule = requirements.find((r) => r.id === "bir-1701a").penaltyRule;
+  const rule = requirements.find((r) => r.id === "lgu-permit-renewal").penaltyRule;
   assert.strictEqual(estimate(rule, 0, 45), 0);
 });
 
-test("every requirement has a usable penalty rule", () => {
-  const valid = ["percentage_surcharge_plus_monthly_interest", "monthly_percentage", "flat_plus_daily"];
+test("every requirement's penalty rule is a recognized type, and not_specified is never given a fabricated rate", () => {
+  // "not_specified" is a deliberate, honest state (see R2 / CONTENT_AUDIT.md):
+  // the client-provided workbook did not give penalty rates for almost every
+  // BIR requirement, so this field says so instead of inventing a number.
+  const valid = ["percentage_surcharge_plus_monthly_interest", "monthly_percentage", "flat_plus_daily", "not_specified"];
   for (const r of requirements) {
     assert.ok(valid.includes(r.penaltyRule.type), `${r.id} bad penalty type`);
     assert.ok(r.penaltyRule.description.length > 0, `${r.id} penalty missing description`);
+    if (r.penaltyRule.type === "not_specified") {
+      assert.ok(
+        r.penaltyRule.flatAmount === undefined && r.penaltyRule.surchargeRate === undefined && r.penaltyRule.monthlyRate === undefined,
+        `${r.id} is not_specified but still carries a numeric rate`
+      );
+    }
   }
 });
 

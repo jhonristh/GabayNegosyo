@@ -2,78 +2,152 @@
 
 import { useEffect, useState } from "react";
 import AdminGuard from "../../../components/AdminGuard";
-import { DEMO_USERS } from "../../../lib/auth";
-import { db } from "../../../lib/db";
+import { getSupabase } from "../../../lib/supabase";
 
 /**
- * USER MANAGEMENT (V0.2 IA §5)
+ * USER MANAGEMENT (WP2, WP14)
  *
- * Scope honesty: this prototype has no shared user database, so there is no
- * real user list to administer. What exists locally is the set of demo
- * accounts plus whichever account signed up in this browser. We show that
- * truthfully and explain what this screen becomes once Supabase is wired up,
- * rather than inventing a fake roster of users.
+ * Real, Supabase-backed, read-only, paginated, admin-only (enforced twice:
+ * client-side by AdminGuard, and server-side by the "profiles: read own
+ * row, admins read all" RLS policy — see database/supabase_setup.sql. The
+ * shared demo admin does NOT count as a real admin for this policy, so it
+ * cannot see this data even if it reaches this route.
  *
- * Privacy (§21): even here we show role and plan rather than dumping every
- * stored field.
+ * B1: paginated with a bounded range query, never `select *` unbounded; a
+ * separate exact-count query drives the "N total" figure instead of
+ * loading every row into the browser to count them.
  */
+
+const PAGE_SIZE = 20;
+
+interface ProfileRow {
+  id: string;
+  email: string;
+  name: string;
+  role: "free" | "premium" | "admin";
+  is_demo: boolean;
+  created_at: string;
+}
+
+type LoadState = "loading" | "success" | "error";
+
 function UsersInner() {
-  const [mounted, setMounted] = useState(false);
-  const [localProfileCount, setLocalProfileCount] = useState(0);
+  const [rows, setRows] = useState<ProfileRow[]>([]);
+  const [total, setTotal] = useState<number | null>(null);
+  const [page, setPage] = useState(0);
+  const [state, setState] = useState<LoadState>("loading");
+  const [errorMessage, setErrorMessage] = useState("");
 
   useEffect(() => {
-    setMounted(true);
-    // Count business profiles stored in this browser (0 or 1 in practice).
-    const demoIds = Object.values(DEMO_USERS).map((u) => u.id);
-    const count = demoIds.filter((id) => db.getBusinessProfile(id)).length;
-    setLocalProfileCount(count);
-  }, []);
+    let cancelled = false;
+    async function load() {
+      setState("loading");
+      try {
+        const supabase = getSupabase();
+        const from = page * PAGE_SIZE;
+        const to = from + PAGE_SIZE - 1;
+        const [{ data, error }, { count, error: countError }] = await Promise.all([
+          supabase
+            .from("profiles")
+            .select("id, email, name, role, is_demo, created_at")
+            .order("created_at", { ascending: false })
+            .range(from, to),
+          supabase.from("profiles").select("id", { count: "exact", head: true }),
+        ]);
+        if (cancelled) return;
+        if (error || countError) {
+          setErrorMessage(error?.message ?? countError?.message ?? "Could not load users.");
+          setState("error");
+          return;
+        }
+        setRows((data ?? []) as ProfileRow[]);
+        setTotal(count ?? 0);
+        setState("success");
+      } catch (err) {
+        if (cancelled) return;
+        setErrorMessage(err instanceof Error ? err.message : "Could not load users.");
+        setState("error");
+      }
+    }
+    load();
+    return () => {
+      cancelled = true;
+    };
+  }, [page]);
 
-  const users = Object.values(DEMO_USERS);
+  const hasNextPage = total !== null && (page + 1) * PAGE_SIZE < total;
 
   return (
     <main className="screen admin-screen">
       <header className="intro">
-        <h1>User management</h1>
-        <p>Accounts available in this local prototype.</p>
+        <h1>Users</h1>
+        <p>Registered accounts, read-only. Role changes are not made from this screen.</p>
       </header>
 
-      <div className="dev-notice">
-        Prototype/demo data. There is no shared user database in this build — the accounts below
-        are the built-in demo logins. Once Supabase Auth is connected, this screen lists real
-        registered users with role and subscription management.
-      </div>
-
-      <section className="dashboard-section">
-        <h2>Demo accounts</h2>
-        {users.map((u) => (
-          <article key={u.id} className="checklist-card">
-            <div className="checklist-card-header">
-              <div>
-                <h3>{u.name}</h3>
-                <p className="docs">{u.email}</p>
-              </div>
-              <span className={`content-badge content-badge-${u.role === "admin" ? "prototype" : u.role === "premium" ? "verified" : "archived"}`}>
-                {u.role}
-              </span>
-            </div>
-          </article>
-        ))}
-      </section>
-
-      <section className="dashboard-section">
-        <h2>Local state</h2>
-        <div className="metric-grid">
-          <div className="metric-card">
-            <p className="metric-label">Demo accounts</p>
-            <p className="metric-value">{users.length}</p>
-          </div>
-          <div className="metric-card">
-            <p className="metric-label">Business profiles on this device</p>
-            <p className="metric-value">{mounted ? localProfileCount : 0}</p>
-          </div>
+      {state === "loading" && rows.length === 0 && (
+        <div className="skeleton-list" aria-live="polite" aria-busy="true">
+          <span className="visually-hidden">Loading users…</span>
+          <div className="skeleton-row" />
+          <div className="skeleton-row" />
+          <div className="skeleton-row" />
         </div>
-      </section>
+      )}
+
+      {state === "error" && (
+        <div className="state-block state-block-error">
+          <p>We couldn't load the user list.</p>
+          <p className="hint">{errorMessage}</p>
+          <button type="button" className="secondary-btn" onClick={() => setPage((p) => p)}>
+            Try again
+          </button>
+        </div>
+      )}
+
+      {rows.length > 0 && (
+        <>
+          <section className="dashboard-section">
+            <div className="metric-grid">
+              <div className="metric-card">
+                <p className="metric-label">Total accounts</p>
+                <p className="metric-value">{total ?? "…"}</p>
+              </div>
+              <div className="metric-card">
+                <p className="metric-label">Demo accounts (this page)</p>
+                <p className="metric-value">{rows.filter((r) => r.is_demo).length}</p>
+              </div>
+            </div>
+          </section>
+
+          <section className="dashboard-section">
+            {rows.map((u) => (
+              <article key={u.id} className="checklist-card">
+                <div className="checklist-card-header">
+                  <div>
+                    <h3>{u.name || u.email}</h3>
+                    <p className="docs">{u.email}</p>
+                  </div>
+                  <span className={`content-badge content-badge-${u.role === "admin" ? "workbook_verified" : u.role === "premium" ? "needs_review" : "placeholder"}`}>
+                    {u.role}
+                    {u.is_demo ? " · demo" : ""}
+                  </span>
+                </div>
+                <p className="verified">Joined {new Date(u.created_at).toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" })}</p>
+              </article>
+            ))}
+          </section>
+
+          <div className="wizard-actions">
+            <button type="button" className="secondary-btn" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>
+              Previous
+            </button>
+            <button type="button" className="secondary-btn" disabled={!hasNextPage} onClick={() => setPage((p) => p + 1)}>
+              Next
+            </button>
+          </div>
+        </>
+      )}
+
+      {state === "success" && rows.length === 0 && <p className="hint">No accounts yet.</p>}
     </main>
   );
 }

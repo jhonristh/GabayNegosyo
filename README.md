@@ -14,10 +14,10 @@ business owners.
 
 > **Content source:** BIR-related content (registration wizard, requirement
 > checklists, forms) is migrated from a client-provided reference workbook,
-> `Flowchart.FINAL.xlsx`. See `CONTENT_AUDIT.md` for exactly what was migrated,
+> `Flowchart.FINAL.xlsx`. See `docs/CONTENT_AUDIT.md` for exactly what was migrated,
 > what's still a placeholder, and known gaps.
 
-> **Design system:** See `DESIGN.md` for the current visual language
+> **Design system:** See `docs/DESIGN.md` for the current visual language
 > (Minimalism, brand-green accent, glass-shell/solid-data split) and why an
 > earlier gradient-heavy draft was rejected.
 
