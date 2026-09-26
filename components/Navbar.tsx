@@ -7,6 +7,7 @@ import { useAuth } from "../lib/auth";
 const USER_LINKS = [
   { href: "/dashboard", label: "Overview", mobileLabel: "Overview" },
   { href: "/checklist", label: "Checklist", mobileLabel: "Checklist" },
+  { href: "/guide", label: "Guide", mobileLabel: "Guide" },
   { href: "/resources", label: "Resources", mobileLabel: "Resources" },
   { href: "/deadlines", label: "Deadlines", mobileLabel: "Alerts" },
   { href: "/account", label: "Account", mobileLabel: "Account" },
@@ -67,6 +68,9 @@ export default function Navbar() {
           </Link>
           <Link href="/checklist" className={pathname === "/checklist" ? "active" : ""}>
             Checklist
+          </Link>
+          <Link href="/guide" className={pathname === "/guide" ? "active" : ""}>
+            Guide
           </Link>
           <Link href="/resources" className={pathname === "/resources" ? "active" : ""}>
             Resources

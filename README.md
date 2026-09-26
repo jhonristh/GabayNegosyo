@@ -207,3 +207,7 @@ anything.
 
 ## v0.7 interface update
 The checklist has a progress ring with status filters; Deadlines offers a monthly view. Account picture upload is a **browser-only personalization** (PNG/JPEG/WebP under 500 KB), not a synced Supabase avatar. Free/Premium plan boundaries and academic-project context appear on the landing page. Contributor names must be added after the study and web team confirm their preferred attribution. Admin Users role filters operate on the currently loaded page and do not alter Supabase roles.
+
+## Client content update — September 2026
+
+The authenticated `/guide` page summarizes the five client PDFs in `docs/client-sources/` by registration, renewal, employee responsibilities, and ongoing filing. Its content lives in `data/clientGuide.json`. The guide respects the existing Free/Premium distinction. Read `docs/CLIENT_CONTENT_REVIEW.md` before treating form choices, deadlines, or penalties as approved rules. The legacy calendar still has annual placeholders for some nonannual obligations. Supabase integration and database schema have not been changed.

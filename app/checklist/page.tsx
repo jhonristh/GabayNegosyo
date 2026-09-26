@@ -119,6 +119,8 @@ function ChecklistInner() {
         </p>
       </header>
 
+      <div className="guide-note"><strong>Client registration and renewal steps</strong><p>The <Link href="/guide">business guide</Link> now covers the client’s new, existing, and employee-specific paths. Some dates on this legacy checklist are approximate calendar anchors, particularly for one-time, monthly, quarterly, and event-based obligations. Confirm the actual filing date with the agency.</p></div>
+
       <ChecklistProgress completed={counts.completed} total={counts.all} overdue={counts.overdue} onShow={setStatusFilter} />
 
       <input
