@@ -1,110 +1,13 @@
 "use client";
-
 import { useState } from "react";
 import AdminGuard from "../../../components/AdminGuard";
+import AdminHelp from "../../../components/AdminHelp";
 import { db } from "../../../lib/db";
 import type { Requirement } from "../../../lib/types";
-
-const BLANK_REQUIREMENT: Requirement = {
-  id: "",
-  agencyId: "bir",
-  name: "",
-  description: "",
-  whoItAppliesTo: "",
-  applicabilityRules: {},
-  requiredDocuments: [],
-  instructions: [],
-  deadlineDescription: "",
-  deadlineMonth: 1,
-  deadlineDay: 1,
-  penaltyRule: { type: "not_specified", description: "" },
-  officialUrl: "",
-  lastVerified: new Date().toISOString().slice(0, 10),
-  contentSource: "prototype_placeholder",
-};
-
-function RequirementsInner() {
-  const [requirements, setRequirements] = useState<Requirement[]>(() => db.getRequirements());
-  const agencies = db.getAgencies();
-  const [draft, setDraft] = useState<string>(JSON.stringify(BLANK_REQUIREMENT, null, 2));
-  const [error, setError] = useState("");
-
-  function refresh() {
-    setRequirements(db.getRequirements());
-  }
-
-  function updateField(req: Requirement, field: keyof Requirement, value: string) {
-    db.upsertRequirement({ ...req, [field]: value });
-    refresh();
-  }
-
-  function archive(id: string) {
-    db.archiveRequirement(id);
-    refresh();
-  }
-
-  function addFromJson() {
-    try {
-      const parsed = JSON.parse(draft) as Requirement;
-      if (!parsed.id || !parsed.name) {
-        setError("id and name are required.");
-        return;
-      }
-      db.upsertRequirement(parsed);
-      setDraft(JSON.stringify(BLANK_REQUIREMENT, null, 2));
-      setError("");
-      refresh();
-    } catch {
-      setError("Invalid JSON. Check the structure and try again.");
-    }
-  }
-
-  return (
-    <main className="screen admin-screen">
-      <header className="intro">
-        <h1>Manage requirements</h1>
-        <p className="hint">
-          Edit name, deadline label, official URL, and last-verified date inline. For structured
-          fields (documents, instructions, applicability, penalty), use the JSON form below;
-          this keeps the editable schema exactly aligned with database/schema.sql.
-        </p>
-      </header>
-
-      <section className="admin-add-form">
-        <h2>Add / update via JSON</h2>
-        <textarea className="text-input admin-json" rows={14} value={draft} onChange={(e) => setDraft(e.target.value)} />
-        {error && <p className="penalty">{error}</p>}
-        <button type="button" className="primary-btn" onClick={addFromJson}>
-          Save requirement
-        </button>
-      </section>
-
-      {requirements.map((r) => (
-        <article key={r.id} className="checklist-card admin-row">
-          <select className="text-input" value={r.agencyId} onChange={(e) => updateField(r, "agencyId", e.target.value)}>
-            {agencies.map((a) => (
-              <option key={a.id} value={a.id}>
-                {a.id.toUpperCase()}
-              </option>
-            ))}
-          </select>
-          <input className="text-input" value={r.name} onChange={(e) => updateField(r, "name", e.target.value)} />
-          <input className="text-input" value={r.deadlineDescription} onChange={(e) => updateField(r, "deadlineDescription", e.target.value)} />
-          <input className="text-input" value={r.officialUrl} onChange={(e) => updateField(r, "officialUrl", e.target.value)} />
-          <input className="text-input" value={r.lastVerified} onChange={(e) => updateField(r, "lastVerified", e.target.value)} />
-          <button type="button" className="secondary-btn" onClick={() => archive(r.id)}>
-            Archive
-          </button>
-        </article>
-      ))}
-    </main>
-  );
+const blank=():Requirement=>({id:"",agencyId:"bir",name:"",description:"",whoItAppliesTo:"",applicabilityRules:{},requiredDocuments:[],instructions:[],deadlineDescription:"",deadlineMonth:1,deadlineDay:1,penaltyRule:{type:"not_specified",description:""},officialUrl:"",lastVerified:new Date().toISOString().slice(0,10),contentSource:"prototype_placeholder"});
+function Inner(){const [items,setItems]=useState(()=>db.getRequirements());const [draft,setDraft]=useState<Requirement>(blank);const [editing,setEditing]=useState(false);const [message,setMessage]=useState("");const agencies=db.getAgencies();
+ const change=(key:keyof Requirement,value:string)=>setDraft({...draft,[key]:value});
+ const save=()=>{if(!draft.name.trim()||!draft.description.trim()){setMessage("Add a name and a plain-language explanation.");return;}if(draft.officialUrl){try{if(new URL(draft.officialUrl).protocol!=="https:")throw Error();}catch{setMessage("Use a complete HTTPS official link.");return;}}db.upsertRequirement({...draft,id:draft.id||`requirement-${Date.now()}`,requiredDocuments:draft.requiredDocuments.filter(d=>d.name.trim()),instructions:draft.instructions.filter(Boolean)});setItems(db.getRequirements());setDraft(blank());setEditing(false);setMessage("Requirement saved in this browser. Review applicability and deadline rules before relying on it in a checklist.");};
+ return <main className="screen admin-screen"><header className="intro"><p className="v06-eyebrow">CONTENT / REQUIREMENTS</p><h1>Requirements</h1><p>Explain each obligation in words that a business owner can follow.</p></header><AdminHelp>Select a requirement to edit it. Each line under “What to prepare” becomes one document; each line under “What to do” becomes one step. Newly added records are review placeholders until their applicability, dates, and source have been verified.</AdminHelp><section className="admin-add-form"><h2>{editing?"Edit requirement":"Add requirement for review"}</h2><div className="admin-fields"><label>Requirement name<input className="text-input" value={draft.name} onChange={e=>change("name",e.target.value)}/></label><label>Agency<select className="text-input" value={draft.agencyId} onChange={e=>change("agencyId",e.target.value)}>{agencies.map(a=><option key={a.id} value={a.id}>{a.name}</option>)}</select></label><label className="admin-wide">What is this?<textarea className="text-input" rows={3} value={draft.description} onChange={e=>change("description",e.target.value)}/></label><label className="admin-wide">Who needs it?<textarea className="text-input" rows={2} value={draft.whoItAppliesTo} onChange={e=>change("whoItAppliesTo",e.target.value)}/></label><label>Stage<input className="text-input" value={draft.complianceStage||""} onChange={e=>change("complianceStage",e.target.value)} placeholder="e.g. Registration"/></label><label>Timing as stated by source<input className="text-input" value={draft.deadlineDescription} onChange={e=>change("deadlineDescription",e.target.value)} placeholder="Confirm with the agency"/></label><label className="admin-wide">What to prepare (one document per line)<textarea className="text-input" rows={4} value={draft.requiredDocuments.map(d=>d.name).join("\n")} onChange={e=>setDraft({...draft,requiredDocuments:e.target.value.split("\n").map(name=>({name,description:""}))})}/></label><label className="admin-wide">What to do (one step per line)<textarea className="text-input" rows={4} value={draft.instructions.join("\n")} onChange={e=>setDraft({...draft,instructions:e.target.value.split("\n")})}/></label><label>Official source link<input className="text-input" type="url" value={draft.officialUrl} onChange={e=>change("officialUrl",e.target.value)}/></label><label>Source checked on<input className="text-input" type="date" value={draft.lastVerified} onChange={e=>change("lastVerified",e.target.value)}/></label></div><div className="admin-actions"><button className="primary-btn" type="button" onClick={save}>{editing?"Save changes":"Add for review"}</button>{editing&&<button className="secondary-btn" type="button" onClick={()=>{setDraft(blank());setEditing(false);}}>Cancel editing</button>}</div>{message&&<p role="status">{message}</p>}</section><section className="admin-list"><h2>Current requirements ({items.length})</h2>{items.map(item=><article className="admin-list-card" key={item.id}><div><span className="v06-eyebrow">{agencies.find(a=>a.id===item.agencyId)?.name} · {item.contentSource==="prototype_placeholder"?"Needs content review":"Sourced"}</span><h3>{item.name}</h3><p>{item.description}</p><small>{item.deadlineDescription||"Timing not confirmed"}</small></div><div className="admin-actions"><button className="secondary-btn" type="button" onClick={()=>{setDraft(item);setEditing(true);window.scrollTo({top:0,behavior:"smooth"});}}>Edit</button><button className="secondary-btn" type="button" onClick={()=>{if(window.confirm(`Archive ${item.name}?`)){db.archiveRequirement(item.id);setItems(db.getRequirements());}}}>Archive</button></div></article>)}</section></main>;
 }
-
-export default function RequirementsAdminPage() {
-  return (
-    <AdminGuard>
-      <RequirementsInner />
-    </AdminGuard>
-  );
-}
+export default function Page(){return <AdminGuard><Inner/></AdminGuard>}

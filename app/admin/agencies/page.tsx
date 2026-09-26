@@ -1,70 +1,8 @@
 "use client";
-
 import { useState } from "react";
 import AdminGuard from "../../../components/AdminGuard";
+import AdminHelp from "../../../components/AdminHelp";
 import { db } from "../../../lib/db";
 import type { Agency } from "../../../lib/types";
-
-function AgenciesInner() {
-  const [agencies, setAgencies] = useState<Agency[]>(() => db.getAgencies());
-  const [newAgency, setNewAgency] = useState({ id: "", name: "", description: "", officialUrl: "" });
-
-  function refresh() {
-    setAgencies(db.getAgencies());
-  }
-
-  function save(agency: Agency) {
-    db.upsertAgency(agency);
-    refresh();
-  }
-
-  function archive(id: string) {
-    db.archiveAgency(id);
-    refresh();
-  }
-
-  function addNew() {
-    if (!newAgency.id || !newAgency.name) return;
-    db.upsertAgency({ ...newAgency });
-    setNewAgency({ id: "", name: "", description: "", officialUrl: "" });
-    refresh();
-  }
-
-  return (
-    <main className="screen admin-screen">
-      <header className="intro">
-        <h1>Manage agencies</h1>
-      </header>
-
-      <section className="admin-add-form">
-        <h2>Add new agency</h2>
-        <input className="text-input" placeholder="id (e.g. dti)" value={newAgency.id} onChange={(e) => setNewAgency({ ...newAgency, id: e.target.value })} />
-        <input className="text-input" placeholder="Name" value={newAgency.name} onChange={(e) => setNewAgency({ ...newAgency, name: e.target.value })} />
-        <input className="text-input" placeholder="Description" value={newAgency.description} onChange={(e) => setNewAgency({ ...newAgency, description: e.target.value })} />
-        <input className="text-input" placeholder="Official URL" value={newAgency.officialUrl} onChange={(e) => setNewAgency({ ...newAgency, officialUrl: e.target.value })} />
-        <button type="button" className="primary-btn" onClick={addNew}>
-          Add agency
-        </button>
-      </section>
-
-      {agencies.map((a) => (
-        <article key={a.id} className="checklist-card admin-row">
-          <input className="text-input" value={a.name} onChange={(e) => save({ ...a, name: e.target.value })} />
-          <input className="text-input" value={a.description} onChange={(e) => save({ ...a, description: e.target.value })} />
-          <input className="text-input" value={a.officialUrl} onChange={(e) => save({ ...a, officialUrl: e.target.value })} />
-          <button type="button" className="secondary-btn" onClick={() => archive(a.id)}>
-            Archive
-          </button>
-        </article>
-      ))}
-    </main>
-  );
-}
-
-export default function AgenciesAdminPage() {
-  return (
-    <AdminGuard>
-      <AgenciesInner />
-    </AdminGuard>
-  );
-}
+function Inner(){const [items,setItems]=useState(()=>db.getAgencies());const [draft,setDraft]=useState<Agency|null>(null);const [message,setMessage]=useState("");const save=()=>{if(!draft?.name.trim()){setMessage("Enter a name.");return;}if(draft.officialUrl){try{if(new URL(draft.officialUrl).protocol!=="https:")throw Error();}catch{setMessage("Use a complete HTTPS official link.");return;}}db.upsertAgency(draft);setItems(db.getAgencies());setDraft(null);setMessage("Agency details saved in this browser.");};return <main className="screen admin-screen"><header className="intro"><p className="v06-eyebrow">CONTENT / AGENCIES</p><h1>Five agencies, one guide</h1><p>BIR, SSS, PhilHealth, Pag-IBIG, and the LGU responsible for business permits.</p></header><AdminHelp>Select an agency to update its public description or official link. Agency choices are fixed to the five in the project scope; avoid changing identifiers because requirements depend on them.</AdminHelp>{draft&&<section className="admin-add-form"><h2>Edit {draft.name}</h2><label>Display name<input className="text-input" value={draft.name} onChange={e=>setDraft({...draft,name:e.target.value})}/></label><label>Plain-language description<textarea className="text-input" rows={3} value={draft.description} onChange={e=>setDraft({...draft,description:e.target.value})}/></label><label>Official website<input className="text-input" type="url" value={draft.officialUrl} onChange={e=>setDraft({...draft,officialUrl:e.target.value})}/></label><div className="admin-actions"><button className="primary-btn" type="button" onClick={save}>Save changes</button><button className="secondary-btn" type="button" onClick={()=>setDraft(null)}>Cancel</button></div>{message&&<p role="status">{message}</p>}</section>}<section className="admin-list"><h2>Agencies ({items.length})</h2>{items.map(a=><article className="admin-list-card" key={a.id}><div><span className="v06-eyebrow">{a.id.toUpperCase()}</span><h3>{a.name}</h3><p>{a.description}</p></div><div className="admin-actions"><button className="secondary-btn" type="button" onClick={()=>setDraft(a)}>Edit details</button><a className="secondary-btn" href={a.officialUrl} target="_blank" rel="noopener noreferrer">Open website ↗</a></div></article>)}</section></main>}
+export default function Page(){return <AdminGuard><Inner/></AdminGuard>}

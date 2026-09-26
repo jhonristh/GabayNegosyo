@@ -1,84 +1,14 @@
 "use client";
-
 import { useState } from "react";
 import AdminGuard from "../../../components/AdminGuard";
+import AdminHelp from "../../../components/AdminHelp";
 import { db } from "../../../lib/db";
 import type { Tutorial } from "../../../lib/types";
-
-function TutorialsInner() {
-  const [tutorials, setTutorials] = useState<Tutorial[]>(() => db.getTutorials());
-  const agencies = db.getAgencies();
-  const [draft, setDraft] = useState<Partial<Tutorial>>({ category: "registration", agencyId: agencies[0]?.id, isPlaceholder: true });
-
-  function refresh() {
-    setTutorials(db.getTutorials());
-  }
-
-  function save(t: Tutorial) {
-    db.upsertTutorial(t);
-    refresh();
-  }
-
-  function archive(id: string) {
-    db.archiveTutorial(id);
-    refresh();
-  }
-
-  function addNew() {
-    if (!draft.id || !draft.title || !draft.videoUrl) return;
-    save({
-      id: draft.id,
-      title: draft.title,
-      videoUrl: draft.videoUrl,
-      description: draft.description ?? "",
-      agencyId: draft.agencyId ?? agencies[0]?.id ?? "",
-      category: (draft.category as Tutorial["category"]) ?? "registration",
-      isPlaceholder: draft.isPlaceholder ?? true,
-    });
-    setDraft({ category: "registration", agencyId: agencies[0]?.id, isPlaceholder: true });
-  }
-
-  return (
-    <main className="screen admin-screen">
-      <header className="intro">
-        <h1>Manage tutorials</h1>
-      </header>
-
-      <section className="admin-add-form">
-        <h2>Add new tutorial</h2>
-        <input className="text-input" placeholder="id" value={draft.id ?? ""} onChange={(e) => setDraft({ ...draft, id: e.target.value })} />
-        <input className="text-input" placeholder="Title" value={draft.title ?? ""} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
-        <input className="text-input" placeholder="Video URL" value={draft.videoUrl ?? ""} onChange={(e) => setDraft({ ...draft, videoUrl: e.target.value })} />
-        <input className="text-input" placeholder="Description" value={draft.description ?? ""} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
-        <select className="text-input" value={draft.agencyId} onChange={(e) => setDraft({ ...draft, agencyId: e.target.value })}>
-          {agencies.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.id.toUpperCase()}
-            </option>
-          ))}
-        </select>
-        <button type="button" className="primary-btn" onClick={addNew}>
-          Add tutorial
-        </button>
-      </section>
-
-      {tutorials.map((t) => (
-        <article key={t.id} className="checklist-card admin-row">
-          <input className="text-input" value={t.title} onChange={(e) => save({ ...t, title: e.target.value })} />
-          <input className="text-input" value={t.videoUrl} onChange={(e) => save({ ...t, videoUrl: e.target.value })} />
-          <button type="button" className="secondary-btn" onClick={() => archive(t.id)}>
-            Archive
-          </button>
-        </article>
-      ))}
-    </main>
-  );
+const blank=():Tutorial=>({id:"",title:"",description:"",videoUrl:"",agencyId:"bir",category:"registration",isPlaceholder:true});
+const categories:Tutorial["category"][]=["registration","filing","payment","contribution","renewal","application"];
+function youtubeId(value:string){try{const url=new URL(value);if(url.hostname==="youtu.be")return /^[\w-]{11}$/.test(url.pathname.slice(1))?url.pathname.slice(1):null;if(["youtube.com","www.youtube.com","m.youtube.com","www.youtube-nocookie.com"].includes(url.hostname)){const id=url.searchParams.get("v")||url.pathname.match(/^\/(?:embed|shorts)\/([\w-]{11})/)?.[1];return id&&/^[\w-]{11}$/.test(id)?id:null;}}catch{}return null;}
+function Inner(){const [items,setItems]=useState(()=>db.getTutorials());const [draft,setDraft]=useState<Tutorial>(blank);const [editing,setEditing]=useState(false);const [message,setMessage]=useState("");const agencies=db.getAgencies();const id=youtubeId(draft.videoUrl);
+ const save=()=>{if(!draft.title.trim()){setMessage("Add a title.");return;}if(!draft.isPlaceholder&&!id){setMessage("Add a valid YouTube video link, or mark the video as awaiting verification.");return;}db.upsertTutorial({...draft,id:draft.id||`tutorial-${Date.now()}`,videoUrl:draft.isPlaceholder?"":draft.videoUrl.trim()});setItems(db.getTutorials());setDraft(blank());setEditing(false);setMessage("Tutorial saved in this browser.");};
+ return <main className="screen admin-screen"><header className="intro"><p className="v06-eyebrow">CONTENT / TUTORIALS</p><h1>Video tutorials</h1><p>Help visitors find a verified explanation for each step.</p></header><AdminHelp>Paste a public YouTube link and confirm that its advice is current. The preview uses YouTube’s embed player and does not need a Google API key. Some owners disable embedding; visitors can still open the video on YouTube.</AdminHelp><section className="admin-add-form"><h2>{editing?"Edit tutorial":"Add tutorial"}</h2><div className="admin-fields"><label>Video title<input className="text-input" value={draft.title} onChange={e=>setDraft({...draft,title:e.target.value})}/></label><label>Agency<select className="text-input" value={draft.agencyId} onChange={e=>setDraft({...draft,agencyId:e.target.value})}>{agencies.map(a=><option key={a.id} value={a.id}>{a.name}</option>)}</select></label><label>Topic<select className="text-input" value={draft.category} onChange={e=>setDraft({...draft,category:e.target.value as Tutorial["category"]})}>{categories.map(c=><option key={c} value={c}>{c[0].toUpperCase()+c.slice(1)}</option>)}</select></label><label>YouTube link<input className="text-input" type="url" placeholder="https://www.youtube.com/watch?v=..." value={draft.videoUrl} onChange={e=>setDraft({...draft,videoUrl:e.target.value})}/></label><label className="admin-wide">Short description<textarea className="text-input" rows={3} value={draft.description} onChange={e=>setDraft({...draft,description:e.target.value})}/></label></div><label className="admin-check"><input type="checkbox" checked={draft.isPlaceholder} onChange={e=>setDraft({...draft,isPlaceholder:e.target.checked})}/> Video is still awaiting verification (hide player from visitors)</label>{id&&!draft.isPlaceholder&&<div className="admin-video"><iframe title="YouTube video preview" src={`https://www.youtube-nocookie.com/embed/${id}`} allowFullScreen loading="lazy"/><a href={draft.videoUrl} target="_blank" rel="noopener noreferrer">Open on YouTube ↗</a></div>}<div className="admin-actions"><button className="primary-btn" type="button" onClick={save}>{editing?"Save changes":"Add tutorial"}</button>{editing&&<button className="secondary-btn" type="button" onClick={()=>{setDraft(blank());setEditing(false);}}>Cancel editing</button>}</div>{message&&<p role="status">{message}</p>}</section><section className="admin-list"><h2>Current tutorials ({items.length})</h2>{items.map(item=><article className="admin-list-card" key={item.id}><div><span className="v06-eyebrow">{agencies.find(a=>a.id===item.agencyId)?.name} · {item.category}</span><h3>{item.title}</h3><p>{item.isPlaceholder?"Awaiting verified video":item.description}</p></div><div className="admin-actions"><button className="secondary-btn" type="button" onClick={()=>{setDraft(item);setEditing(true);window.scrollTo({top:0,behavior:"smooth"});}}>Edit</button>{!item.isPlaceholder&&item.videoUrl&&<a className="secondary-btn" href={item.videoUrl} target="_blank" rel="noopener noreferrer">Open video ↗</a>}<button className="secondary-btn" type="button" onClick={()=>{if(window.confirm(`Archive ${item.title}?`)){db.archiveTutorial(item.id);setItems(db.getTutorials());}}}>Archive</button></div></article>)}</section></main>;
 }
-
-export default function TutorialsAdminPage() {
-  return (
-    <AdminGuard>
-      <TutorialsInner />
-    </AdminGuard>
-  );
-}
+export default function Page(){return <AdminGuard><Inner/></AdminGuard>}

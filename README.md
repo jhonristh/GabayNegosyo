@@ -1,3 +1,5 @@
+> **v0.9 scope:** BIR, SSS, PhilHealth, Pag-IBIG, and LGU business permits. See [the content editor guide](docs/V0.9_EDITOR_GUIDE.md) for admin workflow, preview support, and browser-only content persistence.
+
 # GabayNegosyo
 
 **Your guide to business compliance.**

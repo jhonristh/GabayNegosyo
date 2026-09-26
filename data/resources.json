@@ -70,15 +70,6 @@
     "lastVerified": "2026-08-01"
   },
   {
-    "id": "res-dti-bnr",
-    "title": "DTI Business Name Registration",
-    "resourceType": "official_website",
-    "agencyId": "bir",
-    "description": "Register your business name with the DTI before BIR registration (sole proprietors).",
-    "url": "https://bnrs.dti.gov.ph",
-    "lastVerified": "2026-08-01"
-  },
-  {
     "id": "res-bir-1901",
     "title": "BIR Form 1901: Application for Registration (Self-Employed/Mixed Income/Estates/Trusts)",
     "resourceType": "form",

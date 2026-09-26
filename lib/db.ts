@@ -35,6 +35,7 @@ import type {
  */
 
 const STORE_KEY = "gn_store_v1";
+const IN_SCOPE_AGENCIES = new Set(["bir", "sss", "philhealth", "pagibig", "lgu"]);
 
 /** localStorage store — now ONLY holds admin content overrides. */
 interface Store {
@@ -119,7 +120,7 @@ export const db = {
   // ---- Content reads (agencies/requirements/resources/tutorials) ----
   getAgencies(): Agency[] {
     const s = readStore();
-    return mergeWithOverrides(agenciesSeed as Agency[], s.adminOverrides.agencies, s.adminOverrides.createdAgencies);
+    return mergeWithOverrides(agenciesSeed as Agency[], s.adminOverrides.agencies, s.adminOverrides.createdAgencies).filter(a => IN_SCOPE_AGENCIES.has(a.id));
   },
   getRequirements(): Requirement[] {
     const s = readStore();
@@ -127,15 +128,15 @@ export const db = {
       requirementsSeed as unknown as Requirement[],
       s.adminOverrides.requirements,
       s.adminOverrides.createdRequirements
-    );
+    ).filter(r => IN_SCOPE_AGENCIES.has(r.agencyId));
   },
   getResources(): ResourceItem[] {
     const s = readStore();
-    return mergeWithOverrides(resourcesSeed as ResourceItem[], s.adminOverrides.resources, s.adminOverrides.createdResources);
+    return mergeWithOverrides(resourcesSeed as ResourceItem[], s.adminOverrides.resources, s.adminOverrides.createdResources).filter(r => IN_SCOPE_AGENCIES.has(r.agencyId));
   },
   getTutorials(): Tutorial[] {
     const s = readStore();
-    return mergeWithOverrides(tutorialsSeed as Tutorial[], s.adminOverrides.tutorials, s.adminOverrides.createdTutorials);
+    return mergeWithOverrides(tutorialsSeed as Tutorial[], s.adminOverrides.tutorials, s.adminOverrides.createdTutorials).filter(t => IN_SCOPE_AGENCIES.has(t.agencyId));
   },
 
   // ---- Admin CRUD ----

@@ -1,94 +1,23 @@
 "use client";
-
 import { useState } from "react";
 import AdminGuard from "../../../components/AdminGuard";
+import AdminHelp from "../../../components/AdminHelp";
 import { db } from "../../../lib/db";
 import type { ResourceItem, ResourceType } from "../../../lib/types";
 
-const TYPES: ResourceType[] = ["form", "guide", "tutorial", "official_website", "requirement", "document"];
-
-function ResourcesInner() {
-  const [resources, setResources] = useState<ResourceItem[]>(() => db.getResources());
-  const agencies = db.getAgencies();
-  const [draft, setDraft] = useState<Partial<ResourceItem>>({ resourceType: "guide", agencyId: agencies[0]?.id });
-
-  function refresh() {
-    setResources(db.getResources());
-  }
-
-  function save(item: ResourceItem) {
-    db.upsertResource(item);
-    refresh();
-  }
-
-  function archive(id: string) {
-    db.archiveResource(id);
-    refresh();
-  }
-
-  function addNew() {
-    if (!draft.id || !draft.title || !draft.url) return;
-    save({
-      id: draft.id,
-      title: draft.title,
-      url: draft.url,
-      description: draft.description ?? "",
-      resourceType: (draft.resourceType as ResourceType) ?? "guide",
-      agencyId: draft.agencyId ?? agencies[0]?.id ?? "",
-      lastVerified: new Date().toISOString().slice(0, 10),
-    });
-    setDraft({ resourceType: "guide", agencyId: agencies[0]?.id });
-  }
-
-  return (
-    <main className="screen admin-screen">
-      <header className="intro">
-        <h1>Manage resources</h1>
-      </header>
-
-      <section className="admin-add-form">
-        <h2>Add new resource</h2>
-        <input className="text-input" placeholder="id" value={draft.id ?? ""} onChange={(e) => setDraft({ ...draft, id: e.target.value })} />
-        <input className="text-input" placeholder="Title" value={draft.title ?? ""} onChange={(e) => setDraft({ ...draft, title: e.target.value })} />
-        <input className="text-input" placeholder="URL" value={draft.url ?? ""} onChange={(e) => setDraft({ ...draft, url: e.target.value })} />
-        <input className="text-input" placeholder="Description" value={draft.description ?? ""} onChange={(e) => setDraft({ ...draft, description: e.target.value })} />
-        <select className="text-input" value={draft.resourceType} onChange={(e) => setDraft({ ...draft, resourceType: e.target.value as ResourceType })}>
-          {TYPES.map((t) => (
-            <option key={t} value={t}>
-              {t}
-            </option>
-          ))}
-        </select>
-        <select className="text-input" value={draft.agencyId} onChange={(e) => setDraft({ ...draft, agencyId: e.target.value })}>
-          {agencies.map((a) => (
-            <option key={a.id} value={a.id}>
-              {a.id.toUpperCase()}
-            </option>
-          ))}
-        </select>
-        <button type="button" className="primary-btn" onClick={addNew}>
-          Add resource
-        </button>
-      </section>
-
-      {resources.map((r) => (
-        <article key={r.id} className="checklist-card admin-row">
-          <input className="text-input" value={r.title} onChange={(e) => save({ ...r, title: e.target.value })} />
-          <input className="text-input" value={r.url} onChange={(e) => save({ ...r, url: e.target.value })} />
-          <input className="text-input" value={r.lastVerified} onChange={(e) => save({ ...r, lastVerified: e.target.value })} />
-          <button type="button" className="secondary-btn" onClick={() => archive(r.id)}>
-            Archive
-          </button>
-        </article>
-      ))}
-    </main>
-  );
+const types: {value:ResourceType; label:string}[] = [
+ {value:"form",label:"Government form (PDF)"},{value:"guide",label:"Guide or article"},{value:"official_website",label:"Official website"},{value:"document",label:"Other document"},{value:"tutorial",label:"Learning material"},{value:"requirement",label:"Requirement reference"}
+];
+const blank = (): ResourceItem => ({id:"",title:"",description:"",url:"",agencyId:"bir",resourceType:"guide",lastVerified:new Date().toISOString().slice(0,10)});
+function Inner(){
+ const [items,setItems]=useState(()=>db.getResources()); const [draft,setDraft]=useState<ResourceItem>(blank); const [editing,setEditing]=useState(false); const [message,setMessage]=useState("");
+ const agencies=db.getAgencies();
+ const save=()=>{if(!draft.title.trim()||!draft.url.trim()){setMessage("Enter a title and link before saving.");return;} try {const url=new URL(draft.url);if(url.protocol!=="https:")throw new Error();}catch{setMessage("Use a complete secure link beginning with https://.");return;}
+ const id=draft.id||`resource-${Date.now()}`;db.upsertResource({...draft,id,title:draft.title.trim(),lastVerified:draft.lastVerified||new Date().toISOString().slice(0,10)});setItems(db.getResources());setDraft(blank());setEditing(false);setMessage("Resource saved in this browser.");};
+ return <main className="screen admin-screen"><header className="intro"><p className="v06-eyebrow">CONTENT / RESOURCES</p><h1>Resource library</h1><p>Add and review official links, forms, and explanatory material.</p></header>
+ <AdminHelp>Choose an agency and a resource type, paste its official HTTPS link, and preview it before saving. A PDF may appear in the browser when the source allows it; the source link always remains available.</AdminHelp>
+ <section className="admin-add-form"><h2>{editing?"Edit resource":"Add resource"}</h2><div className="admin-fields"><label>Title<input className="text-input" value={draft.title} onChange={e=>setDraft({...draft,title:e.target.value})}/></label><label>Agency<select className="text-input" value={draft.agencyId} onChange={e=>setDraft({...draft,agencyId:e.target.value})}>{agencies.map(a=><option key={a.id} value={a.id}>{a.name}</option>)}</select></label><label>Type<select className="text-input" value={draft.resourceType} onChange={e=>setDraft({...draft,resourceType:e.target.value as ResourceType})}>{types.map(t=><option key={t.value} value={t.value}>{t.label}</option>)}</select></label><label>Official link<input className="text-input" type="url" placeholder="https://..." value={draft.url} onChange={e=>setDraft({...draft,url:e.target.value})}/></label><label className="admin-wide">What will a visitor find here?<textarea className="text-input" rows={3} value={draft.description} onChange={e=>setDraft({...draft,description:e.target.value})}/></label><label>Source checked on<input className="text-input" type="date" value={draft.lastVerified} onChange={e=>setDraft({...draft,lastVerified:e.target.value})}/></label></div>
+ <div className="admin-actions"><button className="primary-btn" type="button" onClick={save}>{editing?"Save changes":"Add resource"}</button>{editing&&<button className="secondary-btn" type="button" onClick={()=>{setDraft(blank());setEditing(false);}}>Cancel editing</button>}{draft.url.startsWith("https://")&&<a className="secondary-btn" href={draft.url} target="_blank" rel="noopener noreferrer">Preview source ↗</a>}</div>{message&&<p role="status">{message}</p>}</section>
+ <section className="admin-list"><h2>Current resources ({items.length})</h2>{items.map(item=><article className="admin-list-card" key={item.id}><div><span className="v06-eyebrow">{agencies.find(a=>a.id===item.agencyId)?.name} · {types.find(t=>t.value===item.resourceType)?.label}</span><h3>{item.title}</h3><p>{item.description}</p><small>Checked {item.lastVerified}</small></div><div className="admin-actions"><button type="button" className="secondary-btn" onClick={()=>{setDraft(item);setEditing(true);window.scrollTo({top:0,behavior:"smooth"});}}>Edit</button><a className="secondary-btn" href={item.url} target="_blank" rel="noopener noreferrer">Open source ↗</a><button type="button" className="secondary-btn" onClick={()=>{if(window.confirm(`Archive ${item.title}?`)){db.archiveResource(item.id);setItems(db.getResources());}}}>Archive</button></div></article>)}</section></main>;
 }
-
-export default function ResourcesAdminPage() {
-  return (
-    <AdminGuard>
-      <ResourcesInner />
-    </AdminGuard>
-  );
-}
+export default function Page(){return <AdminGuard><Inner/></AdminGuard>}

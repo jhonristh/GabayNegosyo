@@ -28,23 +28,5 @@
     "name": "Local Government Unit (LGU)",
     "description": "Your city or municipality; issues and renews your business permit (Mayor's Permit).",
     "officialUrl": "https://www.dilg.gov.ph"
-  },
-  {
-    "id": "dti",
-    "name": "Department of Trade and Industry (DTI)",
-    "description": "Registers business names for sole proprietorships, a pre-registration step before BIR registration.",
-    "officialUrl": "https://www.dti.gov.ph"
-  },
-  {
-    "id": "sec",
-    "name": "Securities and Exchange Commission (SEC)",
-    "description": "Registers partnerships and corporations as juridical entities, a pre-registration step before BIR registration.",
-    "officialUrl": "https://www.sec.gov.ph"
-  },
-  {
-    "id": "cda",
-    "name": "Cooperative Development Authority (CDA)",
-    "description": "Registers cooperatives, a pre-registration step before BIR registration.",
-    "officialUrl": "https://www.cda.gov.ph"
   }
 ]

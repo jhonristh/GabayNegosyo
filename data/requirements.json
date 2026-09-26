@@ -50,7 +50,7 @@
     },
     "requiredDocuments": [
       {
-        "name": "DTI/SEC registration",
+        "name": "business registration",
         "description": "Business registration document"
       },
       {
@@ -125,7 +125,7 @@
     },
     "requiredDocuments": [
       {
-        "name": "DTI/SEC registration",
+        "name": "business registration",
         "description": "Business registration document"
       },
       {
@@ -164,7 +164,7 @@
     },
     "requiredDocuments": [
       {
-        "name": "DTI/SEC registration",
+        "name": "business registration",
         "description": "Business registration document"
       },
       {
@@ -237,103 +237,6 @@
     "contentSource": "prototype_placeholder"
   },
   {
-    "id": "dti-business-name-reg",
-    "agencyId": "dti",
-    "name": "DTI Business Name Registration",
-    "description": "Registers a sole proprietorship's business name with the Department of Trade and Industry. This is a pre-registration step before BIR registration for sole proprietors.",
-    "whoItAppliesTo": "Sole proprietors registering a new business.",
-    "applicabilityRules": {
-      "businessStructure": [
-        "sole_proprietor"
-      ],
-      "isRegisteringNewBusiness": true
-    },
-    "requiredDocuments": [
-      {
-        "name": "Valid government-issued ID of the owner",
-        "description": ""
-      }
-    ],
-    "instructions": [
-      "Register Sole Proprietorship with DTI"
-    ],
-    "complianceStage": "Pre-Registration",
-    "deadlineDescription": "Before applying for BIR registration.",
-    "deadlineMonth": 1,
-    "deadlineDay": 1,
-    "penaltyRule": {
-      "type": "not_specified",
-      "description": "Information not provided in the current content source."
-    },
-    "officialUrl": "https://www.dti.gov.ph",
-    "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
-  },
-  {
-    "id": "sec-registration",
-    "agencyId": "sec",
-    "name": "SEC Registration (Partnership / Corporation)",
-    "description": "Registers a partnership or corporation with the Securities and Exchange Commission. This is a pre-registration step before BIR registration for non-sole-proprietor structures.",
-    "whoItAppliesTo": "Partnerships and corporations registering a new business.",
-    "applicabilityRules": {
-      "businessStructure": [
-        "partnership",
-        "corporation"
-      ],
-      "isRegisteringNewBusiness": true
-    },
-    "requiredDocuments": [
-      {
-        "name": "Articles of Partnership / Incorporation",
-        "description": ""
-      }
-    ],
-    "instructions": [
-      "Register Partnership or Corporation with SEC"
-    ],
-    "complianceStage": "Pre-Registration",
-    "deadlineDescription": "Before applying for BIR registration.",
-    "deadlineMonth": 1,
-    "deadlineDay": 1,
-    "penaltyRule": {
-      "type": "not_specified",
-      "description": "Information not provided in the current content source."
-    },
-    "officialUrl": "https://www.sec.gov.ph",
-    "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
-  },
-  {
-    "id": "cda-registration",
-    "agencyId": "cda",
-    "name": "CDA Registration (Cooperative)",
-    "description": "Registers a cooperative with the Cooperative Development Authority. This is a pre-registration step before BIR registration for cooperatives.",
-    "whoItAppliesTo": "Cooperatives registering a new business.",
-    "applicabilityRules": {
-      "isRegisteringNewBusiness": true
-    },
-    "requiredDocuments": [
-      {
-        "name": "Certificate of Registration (CDA)",
-        "description": ""
-      }
-    ],
-    "instructions": [
-      "Register Cooperative with CDA"
-    ],
-    "complianceStage": "Pre-Registration",
-    "deadlineDescription": "Before applying for BIR registration.",
-    "deadlineMonth": 1,
-    "deadlineDay": 1,
-    "penaltyRule": {
-      "type": "not_specified",
-      "description": "Information not provided in the current content source."
-    },
-    "officialUrl": "https://www.cda.gov.ph",
-    "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
-  },
-  {
     "id": "lgu-barangay-mayors-clearance",
     "agencyId": "lgu",
     "name": "Barangay Clearance & Mayor's Permit",
@@ -388,7 +291,7 @@
         "description": ""
       },
       {
-        "name": "Registration Documents (DTI/SEC/CDA certificate, barangay clearance, mayor's permit)",
+        "name": "Registration Documents (business registration certificate, barangay clearance, mayor's permit)",
         "description": ""
       },
       {
@@ -402,14 +305,14 @@
     ],
     "instructions": [
       "Submit registration application to the RDO covering the business address.",
-      "File within 30 days from DTI/SEC/CDA registration.",
+      "File within 30 days from applicable business registration.",
       "Determine if the taxpayer is Non-VAT (3% percentage tax) based on sales projection.",
       "Determine if the taxpayer is VAT-registered (12%) based on sales projection.",
       "Register the business for Income Tax.",
       "Register for Withholding Tax if the business has employees."
     ],
     "complianceStage": "BIR Registration",
-    "deadlineDescription": "Within 30 days from DTI/SEC/CDA registration.",
+    "deadlineDescription": "Within 30 days from applicable business registration.",
     "deadlineMonth": 2,
     "deadlineDay": 1,
     "penaltyRule": {
