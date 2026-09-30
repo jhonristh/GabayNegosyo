@@ -9,7 +9,7 @@ import RequirementCard from "../../components/RequirementCard";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { generateApplicableRequirements, computeNextDueDate, computeStatus } from "../../lib/ruleEngine";
-import type { BusinessProfile, Requirement, RequirementStatus } from "../../lib/types";
+import type { BusinessProfile, RequirementStatus } from "../../lib/types";
 
 function DashboardInner() {
   const { user } = useAuth();
@@ -17,7 +17,6 @@ function DashboardInner() {
   const [profile, setProfile] = useState<BusinessProfile | null | undefined>(undefined);
   const requirements = useMemo(() => db.getRequirements(), []);
   const agencies = useMemo(() => db.getAgencies(), []);
-  
 
   useEffect(() => {
     if (!user) return;
@@ -68,8 +67,15 @@ function DashboardInner() {
 
   const completed = items.filter((i) => i.status === "completed");
   const overdue = items.filter((i) => i.status === "overdue");
+  const dueToday = items.filter((i) => i.status === "due_today");
   const dueSoon = items.filter((i) => i.status === "due_soon");
   const upcoming = items.filter((i) => i.status === "upcoming");
+  // Most urgent first, then soonest deadline. Previously "Up next" and the
+  // five-item list followed data-file order, so the nearest deadline could
+  // be hidden behind items due months later.
+  const byDate = (a: (typeof items)[number], b: (typeof items)[number]) => a.dueDate.getTime() - b.dueDate.getTime();
+  const pending = [...overdue.sort(byDate), ...dueToday, ...dueSoon.sort(byDate), ...upcoming.sort(byDate)];
+  const next = pending[0];
   const percent = items.length ? Math.round((completed.length / items.length) * 100) : 0;
 
   function agencyName(agencyId: string) {
@@ -102,18 +108,23 @@ function DashboardInner() {
         </section>
         <section className="v05-next-card">
           <p className="v05-kicker">UP NEXT</p>
-          {([...overdue, ...dueSoon, ...upcoming][0]) ? <>
-            <h2>{[...overdue, ...dueSoon, ...upcoming][0].req.name}</h2>
-            <p>{agencyName([...overdue, ...dueSoon, ...upcoming][0].req.agencyId)} · {dueLabel([...overdue, ...dueSoon, ...upcoming][0].dueDate)}</p>
-            <Link href={`/requirements/${[...overdue, ...dueSoon, ...upcoming][0].req.id}`}>View requirement <span aria-hidden="true">↗</span></Link>
+          {next ? <>
+            <h2>{next.req.name}</h2>
+            <p>{agencyName(next.req.agencyId)} · {dueLabel(next.dueDate)}</p>
+            <Link href={`/requirements/${next.req.id}`}>View requirement <span aria-hidden="true">↗</span></Link>
           </> : <><h2>All caught up.</h2><p>There are no pending items in your checklist.</p><Link href="/checklist">View checklist ↗</Link></>}
         </section>
       </div>
-      {(overdue.length > 0 || dueSoon.length > 0) && (
+      {(overdue.length > 0 || dueToday.length > 0 || dueSoon.length > 0) && (
         <section className="dashboard-alert-group">
           {overdue.length > 0 && (
             <div className="alert alert-overdue">
               {overdue.length} requirement{overdue.length > 1 ? "s are" : " is"} overdue.
+            </div>
+          )}
+          {dueToday.length > 0 && (
+            <div className="alert alert-due-soon">
+              {dueToday.length} requirement{dueToday.length > 1 ? "s are" : " is"} due today.
             </div>
           )}
           {dueSoon.length > 0 && (
@@ -146,8 +157,8 @@ function DashboardInner() {
             View full checklist
           </Link>
         </div>
-        {[...overdue, ...dueSoon, ...upcoming].length === 0 && <p className="hint">Nothing pending. Great work.</p>}
-        {[...overdue, ...dueSoon, ...upcoming].slice(0, 5).map(({ req, status, dueDate }) => (
+        {pending.length === 0 && <p className="hint">Nothing pending. Great work.</p>}
+        {pending.slice(0, 5).map(({ req, status, dueDate }) => (
           <RequirementCard key={req.id} requirement={req} status={status} dueLabel={dueLabel(dueDate)} agencyName={agencyName(req.agencyId)} />
         ))}
       </section>

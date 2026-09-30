@@ -14,10 +14,32 @@ export interface PenaltyEstimateResult {
  * Pure calculation layer. Each PenaltyRuleType maps to one formula here.
  * Swapping or correcting a formula never touches UI code — only this file.
  * All results are ESTIMATES; see the mandatory disclaimer shown alongside
- * every result in the UI (components/PenaltyDisclaimer usage).
+ * every result in the UI (MANDATORY_DISCLAIMER, rendered by the simulator page).
  */
+export function isValidAmount(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0;
+}
+
+export function isValidDaysLate(value: unknown): value is number {
+  return typeof value === "number" && Number.isFinite(value) && value >= 0 && Number.isInteger(value);
+}
+
+/** Returns a plain-language problem with the input, or null when it is usable. */
+export function validatePenaltyInput(input: { amount: unknown; daysLate: unknown }): string | null {
+  if (!isValidAmount(input.amount)) return "Enter an amount of 0 or more.";
+  if (!isValidDaysLate(input.daysLate)) return "Enter days late as a whole number, 0 or more.";
+  return null;
+}
+
 export function estimatePenalty(rule: PenaltyRule, input: PenaltyEstimateInput): PenaltyEstimateResult {
   const { amount, daysLate } = input;
+  if (validatePenaltyInput({ amount, daysLate })) {
+    return { estimatedPenalty: 0, breakdown: ["Enter a valid amount and number of days late to see an estimate."] };
+  }
+  // Not late yet → nothing has accrued (previously this still charged a full month).
+  if (daysLate === 0) {
+    return { estimatedPenalty: 0, breakdown: ["0 days late: no penalty has accrued yet."] };
+  }
   const monthsLate = Math.max(1, Math.ceil(daysLate / 30));
   const breakdown: string[] = [];
 

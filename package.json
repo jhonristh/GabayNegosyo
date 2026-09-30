@@ -26,5 +26,8 @@
     "@types/react-dom": "18.3.0",
     "supabase": "^2.117.0",
     "typescript": "5.5.4"
+  },
+  "engines": {
+    "node": ">=22.18.0"
   }
 }

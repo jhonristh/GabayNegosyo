@@ -231,3 +231,8 @@ strict check clean.
 - Admin dashboard surfaces its actual management routes and content health; Users adds a page-local role filter and a working retry action, preserving read-only Supabase RLS behavior.
 - Landing adds explicit Free/Premium comparison and a transparent study/website attribution section. Names were absent from provided project material and are not asserted.
 - Backend, Supabase auth/data access, SQL, eligibility, content records and payments remain untouched. Browser QA with configured credentials remains necessary for auth-specific flows.
+
+
+## v0.10 bug-fix pass
+
+See `docs/V0.10_FIXES.md`. tsc clean, 69/69 tests, contrast 13/13, build OK. Behaviour in a browser / live Supabase not verified.

@@ -10,6 +10,7 @@ import { db } from "../../lib/db";
 import { generateApplicableRequirements, computeNextDueDate, computeStatus } from "../../lib/ruleEngine";
 import { isPremiumRole } from "../../lib/authorization";
 import { sendEmail, buildReminderEmail } from "../../lib/email";
+import { useToast } from "../../components/ToastProvider";
 import type { ReminderConfig } from "../../lib/types";
 
 function DeadlinesInner() {
@@ -17,6 +18,8 @@ function DeadlinesInner() {
   const requirements = useMemo(() => db.getRequirements(), []);
   const agencies = useMemo(() => db.getAgencies(), []);
   const [, rerender] = useState(0);
+  const { notify } = useToast();
+  const [sending, setSending] = useState(false);
 
   if (!user) return null;
   const profile = db.getBusinessProfile(user.id);
@@ -59,10 +62,18 @@ function DeadlinesInner() {
   }
 
   async function sendTestReminder(requirementName: string, dueLabel: string, days: number) {
-    if (!isPremium || !user) return;
-    const { subject, body } = buildReminderEmail(requirementName, dueLabel, days);
-    await sendEmail(user.email, subject, body);
-    rerender((n) => n + 1);
+    if (!isPremium || !user || sending) return;
+    setSending(true);
+    try {
+      const { subject, body } = buildReminderEmail(requirementName, dueLabel, days);
+      await sendEmail(user.email, subject, body);
+      notify("Test reminder sent to your account email.");
+    } catch (err) {
+      notify(err instanceof Error ? err.message : "We couldn't send the test reminder. Try again in a moment.", "error");
+    } finally {
+      setSending(false);
+      rerender((n) => n + 1);
+    }
   }
 
   return (
@@ -99,6 +110,7 @@ function DeadlinesInner() {
                     key={d}
                     type="button"
                     disabled={!isPremium}
+                    aria-pressed={config.daysBefore === d}
                     className={`option-btn small ${config.daysBefore === d ? "selected" : ""}`}
                     onClick={() => setDays(req.id, config, d as 7 | 3 | 1)}
                   >
@@ -112,11 +124,11 @@ function DeadlinesInner() {
                 </button>
                 <button
                   type="button"
-                  disabled={!isPremium}
+                  disabled={!isPremium || sending}
                   className="secondary-btn"
                   onClick={() => sendTestReminder(req.name, dueLabel, config.daysBefore)}
                 >
-                  Send test reminder
+                  {sending ? "Sending…" : "Send test reminder"}
                 </button>
               </div>
             </div>

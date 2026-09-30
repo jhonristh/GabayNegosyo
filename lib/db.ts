@@ -98,13 +98,36 @@ function emptyUserData(): UserData {
 let currentUserId: string | null = null;
 let userData: UserData = emptyUserData();
 
-/** Fire-and-forget a Supabase write; log instead of crashing the UI if it fails. */
+type PersistErrorListener = (label: string) => void;
+const persistErrorListeners = new Set<PersistErrorListener>();
+
+function reportPersistFailure(label: string) {
+  persistErrorListeners.forEach((listener) => {
+    try {
+      listener(label);
+    } catch {
+      /* a listener must never break a save */
+    }
+  });
+}
+
+/**
+ * Fire-and-forget a Supabase write. Failures are logged AND reported to
+ * subscribers (see components/DbErrorToasts.tsx) so the person is told their
+ * change may not have been saved, instead of it silently vanishing on reload.
+ */
 function persist(label: string, request: PromiseLike<{ error: { message: string } | null }>) {
   Promise.resolve(request)
     .then(({ error }) => {
-      if (error) console.error(`[db] ${label} failed:`, error.message);
+      if (error) {
+        console.error(`[db] ${label} failed:`, error.message);
+        reportPersistFailure(label);
+      }
     })
-    .catch((err) => console.error(`[db] ${label} failed:`, err));
+    .catch((err) => {
+      console.error(`[db] ${label} failed:`, err);
+      reportPersistFailure(label);
+    });
 }
 
 function mergeWithOverrides<T extends { id: string; archived?: boolean }>(
@@ -214,6 +237,14 @@ export const db = {
     writeStore(s);
   },
 
+  /** Subscribe to failed background saves. Returns an unsubscribe function. */
+  onPersistError(listener: PersistErrorListener): () => void {
+    persistErrorListeners.add(listener);
+    return () => {
+      persistErrorListeners.delete(listener);
+    };
+  },
+
   // ---- Session lifecycle (called by lib/auth.tsx) ----
   async hydrate(userId: string): Promise<void> {
     const supabase = getSupabase();
@@ -268,6 +299,7 @@ export const db = {
     return userId === currentUserId ? userData.businessProfile : null;
   },
   saveBusinessProfile(profile: BusinessProfile) {
+    if (!currentUserId || profile.userId !== currentUserId) return; // never write another user's row
     userData.businessProfile = profile;
     persist(
       "saveBusinessProfile",

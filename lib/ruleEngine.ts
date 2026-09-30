@@ -45,11 +45,31 @@ export function generateApplicableRequirements(
     .filter((r) => requirementApplies(r, profile));
 }
 
-/** Computes the next due date for a requirement relative to "today". */
+const MS_PER_DAY = 24 * 60 * 60 * 1000;
+
+function startOfDay(d: Date): Date {
+  return new Date(d.getFullYear(), d.getMonth(), d.getDate());
+}
+
+/** Whole calendar days from `from` to `to` (DST-safe; 0 = same calendar day). */
+function calendarDaysBetween(from: Date, to: Date): number {
+  const a = Date.UTC(from.getFullYear(), from.getMonth(), from.getDate());
+  const b = Date.UTC(to.getFullYear(), to.getMonth(), to.getDate());
+  return Math.round((b - a) / MS_PER_DAY);
+}
+
+/**
+ * Computes the next due date for a requirement relative to "today".
+ *
+ * Compared by calendar day, not by clock time: a deadline that falls on
+ * today's date is still "today's" deadline all day. (Previously a midnight
+ * due date was already "in the past" by 00:01, so on the actual deadline day
+ * the app jumped to next year and never showed "Due today".)
+ */
 export function computeNextDueDate(requirement: Requirement, today: Date = new Date()): Date {
   const year = today.getFullYear();
   let due = new Date(year, requirement.deadlineMonth - 1, requirement.deadlineDay);
-  if (due < today) {
+  if (due < startOfDay(today)) {
     due = new Date(year + 1, requirement.deadlineMonth - 1, requirement.deadlineDay);
   }
   return due;
@@ -61,7 +81,7 @@ export function computeStatus(
   today: Date = new Date()
 ): "upcoming" | "due_soon" | "due_today" | "overdue" | "completed" {
   if (completedAt) return "completed";
-  const daysUntil = Math.ceil((dueDate.getTime() - today.getTime()) / (1000 * 60 * 60 * 24));
+  const daysUntil = calendarDaysBetween(today, dueDate);
   if (daysUntil < 0) return "overdue";
   if (daysUntil === 0) return "due_today";
   if (daysUntil <= 14) return "due_soon";

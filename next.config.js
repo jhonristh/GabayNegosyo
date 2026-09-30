@@ -17,9 +17,14 @@
 // env var, not hardcoded — see K4), so connect-src allows https://*.supabase.co
 // rather than one specific project host.
 
+// Development only: Next's dev tooling (React Refresh / source maps) uses
+// eval(), which the production policy below correctly forbids. Without this,
+// `next dev` runs with a broken client under the CSP header.
+const devScriptSrc = process.env.NODE_ENV === "production" ? "" : " 'unsafe-eval'";
+
 const cspDirectives = [
   "default-src 'self'",
-  "script-src 'self' 'unsafe-inline' https://va.vercel-scripts.com",
+  `script-src 'self' 'unsafe-inline'${devScriptSrc} https://va.vercel-scripts.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://i.ytimg.com",
   "frame-src https://www.youtube-nocookie.com https://bir-cdn.bir.gov.ph",

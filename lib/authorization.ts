@@ -1,11 +1,12 @@
 import type { Role } from "./types";
 
 /**
- * Service-layer authorization checks. UI components use PremiumGate/
- * AdminGuard for presentation, but any action that mutates data or reveals
- * gated content should also call these functions — this is the "backend"
- * enforcement point referenced in the architecture, even though the
- * prototype's service layer runs client-side against local storage.
+ * Client-side authorization helpers. UI components use PremiumGate/
+ * AdminGuard for presentation, and premium actions also call these
+ * functions as a second check. They are NOT a security boundary by
+ * themselves (they run in the browser). The real enforcement is server-side:
+ * Supabase Row Level Security (database/supabase_setup.sql) and the role
+ * check in app/api/send-email/route.ts.
  */
 export function isPremiumRole(role: Role | undefined): boolean {
   return role === "premium" || role === "admin";

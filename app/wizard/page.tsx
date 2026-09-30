@@ -46,7 +46,7 @@ const BARANGAY_RDO: { barangay: string; rdoCode: string }[] = barangayRdoData;
 
 function Stepper({ step }: { step: number }) {
   return (
-    <div className="wizard-stepper">
+    <div className="wizard-stepper" aria-hidden="true">
       {STEPS.map((label, i) => (
         <div key={label} className={`wizard-step-dot ${i === step ? "active" : ""} ${i < step ? "done" : ""}`}>
           <span>{i + 1}</span>
@@ -60,16 +60,18 @@ function WizardInner() {
   const { user } = useAuth();
   const router = useRouter();
   const [step, setStep] = useState(0);
+  // Existing answers (if any) so "Review or update answers" starts from what was saved.
+  const existing = useMemo(() => (user ? db.getBusinessProfile(user.id) : null), [user]);
 
-  const [isRegisteringNewBusiness, setIsRegisteringNewBusiness] = useState<boolean | null>(null);
-  const [taxpayerType, setTaxpayerType] = useState<TaxpayerType>("purely_business");
-  const [barangay, setBarangay] = useState("");
-  const [hasLease, setHasLease] = useState<boolean | null>(null);
-  const [hasEmployees, setHasEmployees] = useState<boolean | null>(null);
-  const [employeeCount, setEmployeeCount] = useState(0);
-  const [projectedGrossSales, setProjectedGrossSales] = useState<number | "">("");
-  const [projectedExpenses, setProjectedExpenses] = useState<number | "">("");
-  const [businessName, setBusinessName] = useState("");
+  const [isRegisteringNewBusiness, setIsRegisteringNewBusiness] = useState<boolean | null>(existing ? existing.isRegisteringNewBusiness : null);
+  const [taxpayerType, setTaxpayerType] = useState<TaxpayerType>(existing?.taxpayerType ?? "purely_business");
+  const [barangay, setBarangay] = useState(existing?.barangay ?? "");
+  const [hasLease, setHasLease] = useState<boolean | null>(existing ? existing.hasLease : null);
+  const [hasEmployees, setHasEmployees] = useState<boolean | null>(existing ? existing.hasEmployees : null);
+  const [employeeCount, setEmployeeCount] = useState(existing?.employeeCount ?? 0);
+  const [projectedGrossSales, setProjectedGrossSales] = useState<number | "">(existing ? existing.projectedGrossSales : "");
+  const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
+  const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
 
   const rdoCode = useMemo(() => BARANGAY_RDO.find((b) => b.barangay === barangay)?.rdoCode ?? "", [barangay]);
 
@@ -84,8 +86,8 @@ function WizardInner() {
     if (step === 0) return isRegisteringNewBusiness !== null;
     if (step === 2) return barangay.trim().length > 0;
     if (step === 3) return hasLease !== null;
-    if (step === 4) return hasEmployees !== null;
-    if (step === 5) return projectedGrossSales !== "" && projectedExpenses !== "";
+    if (step === 4) return hasEmployees !== null && (hasEmployees === false || (Number.isInteger(employeeCount) && employeeCount >= 1));
+    if (step === 5) return projectedGrossSales !== "" && projectedExpenses !== "" && projectedGrossSales >= 0 && projectedExpenses >= 0;
     if (step === 6) return businessName.trim().length > 0;
     return true;
   }
@@ -112,7 +114,7 @@ function WizardInner() {
       businessType: "other",
       businessStructure: "sole_proprietor",
       taxType: "not_sure",
-      createdAt: new Date().toISOString(),
+      createdAt: existing?.createdAt ?? new Date().toISOString(),
     };
     db.saveBusinessProfile(profile);
     trackConversion("wizard_completed");
@@ -134,10 +136,10 @@ function WizardInner() {
         <section className="question">
           <label className="question-label">Are you registering a new business?</label>
           <div className="option-row">
-            <button type="button" className={`option-btn ${isRegisteringNewBusiness === true ? "selected" : ""}`} onClick={() => setIsRegisteringNewBusiness(true)}>
+            <button type="button" aria-pressed={isRegisteringNewBusiness === true} className={`option-btn ${isRegisteringNewBusiness === true ? "selected" : ""}`} onClick={() => setIsRegisteringNewBusiness(true)}>
               Yes
             </button>
-            <button type="button" className={`option-btn ${isRegisteringNewBusiness === false ? "selected" : ""}`} onClick={() => setIsRegisteringNewBusiness(false)}>
+            <button type="button" aria-pressed={isRegisteringNewBusiness === false} className={`option-btn ${isRegisteringNewBusiness === false ? "selected" : ""}`} onClick={() => setIsRegisteringNewBusiness(false)}>
               No
             </button>
           </div>
@@ -152,6 +154,7 @@ function WizardInner() {
               <button
                 key={opt.value}
                 type="button"
+                aria-pressed={taxpayerType === opt.value}
                 className={`option-btn ${taxpayerType === opt.value ? "selected" : ""}`}
                 onClick={() => setTaxpayerType(opt.value)}
               >
@@ -198,10 +201,10 @@ function WizardInner() {
         <section className="question">
           <label className="question-label">Do you lease the space for your business?</label>
           <div className="option-row">
-            <button type="button" className={`option-btn ${hasLease === true ? "selected" : ""}`} onClick={() => setHasLease(true)}>
+            <button type="button" aria-pressed={hasLease === true} className={`option-btn ${hasLease === true ? "selected" : ""}`} onClick={() => setHasLease(true)}>
               Yes
             </button>
-            <button type="button" className={`option-btn ${hasLease === false ? "selected" : ""}`} onClick={() => setHasLease(false)}>
+            <button type="button" aria-pressed={hasLease === false} className={`option-btn ${hasLease === false ? "selected" : ""}`} onClick={() => setHasLease(false)}>
               No
             </button>
           </div>
@@ -212,10 +215,10 @@ function WizardInner() {
         <section className="question">
           <label className="question-label">Are you hiring employees to help you run the business?</label>
           <div className="option-row">
-            <button type="button" className={`option-btn ${hasEmployees === true ? "selected" : ""}`} onClick={() => setHasEmployees(true)}>
+            <button type="button" aria-pressed={hasEmployees === true} className={`option-btn ${hasEmployees === true ? "selected" : ""}`} onClick={() => setHasEmployees(true)}>
               Yes
             </button>
-            <button type="button" className={`option-btn ${hasEmployees === false ? "selected" : ""}`} onClick={() => setHasEmployees(false)}>
+            <button type="button" aria-pressed={hasEmployees === false} className={`option-btn ${hasEmployees === false ? "selected" : ""}`} onClick={() => setHasEmployees(false)}>
               No
             </button>
           </div>

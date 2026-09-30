@@ -20,7 +20,7 @@
 //   - supports a "purge" message so the app can clear runtime caches on
 //     logout (see components/ServiceWorkerRegistration.tsx).
 
-const CACHE_VERSION = "gn-v3";
+const CACHE_VERSION = "gn-v4"; // v4: only ok, full responses are cached (a cached 404 for /_next/static was served forever)
 const PRECACHE = `${CACHE_VERSION}-precache`;
 const RUNTIME = `${CACHE_VERSION}-runtime`;
 
@@ -53,6 +53,18 @@ function isSameOrigin(url) {
   return url.origin === self.location.origin;
 }
 
+// Only cache complete, successful responses. Caching a 404/500 (or a 206
+// partial) and serving it cache-first would keep a transient failure alive.
+function isCacheable(response) {
+  return response && response.ok && response.status === 200 && response.type === "basic";
+}
+
+function putInRuntimeCache(request, response) {
+  if (!isCacheable(response)) return;
+  const copy = response.clone();
+  caches.open(RUNTIME).then((cache) => cache.put(request, copy)).catch(() => {});
+}
+
 function isNeverCached(request, url) {
   if (request.method !== "GET") return true;
   if (!isSameOrigin(url)) return true; // cross-origin: Supabase, analytics, anything else
@@ -77,8 +89,7 @@ self.addEventListener("fetch", (event) => {
       caches.match(request).then((cached) => {
         if (cached) return cached;
         return fetch(request).then((response) => {
-          const copy = response.clone();
-          caches.open(RUNTIME).then((cache) => cache.put(request, copy));
+          putInRuntimeCache(request, response);
           return response;
         });
       })
@@ -90,8 +101,7 @@ self.addEventListener("fetch", (event) => {
     event.respondWith(
       fetch(request)
         .then((response) => {
-          const copy = response.clone();
-          caches.open(RUNTIME).then((cache) => cache.put(request, copy));
+          putInRuntimeCache(request, response);
           return response;
         })
         .catch(() => caches.match(request).then((cached) => cached || caches.match("/offline")))
@@ -104,10 +114,9 @@ self.addEventListener("fetch", (event) => {
   event.respondWith(
     fetch(request)
       .then((response) => {
-        const copy = response.clone();
-        caches.open(RUNTIME).then((cache) => cache.put(request, copy));
+        putInRuntimeCache(request, response);
         return response;
       })
-      .catch(() => caches.match(request))
+      .catch(() => caches.match(request).then((cached) => cached || Response.error()))
   );
 });

@@ -35,7 +35,8 @@ interface AuthContextValue {
   signup: (name: string, email: string, password: string) => Promise<AuthResult>;
   loginWithGoogle: () => Promise<AuthResult>;
   logout: () => Promise<void>;
-  upgradeToPremium: () => Promise<void>;
+  /** Resolves true when the role change was saved; false when it was not. */
+  upgradeToPremium: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -84,14 +85,29 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   useEffect(() => {
-    const supabase = getSupabase();
+    let supabase: ReturnType<typeof getSupabase>;
+    try {
+      supabase = getSupabase();
+    } catch (err) {
+      // Supabase env vars missing/invalid: the public pages (landing, legal,
+      // login form) must still render. Nobody can be signed in, so behave as
+      // signed-out instead of throwing out of the root provider.
+      console.error("[auth]", err instanceof Error ? err.message : err);
+      setLoading(false);
+      return;
+    }
     let active = true;
 
     // 1) Restore an existing session on page load / refresh.
-    supabase.auth.getSession().then(async ({ data }) => {
-      if (active) await apply(data.session);
-      if (active) setLoading(false);
-    });
+    supabase.auth
+      .getSession()
+      .then(async ({ data }) => {
+        if (active) await apply(data.session);
+      })
+      .catch((err) => console.error("[auth] could not restore your session:", err))
+      .finally(() => {
+        if (active) setLoading(false); // never leave the app stuck on "Loading…"
+      });
 
     // 2) React to later sign-in / sign-out (including from another tab).
     //    Don't call Supabase inside this callback directly (it can deadlock),
@@ -166,15 +182,16 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    * function that flips the caller's own role from free → premium.
    * Delete this (and the SQL function) when you add real billing.
    */
-  async function upgradeToPremium() {
-    if (!user) return;
+  async function upgradeToPremium(): Promise<boolean> {
+    if (!user) return false;
     const supabase = getSupabase();
     const { error } = await supabase.rpc("upgrade_to_premium_demo");
     if (error) {
       console.error("[auth] upgrade failed:", error.message);
-      return;
+      return false;
     }
     setUser({ ...user, role: "premium" });
+    return true;
   }
 
   return (

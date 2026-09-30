@@ -5,9 +5,9 @@ import { useAuth } from "../lib/auth";
 import type { ReactNode } from "react";
 
 /**
- * UI-level gate. Real authorization also happens at the service layer —
- * see lib/authorization.ts (isPremiumFeature) which every premium action
- * checks independently of what the UI hides or shows.
+ * UI-level gate. Server-side enforcement lives in Supabase RLS and the API
+ * routes; lib/authorization.ts (isPremiumRole / assertPremium) is the shared
+ * client-side check that premium actions also run.
  */
 export default function PremiumGate({ children }: { children: ReactNode }) {
   const { user } = useAuth();
