@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import { siteConfig } from "../lib/siteConfig";
 
 /**
@@ -11,13 +12,14 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="site-footer-inner">
-        <span className="site-footer-brand">GabayNegosyo</span>
+        <Link href="/" className="site-footer-brand footer-logo" aria-label="GabayNegosyo home"><Image src="/icons/gabaynegosyo-client-logo.jpg" width={184} height={184} alt="GabayNegosyo — Guide, Support, Grow" /></Link>
         <nav className="site-footer-links" aria-label="Footer">
           <Link href="/">Home</Link>
           <Link href="/#how-it-works">How it works</Link>
           <Link href="/#features">Features</Link>
           <Link href="/#plans">Plans</Link>
           <Link href="/#credits">Credits</Link>
+          <Link href="/login">Log in</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/disclaimer">Disclaimer</Link>

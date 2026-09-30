@@ -213,3 +213,6 @@ The checklist has a progress ring with status filters; Deadlines offers a monthl
 ## Client content update — September 2026
 
 The authenticated `/guide` page summarizes the five client PDFs in `docs/client-sources/` by registration, renewal, employee responsibilities, and ongoing filing. Its content lives in `data/clientGuide.json`. The guide respects the existing Free/Premium distinction. Read `docs/CLIENT_CONTENT_REVIEW.md` before treating form choices, deadlines, or penalties as approved rules. The legacy calendar still has annual placeholders for some nonannual obligations. Supabase integration and database schema have not been changed.
+
+### v0.10 client identity
+The client-supplied logo now appears in navigation, the footer and the social preview; its derived checklist-and-growth emblem is used for app icons. The deep and bright green UI palette matches the client mark. See `Design-System.md` for palette and asset paths. The image supplied by the client is included in `public/icons/gabaynegosyo-client-logo.jpg`. Supabase settings and rules are unchanged.

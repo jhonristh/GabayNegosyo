@@ -1,6 +1,7 @@
 "use client";
 
 import Link from "next/link";
+import Image from "next/image";
 import { usePathname } from "next/navigation";
 import { useAuth } from "../lib/auth";
 
@@ -21,7 +22,8 @@ export default function Navbar() {
     return (
       <header className="navbar-public">
         <Link href="/" className="brand">
-          GabayNegosyo
+          <Image src="/icons/icon-192.png" width={42} height={42} alt="" priority />
+          <span>Gabay<span className="brand-highlight">Negosyo</span></span>
         </Link>
         <nav>
           <Link href="/#how-it-works">How it works</Link>
@@ -40,7 +42,8 @@ export default function Navbar() {
     return (
       <header className="navbar-admin">
         <Link href="/admin" className="brand">
-          GabayNegosyo Admin
+          <Image src="/icons/icon-192.png" width={42} height={42} alt="" priority />
+          <span>Gabay<span className="brand-highlight">Negosyo</span> <small>Admin</small></span>
         </Link>
         <nav className="admin-nav">
           <Link href="/admin">Dashboard</Link>
@@ -58,9 +61,16 @@ export default function Navbar() {
 
   return (
     <>
+      <header className="mobile-brand-head">
+        <Link href="/dashboard" className="brand" aria-label="GabayNegosyo overview">
+          <Image src="/icons/icon-192.png" width={38} height={38} alt="" />
+          <span>Gabay<span className="brand-highlight">Negosyo</span></span>
+        </Link>
+      </header>
       <header className="navbar-desktop">
         <Link href="/dashboard" className="brand">
-          GabayNegosyo
+          <Image src="/icons/icon-192.png" width={42} height={42} alt="" priority />
+          <span>Gabay<span className="brand-highlight">Negosyo</span></span>
         </Link>
         <nav>
           <Link href="/dashboard" className={pathname === "/dashboard" ? "active" : ""}>

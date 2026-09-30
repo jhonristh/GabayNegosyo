@@ -1,3 +1,5 @@
+> Historical design notes: v0.10 client branding overrides the palette and logo examples below. See `Design-System.md` for current tokens and assets.
+
 # GabayNegosyo — Design System v3 (Minimalism, brand-restored)
 
 Supersedes an earlier "hybrid glass" direction (v2) that was rejected —

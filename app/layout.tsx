@@ -34,7 +34,7 @@ export const metadata = {
     description: "Turn scattered BIR compliance requirements into one personalized checklist.",
     url: siteConfig.siteUrl,
     siteName: "GabayNegosyo",
-    images: [{ url: "/icons/og-image.png", width: 1200, height: 630 }],
+    images: [{ url: "/icons/gabaynegosyo-client-logo.jpg", width: 1254, height: 1254 }],
     locale: "en_PH",
     type: "website",
   },
@@ -42,7 +42,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "GabayNegosyo: Your guide to business compliance",
     description: "Turn scattered BIR compliance requirements into one personalized checklist.",
-    images: ["/icons/og-image.png"],
+    images: ["/icons/gabaynegosyo-client-logo.jpg"],
   },
 };
 
@@ -51,7 +51,7 @@ export const viewport = {
   initialScale: 1,
   // K1: no maximumScale — pinch-zoom must never be blocked (accessibility).
   viewportFit: "cover",
-  themeColor: "#2E5E4E",
+  themeColor: "#145D2D",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

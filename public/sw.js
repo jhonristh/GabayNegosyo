@@ -20,7 +20,7 @@
 //   - supports a "purge" message so the app can clear runtime caches on
 //     logout (see components/ServiceWorkerRegistration.tsx).
 
-const CACHE_VERSION = "gn-v2";
+const CACHE_VERSION = "gn-v3";
 const PRECACHE = `${CACHE_VERSION}-precache`;
 const RUNTIME = `${CACHE_VERSION}-runtime`;
 

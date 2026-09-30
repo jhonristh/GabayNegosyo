@@ -1,32 +1,11 @@
-/* ============================================================
-   GabayNegosyo — Design System v3 (Minimalism, brand-restored)
-   Chosen design language: MINIMALISM (per §3 of the frontend
-   constraints doc) — restraint, one real accent color, generous
-   whitespace. This is the documented safe default for content-heavy,
-   low-bandwidth/low-end-device audiences, and matches this product's
-   actual audience: PH micro-entrepreneurs, largely on entry-level
-   Android hardware.
-
-   v2 ("hybrid glass") is superseded specifically because its button/
-   hero/background treatment leaned on a blue→violet gradient system —
-   exactly the "obviously AI-generated" pattern the frontend
-   constraints doc rules out in §1. This version keeps v2's sound
-   structural ideas (glass reserved for shell surfaces only, solid
-   cards for dense data, shape+color status badges, serif numerals)
-   but replaces the color system with the product's own established
-   brand palette (deep green / warm sand / clay orange — see
-   /topics or PROGRESS.md history) and removes every decorative
-   gradient. One accent color does the work; status colors stay
-   strictly functional and are never used for decoration.
-   ============================================================ */
-
+/* Client identity refresh: supplied GabayNegosyo logo, deep forest and growth greens. */
 :root {
   /* Brand — the one real accent color (Minimalism: restraint) */
-  --gn-green: #2e5e4e;
-  --gn-green-deep: #1f4438;
+  --gn-green: #145d2d;
+  --gn-green-deep: #092f22;
   --gn-clay: #c96a3a;
   --gn-clay-deep: #a5522a;
-  --gn-sand: #faf7f2;
+  --gn-sand: #f7faf6;
 
   /* Functional status hues — meaning only, never decorative */
   --gn-teal: #0e7a6c;
@@ -34,17 +13,17 @@
   --gn-slate-blue: #3b5f8a;
   --gn-violet: #6d3fd9; /* isolated to Premium; never combined in a gradient */
 
-  --ink: #16211c;
-  --ink-muted: rgba(22, 33, 28, 0.64);
-  --ink-faint: rgba(22, 33, 28, 0.66); /* WCAG AA verified: 4.5:1+ on --gn-sand */
+  --ink: #10251d;
+  --ink-muted: rgba(16, 37, 29, 0.64);
+  --ink-faint: rgba(16, 37, 29, 0.66); /* WCAG AA verified: 4.5:1+ on --gn-sand */
 
-  --glass-bg: rgba(250, 247, 242, 0.62);
+  --glass-bg: rgba(247, 250, 246, 0.62);
   --glass-bg-strong: rgba(255, 255, 255, 0.82);
-  --glass-border: rgba(46, 94, 78, 0.14);
+  --glass-border: rgba(20, 93, 45, 0.14);
 
   --solid-surface: #ffffff;
-  --solid-border: rgba(22, 33, 28, 0.5); /* WCAG AA UI-boundary minimum (3:1) — see docs/CONTRAST_REPORT.md */
-  --page-tint: #faf7f2;
+  --solid-border: rgba(16, 37, 29, 0.5); /* WCAG AA UI-boundary minimum (3:1) — see docs/CONTRAST_REPORT.md */
+  --page-tint: #f7faf6;
 
   /* K2/D2: self-hosted via @fontsource (see app/layout.tsx imports) —
      these are the actual @font-face family names those packages define. */
@@ -352,9 +331,9 @@ button:disabled {
   font-weight: 500;
   padding: 7px 14px;
   border-radius: 999px;
-  background: rgba(46, 94, 78, 0.1);
+  background: rgba(20, 93, 45, 0.1);
   color: var(--gn-green-deep);
-  border: 1px solid rgba(46, 94, 78, 0.18);
+  border: 1px solid rgba(20, 93, 45, 0.18);
 }
 
 /* ---------- Buttons & inputs (shared) ---------- */
@@ -436,13 +415,13 @@ button:disabled {
 }
 
 .secondary-btn:hover {
-  background: rgba(46, 94, 78, 0.05);
-  border-color: rgba(46, 94, 78, 0.3);
+  background: rgba(20, 93, 45, 0.05);
+  border-color: rgba(20, 93, 45, 0.3);
 }
 
 .secondary-btn:active {
   transform: translateY(1px) scale(0.99);
-  background: rgba(46, 94, 78, 0.08);
+  background: rgba(20, 93, 45, 0.08);
 }
 
 .secondary-btn:disabled {
@@ -494,7 +473,7 @@ button:disabled {
 }
 
 .option-btn:hover {
-  border-color: rgba(46, 94, 78, 0.35);
+  border-color: rgba(20, 93, 45, 0.35);
 }
 
 .option-btn:active {
@@ -516,9 +495,9 @@ button:disabled {
 
 .option-btn.selected {
   border-color: var(--gn-green);
-  background: rgba(46, 94, 78, 0.08);
+  background: rgba(20, 93, 45, 0.08);
   color: var(--gn-green-deep);
-  box-shadow: 0 0 0 1px rgba(46, 94, 78, 0.3) inset;
+  box-shadow: 0 0 0 1px rgba(20, 93, 45, 0.3) inset;
   font-weight: 600;
 }
 
@@ -542,7 +521,7 @@ button:disabled {
 }
 
 .filter-chip:hover {
-  border-color: rgba(46, 94, 78, 0.3);
+  border-color: rgba(20, 93, 45, 0.3);
 }
 
 .filter-chip.selected {
@@ -850,7 +829,7 @@ button:disabled {
 }
 
 .content-badge-placeholder {
-  background: rgba(22, 33, 28, 0.08);
+  background: rgba(16, 37, 29, 0.08);
   color: var(--ink-muted);
 }
 
@@ -1138,7 +1117,7 @@ button:disabled {
   width: 22px;
   height: 22px;
   border-radius: 50%;
-  border: 2.5px solid rgba(22, 33, 28, 0.12);
+  border: 2.5px solid rgba(16, 37, 29, 0.12);
   border-top-color: var(--gn-green);
   animation: gn-spin 700ms linear infinite;
 }
@@ -1169,7 +1148,7 @@ button:disabled {
 .skeleton-row {
   height: 64px;
   border-radius: 16px;
-  background: rgba(22, 33, 28, 0.08);
+  background: rgba(16, 37, 29, 0.08);
   animation: gn-skeleton-pulse 1.2s ease-in-out infinite;
 }
 
@@ -1557,3 +1536,40 @@ button:active,.primary-btn:active,.secondary-btn:active { transform: scale(.985)
 .credit-person span { font-size: .85rem; color: var(--ink-muted); }
 .credit-portrait { aspect-ratio: 1; border-radius: 10px; background: #e5ede6; display: grid; place-items: center; color: #526e5c; }
 @media(max-width:700px){ .admin-fields { grid-template-columns: 1fr; } .admin-list-card { display: block; } .admin-list-card .admin-actions { margin-top: 16px; } .credits-grid { grid-template-columns: repeat(2,minmax(0,1fr)); } }
+
+/* Official client brand application */
+.brand::before { display: none; }
+.brand { gap: 8px; color: #092f22; letter-spacing: -.045em; white-space: nowrap; }
+.brand img { width: 42px; height: 42px; object-fit: contain; flex: none; }
+.brand-highlight { color: #146b31; }
+.brand small { font: 600 .68rem var(--font-body); letter-spacing: .02em; background: #e6f4e7; padding: 5px 7px; border-radius: 6px; vertical-align: middle; }
+.navbar-public,.navbar-desktop,.navbar-admin { border-color: #d2e4d1; background: rgba(255,255,255,.96); }
+.client-brand-intro { display: flex; gap: 12px; align-items: center; width: fit-content; background: white; border: 1px solid #d8ead5; border-radius: 14px; padding: 6px 16px 6px 7px; margin-bottom: 26px; font: 700 1rem var(--font-display); color: #0b3a25; }
+.client-brand-intro img { width: 48px; height: 48px; }
+.client-brand-intro small { display: block; font: 700 .59rem var(--font-body); letter-spacing: .14em; color: #176a34; margin-top: 3px; }
+.v05-preview { background: #e6f3e4; box-shadow: 12px 18px 0 #d1e8cc, var(--v06-shadow-hover); }
+.v05-feature-band { background: #e7f3e4; }
+.v05-dash-hero .dashboard-progress { background: #092f22; }
+.v05-dash-hero .progress-bar-fill { background: #8bd447; }
+.v05-next-card,.v07-progress-panel { background: #e9f5e6; }
+.v05-preview-track i { background: linear-gradient(90deg, #145d2d, #76c83e); }
+.v05-preview-mark { background: #145d2d; }
+.site-footer { background: #edf5ec; }
+.footer-logo { display: inline-flex; border-radius: 16px; overflow: hidden; background: #fff; }
+.footer-logo img { display: block; width: clamp(135px, 20vw, 184px); height: auto; }
+@media (max-width: 580px) { .brand { font-size: .9rem; } .brand img { width: 36px; height: 36px; } .client-brand-intro { margin-bottom: 20px; } }
+.mobile-brand-head { display: none; }
+@media (max-width: 859px) {
+  .mobile-brand-head { display: flex; align-items: center; padding: 8px 16px; background: #fff; border-bottom: 1px solid #d5e7d1; }
+  .navbar-admin { display: grid; gap: 10px; margin: 8px 10px 0; padding: 10px 12px; }
+  .navbar-admin .admin-nav { overflow-x: auto; max-width: calc(100vw - 44px); padding: 4px 0; gap: 16px; }
+}
+@media (max-width: 650px) {
+  .navbar-public { margin: 8px 8px 0; padding: 8px 10px; gap: 6px; }
+  .navbar-public nav a[href="/#plans"] { display: none; }
+  .navbar-public nav { gap: 8px; }
+  .navbar-public .brand { font-size: .82rem; gap: 5px; }
+  .navbar-public .brand img { width: 32px; height: 32px; }
+  .navbar-public .nav-cta { font-size: .72rem; padding: 7px 9px; min-height: 36px; }
+  .navbar-public nav a[href="/login"] { font-size: .76rem; }
+}

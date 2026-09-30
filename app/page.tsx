@@ -1,4 +1,5 @@
 import Link from "next/link";
+import Image from "next/image";
 import requirements from "../data/requirements.json";
 
 export const metadata = {
@@ -12,6 +13,7 @@ export default function LandingPage() {
   return <main className="screen landing v05-landing">
     <section className="v05-hero" aria-labelledby="hero-title">
       <div className="v05-hero-copy">
+        <div className="client-brand-intro"><Image src="/icons/icon-192.png" width={48} height={48} alt="" priority/><span>GabayNegosyo <small>GUIDE · SUPPORT · GROW</small></span></div>
         <p className="v05-kicker">A CLEARER PATH FOR YOUR BUSINESS</p>
         <h1 id="hero-title">Business compliance, <em>made easier to follow.</em></h1>
         <p className="hero-sub">Understand what applies to your business, see what comes next, and keep your requirements in one place.</p>

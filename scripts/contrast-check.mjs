@@ -33,10 +33,10 @@ function blend(fg, bg, alpha) {
 }
 
 const white = [255, 255, 255];
-const sand = [250, 247, 242];
-const ink = [22, 33, 28];
-const green = [46, 94, 78];
-const greenDeep = [31, 68, 56];
+const sand = [247, 250, 246];
+const ink = [16, 37, 29];
+const green = [20, 93, 45];
+const greenDeep = [9, 47, 34];
 const inkMuted = blend(ink, sand, 0.64);
 const inkFaint = blend(ink, sand, 0.66);
 
