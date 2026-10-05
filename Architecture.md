@@ -14,3 +14,6 @@ Run `npm ci`, `npm run lint`, `npm test`, `npm run contrast-check`, and `npm run
 
 ## v0.7 frontend additions
 The checklist progress component receives counts and filter callbacks from the checklist route. The deadline calendar receives the existing computed due dates and links to requirement detail; it does not write data. Account pictures are stored as small data URLs in this browser's localStorage under a user-specific key and are never uploaded. The admin role filter applies to the current paginated results only. No database tables, RLS policies, API handlers, auth service, or billing integrations changed.
+
+## v0.11 design-kit layer
+Presentation only. `styles/kits.css` loads after `globals.css`; `components/ClientProviders.tsx` picks a shell (public, ledger, command) from the signed-in role, while `AuthGuard`, `AdminGuard` and Supabase policies still control access. The Night Shift preference lives in `localStorage["gn-theme"]` and `<html data-theme>`, set before first paint by an inline script from `lib/theme.ts`. New components: `KitIcon`, `ThemeControls`, `AgencyProgress`. No database tables, RLS policies, API handlers, auth service, content data or rule logic changed. See `docs/DESIGN_KITS.md`.

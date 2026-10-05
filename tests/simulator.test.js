@@ -87,7 +87,7 @@ test("the simulator page renders the mandatory disclaimer constant", () => {
   const fs = require("node:fs");
   const path = require("node:path");
   const simulatorPage = fs.readFileSync(
-    path.join(__dirname, "..", "app", "premium", "penalty-simulator", "page.tsx"),
+    path.join(__dirname, "..", "components", "PenaltyCalculator.tsx"),
     "utf8"
   );
   assert.ok(simulatorPage.includes("MANDATORY_DISCLAIMER"), "simulator page must render the mandatory disclaimer constant");

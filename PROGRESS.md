@@ -236,3 +236,30 @@ strict check clean.
 ## v0.10 bug-fix pass
 
 See `docs/V0.10_FIXES.md`. tsc clean, 69/69 tests, contrast 13/13, build OK. Behaviour in a browser / live Supabase not verified.
+
+
+## v0.11 contrast fix
+
+Badge tints and hero progress track adjusted; contrast checker now reads the real CSS (38 pairs). See `docs/DESIGN_KITS.md` "V0.11 fixes".
+
+## v0.11 lifecycle restructure
+- Journey: Checklist → Business Registration → BIR Forms → Penalties → Renewal & Post-Registration (`lib/journey.ts`, `components/JourneyStepper.tsx`). Stages stay individually linkable.
+- New routes: `/registration`, `/bir-forms`, `/penalties`, `/renewal`. `/guide` and `/premium/penalty-simulator` redirect into them. Wizard now lands on `/checklist`.
+- BIR penalty rates (client-approved): micro 10%, micro interest 6% p.a., general interest 12% p.a. (+25% general surcharge from PENALTIES.pdf). Single source: `BIR_PENALTY_RATES` in `lib/penalty.ts`.
+- BIR Forms: checkbox conditions from `data/birConditions.json` (Forms 1706, 1800 from BIR Forms.pdf).
+- Filing tutorial videos: placeholder; add entries to `data/filingVideos.json`.
+
+## v0.12 feature-validation fixes
+
+- [x] Deadline model: `deadlineKind`, no invented dates, per-cycle completion, reachable Overdue, "No fixed date" status
+- [x] Existing businesses no longer see one-time new-registration items
+- [x] Requirement detail: free/premium boundary re-cut, "why it is on your checklist"
+- [x] Task-level steps with persistence (`task_progress`, migration 002)
+- [x] Guest-first wizard + read-only preview + profile adoption on sign-in
+- [ ] Open: tax-type / stage questions (client decision), verified sources and tutorials, server-side admin content, credits
+
+Details: `docs/V0.12_CHANGES.md`.
+
+## v0.12 Final = v0.12 + updated client PDFs (UpdatedFiles.zip)
+- BIR Forms, Business Registration and Penalties PDFs were unchanged. Checklist and Renewal PDFs changed: DTI registration/renewal guide entries added, document lists expanded, barangay renewal steps updated.
+- Filing tutorial videos: 8 client-provided YouTube links in `data/filingVideos.json`, embedded on `/renewal` (placeholder shows only if the list is empty).

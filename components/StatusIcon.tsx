@@ -45,6 +45,13 @@ export default function StatusIcon({ status }: { status: RequirementStatus }) {
           <circle cx="8" cy="11.3" r="0.9" fill="currentColor" />
         </svg>
       );
+    case "no_deadline":
+      // dashed ring — "nothing scheduled", distinct from the solid and ringed states
+      return (
+        <svg viewBox="0 0 16 16" fill="none" aria-hidden="true">
+          <circle cx="8" cy="8" r="5" stroke="currentColor" strokeWidth="2" strokeDasharray="2.6 2.4" />
+        </svg>
+      );
     case "upcoming":
     default:
       // filled square

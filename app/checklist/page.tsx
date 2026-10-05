@@ -5,9 +5,11 @@ import Link from "next/link";
 import AuthGuard from "../../components/AuthGuard";
 import ChecklistProgress from "../../components/ChecklistProgress";
 import StatusBadge from "../../components/StatusBadge";
+import JourneyStepper, { JourneyNext } from "../../components/JourneyStepper";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
-import { generateApplicableRequirements, computeNextDueDate, computeStatus } from "../../lib/ruleEngine";
+import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
+import { isPremiumRole } from "../../lib/authorization";
 import type { RequirementStatus } from "../../lib/types";
 
 /**
@@ -24,6 +26,7 @@ const STATUS_FILTERS: { value: "all" | RequirementStatus; label: string }[] = [
   { value: "due_today", label: "Due today" },
   { value: "due_soon", label: "Due soon" },
   { value: "upcoming", label: "Upcoming" },
+  { value: "no_deadline", label: "No fixed date" },
   { value: "completed", label: "Completed" },
 ];
 
@@ -59,15 +62,9 @@ function ChecklistInner() {
   function agencyName(agencyId: string) {
     return agencies.find((a) => a.id === agencyId)?.name ?? agencyId;
   }
-  function dueLabel(d: Date) {
-    return d.toLocaleDateString("en-PH", { month: "long", day: "numeric", year: "numeric" });
-  }
-
   let items = applicable.map((req) => {
-    const dueDate = computeNextDueDate(req);
-    const completedAt = progress[req.id]?.completedAt;
-    const status: RequirementStatus = computeStatus(dueDate, completedAt);
-    return { req, dueDate, status };
+    const { dueDate, dueKey, status, cycle } = resolveObligation(req, progress[req.id], new Date(), profile.createdAt);
+    return { req, dueDate, dueKey, status: status as RequirementStatus, cycle };
   });
 
   if (statusFilter !== "all") items = items.filter((i) => i.status === statusFilter);
@@ -76,7 +73,7 @@ function ChecklistInner() {
     const q = query.trim().toLowerCase();
     items = items.filter((i) => i.req.name.toLowerCase().includes(q) || (i.req.complianceStage ?? "").toLowerCase().includes(q));
   }
-  items.sort((a, b) => a.dueDate.getTime() - b.dueDate.getTime());
+  items.sort(compareByDue);
 
   const counts = {
     all: applicable.length,
@@ -84,13 +81,11 @@ function ChecklistInner() {
     due_today: 0,
     due_soon: 0,
     upcoming: 0,
+    no_deadline: 0,
     completed: 0,
   } as Record<"all" | RequirementStatus, number>;
   for (const req of applicable) {
-    const dueDate = computeNextDueDate(req);
-    const completedAt = progress[req.id]?.completedAt;
-    const status = computeStatus(dueDate, completedAt);
-    counts[status] += 1;
+    counts[resolveObligation(req, progress[req.id], new Date(), profile.createdAt).status] += 1;
   }
 
   const grouped = items.reduce<Record<string, typeof items>>((acc, item) => {
@@ -100,26 +95,28 @@ function ChecklistInner() {
     return acc;
   }, {});
 
-  function toggle(requirementId: string, dueDate: Date, isCompleted: boolean) {
+  function toggle(requirementId: string, dueKey: string | null, isCompleted: boolean) {
     if (!user) return;
     if (isCompleted) {
       db.markIncomplete(requirementId);
     } else {
-      db.markComplete(requirementId, `biz-${user.id}`, dueDate.toISOString());
+      db.markComplete(requirementId, `biz-${user.id}`, dueKey);
     }
     rerender((n) => n + 1);
   }
 
   return (
-    <main className="screen">
+    <main className="screen kit-pocket">
+      <JourneyStepper current="checklist" />
       <header className="intro">
+        <p className="v06-eyebrow">STEP 1 OF 5 · WHAT DO I NEED?</p>
         <h1>Your checklist</h1>
         <p>
-          {counts.completed} of {counts.all} requirements completed.
+          Based on your answers, these are the requirements that apply to you. {counts.completed} of {counts.all} completed.
         </p>
       </header>
 
-      <div className="guide-note"><strong>Client registration and renewal steps</strong><p>The <Link href="/guide">business guide</Link> now covers the client’s new, existing, and employee-specific paths. Some dates on this legacy checklist are approximate calendar anchors, particularly for one-time, monthly, quarterly, and event-based obligations. Confirm the actual filing date with the agency.</p></div>
+      <div className="guide-note"><strong>About these dates</strong><p>A date is shown only when the source gives a fixed annual deadline. One-time, monthly, quarterly, and event-based obligations are labelled “No fixed date” with their timing rule instead of a made-up date. Confirm actual filing dates with the agency. Need to change your answers? <Link href="/wizard">Update your business profile</Link>.</p></div>
 
       <ChecklistProgress completed={counts.completed} total={counts.all} overdue={counts.overdue} onShow={setStatusFilter} />
 
@@ -177,8 +174,10 @@ function ChecklistInner() {
       {Object.entries(grouped).map(([stage, stageItems]) => (
         <section key={stage} className="agency-group">
           <h2>{stage}</h2>
-          {stageItems.map(({ req, status, dueDate }) => {
+          {stageItems.map(({ req, status, dueDate, dueKey, cycle }) => {
             const isCompleted = status === "completed";
+            const stepTotal = isPremiumRole(user.role) ? req.instructions.length : 0; // steps are a Premium feature
+            const stepsDone = db.getDoneTasks(req.id, cycle).filter((i) => i < stepTotal).length;
             return (
               <article key={req.id} className="checklist-card">
                 <div className="checklist-card-header">
@@ -187,11 +186,18 @@ function ChecklistInner() {
                     <h3>
                       <Link href={`/requirements/${req.id}`}>{req.name}</Link>
                     </h3>
-                    <p className="deadline">Due {dueLabel(dueDate)}</p>
+                    <p className="deadline">
+                      {dueDate ? `Due ${formatDueLabel(dueDate)}` : `No fixed date: ${req.deadlineDescription}`}
+                    </p>
+                    {stepTotal > 0 && (
+                      <p className="task-count">
+                        {stepsDone} of {stepTotal} steps done
+                      </p>
+                    )}
                   </div>
                   <StatusBadge status={status} />
                 </div>
-                <button type="button" className="secondary-btn" onClick={() => toggle(req.id, dueDate, isCompleted)}>
+                <button type="button" className="secondary-btn" onClick={() => toggle(req.id, dueKey, isCompleted)}>
                   {isCompleted ? "Mark as not completed" : "Mark as completed"}
                 </button>
               </article>
@@ -199,6 +205,8 @@ function ChecklistInner() {
           })}
         </section>
       ))}
+
+      <JourneyNext current="checklist" />
     </main>
   );
 }

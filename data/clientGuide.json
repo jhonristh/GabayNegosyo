@@ -1,5 +1,28 @@
 [
   {
+    "id": "dti-new",
+    "stage": "Start a business",
+    "agency": "DTI",
+    "title": "Register your business name with DTI",
+    "audience": "all",
+    "timing": "Before applying for the barangay clearance and business permit.",
+    "steps": [
+      "Go to the BNRS website and click New Registration.",
+      "Provide the required information and review it.",
+      "Submit the application.",
+      "Pay the registration fee for your territorial scope (Barangay ₱200, City/Municipality ₱500, Regional ₱1,000, National ₱2,000) plus ₱30 documentary stamp tax."
+    ],
+    "documents": [
+      "One valid government-issued ID of the applicant",
+      "Tax Identification Number (TIN) of the owner, if applicable",
+      "Duly accomplished DTI Business Name Registration Application Form",
+      "Authorization letter and valid ID of the representative, if filed through a representative",
+      "Non-Philippine nationals, if applicable: certified copy of Alien Certificate of Registration (ACR) and Certificate of Authority to engage in business in the Philippines"
+    ],
+    "source": "BUSINESSREGISTRATION.pdf; CHECKLIST.pdf",
+    "officialUrl": ""
+  },
+  {
     "id": "barangay-new",
     "stage": "Start a business",
     "agency": "LGU",
@@ -12,9 +35,10 @@
       "Pay the local fee and keep the official receipt."
     ],
     "documents": [
-      "Business registration document, if applicable",
-      "Proof of right to occupy premises",
-      "Government ID"
+      "Valid ID (National ID, Passport, Driver's License, or Voter's ID)",
+      "Proof of residency",
+      "Community Tax Certificate (cedula)",
+      "Application form (provided at the barangay hall)"
     ],
     "source": "BUSINESSREGISTRATION.pdf",
     "officialUrl": ""
@@ -32,11 +56,18 @@
       "File with the concerned local government unit."
     ],
     "documents": [
-      "Business registration document, if applicable",
-      "Basis for local taxes and fees",
-      "Occupancy permit when required",
-      "Lease contract when applicable",
-      "Barangay clearance when applicable"
+      "Application form from the local Business Permits and Licensing Department",
+      "DTI certificate",
+      "Barangay clearance",
+      "Notarized contract of lease, if renting",
+      "Transfer Certificate of Title (TCT) or Tax Declaration, if the property is owned",
+      "Community Tax Certificate (cedula)",
+      "Photos of the establishment (front, right and left sides, including the road)",
+      "Locational/zoning clearance",
+      "Fire Safety Inspection Certificate (BFP)",
+      "Sanitary permit (local health office)",
+      "Certificate of occupancy",
+      "Public liability insurance, for high-traffic places"
     ],
     "source": "BUSINESSREGISTRATION.pdf",
     "officialUrl": ""
@@ -54,9 +85,10 @@
       "Check the certificate of registration and the tax types assigned to the business."
     ],
     "documents": [
-      "BIR Form 1901 for manual individual registration",
-      "Government ID",
-      "Invoice sample or BIR printed invoice option"
+      "Any government-issued ID (e.g. PhilID/ePhilID, Passport, Driver's License)",
+      "Additional proof of residence or business address, if the ID has no address",
+      "Final clear sample of your own invoices, or a BIR-printed invoice (BPI)",
+      "DTI certificate, if you have a registered business name"
     ],
     "source": "BUSINESSREGISTRATION.pdf",
     "officialUrl": "https://www.bir.gov.ph/"
@@ -74,9 +106,16 @@
       "Report employees and ensure they have SS numbers."
     ],
     "documents": [
-      "Employer Registration Form R-1 when filing manually",
-      "Business registration or permit",
-      "Employee SS numbers"
+      "SSS Employer Registration Form (R-1), if applicable",
+      "Employment Report (R-1A)",
+      "DTI Certificate of Business Name Registration",
+      "Valid government-issued ID of the business owner/employer",
+      "Tax Identification Number (TIN) of the employer",
+      "Business/Mayor's Permit, if applicable",
+      "Certification and Agreement on Data Privacy Notice",
+      "Letter of Authority (LOA) or Special Power of Attorney (SPA), if filed through an authorized representative",
+      "For employees: SS number, or SSS Personal Record (E-1/E-1V) if none yet",
+      "Valid ID/supporting documents of employees, when required"
     ],
     "source": "BUSINESSREGISTRATION.pdf",
     "officialUrl": "https://www.sss.gov.ph/"
@@ -93,8 +132,14 @@
       "Report newly hired employees and arrange premium remittance."
     ],
     "documents": [
-      "Employer registration requirements",
-      "Employee membership details"
+      "PhilHealth Employer Data Record (ER1)",
+      "DTI Certificate of Business Name Registration",
+      "BIR Certificate of Registration (Form 2303), when required",
+      "Valid government-issued ID of the business owner/authorized signatory",
+      "Business/Mayor's Permit, when applicable",
+      "Authorization letter and valid IDs, if filed through a representative",
+      "For employees: PhilHealth Identification Number (PIN), or PhilHealth Member Registration Form (PMRF) if none yet",
+      "Report of Employee-Members (ER2)"
     ],
     "source": "CHECKLIST.pdf",
     "officialUrl": "https://www.philhealth.gov.ph/"
@@ -111,11 +156,37 @@
       "Prepare employee membership details for subsequent remittances."
     ],
     "documents": [
-      "Employer registration requirements",
-      "Employee membership details"
+      "Employer's Data Form (EDF), HQP-PFF-002",
+      "DTI Certificate of Business Name Registration",
+      "Proof of business existence",
+      "Valid government-issued ID of the business owner/employer",
+      "Business/Mayor's Permit, when applicable",
+      "Authorization letter and valid IDs, if filed through a representative",
+      "For employees: Pag-IBIG Membership ID (MID) number, or Member's Data Form (MDF) for new members",
+      "Employee personal and employment information"
     ],
     "source": "CHECKLIST.pdf",
     "officialUrl": "https://www.pagibigfund.gov.ph/"
+  },
+  {
+    "id": "dti-renew",
+    "stage": "Renew an existing business",
+    "agency": "DTI",
+    "title": "Renew your DTI business name",
+    "audience": "all",
+    "timing": "After 5 years from the validity date. Late renewal is charged an additional 50%.",
+    "steps": [
+      "Go to the BNRS website.",
+      "Click Renewal and provide the required information.",
+      "Review the information provided.",
+      "Submit the renewal application.",
+      "Complete the required payment."
+    ],
+    "documents": [
+      "Business name registration details for the BNRS renewal form"
+    ],
+    "source": "RENEWAL AND POST REGISTRATION.pdf",
+    "officialUrl": ""
   },
   {
     "id": "barangay-renew",
@@ -123,10 +194,12 @@
     "agency": "LGU",
     "title": "Renew barangay clearance",
     "audience": "all",
-    "timing": "Follow the applicable barangay ordinance and renewal period.",
+    "timing": "1 year after the issuance date.",
     "steps": [
-      "Confirm renewal requirements and fees with the local barangay.",
-      "Submit the required business documents and pay the assessed charges."
+      "Go to the designated office or Business One-Stop Shop (BOSS) of your city or municipality.",
+      "Submit the documents required for renewing the barangay business clearance, as specified by the LGU.",
+      "Pay the barangay clearance fee, if required.",
+      "Receive the renewed Barangay Business Clearance or proof of clearance."
     ],
     "documents": [
       "Existing clearance and locally required supporting papers"
@@ -140,7 +213,7 @@
     "agency": "LGU",
     "title": "Renew the local business permit",
     "audience": "all",
-    "timing": "Typically during the first month of the year or as provided by the issuing LGU; verify locally.",
+    "timing": "Valid for 1 year. Renew within the first month of the year or on the anniversary date of the permit's issuance.",
     "steps": [
       "Prepare the basis for computing local taxes and fees, such as income tax returns.",
       "Submit renewed barangay clearance and other local requirements.",

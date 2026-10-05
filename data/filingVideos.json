@@ -1,0 +1,50 @@
+[
+  {
+    "id": "dti-registration",
+    "title": "Registering your DTI business name",
+    "category": "Business Registration",
+    "videoUrl": "https://www.youtube.com/watch?v=FOnpl3ui3uI"
+  },
+  {
+    "id": "barangay-and-permit",
+    "title": "Barangay clearance and Mayor's permit application",
+    "category": "Business Registration",
+    "videoUrl": "https://www.youtube.com/watch?v=8X2KZkCh1qo"
+  },
+  {
+    "id": "dti-renewal",
+    "title": "Renewing your DTI business name",
+    "category": "Renewal",
+    "videoUrl": "https://www.youtube.com/watch?v=-tESI-U9ikc"
+  },
+  {
+    "id": "mayor-permit-renewal",
+    "title": "Renewing your Mayor's permit",
+    "category": "Renewal",
+    "videoUrl": "https://www.youtube.com/watch?v=KysPCsJjbKI"
+  },
+  {
+    "id": "bir-1701",
+    "title": "Filing BIR Form 1701",
+    "category": "BIR filing",
+    "videoUrl": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s"
+  },
+  {
+    "id": "bir-1701q",
+    "title": "Filing BIR Form 1701-Q (quarterly)",
+    "category": "BIR filing",
+    "videoUrl": "https://www.youtube.com/watch?v=8C0TBHccWbc"
+  },
+  {
+    "id": "bir-1701a",
+    "title": "Filing BIR Form 1701-A",
+    "category": "BIR filing",
+    "videoUrl": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s"
+  },
+  {
+    "id": "bir-1701ms",
+    "title": "Filing BIR Form 1701-MS (micro and small taxpayers)",
+    "category": "BIR filing",
+    "videoUrl": "https://www.youtube.com/watch?v=0MQLh_jxlak"
+  }
+]

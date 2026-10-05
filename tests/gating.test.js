@@ -21,7 +21,8 @@ const read = (...p) => fs.readFileSync(path.join(__dirname, "..", ...p), "utf8")
 
 const detail = read("app", "requirements", "[id]", "page.tsx");
 const tutorials = read("app", "tutorials", "page.tsx");
-const simulator = read("app", "premium", "penalty-simulator", "page.tsx");
+// The simulator moved into the lifecycle: gate lives in /penalties, logic in PenaltyCalculator.
+const simulator = read("app", "penalties", "page.tsx") + read("components", "PenaltyCalculator.tsx");
 const authorization = read("lib", "authorization.ts");
 const premiumGate = read("components", "PremiumGate.tsx");
 
@@ -44,7 +45,8 @@ test("required documents and instructions sit inside the PremiumGate-wrapped sec
   const gated = detail.split("<PremiumGate>")[1];
   assert.ok(gated, "requirement detail must wrap content in <PremiumGate>");
   assert.ok(gated.includes("Required Documents"));
-  assert.ok(gated.includes("requirement.instructions"));
+  // v0.12: steps became a checkable task list; the list is rendered inside the gate.
+  assert.ok(gated.includes("How to complete") && gated.includes("toggleStep"));
 });
 
 test("the Learning Hub list itself is free tier (matches README's Free vs. Premium table)", () => {

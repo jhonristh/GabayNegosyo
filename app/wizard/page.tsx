@@ -2,7 +2,6 @@
 
 import { useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
-import AuthGuard from "../../components/AuthGuard";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { trackConversion } from "../../lib/webAnalytics";
@@ -57,11 +56,13 @@ function Stepper({ step }: { step: number }) {
 }
 
 function WizardInner() {
+  // v0.12: guest-first. Anyone can answer the wizard; with no account the answers
+  // stay in this tab (sessionStorage) and lead to a read-only preview.
   const { user } = useAuth();
   const router = useRouter();
   const [step, setStep] = useState(0);
   // Existing answers (if any) so "Review or update answers" starts from what was saved.
-  const existing = useMemo(() => (user ? db.getBusinessProfile(user.id) : null), [user]);
+  const existing = useMemo(() => (user ? db.getBusinessProfile(user.id) : db.getGuestProfile()), [user]);
 
   const [isRegisteringNewBusiness, setIsRegisteringNewBusiness] = useState<boolean | null>(existing ? existing.isRegisteringNewBusiness : null);
   const [taxpayerType, setTaxpayerType] = useState<TaxpayerType>(existing?.taxpayerType ?? "purely_business");
@@ -93,10 +94,9 @@ function WizardInner() {
   }
 
   function generateRoadmap() {
-    if (!user) return;
     const profile: BusinessProfile = {
-      id: `biz-${user.id}`,
-      userId: user.id,
+      id: user ? `biz-${user.id}` : "biz-guest",
+      userId: user ? user.id : "guest",
       isRegisteringNewBusiness: Boolean(isRegisteringNewBusiness),
       taxpayerType,
       barangay,
@@ -116,9 +116,14 @@ function WizardInner() {
       taxType: "not_sure",
       createdAt: existing?.createdAt ?? new Date().toISOString(),
     };
-    db.saveBusinessProfile(profile);
     trackConversion("wizard_completed");
-    router.push("/dashboard");
+    if (user) {
+      db.saveBusinessProfile(profile);
+      router.push("/checklist");
+    } else {
+      db.saveGuestProfile(profile);
+      router.push("/preview");
+    }
   }
 
   return (
@@ -315,6 +320,7 @@ function WizardInner() {
           <p>
             After answering the questions above, we'll match your profile against BIR compliance content sourced
             from the Flowchart.FINAL.xlsx reference workbook and build your personalized compliance checklist.
+            {!user && " You can preview it now and create a free account afterwards to save it."}
           </p>
         </section>
       )}
@@ -341,9 +347,15 @@ function WizardInner() {
 }
 
 export default function WizardPage() {
-  return (
-    <AuthGuard>
-      <WizardInner />
-    </AuthGuard>
-  );
+  const { loading } = useAuth();
+  // Wait for the session check so a signed-in person's saved answers are loaded
+  // before the form reads them (useState initial values are read once).
+  if (loading) {
+    return (
+      <main className="screen">
+        <p>Loading…</p>
+      </main>
+    );
+  }
+  return <WizardInner />;
 }

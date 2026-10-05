@@ -4,6 +4,7 @@ import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useAuth } from "../../lib/auth";
+import { db } from "../../lib/db";
 import { trackConversion } from "../../lib/webAnalytics";
 
 const MIN_PASSWORD_LENGTH = 8;
@@ -37,7 +38,8 @@ export default function SignupPage() {
       setCheckEmailFor(email.trim());
       return;
     }
-    router.push("/wizard");
+    // A guest who already answered the wizard goes straight to their saved checklist.
+    router.push(db.getGuestProfile() ? "/checklist" : "/wizard");
   }
 
   async function handleGoogle() {

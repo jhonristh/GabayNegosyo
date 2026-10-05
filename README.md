@@ -22,6 +22,10 @@ business owners.
 > **Design system:** See `docs/DESIGN.md` for the current visual language
 > (Minimalism, brand-green accent, glass-shell/solid-data split) and why an
 > earlier gradient-heavy draft was rejected.
+>
+> **v0.12:** fixes from the feature-validation audit (honest deadlines, task-level steps, guest-first wizard). Developer notes and the one required database migration are in `docs/V0.12_CHANGES.md`.
+
+> **Design kits (v0.11):** the five responsive kits are applied as a layer; developer notes are in `docs/DESIGN_KITS.md`. Night Shift is an optional theme under Account → Appearance.
 
 ---
 

@@ -1811,3 +1811,8 @@ This guide moves **users and per-user data** to Supabase. Deliberately **not** m
 ### Before you open it to the public
 
 You're storing business details such as projected sales and expenses. Keep RLS enabled on every table you add (a table without it is readable by anyone with the public key), and consider adding a short privacy notice.
+
+
+## v0.12 migration
+
+Run `database/migrations/002_task_progress.sql` once in the SQL editor. It creates `task_progress` (checked steps) with owner-only Row Level Security. Fresh installs get it from `database/supabase_setup.sql`.

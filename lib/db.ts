@@ -89,11 +89,16 @@ interface UserData {
   checklistProgress: Record<string, ChecklistItem>;
   reminderConfigs: Record<string, ReminderConfig>;
   sentEmails: SentEmail[];
+  /** v0.12: checked steps, keyed `${requirementId}|${cycle}` → { taskIndex: completedAt } */
+  taskProgress: Record<string, Record<number, string>>;
 }
 
 function emptyUserData(): UserData {
-  return { businessProfile: null, checklistProgress: {}, reminderConfigs: {}, sentEmails: [] };
+  return { businessProfile: null, checklistProgress: {}, reminderConfigs: {}, sentEmails: [], taskProgress: {} };
 }
+
+const GUEST_KEY = "gn_guest_profile_v1";
+const taskKey = (requirementId: string, cycle: string) => `${requirementId}|${cycle}`;
 
 let currentUserId: string | null = null;
 let userData: UserData = emptyUserData();
@@ -248,12 +253,14 @@ export const db = {
   // ---- Session lifecycle (called by lib/auth.tsx) ----
   async hydrate(userId: string): Promise<void> {
     const supabase = getSupabase();
-    const [profileRes, progressRes, remindersRes, emailsRes] = await Promise.all([
+    const [profileRes, progressRes, remindersRes, emailsRes, tasksRes] = await Promise.all([
       supabase.from("business_profiles").select("data").eq("user_id", userId).maybeSingle(),
       supabase.from("checklist_progress").select("*").eq("user_id", userId),
       supabase.from("reminder_configs").select("*").eq("user_id", userId),
       // RLS decides what comes back: a normal user gets their own rows, an admin gets everyone's.
       supabase.from("sent_emails").select("*").order("sent_at", { ascending: false }).limit(50),
+      // v0.12: tolerated if the 002 migration has not been applied yet, so an older database still loads.
+      supabase.from("task_progress").select("*").eq("user_id", userId),
     ]);
 
     const firstError = [profileRes, progressRes, remindersRes, emailsRes].find((r) => r.error)?.error;
@@ -286,8 +293,18 @@ export const db = {
       sentAt: row.sent_at,
     }));
 
+    if (tasksRes.error) {
+      console.warn("[db] task_progress unavailable (apply database/migrations/002_task_progress.sql):", tasksRes.error.message);
+    } else {
+      for (const row of tasksRes.data ?? []) {
+        const key = taskKey(row.requirement_id, row.cycle);
+        (next.taskProgress[key] ??= {})[row.task_index] = row.completed_at;
+      }
+    }
+
     currentUserId = userId;
     userData = next;
+    db.adoptGuestProfile(userId);
   },
   clearUserData() {
     currentUserId = null;
@@ -313,9 +330,15 @@ export const db = {
   getProgress(): Record<string, ChecklistItem> {
     return userData.checklistProgress;
   },
-  markComplete(requirementId: string, businessId: string, dueDate: string) {
+  /**
+   * `dueKey` is the cycle's due date as "YYYY-MM-DD" (fixed_annual items) or null
+   * for items with no fixed date. A date key is stored at noon UTC so the calendar
+   * day (and year) survives any timezone — see resolveObligation().
+   */
+  markComplete(requirementId: string, businessId: string, dueKey: string | null) {
     if (!currentUserId) return;
     const completedAt = new Date().toISOString();
+    const dueDate = dueKey ? `${dueKey}T12:00:00.000Z` : completedAt;
     userData.checklistProgress[requirementId] = {
       requirementId,
       businessId,
@@ -352,6 +375,80 @@ export const db = {
         .eq("user_id", currentUserId)
         .eq("requirement_id", requirementId)
     );
+  },
+
+  // ---- Task-level progress (v0.12) ----
+  /** Indices of the steps the person has checked for this requirement + cycle. */
+  getDoneTasks(requirementId: string, cycle: string): number[] {
+    return Object.keys(userData.taskProgress[taskKey(requirementId, cycle)] ?? {}).map(Number);
+  },
+  setTaskDone(requirementId: string, cycle: string, taskIndex: number, done: boolean) {
+    if (!currentUserId) return;
+    const key = taskKey(requirementId, cycle);
+    if (done) {
+      const completedAt = new Date().toISOString();
+      (userData.taskProgress[key] ??= {})[taskIndex] = completedAt;
+      persist(
+        "setTaskDone",
+        getSupabase().from("task_progress").upsert(
+          { user_id: currentUserId, requirement_id: requirementId, cycle, task_index: taskIndex, completed_at: completedAt },
+          { onConflict: "user_id,requirement_id,cycle,task_index" }
+        )
+      );
+    } else {
+      if (userData.taskProgress[key]) delete userData.taskProgress[key][taskIndex];
+      persist(
+        "setTaskDone",
+        getSupabase()
+          .from("task_progress")
+          .delete()
+          .eq("user_id", currentUserId)
+          .eq("requirement_id", requirementId)
+          .eq("cycle", cycle)
+          .eq("task_index", taskIndex)
+      );
+    }
+  },
+
+  // ---- Guest profile (v0.12) ----
+  // A visitor can answer the wizard and preview their checklist before creating
+  // an account. The answers live only in this tab's sessionStorage and move to
+  // the account (once) the first time that person signs in with no saved profile.
+  saveGuestProfile(profile: BusinessProfile) {
+    if (typeof window === "undefined") return;
+    try {
+      window.sessionStorage.setItem(GUEST_KEY, JSON.stringify(profile));
+    } catch {
+      /* storage blocked: the preview simply won't survive a refresh */
+    }
+  },
+  getGuestProfile(): BusinessProfile | null {
+    if (typeof window === "undefined") return null;
+    try {
+      const raw = window.sessionStorage.getItem(GUEST_KEY);
+      return raw ? (JSON.parse(raw) as BusinessProfile) : null;
+    } catch {
+      return null;
+    }
+  },
+  clearGuestProfile() {
+    if (typeof window === "undefined") return;
+    try {
+      window.sessionStorage.removeItem(GUEST_KEY);
+    } catch {
+      /* ignore */
+    }
+  },
+  /** Never overwrites a profile the account already has, and never creates a second one. */
+  adoptGuestProfile(userId: string) {
+    const guest = db.getGuestProfile();
+    if (!guest) return;
+    if (userData.businessProfile) {
+      db.clearGuestProfile();
+      return;
+    }
+    db.saveBusinessProfile({ ...guest, id: `biz-${userId}`, userId, createdAt: guest.createdAt ?? new Date().toISOString() });
+    db.clearGuestProfile();
   },
 
   // ---- Reminders ----

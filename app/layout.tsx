@@ -1,4 +1,7 @@
 import "../styles/globals.css";
+// Design-kit layer (Growth Ledger, Regulatory Atlas, Command Desk, Pocket Guide, Night Shift).
+// Loaded after globals.css on purpose: it refines those rules rather than replacing them.
+import "../styles/kits.css";
 // K2: self-hosted via @fontsource (npm-bundled WOFF2 files, no runtime
 // fetch to fonts.googleapis.com / fonts.gstatic.com at build or request
 // time — more robust than next/font/google, which still makes a live
@@ -12,6 +15,7 @@ import "@fontsource/space-grotesk/600.css";
 import ClientProviders from "../components/ClientProviders";
 import { siteConfig } from "../lib/siteConfig";
 import { Analytics } from "@vercel/analytics/react";
+import { THEME_INIT_SCRIPT } from "../lib/theme";
 
 export const metadata = {
   metadataBase: new URL(siteConfig.siteUrl),
@@ -56,8 +60,10 @@ export const viewport = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
+    <html lang="en" data-theme="light" suppressHydrationWarning>
       <head>
+        {/* Applies a saved Night Shift choice before first paint (no white flash). */}
+        <script dangerouslySetInnerHTML={{ __html: THEME_INIT_SCRIPT }} />
         <link rel="icon" href="/favicon.ico" sizes="any" />
         <link rel="apple-touch-icon" href="/icons/icon-192.png" />
         <meta name="apple-mobile-web-app-capable" content="yes" />

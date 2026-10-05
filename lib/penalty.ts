@@ -75,3 +75,64 @@ export function estimatePenalty(rule: PenaltyRule, input: PenaltyEstimateInput):
 
 export const MANDATORY_DISCLAIMER =
   "Estimate lang ito para sa awareness. Hindi ito kapalit ng aktwal na computation ng isang accountant o ng BIR para sa opisyal na pag-file.";
+
+/**
+ * BIR late-filing / late-payment rates approved by the client for this release.
+ * One source of truth: the Penalties page rate table AND the calculator below
+ * both read these constants, so the displayed rates can never drift from the math.
+ *
+ * - Micro business: 10% surcharge, 6% per annum interest (halved).
+ * - General taxpayer: 12% per annum interest. The 25% surcharge for the general
+ *   case comes from the client's PENALTIES.pdf (NIRC Sec. 248) and is unchanged.
+ */
+export const BIR_PENALTY_RATES = {
+  microSurcharge: 0.1,
+  microInterest: 0.06,
+  generalSurcharge: 0.25,
+  generalInterest: 0.12,
+} as const;
+
+export type BirTaxpayerTier = "micro" | "general";
+
+export interface BirPenaltyResult {
+  tier: BirTaxpayerTier;
+  taxDue: number;
+  daysLate: number;
+  surchargeRate: number;
+  interestRate: number; // per annum
+  surcharge: number;
+  interest: number;
+  totalPenalty: number; // surcharge + interest
+  totalAmount: number; // tax due + penalty
+  breakdown: string[];
+}
+
+const peso = (n: number) => `₱${n.toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
+
+/**
+ * Surcharge is a one-time percentage of the unpaid tax; interest is a per-annum
+ * rate accrued daily (rate × days late ÷ 365). The compromise penalty is not
+ * computed (the client source gives only a range, scaled per RMO 7-2015).
+ */
+export function estimateBirPenalty(input: { taxDue: number; daysLate: number; tier: BirTaxpayerTier }): BirPenaltyResult | null {
+  const { taxDue, daysLate, tier } = input;
+  if (validatePenaltyInput({ amount: taxDue, daysLate })) return null;
+  const surchargeRate = tier === "micro" ? BIR_PENALTY_RATES.microSurcharge : BIR_PENALTY_RATES.generalSurcharge;
+  const interestRate = tier === "micro" ? BIR_PENALTY_RATES.microInterest : BIR_PENALTY_RATES.generalInterest;
+  const late = daysLate > 0;
+  const surcharge = late ? taxDue * surchargeRate : 0;
+  const interest = late ? (taxDue * interestRate * daysLate) / 365 : 0;
+  const totalPenalty = surcharge + interest;
+  const pct = (r: number) => `${(r * 100).toFixed(0)}%`;
+  const breakdown = late
+    ? [
+        `Unpaid tax (base): ${peso(taxDue)}`,
+        `Surcharge: ${pct(surchargeRate)} × ${peso(taxDue)} = ${peso(surcharge)}`,
+        `Interest: ${pct(interestRate)} per year × ${daysLate} day(s) ÷ 365 = ${peso(interest)}`,
+        `Estimated penalty (surcharge + interest): ${peso(totalPenalty)}`,
+        `Estimated total (tax + penalty): ${peso(taxDue + totalPenalty)}`,
+      ]
+    : ["0 days late: no surcharge or interest has accrued yet."];
+  if (late && taxDue === 0) breakdown.push("No tax is due, so surcharge and interest are ₱0. Only a compromise penalty may apply; it is not computed here.");
+  return { tier, taxDue, daysLate, surchargeRate, interestRate, surcharge, interest, totalPenalty, totalAmount: taxDue + totalPenalty, breakdown };
+}

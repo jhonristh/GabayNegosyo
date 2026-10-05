@@ -20,7 +20,7 @@ export default function RequirementCard({
         <StatusBadge status={status} />
       </div>
       <h3>{requirement.name}</h3>
-      <p className="req-due">Due: {dueLabel}</p>
+      <p className="req-due">{dueLabel}</p>
     </Link>
   );
 }

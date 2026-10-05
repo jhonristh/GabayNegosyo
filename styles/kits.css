@@ -1,0 +1,473 @@
+/* ==========================================================================
+   GabayNegosyo design-kit layer
+   --------------------------------------------------------------------------
+   Loaded AFTER globals.css (see app/layout.tsx). It refines the existing rules
+   instead of replacing them, and it only changes presentation.
+
+   Kit → where it lives in the product
+     Growth Ledger    signed-in Free/Premium shell (sidebar) + /dashboard panels
+     Regulatory Atlas signed-out header + landing hero mosaic and feature cards
+     Command Desk     admin shell (icon rail + menu) + /admin review queue
+     Pocket Guide     mobile bottom bar, checklist progress card, account cards
+     Night Shift      optional theme: <html data-theme="night"> (lib/theme.ts)
+
+   Sections: 1 tokens · 2 shells · 3 Atlas · 4 Ledger · 5 Command · 6 Pocket ·
+             7 theme controls · 8 Night Shift · 9 motion
+   Contrast for the new pairs is checked by scripts/contrast-check.mjs.
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  --kit-canvas: #edf1ea;
+  --kit-panel: #ffffff;
+  --kit-line: #d5e1d5;
+  --kit-line-strong: rgba(16, 37, 29, 0.42);
+  --kit-mint: #e9f5e6;
+  --kit-track: #dbe7d9;
+  --kit-nav-on-bg: #e4f1e1;
+  --kit-nav-on-fg: #0f4a26;
+  --kit-lime: #a0ed59;
+  --kit-side-w: 236px;
+  --kit-rail-w: 56px;
+  --kit-menu-w: 188px;
+  --kit-command-canvas: #dfeae3;
+  --kit-rail-bg: #0f4a2a;
+  --kit-menu-bg: #e7f0e9;
+  --kit-mosaic-bg: #e5f0df;
+  color-scheme: light;
+}
+
+.kit-muted { opacity: 0.72; }
+.gn-small { font-size: 0.7rem; letter-spacing: 0.1em; text-transform: uppercase; font-weight: 700; }
+.kit-icon { flex: none; display: block; }
+
+/* ---------- 2. Shells ---------- */
+.kit-shell-body { min-width: 0; }
+
+/* Sidebars and rails only exist on wide screens; phones use the bottom bar. */
+.kit-sidebar, .kit-rail, .kit-menu { display: none; }
+
+@media (min-width: 860px) {
+  .kit-shell--ledger {
+    display: grid;
+    grid-template-columns: var(--kit-side-w) minmax(0, 1fr);
+    align-items: start;
+    background: var(--kit-canvas);
+    min-height: 100dvh;
+  }
+  .kit-shell--ledger .kit-shell-body { background: var(--kit-canvas); }
+  .kit-shell--ledger .page-content { min-height: calc(100dvh - 120px); }
+  .kit-shell--ledger .mobile-brand-head,
+  .kit-shell--ledger .navbar-mobile { display: none; }
+
+  .kit-shell--command {
+    display: grid;
+    grid-template-columns: var(--kit-rail-w) var(--kit-menu-w) minmax(0, 1fr);
+    gap: 12px;
+    padding: 17px;
+    align-items: start;
+    background: var(--kit-command-canvas);
+    min-height: 100dvh;
+  }
+  .kit-shell--command .navbar-admin { display: none; }
+  .kit-shell--command .page-content { min-height: calc(100dvh - 160px); }
+}
+
+@media (max-width: 859px) {
+  .kit-shell--ledger { background: var(--kit-canvas); }
+  .kit-shell--ledger .app-shell,
+  .kit-shell--ledger .page-content { background: transparent; }
+}
+
+/* ---------- 4. Growth Ledger (signed-in sidebar + panels) ---------- */
+@media (min-width: 860px) {
+  .kit-sidebar {
+    display: flex;
+    flex-direction: column;
+    gap: 22px;
+    position: sticky;
+    top: 13px;
+    height: calc(100dvh - 26px);
+    margin: 13px 0 13px 13px;
+    padding: 19px 14px;
+    background: var(--kit-panel);
+    border: 1px solid var(--kit-line);
+    border-radius: 19px;
+    overflow-y: auto;
+  }
+}
+.kit-sidebar .brand { padding: 0 4px; font-size: 1rem; }
+.kit-sidebar .brand img { width: 36px; height: 36px; }
+.kit-side-nav { display: grid; gap: 4px; font-size: 0.88rem; }
+.kit-side-nav a {
+  display: flex; align-items: center; gap: 11px;
+  padding: 11px 12px; border-radius: 10px;
+  color: var(--ink-muted); font-weight: 500;
+  transition: background-color 120ms ease, color 120ms ease;
+}
+.kit-side-nav a:hover { background: rgba(20, 93, 45, 0.07); color: var(--ink); }
+.kit-side-nav a.on { background: var(--kit-nav-on-bg); color: var(--kit-nav-on-fg); font-weight: 700; }
+.kit-side-foot { margin-top: auto; display: grid; gap: 12px; }
+
+.mobile-brand-head { justify-content: space-between; }
+
+.kit-panel {
+  background: var(--kit-panel);
+  border: 1px solid var(--kit-line);
+  border-radius: 19px;
+  padding: 22px;
+  box-shadow: var(--v06-shadow-rest);
+  min-width: 0;
+}
+.kit-panel h2 { font: 600 1.05rem var(--font-display); letter-spacing: -0.02em; margin: 0 0 14px; }
+.kit-panel .hint { margin: 14px 0 0; font-size: 0.78rem; color: var(--ink-muted); }
+
+.kit-shell--ledger .v05-dashboard { padding-top: 30px; }
+.kit-shell--ledger .v05-dash-hero { gap: 13px; margin-bottom: 13px; }
+.kit-shell--ledger .v05-dash-hero > * { border-radius: 19px; }
+.kit-ledger-row { display: grid; grid-template-columns: 1.05fr 0.95fr; gap: 13px; margin-bottom: 13px; }
+
+.kit-bars {
+  list-style: none; margin: 0; padding: 0;
+  display: grid; grid-auto-flow: column; grid-auto-columns: minmax(0, 1fr);
+  gap: 10px; align-items: end;
+}
+.kit-bars li { text-align: center; min-width: 0; }
+.kit-bar {
+  position: relative; display: block; height: 116px;
+  background: var(--kit-mint); border-radius: 8px 8px 3px 3px; overflow: hidden; margin-bottom: 9px;
+}
+.kit-bar i { position: absolute; left: 0; right: 0; bottom: 0; background: var(--gn-green); border-radius: 6px 6px 0 0; min-height: 0; }
+.kit-bars b { display: block; font-size: 0.78rem; overflow-wrap: anywhere; }
+.kit-bars small { display: block; margin-top: 2px; font-size: 0.74rem; color: var(--ink-muted); font-variant-numeric: tabular-nums; }
+
+.kit-status ul { list-style: none; margin: 0; padding: 0; }
+.kit-status li { display: flex; align-items: center; justify-content: space-between; gap: 12px; padding: 10px 0; border-bottom: 1px solid var(--kit-line); }
+.kit-status li:last-child { border-bottom: 0; }
+.kit-status b { font: 600 1.15rem var(--font-display); font-variant-numeric: tabular-nums; }
+
+@media (max-width: 859px) {
+  .kit-ledger-row { grid-template-columns: 1fr; }
+}
+
+/* ---------- 3. Regulatory Atlas (public header + landing) ---------- */
+.kit-shell--public .navbar-public {
+  background: transparent; border: 0; box-shadow: none;
+  backdrop-filter: none; -webkit-backdrop-filter: none;
+  max-width: 1240px; padding: 18px 24px; margin: 0 auto;
+}
+.navbar-public nav { gap: 22px; }
+.navbar-public nav a:not(.primary-btn) { font-weight: 600; }
+
+.kit-atlas .v05-hero { padding-top: 34px; }
+/* Hero preview: cards sit in normal flow (staggered, never overlapping) so no card covers another's
+   content, and only a slight tilt is used so rotated text stays crisp. */
+.kit-mosaic {
+  display: flex; flex-direction: column; gap: 16px; padding: 28px 26px 22px;
+  background: var(--kit-mosaic-bg); border-radius: 28px;
+  box-shadow: 12px 16px 0 rgba(20, 93, 45, 0.08);
+}
+.kit-mosaic article {
+  background: var(--kit-panel); border: 1px solid #deeadb; border-radius: 16px;
+  box-shadow: 0 12px 30px rgba(20, 59, 26, 0.09); padding: 18px; min-width: 0;
+  -webkit-font-smoothing: antialiased; text-rendering: geometricPrecision;
+  backface-visibility: hidden;
+}
+.kit-mosaic article:nth-of-type(1) { width: 82%; align-self: flex-start; transform: rotate(-1deg); }
+.kit-mosaic article:nth-of-type(2) { width: 82%; align-self: flex-end; transform: rotate(1deg); }
+.kit-mosaic article:nth-of-type(3) { width: 74%; align-self: flex-start; margin-left: 12px; transform: rotate(-0.75deg); }
+.kit-mosaic h3 { margin: 8px 0 6px; font: 600 1.1rem var(--font-display); letter-spacing: -0.01em; font-kerning: normal; font-variant-ligatures: none; }
+.kit-mosaic p { margin: 0; font-size: 0.8rem; line-height: 1.45; color: var(--ink-muted); overflow-wrap: anywhere; }
+.kit-mosaic .gn-small { color: var(--gn-green); }
+.kit-strip { height: 7px; background: #d8eed0; border-radius: 8px; margin-top: 12px; }
+.kit-strip i { display: block; width: 40%; height: 100%; background: var(--gn-green); border-radius: 8px; }
+.kit-mosaic .kit-mosaic-note { margin: 4px 0 0; font-size: 0.72rem; color: var(--ink-muted); }
+
+.kit-atlas .v05-step-grid { gap: 13px; }
+.kit-atlas .v05-step-grid article { border-radius: 16px; min-height: 0; padding: 24px; }
+.kit-atlas .v05-step-grid h3 { margin: 18px 0 10px; font-size: 1.25rem; }
+
+@media (max-width: 859px) {
+  .kit-mosaic { box-shadow: 6px 8px 0 rgba(20, 93, 45, 0.08); }
+}
+@media (max-width: 520px) {
+  .kit-mosaic { padding: 20px 16px 18px; gap: 12px; }
+  .kit-mosaic article:nth-of-type(1), .kit-mosaic article:nth-of-type(2) { width: 90%; }
+  .kit-mosaic article:nth-of-type(3) { width: 84%; margin-left: 6px; }
+}
+
+/* ---------- 5. Command Desk (admin) ---------- */
+@media (min-width: 860px) {
+  .kit-rail {
+    display: flex; flex-direction: column; align-items: center; gap: 12px;
+    position: sticky; top: 17px; height: calc(100dvh - 34px);
+    padding: 14px 8px; background: var(--kit-rail-bg); border-radius: 19px; color: #fff;
+  }
+  .kit-menu {
+    display: flex; flex-direction: column; gap: 2px;
+    position: sticky; top: 17px; height: calc(100dvh - 34px);
+    padding: 18px 12px; background: var(--kit-menu-bg); border-radius: 18px; font-size: 0.88rem; overflow-y: auto;
+  }
+}
+.kit-rail a {
+  width: 36px; height: 36px; display: grid; place-items: center; border-radius: 9px;
+  color: rgba(255, 255, 255, 0.86);
+}
+.kit-rail a.on { background: #a2e568; color: #0e351f; }
+.kit-rail .kit-rail-brand { width: 38px; height: 38px; margin-bottom: 8px; }
+.kit-rail .kit-rail-brand img { width: 35px; height: 35px; border-radius: 7px; }
+.kit-menu b { display: block; font: 600 1.05rem var(--font-display); letter-spacing: -0.03em; margin: 6px 0 22px; }
+.kit-menu > a { display: block; padding: 11px 10px; border-radius: 9px; color: var(--ink-muted); font-weight: 500; }
+.kit-menu > a:hover { background: rgba(255, 255, 255, 0.6); color: var(--ink); }
+.kit-menu > a.on { background: #fff; color: var(--ink); font-weight: 700; }
+.kit-menu-foot { margin-top: auto; display: grid; gap: 8px; }
+.kit-menu-logout {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 12px;
+  border-radius: 10px; border: 1px solid var(--kit-line-strong); background: transparent; color: var(--ink);
+  font: 600 0.8rem var(--font-body); cursor: pointer;
+}
+.admin-nav a.on { color: var(--ink); font-weight: 700; }
+
+.kit-command .metric-grid { gap: 10px; }
+.kit-command .metric-card { border-radius: 14px; }
+.kit-queue { margin: 18px 0 26px; }
+.kit-table-wrap { overflow-x: auto; margin-top: 14px; }
+.kit-queue > .hint:first-of-type { margin-top: 0; }
+.v07-upload { padding: 10px 18px; min-height: 46px; }
+.kit-table { width: 100%; border-collapse: collapse; font-size: 0.86rem; }
+.kit-table th {
+  text-align: left; padding: 6px 12px 10px 0; font-size: 0.7rem; letter-spacing: 0.08em; text-transform: uppercase;
+  color: var(--ink-muted); border-bottom: 1px solid var(--kit-line);
+}
+.kit-table td { padding: 12px 12px 12px 0; border-top: 1px solid var(--kit-line); vertical-align: middle; overflow-wrap: anywhere; }
+.kit-table tbody tr:first-child td { border-top: 0; }
+.kit-table td small { display: block; margin-top: 3px; color: var(--ink-muted); font-size: 0.74rem; }
+.kit-table td a:hover strong { text-decoration: underline; }
+.kit-agency-inline { display: none; }
+.kit-flag {
+  display: inline-block; padding: 5px 10px; border-radius: 999px; font-size: 0.74rem; font-weight: 600;
+  background: #f1f5df; color: #3a4a10; white-space: nowrap;
+}
+@media (max-width: 700px) {
+  .kit-col-agency { display: none; }
+  .kit-agency-inline { display: inline; }
+}
+
+/* ---------- 6. Pocket Guide (mobile) ---------- */
+@media (max-width: 859px) {
+  .navbar-mobile {
+    gap: 2px; padding: 8px 6px calc(8px + env(safe-area-inset-bottom));
+    background: var(--glass-bg-strong); border-top: 1px solid var(--kit-line);
+  }
+  .mobile-link {
+    flex: 1 1 0; min-width: 0; display: flex; flex-direction: column; align-items: center; gap: 3px;
+    padding: 4px 2px; font-size: 0.66rem; line-height: 1.15; color: var(--ink-muted);
+  }
+  .mobile-link span { max-width: 100%; overflow: hidden; text-overflow: ellipsis; white-space: nowrap; }
+  .mobile-link .kit-icon { box-sizing: content-box; padding: 4px 12px; border-radius: 999px; }
+  .mobile-link.active { color: var(--kit-nav-on-fg); font-weight: 700; }
+  .mobile-link.active .kit-icon { background: var(--kit-nav-on-bg); }
+  .mobile-brand-head { padding: 8px 14px; }
+}
+
+.kit-pocket .intro h1 { letter-spacing: -0.045em; }
+@media (max-width: 700px) {
+  .kit-pocket .intro h1 { font-size: 1.7rem; }
+  .kit-pocket .v07-progress-panel {
+    grid-template-columns: auto minmax(0, 1fr); gap: 16px; padding: 16px;
+    background: var(--kit-panel); border: 1px solid var(--kit-line); border-radius: 17px; justify-items: stretch;
+  }
+  .kit-pocket .v07-donut { width: 92px; }
+  .kit-pocket .v07-progress-panel h2 { font-size: 1.05rem; margin-bottom: 4px; }
+  .kit-pocket .v07-progress-panel p { font-size: 0.8rem; margin: 0 0 10px; }
+  .kit-pocket .v07-progress-actions button { min-height: 40px; padding: 8px 10px; font-size: 0.78rem; }
+  .kit-pocket .checklist-card { border-radius: 17px; box-shadow: none; padding: 14px; border-color: var(--kit-line); }
+  .kit-pocket .agency-group h2 { font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); }
+  .kit-pocket .v07-account-hero { border-radius: 19px; }
+}
+
+/* ---------- 7. Theme controls ---------- */
+.kit-theme-toggle {
+  display: inline-flex; align-items: center; gap: 8px; min-height: 40px; padding: 8px 12px;
+  border-radius: 10px; border: 1px solid var(--kit-line-strong); background: transparent; color: var(--ink);
+  font: 600 0.8rem var(--font-body); cursor: pointer; white-space: nowrap;
+  position: relative; /* contains the visually-hidden label of the icon-only variant */
+}
+.kit-theme-toggle:hover { background: rgba(20, 93, 45, 0.07); }
+.kit-theme-toggle--icon { min-width: 40px; padding: 8px; justify-content: center; }
+.kit-theme-toggle--icon span {
+  position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); white-space: nowrap;
+}
+.kit-theme-picker { border: 0; padding: 0; margin: 14px 0 0; display: grid; gap: 8px; min-width: 0; }
+.kit-theme-picker legend { position: absolute; width: 1px; height: 1px; overflow: hidden; clip: rect(0 0 0 0); }
+.kit-theme-picker label {
+  display: flex; align-items: flex-start; gap: 12px; padding: 12px 14px; border-radius: 12px;
+  border: 1px solid var(--kit-line-strong); background: var(--solid-surface); cursor: pointer;
+}
+.kit-theme-picker label.selected { border-color: var(--gn-green); box-shadow: inset 0 0 0 1px var(--gn-green); }
+.kit-theme-picker input { margin-top: 3px; accent-color: var(--gn-green); width: 18px; height: 18px; flex: none; }
+.kit-theme-picker strong { display: block; font-size: 0.92rem; color: var(--ink); }
+.kit-theme-picker small { display: block; margin-top: 2px; font-size: 0.78rem; color: var(--ink-muted); }
+
+/* ---------- 8. Night Shift (optional theme) ----------
+   Black canvas, sharp lime signal, task-first. Tokens first, then the few
+   components that hard-code light surfaces in globals.css. */
+html[data-theme="night"] {
+  --gn-sand: #151917;
+  --page-tint: #151917;
+  --ink: #f5f7f3;
+  --ink-muted: rgba(245, 247, 243, 0.76);
+  --ink-faint: rgba(245, 247, 243, 0.78);
+  --solid-surface: #202720;
+  --solid-border: rgba(245, 247, 243, 0.46);
+  --glass-bg: rgba(32, 39, 32, 0.82);
+  --glass-bg-strong: rgba(24, 29, 25, 0.94);
+  --glass-border: rgba(245, 247, 243, 0.16);
+  --gn-green: #a0ed59;
+  --gn-green-deep: #d5f4b3;
+  --gn-clay: #ff9a72;
+  --gn-clay-deep: #ffae8c;
+  --teal-text: #62dcc8;
+  --amber-text: #f2c66e;
+  --red-text: #ff9f7c;
+  --blue-text: #a5c9f7;
+  --violet-text: #c9b0ff;
+  --kit-canvas: #151917;
+  --kit-panel: #202720;
+  --kit-line: #33403a;
+  --kit-line-strong: rgba(245, 247, 243, 0.46);
+  --kit-mint: #2a352c;
+  --kit-track: #3a463d;
+  --kit-nav-on-bg: #2b3a25;
+  --kit-nav-on-fg: #c4f28f;
+  --kit-command-canvas: #151917;
+  --kit-rail-bg: #202720;
+  --kit-menu-bg: #1b211c;
+  --kit-mosaic-bg: #202720;
+  color-scheme: dark;
+}
+html[data-theme="night"] body { background: #151917; color: var(--ink); }
+html[data-theme="night"] ::placeholder { color: rgba(245, 247, 243, 0.62); }
+
+/* brand + shells */
+html[data-theme="night"] .brand { color: #f5f7f3; }
+html[data-theme="night"] .brand-highlight { color: #a0ed59; }
+html[data-theme="night"] .brand small { background: #2b3a25; color: #c4f28f; }
+html[data-theme="night"] .navbar-public,
+html[data-theme="night"] .navbar-desktop,
+html[data-theme="night"] .navbar-admin,
+html[data-theme="night"] .mobile-brand-head { background: rgba(24, 29, 25, 0.96); border-color: #33403a; }
+html[data-theme="night"] .kit-shell--public .navbar-public { background: transparent; }
+html[data-theme="night"] .navbar-public nav a:hover,
+html[data-theme="night"] .admin-nav a:hover { color: #a0ed59; }
+html[data-theme="night"] .site-footer { background: #1b211c; }
+html[data-theme="night"] .site-footer-links a { color: var(--ink-muted); }
+html[data-theme="night"] .footer-logo { background: #fff; } /* client logo JPEG stays on white, per Design-System.md */
+html[data-theme="night"] .kit-side-nav a:hover,
+html[data-theme="night"] .kit-theme-toggle:hover { background: rgba(160, 237, 89, 0.1); }
+html[data-theme="night"] .kit-menu > a:hover { background: rgba(255, 255, 255, 0.07); }
+html[data-theme="night"] .kit-menu > a.on { background: #2b3a25; color: #c4f28f; }
+html[data-theme="night"] .kit-rail a.on { background: #a0ed59; color: #102218; }
+html[data-theme="night"] .kit-flag { background: #34401f; color: #d8f2a8; }
+
+/* controls */
+html[data-theme="night"] .primary-btn { background: #a0ed59; color: #102218; box-shadow: none; }
+html[data-theme="night"] .primary-btn:hover,
+html[data-theme="night"] .primary-btn:active { background: #b9f57f; }
+html[data-theme="night"] .primary-btn:disabled { background: #3a423c; color: #aab6ab; }
+html[data-theme="night"] .primary-btn.is-loading::after { border-color: rgba(16, 34, 24, 0.35); border-top-color: #102218; }
+html[data-theme="night"] .secondary-btn,
+html[data-theme="night"] .text-input,
+html[data-theme="night"] .option-btn,
+html[data-theme="night"] .filter-chip { background: var(--solid-surface); color: var(--ink); }
+html[data-theme="night"] .secondary-btn:hover { background: rgba(160, 237, 89, 0.1); border-color: #a0ed59; }
+html[data-theme="night"] .option-btn.selected { background: #2b3a25; color: #c4f28f; border-color: #a0ed59; }
+html[data-theme="night"] .filter-chip.selected { background: #a0ed59; color: #102218; border-color: #a0ed59; }
+html[data-theme="night"] .wizard-step-dot.done,
+html[data-theme="night"] .wizard-step-dot.active { color: #102218; }
+html[data-theme="night"] .text-btn { color: var(--ink-muted); }
+
+/* landing */
+html[data-theme="night"] .v05-hero h1 em { color: #a0ed59; }
+html[data-theme="night"] .client-brand-intro,
+html[data-theme="night"] .v05-step-grid article,
+html[data-theme="night"] .kit-mosaic article,
+html[data-theme="night"] .v07-plan-grid article,
+html[data-theme="night"] .credit-person { background: var(--kit-panel); border-color: var(--kit-line); color: var(--ink); }
+html[data-theme="night"] .client-brand-intro { color: #f5f7f3; }
+html[data-theme="night"] .client-brand-intro small { color: #a0ed59; }
+html[data-theme="night"] .v05-feature-band,
+html[data-theme="night"] .v07-plan-grid article.featured,
+html[data-theme="night"] .kit-mosaic { background: #1f2a20; }
+html[data-theme="night"] .kit-mosaic { box-shadow: none; }
+html[data-theme="night"] .v05-feature-links a { border-color: #3c4a3f; }
+html[data-theme="night"] .v05-trust { border-color: #33403a; }
+html[data-theme="night"] .kit-strip { background: #3a463d; }
+html[data-theme="night"] .credit-portrait { background: #2a352c; color: var(--ink-muted); }
+
+/* dashboard */
+html[data-theme="night"] .v05-dash-intro .business-chip-row,
+html[data-theme="night"] .v05-dashboard .quick-action-btn,
+html[data-theme="night"] .v06-media-card,
+html[data-theme="night"] .v07-calendar,
+html[data-theme="night"] .v07-admin-links a,
+html[data-theme="night"] .guide-card,
+html[data-theme="night"] .admin-list-card { background: var(--kit-panel); border-color: var(--kit-line); color: var(--ink); }
+html[data-theme="night"] .v05-dash-intro .chip,
+html[data-theme="night"] .v05-dashboard .req-agency-tag { background: #2b3a25; color: #c4f28f; border-color: #3e5233; }
+html[data-theme="night"] .req-agency-tag { background: #2b3a25; color: #c4f28f; }
+html[data-theme="night"] .v05-next-card,
+html[data-theme="night"] .v07-progress-panel { background: #26301f; color: var(--ink); border-color: #3a4a30; }
+html[data-theme="night"] .v05-next-card a { color: #c4f28f; }
+html[data-theme="night"] .v05-dash-hero .dashboard-progress { background: #a0ed59; color: #102218; }
+html[data-theme="night"] .v05-dash-hero .dashboard-progress .v05-kicker,
+html[data-theme="night"] .v05-dash-hero .dashboard-progress .hint,
+html[data-theme="night"] .v05-dash-hero .progress-bar-label { color: #102218; }
+html[data-theme="night"] .v05-dash-hero .progress-bar-track { background: #78b73f; }
+html[data-theme="night"] .v05-dash-hero .progress-bar-fill { background: #163a22; }
+html[data-theme="night"] .v05-progress-number { color: #102218; }
+html[data-theme="night"] .progress-bar-track { background: rgba(245, 247, 243, 0.16); }
+html[data-theme="night"] .v07-donut > div { background: var(--kit-panel); }
+html[data-theme="night"] .v07-donut strong { color: #f5f7f3; }
+html[data-theme="night"] .v07-progress-actions button,
+html[data-theme="night"] .v07-calendar-nav button { background: var(--kit-panel); color: var(--ink); border-color: #55655a; }
+html[data-theme="night"] .v07-progress-actions button:hover,
+html[data-theme="night"] .v07-calendar-nav button:hover { background: #2b3a25; }
+html[data-theme="night"] .v07-calendar-grid button { background: #262e27; color: var(--ink); }
+html[data-theme="night"] .v07-calendar-grid button:hover,
+html[data-theme="night"] .v07-calendar-grid button.selected { background: #2b3a25; border-color: #a0ed59; }
+html[data-theme="night"] .v07-calendar-grid button b { background: #a0ed59; color: #102218; }
+html[data-theme="night"] .v07-account-hero { background: #26301f; color: var(--ink); border: 1px solid #3a4a30; }
+html[data-theme="night"] .v07-avatar,
+html[data-theme="night"] .v07-plan-tag { background: #2b3a25; color: #c4f28f; }
+html[data-theme="night"] .v07-credits a,
+html[data-theme="night"] .v07-account-credits a { color: #c4f28f; }
+
+/* guide, resources, admin */
+html[data-theme="night"] .guide-note,
+html[data-theme="night"] .admin-help { background: #26301f; border-color: #a0ed59; color: var(--ink); }
+html[data-theme="night"] .guide-locked,
+html[data-theme="night"] .v06-unavailable { background: #262e27; color: var(--ink) !important; }
+html[data-theme="night"] .guide-card small { color: var(--ink-muted); }
+html[data-theme="night"] .v06-document-art,
+html[data-theme="night"] .v06-resource-art { background: #26301f; border-color: var(--kit-line); color: #c4f28f; }
+html[data-theme="night"] .v06-document-art span,
+html[data-theme="night"] .v06-document-art strong { color: #c4f28f; }
+html[data-theme="night"] .v06-document-art::after { background: #202720; border-color: #3e5233; box-shadow: -6px 4px 0 #2b3a25; }
+html[data-theme="night"] .v06-document-art i { background: #3e5233; }
+html[data-theme="night"] .v06-preview-dialog { border-color: #3e4c41; color: var(--ink); background: #1b211c; }
+html[data-theme="night"] .v06-dialog-header { background: #202720; }
+html[data-theme="night"] .v06-close { background: #202720; color: var(--ink); border-color: #55655a; }
+html[data-theme="night"] .v06-eyebrow { color: #a0ed59; }
+html[data-theme="night"] .metric-card { background: var(--kit-panel); border-color: var(--kit-line); }
+html[data-theme="night"] .kit-table td, html[data-theme="night"] .kit-table th { border-color: var(--kit-line); }
+html[data-theme="night"] .kit-bar i { background: #a0ed59; }
+
+/* toasts, empty/error states */
+html[data-theme="night"] .toast { background: #202720; color: var(--ink); }
+html[data-theme="night"] .toast-error { color: var(--red-text); }
+
+/* ---------- 9. Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .kit-side-nav a, .kit-theme-toggle { transition: none !important; }
+}

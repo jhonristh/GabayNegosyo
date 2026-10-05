@@ -10,7 +10,8 @@
         "planning",
         "newly_registered",
         "operating"
-      ]
+      ],
+      "isRegisteringNewBusiness": true
     },
     "requiredDocuments": [
       {
@@ -26,8 +27,6 @@
       "Display the Certificate of Registration (COR) at the business premises."
     ],
     "deadlineDescription": "Before starting business operations",
-    "deadlineMonth": 1,
-    "deadlineDay": 1,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
@@ -36,7 +35,8 @@
     "tutorialId": "tut-bir-registration",
     "lastVerified": "2026-09-20",
     "complianceStage": "BIR Compliance",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "one_time"
   },
   {
     "id": "sss-employer-reg",
@@ -66,8 +66,6 @@
       "Register each employee (R-1A) before their first contribution."
     ],
     "deadlineDescription": "Before the first employee's first day of work",
-    "deadlineMonth": 1,
-    "deadlineDay": 30,
     "penaltyRule": {
       "type": "monthly_percentage",
       "monthlyRate": 0.02,
@@ -76,7 +74,8 @@
     "officialUrl": "https://www.sss.gov.ph/sss/appmanager/pages.jsp?page=eregistration",
     "tutorialId": "tut-sss-registration",
     "lastVerified": "2026-08-01",
-    "contentSource": "prototype_placeholder"
+    "contentSource": "prototype_placeholder",
+    "deadlineKind": "one_time"
   },
   {
     "id": "sss-contribution",
@@ -101,8 +100,6 @@
       "Keep payment confirmation for your records."
     ],
     "deadlineDescription": "Monthly, based on your SSS payment schedule",
-    "deadlineMonth": 12,
-    "deadlineDay": 31,
     "penaltyRule": {
       "type": "monthly_percentage",
       "monthlyRate": 0.02,
@@ -111,7 +108,8 @@
     "officialUrl": "https://www.sss.gov.ph",
     "tutorialId": "tut-sss-contribution",
     "lastVerified": "2026-08-01",
-    "contentSource": "prototype_placeholder"
+    "contentSource": "prototype_placeholder",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "philhealth-employer-reg",
@@ -140,8 +138,6 @@
       "Enroll each employee under your employer account."
     ],
     "deadlineDescription": "Within 30 days of hiring your first employee",
-    "deadlineMonth": 2,
-    "deadlineDay": 28,
     "penaltyRule": {
       "type": "monthly_percentage",
       "monthlyRate": 0.03,
@@ -150,7 +146,8 @@
     "officialUrl": "https://www.philhealth.gov.ph",
     "tutorialId": "tut-philhealth-registration",
     "lastVerified": "2026-08-01",
-    "contentSource": "prototype_placeholder"
+    "contentSource": "prototype_placeholder",
+    "deadlineKind": "one_time"
   },
   {
     "id": "pagibig-employer-reg",
@@ -179,8 +176,6 @@
       "Enroll employees and begin monthly remittance."
     ],
     "deadlineDescription": "Before the first remittance is due",
-    "deadlineMonth": 2,
-    "deadlineDay": 28,
     "penaltyRule": {
       "type": "monthly_percentage",
       "monthlyRate": 0.02,
@@ -189,7 +184,8 @@
     "officialUrl": "https://www.pagibigfund.gov.ph",
     "tutorialId": "tut-pagibig-registration",
     "lastVerified": "2026-08-01",
-    "contentSource": "prototype_placeholder"
+    "contentSource": "prototype_placeholder",
+    "deadlineKind": "one_time"
   },
   {
     "id": "lgu-permit-renewal",
@@ -234,7 +230,8 @@
     "officialUrl": "https://www.dilg.gov.ph",
     "tutorialId": "tut-lgu-renewal",
     "lastVerified": "2026-08-01",
-    "contentSource": "prototype_placeholder"
+    "contentSource": "prototype_placeholder",
+    "deadlineKind": "fixed_annual"
   },
   {
     "id": "lgu-barangay-mayors-clearance",
@@ -266,15 +263,14 @@
     ],
     "complianceStage": "Pre-Registration",
     "deadlineDescription": "Before applying for BIR registration.",
-    "deadlineMonth": 1,
-    "deadlineDay": 1,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://www.dilg.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "one_time"
   },
   {
     "id": "bir-registration-filing",
@@ -313,15 +309,14 @@
     ],
     "complianceStage": "BIR Registration",
     "deadlineDescription": "Within 30 days from applicable business registration.",
-    "deadlineMonth": 2,
-    "deadlineDay": 1,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "one_time"
   },
   {
     "id": "bir-books-of-accounts",
@@ -334,7 +329,8 @@
         "self_employment_or_profession",
         "purely_business",
         "mixed_income_earner"
-      ]
+      ],
+      "isRegisteringNewBusiness": true
     },
     "requiredDocuments": [
       {
@@ -382,15 +378,14 @@
     ],
     "complianceStage": "Books Registration",
     "deadlineDescription": "Before starting business operations.",
-    "deadlineMonth": 1,
-    "deadlineDay": 1,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "one_time"
   },
   {
     "id": "bir-orus-registration",
@@ -403,7 +398,8 @@
         "self_employment_or_profession",
         "purely_business",
         "mixed_income_earner"
-      ]
+      ],
+      "isRegisteringNewBusiness": true
     },
     "requiredDocuments": [
       {
@@ -437,15 +433,14 @@
     ],
     "complianceStage": "ORUS Registration",
     "deadlineDescription": "Before starting business operations.",
-    "deadlineMonth": 1,
-    "deadlineDay": 1,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "one_time"
   },
   {
     "id": "bir-1906-authority-to-print",
@@ -458,7 +453,8 @@
         "self_employment_or_profession",
         "purely_business",
         "mixed_income_earner"
-      ]
+      ],
+      "isRegisteringNewBusiness": true
     },
     "requiredDocuments": [
       {
@@ -482,15 +478,14 @@
     ],
     "complianceStage": "Receipt Compliance",
     "deadlineDescription": "Before issuing receipts/invoices.",
-    "deadlineMonth": 1,
-    "deadlineDay": 1,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/BIR/pdf/1906%20October%202025%20ENCS%20Final.pdf",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "one_time"
   },
   {
     "id": "bir-2000-dst",
@@ -538,15 +533,14 @@
     ],
     "complianceStage": "BIR Compliance",
     "deadlineDescription": "Within 5 days after the close of the month the taxable document was executed.",
-    "deadlineMonth": 12,
-    "deadlineDay": 5,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source. Specific DST rates per ATC and penalty rates for late filing are not itemized in the source."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2000-DST%20Jan%202018%20final.pdf",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-1700-compensation",
@@ -586,7 +580,8 @@
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "fixed_annual"
   },
   {
     "id": "bir-1701-self-employed",
@@ -638,7 +633,8 @@
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "fixed_annual"
   },
   {
     "id": "bir-1701q-quarterly",
@@ -673,15 +669,14 @@
     ],
     "complianceStage": "Individual Taxpayers",
     "deadlineDescription": "Quarterly (specific calendar due dates per quarter are not itemized in the current content source; shown here as an approximate annual anchor).",
-    "deadlineMonth": 5,
-    "deadlineDay": 15,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701Q%20Jan%202018%20final%20rev2_copy.pdf",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-1701a-8percent",
@@ -728,7 +723,8 @@
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701A%20Jan%202018%20v5%20with%20rates.pdf",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "fixed_annual"
   },
   {
     "id": "bir-0619f-monthly-final",
@@ -767,15 +763,14 @@
     ],
     "complianceStage": "Final Withholding Tax",
     "deadlineDescription": "Monthly (specific due date not specified in the current content source).",
-    "deadlineMonth": 12,
-    "deadlineDay": 31,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-1601fq-quarterly-final",
@@ -809,15 +804,14 @@
     ],
     "complianceStage": "Final Withholding Tax",
     "deadlineDescription": "Quarterly (specific calendar due date not specified in the current content source).",
-    "deadlineMonth": 5,
-    "deadlineDay": 15,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-1601eq-quarterly-expanded",
@@ -867,15 +861,14 @@
     ],
     "complianceStage": "Expanded Withholding Tax",
     "deadlineDescription": "Quarterly (specific calendar due date not specified in the current content source).",
-    "deadlineMonth": 5,
-    "deadlineDay": 15,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1601-EQ%20January%202019%20ENCS%20final.pdf",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-0619e-monthly-expanded",
@@ -926,15 +919,14 @@
     ],
     "complianceStage": "Expanded Withholding Tax",
     "deadlineDescription": "Monthly (1st and 2nd month of each quarter), on or before the 10th of the following month.",
-    "deadlineMonth": 12,
-    "deadlineDay": 10,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source. Surcharge/interest/compromise penalty computation is referenced but rates are not itemized in the source."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/0619-E%20Jan%202018%20rev%20final.pdf",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-2307-certificate",
@@ -978,15 +970,14 @@
     ],
     "complianceStage": "Expanded Withholding Tax",
     "deadlineDescription": "Issued at the time each covered payment is made.",
-    "deadlineMonth": 12,
-    "deadlineDay": 31,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-1601c-monthly-compensation",
@@ -1023,15 +1014,14 @@
     ],
     "complianceStage": "Compensation Withholding",
     "deadlineDescription": "Monthly (specific due date not specified in the current content source).",
-    "deadlineMonth": 12,
-    "deadlineDay": 31,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1601C%20final%20Jan%202018%20with%20DPA.pdf",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-1604c-annual-compensation",
@@ -1067,15 +1057,14 @@
     ],
     "complianceStage": "Compensation Withholding",
     "deadlineDescription": "Annually (specific calendar due date not specified in the current content source).",
-    "deadlineMonth": 1,
-    "deadlineDay": 31,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1604-C%20Jan%202018%20Final.pdf",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   },
   {
     "id": "bir-2316-certificate",
@@ -1111,14 +1100,13 @@
     ],
     "complianceStage": "Compensation Withholding",
     "deadlineDescription": "Annually, issued to each employee (specific calendar due date not specified in the current content source).",
-    "deadlineMonth": 1,
-    "deadlineDay": 31,
     "penaltyRule": {
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
-    "contentSource": "flowchart_final_workbook"
+    "contentSource": "flowchart_final_workbook",
+    "deadlineKind": "recurring_variable"
   }
 ]

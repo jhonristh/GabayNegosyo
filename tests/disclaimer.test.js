@@ -11,10 +11,7 @@ const EXPECTED =
   "Estimate lang ito para sa awareness. Hindi ito kapalit ng aktwal na computation ng isang accountant o ng BIR para sa opisyal na pag-file.";
 
 const penaltySrc = fs.readFileSync(path.join(__dirname, "..", "lib", "penalty.ts"), "utf8");
-const simulatorSrc = fs.readFileSync(
-  path.join(__dirname, "..", "app", "premium", "penalty-simulator", "page.tsx"),
-  "utf8"
-);
+const simulatorSrc = fs.readFileSync(path.join(__dirname, "..", "components", "PenaltyCalculator.tsx"), "utf8");
 
 test("the exact disclaimer string is defined in lib/penalty.ts", () => {
   assert.ok(penaltySrc.includes(EXPECTED), "MANDATORY_DISCLAIMER does not match the client's exact wording");

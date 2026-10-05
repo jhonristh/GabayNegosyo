@@ -104,6 +104,8 @@ export type ContentSource =
   | "registration_wizard_txt" // Actual Contents for Registration Wizard.txt
   | "prototype_placeholder"; // earlier MVP demo content, not yet sourced from client material
 
+export type DeadlineKind = "fixed_annual" | "one_time" | "recurring_variable";
+
 export interface Requirement {
   id: string;
   agencyId: string;
@@ -115,8 +117,16 @@ export interface Requirement {
   instructions: string[]; // step by step ("Action Step" column in the workbook)
   complianceStage?: string; // e.g. "Pre-Registration", "BIR Registration", "Books Registration"
   deadlineDescription: string; // human-readable recurrence, e.g. "Annually, May 15"
-  deadlineMonth: number; // 1-12, used to compute next due date
-  deadlineDay: number;
+  /**
+   * v0.12: how the deadline behaves. Only "fixed_annual" has a calendar date
+   * (deadlineMonth/deadlineDay). The others never show an invented date:
+   *  - one_time:           a single step with timing relative to an event
+   *  - recurring_variable: recurs (monthly/quarterly/...) but the content source
+   *                        gives no single calendar date
+   */
+  deadlineKind: DeadlineKind;
+  deadlineMonth?: number; // 1-12, fixed_annual only
+  deadlineDay?: number; // fixed_annual only
   penaltyRule: PenaltyRule;
   officialUrl: string;
   tutorialId?: string;
@@ -151,7 +161,15 @@ export interface Tutorial {
   archived?: boolean;
 }
 
-export type RequirementStatus = "upcoming" | "due_soon" | "due_today" | "overdue" | "completed";
+export type RequirementStatus = "upcoming" | "due_soon" | "due_today" | "overdue" | "completed" | "no_deadline";
+
+/** One checked step of a requirement. `cycle` is the due year for fixed_annual items, "once" otherwise. */
+export interface TaskProgressItem {
+  requirementId: string;
+  cycle: string;
+  taskIndex: number;
+  completedAt: string;
+}
 
 export interface ChecklistItem {
   requirementId: string;

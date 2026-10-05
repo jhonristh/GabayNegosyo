@@ -7,6 +7,7 @@ const LABELS: Record<RequirementStatus, string> = {
   due_today: "Due today",
   overdue: "Overdue",
   completed: "Completed",
+  no_deadline: "No fixed date",
 };
 
 /**

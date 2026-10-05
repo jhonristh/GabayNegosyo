@@ -5,10 +5,12 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
 import ProgressBar from "../../components/ProgressBar";
+import AgencyProgress, { buildAgencyProgress } from "../../components/AgencyProgress";
+import StatusBadge from "../../components/StatusBadge";
 import RequirementCard from "../../components/RequirementCard";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
-import { generateApplicableRequirements, computeNextDueDate, computeStatus } from "../../lib/ruleEngine";
+import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
 import type { BusinessProfile, RequirementStatus } from "../../lib/types";
 
 function DashboardInner() {
@@ -59,10 +61,8 @@ function DashboardInner() {
   const progress = db.getProgress();
 
   const items = applicable.map((req) => {
-    const dueDate = computeNextDueDate(req);
-    const completedAt = progress[req.id]?.completedAt;
-    const status: RequirementStatus = computeStatus(dueDate, completedAt);
-    return { req, dueDate, status };
+    const { dueDate, status } = resolveObligation(req, progress[req.id], new Date(), profile.createdAt);
+    return { req, dueDate, status: status as RequirementStatus };
   });
 
   const completed = items.filter((i) => i.status === "completed");
@@ -70,26 +70,35 @@ function DashboardInner() {
   const dueToday = items.filter((i) => i.status === "due_today");
   const dueSoon = items.filter((i) => i.status === "due_soon");
   const upcoming = items.filter((i) => i.status === "upcoming");
+  const noDeadline = items.filter((i) => i.status === "no_deadline");
   // Most urgent first, then soonest deadline. Previously "Up next" and the
   // five-item list followed data-file order, so the nearest deadline could
   // be hidden behind items due months later.
-  const byDate = (a: (typeof items)[number], b: (typeof items)[number]) => a.dueDate.getTime() - b.dueDate.getTime();
-  const pending = [...overdue.sort(byDate), ...dueToday, ...dueSoon.sort(byDate), ...upcoming.sort(byDate)];
+  const byDate = (a: (typeof items)[number], b: (typeof items)[number]) => compareByDue(a, b);
+  const pending = [...overdue.sort(byDate), ...dueToday, ...dueSoon.sort(byDate), ...upcoming.sort(byDate), ...noDeadline];
   const next = pending[0];
   const percent = items.length ? Math.round((completed.length / items.length) * 100) : 0;
+
+  const agencyRows = buildAgencyProgress(agencies, items);
+  const statusRows: { status: RequirementStatus; count: number }[] = [
+    { status: "overdue", count: overdue.length },
+    { status: "due_today", count: dueToday.length },
+    { status: "due_soon", count: dueSoon.length },
+    { status: "upcoming", count: upcoming.length },
+    { status: "no_deadline", count: noDeadline.length },
+    { status: "completed", count: completed.length },
+  ];
 
   function agencyName(agencyId: string) {
     return agencies.find((a) => a.id === agencyId)?.name ?? agencyId;
   }
 
-  function dueLabel(d: Date) {
-    return d.toLocaleDateString("en-PH", { month: "long", day: "numeric", year: "numeric" });
-  }
+  const dueLabel = formatDueLabel;
 
   return (
     <main className="screen v05-dashboard">
-      <header className="intro v05-dash-intro">
-        <p className="v05-kicker">YOUR BUSINESS OVERVIEW</p>
+      <header className="intro v05-dash-intro kit-ledger-top">
+        <p className="v05-kicker">YOUR BUSINESS WORKSPACE</p>
         <h1>Welcome back, {user?.name.split(" ")[0]}.</h1>
         <p>Here’s where your compliance journey stands today.</p>
         <div className="business-chip-row">
@@ -104,13 +113,13 @@ function DashboardInner() {
           <p className="v05-kicker">YOUR PROGRESS</p>
           <strong className="v05-progress-number">{percent}<small>%</small></strong>
           <ProgressBar percent={percent} />
-          <p className="hint">{completed.length} of {items.length} requirements completed</p>
+          <p className="hint">{completed.length} of {items.length} requirements completed · {pending.length} pending</p>
         </section>
         <section className="v05-next-card">
           <p className="v05-kicker">UP NEXT</p>
           {next ? <>
             <h2>{next.req.name}</h2>
-            <p>{agencyName(next.req.agencyId)} · {dueLabel(next.dueDate)}</p>
+            <p>{agencyName(next.req.agencyId)} · {next.dueDate ? dueLabel(next.dueDate) : next.req.deadlineDescription}</p>
             <Link href={`/requirements/${next.req.id}`}>View requirement <span aria-hidden="true">↗</span></Link>
           </> : <><h2>All caught up.</h2><p>There are no pending items in your checklist.</p><Link href="/checklist">View checklist ↗</Link></>}
         </section>
@@ -134,6 +143,22 @@ function DashboardInner() {
           )}
         </section>
       )}
+
+      <div className="kit-ledger-row">
+        <AgencyProgress rows={agencyRows} />
+        <section className="kit-panel kit-status" aria-labelledby="kit-status-title">
+          <h2 id="kit-status-title">Where things stand</h2>
+          <ul>
+            {statusRows.map(({ status, count }) => (
+              <li key={status}>
+                <StatusBadge status={status} />
+                <b>{count}</b>
+              </li>
+            ))}
+          </ul>
+          <p className="hint">Verify dates with the issuing agency before relying on them.</p>
+        </section>
+      </div>
 
       <section className="quick-actions" aria-label="Quick actions">
         <Link href="/checklist" className="quick-action-btn">
@@ -159,7 +184,7 @@ function DashboardInner() {
         </div>
         {pending.length === 0 && <p className="hint">Nothing pending. Great work.</p>}
         {pending.slice(0, 5).map(({ req, status, dueDate }) => (
-          <RequirementCard key={req.id} requirement={req} status={status} dueLabel={dueLabel(dueDate)} agencyName={agencyName(req.agencyId)} />
+          <RequirementCard key={req.id} requirement={req} status={status} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : "No fixed date"} agencyName={agencyName(req.agencyId)} />
         ))}
       </section>
 
@@ -167,7 +192,7 @@ function DashboardInner() {
         <section className="dashboard-section">
           <h2>Completed</h2>
           {completed.map(({ req, status, dueDate }) => (
-            <RequirementCard key={req.id} requirement={req} status={status} dueLabel={dueLabel(dueDate)} agencyName={agencyName(req.agencyId)} />
+            <RequirementCard key={req.id} requirement={req} status={status} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : "No fixed date"} agencyName={agencyName(req.agencyId)} />
           ))}
         </section>
       )}
