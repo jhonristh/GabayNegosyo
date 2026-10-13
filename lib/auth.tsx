@@ -4,6 +4,18 @@ import { createContext, useContext, useEffect, useRef, useState, type ReactNode 
 import type { Session } from "@supabase/supabase-js";
 import { getSupabase } from "./supabase";
 import { db } from "./db";
+import { friendlyAuthError, friendlyEmailAuthError } from "./authErrors";
+import { authRedirectUrl } from "./authRedirect";
+import {
+  DEMO_ACCOUNTS,
+  DEMO_ENABLED,
+  demoUserId,
+  getActiveDemoRole,
+  setActiveDemoRole,
+  wipeDemoStorage,
+  type DemoRole,
+} from "./demoAccounts";
+import { demoSeedProfile } from "./demoSeed";
 import type { Role, User } from "./types";
 
 /**
@@ -37,6 +49,12 @@ interface AuthContextValue {
   logout: () => Promise<void>;
   /** Resolves true when the role change was saved; false when it was not. */
   upgradeToPremium: () => Promise<boolean>;
+  /** Browser-only demo session. No Supabase user, profile or password is involved. */
+  startDemo: (role: DemoRole) => void;
+  /** Resets this browser's demo data to the sample records. */
+  resetDemo: () => void;
+  /** Permanently deletes the signed-in real account through the server route. */
+  deleteAccount: (password?: string) => Promise<{ ok: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -71,12 +89,27 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   const [loading, setLoading] = useState(true);
   const currentId = useRef<string | null>(null);
 
+  function applyDemo(role: DemoRole): User {
+    const account = DEMO_ACCOUNTS.find((a) => a.role === role)!;
+    const id = demoUserId(role);
+    db.enterDemo(id, demoSeedProfile(id));
+    const demoUser: User = { id, email: account.email, name: account.name, role, createdAt: new Date(0).toISOString(), isDemo: true };
+    currentId.current = id;
+    setUser(demoUser);
+    return demoUser;
+  }
+
   async function apply(session: Session | null): Promise<User | null> {
     if (!session) {
       currentId.current = null;
       db.clearUserData();
       setUser(null);
       return null;
+    }
+    // A real sign-in always replaces any demo session: demo data never carries over.
+    if (getActiveDemoRole()) {
+      setActiveDemoRole(null);
+      db.clearUserData();
     }
     const u = await loadUser(session);
     currentId.current = u.id;
@@ -93,6 +126,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       // login form) must still render. Nobody can be signed in, so behave as
       // signed-out instead of throwing out of the root provider.
       console.error("[auth]", err instanceof Error ? err.message : err);
+      const demoRole = DEMO_ENABLED ? getActiveDemoRole() : null;
+      if (demoRole) applyDemo(demoRole);
       setLoading(false);
       return;
     }
@@ -102,7 +137,15 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     supabase.auth
       .getSession()
       .then(async ({ data }) => {
-        if (active) await apply(data.session);
+        if (!active) return;
+        if (data.session) {
+          await apply(data.session);
+        } else if (DEMO_ENABLED && getActiveDemoRole()) {
+          applyDemo(getActiveDemoRole()!); // only when no real session exists
+        } else {
+          setActiveDemoRole(null);
+          await apply(null);
+        }
       })
       .catch((err) => console.error("[auth] could not restore your session:", err))
       .finally(() => {
@@ -114,7 +157,8 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     //    so the work is deferred with setTimeout.
     const { data: sub } = supabase.auth.onAuthStateChange((event, session) => {
       if (event === "SIGNED_OUT") {
-        setTimeout(() => active && apply(null), 0);
+        // Signing out of a real account must not tear down an unrelated demo session.
+        setTimeout(() => active && !currentId.current?.startsWith("demo-") && apply(null), 0);
       } else if (event === "SIGNED_IN" && session && session.user.id !== currentId.current) {
         setTimeout(() => active && apply(session), 0);
       }
@@ -129,21 +173,25 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function login(email: string, password: string): Promise<AuthResult> {
     const { data, error } = await getSupabase().auth.signInWithPassword({ email, password });
-    if (error) return { ok: false, error: error.message };
+    if (error) return { ok: false, error: friendlyEmailAuthError(error.message) };
     const u = await apply(data.session);
     return { ok: true, user: u ?? undefined };
   }
 
   async function signup(name: string, email: string, password: string): Promise<AuthResult> {
+    const redirectTo = authRedirectUrl("/auth/confirmed");
+    if (!redirectTo) {
+      return { ok: false, error: "This site's public web address is not configured, so we cannot send a safe confirmation link. Please contact the site owner." };
+    }
     const { data, error } = await getSupabase().auth.signUp({
       email,
       password,
       options: {
         data: { name }, // copied into profiles.name by the database trigger
-        emailRedirectTo: `${window.location.origin}/wizard`, // where the confirmation link lands
+        emailRedirectTo: redirectTo, // validated public site URL + allow-listed route; must also be allowed in Supabase
       },
     });
-    if (error) return { ok: false, error: error.message };
+    if (error) return { ok: false, error: friendlyEmailAuthError(error.message) };
 
     // Supabase returns an "obfuscated" user with no identities when the email is already registered.
     if (data.user && data.user.identities && data.user.identities.length === 0) {
@@ -159,15 +207,32 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   async function loginWithGoogle(): Promise<AuthResult> {
-    const { error } = await getSupabase().auth.signInWithOAuth({
-      provider: "google",
-      options: { redirectTo: `${window.location.origin}/dashboard` },
-    });
-    // On success the browser navigates away to Google, so there is nothing else to do here.
-    return error ? { ok: false, error: error.message } : { ok: true };
+    try {
+      const redirectTo = authRedirectUrl("/login");
+      if (!redirectTo) return { ok: false, error: friendlyAuthError("redirect invalid") };
+      const { error } = await getSupabase().auth.signInWithOAuth({
+        provider: "google",
+        // Come back to /login: it shows any error from the round-trip and routes
+        // signed-in users onward (new users to the wizard, returning users to the dashboard).
+        options: { redirectTo, queryParams: { prompt: "select_account" } },
+      });
+      // On success the browser navigates away to Google, so there is nothing else to do here.
+      return error ? { ok: false, error: friendlyAuthError(error.message) } : { ok: true };
+    } catch (err) {
+      return { ok: false, error: friendlyAuthError(err instanceof Error ? err.message : String(err)) };
+    }
   }
 
   async function logout() {
+    if (user?.isDemo) {
+      // Exit demo: clear only the demo session. A real Supabase session (if any) is untouched.
+      setActiveDemoRole(null);
+      wipeDemoStorage();
+      db.clearUserData();
+      currentId.current = null;
+      setUser(null);
+      return;
+    }
     await getSupabase().auth.signOut();
     await apply(null);
     // K3/L13: purge the service worker's runtime cache so nothing from
@@ -184,6 +249,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
    */
   async function upgradeToPremium(): Promise<boolean> {
     if (!user) return false;
+    if (user.isDemo) {
+      // Local preview only: no RPC, no Supabase call.
+      setUser({ ...user, role: "premium" });
+      setActiveDemoRole("premium");
+      return true;
+    }
     const supabase = getSupabase();
     const { error } = await supabase.rpc("upgrade_to_premium_demo");
     if (error) {
@@ -194,8 +265,50 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return true;
   }
 
+  function startDemo(role: DemoRole) {
+    if (!DEMO_ENABLED || currentId.current) return; // never replace a signed-in real user
+    wipeDemoStorage();
+    setActiveDemoRole(role);
+    applyDemo(role);
+  }
+
+  function resetDemo() {
+    const role = getActiveDemoRole();
+    if (!user?.isDemo || !role) return; // never resets (or deletes) a real account
+    wipeDemoStorage();
+    applyDemo(role);
+  }
+
+  async function deleteAccount(password?: string): Promise<{ ok: boolean; error?: string }> {
+    // Demo mode must never reach the real deletion endpoint.
+    if (!user || user.isDemo) return { ok: false, error: "Demo accounts are not real. Use Reset demo data instead." };
+    const supabase = getSupabase();
+    // Re-authenticate (email/password accounts) so a stolen open tab cannot delete the account.
+    if (password !== undefined) {
+      const { error } = await supabase.auth.signInWithPassword({ email: user.email, password });
+      if (error) return { ok: false, error: "That password is not correct." };
+    }
+    const { data } = await supabase.auth.getSession();
+    const token = data.session?.access_token;
+    if (!token) return { ok: false, error: "Your session has expired. Please log in again, then retry." };
+    let res: Response;
+    try {
+      res = await fetch("/api/delete-account", { method: "POST", headers: { Authorization: `Bearer ${token}` } });
+    } catch {
+      return { ok: false, error: "We could not reach the server. Your account was not deleted." };
+    }
+    const payload = await res.json().catch(() => ({}));
+    if (!res.ok) return { ok: false, error: payload.error ?? "We could not delete your account. Nothing was deleted." };
+    await supabase.auth.signOut().catch(() => undefined);
+    await apply(null);
+    if (typeof navigator !== "undefined" && navigator.serviceWorker?.controller) {
+      navigator.serviceWorker.controller.postMessage("purge-runtime-cache");
+    }
+    return { ok: true };
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, upgradeToPremium }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, upgradeToPremium, startDemo, resetDemo, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );

@@ -1,4 +1,4 @@
-// Lifecycle journey + client-approved BIR penalty rates.
+// Lifecycle journey + approved BIR penalty rates.
 const test = require("node:test");
 const assert = require("node:assert");
 const fs = require("node:fs");
@@ -19,7 +19,7 @@ test("each stage page exists and renders the journey CTA/stepper", () => {
   }
 });
 
-test("penalty rates match the client: 10% micro, 6% micro interest, 12% general interest", () => {
+test("penalty rates match the approved values: 10% micro, 6% micro interest, 12% general interest", () => {
   const src = read("lib", "penalty.ts");
   assert.match(src, /microSurcharge:\s*0\.1\b/);
   assert.match(src, /microInterest:\s*0\.06\b/);
@@ -49,7 +49,7 @@ test("BIR conditions are checkbox-driven and sourced", () => {
   assert.ok(page.includes('type="checkbox"'));
 });
 
-test("filing videos only use client-provided YouTube links; placeholder remains for an empty list", () => {
+test("filing videos only use YouTube links; placeholder remains for an empty list", () => {
   const videos = require("../data/filingVideos.json");
   const clientIds = ["FOnpl3ui3uI", "8X2KZkCh1qo", "-tESI-U9ikc", "KysPCsJjbKI", "fid9IcKTKnY", "8C0TBHccWbc", "JxFprd6jMLw", "0MQLh_jxlak"];
   assert.deepStrictEqual(videos.map((v) => v.videoUrl.match(/v=([\w-]{11})/)[1]).sort(), [...clientIds].sort());

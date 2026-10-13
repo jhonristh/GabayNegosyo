@@ -64,7 +64,7 @@ test("authorization helpers deny free users and undefined roles", () => {
   assert.ok(authorization.includes("assertAdmin"));
 });
 
-test("no page hardcodes an unconfirmed Premium price (client rule: no invented pricing)", () => {
+test("no page hardcodes an unconfirmed Premium price (rule: no invented pricing)", () => {
   const account = read("app", "account", "page.tsx");
   assert.ok(!/₱\d+[–-]₱?\d+\s*\/\s*month/.test(account), "account page must not hardcode a specific unconfirmed price");
 });

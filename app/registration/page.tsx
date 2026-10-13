@@ -6,7 +6,7 @@ import AuthGuard from "../../components/AuthGuard";
 import { JourneyHeader, JourneyNext } from "../../components/JourneyStepper";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
-import guide from "../../data/clientGuide.json";
+import guide from "../../data/businessGuide.json";
 
 type Path = "without" | "with";
 
@@ -21,7 +21,7 @@ function RegistrationContent() {
   const steps = path === "with" ? [...core, ...employer] : core;
 
   return (
-    <main className="screen client-guide">
+    <main className="screen business-guide">
       <JourneyHeader
         current="registration"
         title="Business Registration"
@@ -72,7 +72,6 @@ function RegistrationContent() {
                 <p className="guide-locked">Premium shows the document list and action steps. <Link href="/account">View your plan</Link></p>
               )}
               {item.officialUrl && <a href={item.officialUrl} target="_blank" rel="noopener noreferrer">Visit agency ↗</a>}
-              <small>Client reference: {item.source}</small>
             </li>
           ))}
         </ol>

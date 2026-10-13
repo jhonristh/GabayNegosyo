@@ -6,8 +6,7 @@
     "formCode": "1706",
     "formTitle": "Capital Gains Tax Return (Real Property)",
     "deadline": "30 days from date of sale",
-    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1706%20Jan%202018%20ENCS%20Final%20version.pdf",
-    "source": "BIR Forms.pdf"
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1706%20Jan%202018%20ENCS%20Final%20version.pdf"
   },
   {
     "id": "made-donation",
@@ -16,7 +15,6 @@
     "formCode": "1800",
     "formTitle": "Donor's Tax Return",
     "deadline": "30 days from date of donation",
-    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1800_Jan%202018%20ENCS_rev_final.pdf",
-    "source": "BIR Forms.pdf"
+    "url": "https://bir-cdn.bir.gov.ph/local/pdf/1800_Jan%202018%20ENCS_rev_final.pdf"
   }
 ]

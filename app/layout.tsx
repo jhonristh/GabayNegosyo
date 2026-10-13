@@ -38,7 +38,7 @@ export const metadata = {
     description: "Turn scattered BIR compliance requirements into one personalized checklist.",
     url: siteConfig.siteUrl,
     siteName: "GabayNegosyo",
-    images: [{ url: "/icons/gabaynegosyo-client-logo.jpg", width: 1254, height: 1254 }],
+    images: [{ url: "/icons/gabaynegosyo-logo.jpg", width: 1254, height: 1254 }],
     locale: "en_PH",
     type: "website",
   },
@@ -46,7 +46,7 @@ export const metadata = {
     card: "summary_large_image",
     title: "GabayNegosyo: Your guide to business compliance",
     description: "Turn scattered BIR compliance requirements into one personalized checklist.",
-    images: ["/icons/gabaynegosyo-client-logo.jpg"],
+    images: ["/icons/gabaynegosyo-logo.jpg"],
   },
 };
 

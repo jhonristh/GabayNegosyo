@@ -28,7 +28,7 @@ export default function PenaltiesPage() {
               <tr><th scope="row">General interest (per year)</th><td>{pct(BIR_PENALTY_RATES.generalInterest)}</td></tr>
             </tbody>
           </table>
-          <p className="hint">For non-micro taxpayers the client’s guide also lists a {pct(BIR_PENALTY_RATES.generalSurcharge)} surcharge. Interest accrues daily on the unpaid tax. A compromise penalty may also apply and is not computed here.</p>
+          <p className="hint">For non-micro taxpayers Gabay Negosyo’s reference also lists a {pct(BIR_PENALTY_RATES.generalSurcharge)} surcharge. Interest accrues daily on the unpaid tax. A compromise penalty may also apply and is not computed here.</p>
         </section>
 
         <PremiumGate>

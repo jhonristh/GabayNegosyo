@@ -12,7 +12,7 @@ export default function Footer() {
   return (
     <footer className="site-footer">
       <div className="site-footer-inner">
-        <Link href="/" className="site-footer-brand footer-logo" aria-label="GabayNegosyo home"><Image src="/icons/gabaynegosyo-client-logo.jpg" width={184} height={184} alt="GabayNegosyo — Guide, Support, Grow" /></Link>
+        <Link href="/" className="site-footer-brand footer-logo" aria-label="GabayNegosyo home"><Image src="/icons/gabaynegosyo-logo.jpg" width={184} height={184} alt="GabayNegosyo — Guide, Support, Grow" /></Link>
         <nav className="site-footer-links" aria-label="Footer">
           <Link href="/">Home</Link>
           <Link href="/#how-it-works">How it works</Link>

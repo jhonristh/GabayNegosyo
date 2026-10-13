@@ -3,6 +3,7 @@
 import { useEffect, useState } from "react";
 import AdminGuard from "../../../components/AdminGuard";
 import { getSupabase } from "../../../lib/supabase";
+import { useAuth } from "../../../lib/auth";
 
 /**
  * USER MANAGEMENT (WP2, WP14)
@@ -31,7 +32,15 @@ interface ProfileRow {
 
 type LoadState = "loading" | "success" | "error";
 
+const DEMO_ROWS: ProfileRow[] = [
+  { id: "demo-1", email: "sample.one@demo.invalid", name: "Sample User One", role: "free", is_demo: true, created_at: "2026-01-05T00:00:00Z" },
+  { id: "demo-2", email: "sample.two@demo.invalid", name: "Sample User Two", role: "premium", is_demo: true, created_at: "2026-02-10T00:00:00Z" },
+  { id: "demo-3", email: "sample.admin@demo.invalid", name: "Sample Admin", role: "admin", is_demo: true, created_at: "2026-03-15T00:00:00Z" },
+];
+
 function UsersInner() {
+  const { user } = useAuth();
+  const previewOnly = Boolean(user?.isDemo);
   const [rows, setRows] = useState<ProfileRow[]>([]);
   const [total, setTotal] = useState<number | null>(null);
   const [page, setPage] = useState(0);
@@ -43,6 +52,13 @@ function UsersInner() {
   useEffect(() => {
     let cancelled = false;
     async function load() {
+      if (previewOnly) {
+        // Admin PREVIEW: synthetic rows only. No Supabase call, no real user data.
+        setRows(DEMO_ROWS);
+        setTotal(DEMO_ROWS.length);
+        setState("success");
+        return;
+      }
       setState("loading");
       try {
         const supabase = getSupabase();
@@ -75,7 +91,7 @@ function UsersInner() {
     return () => {
       cancelled = true;
     };
-  }, [page, retry]);
+  }, [page, retry, previewOnly]);
 
   const hasNextPage = total !== null && (page + 1) * PAGE_SIZE < total;
 
@@ -83,7 +99,7 @@ function UsersInner() {
     <main className="screen admin-screen">
       <header className="intro">
         <h1>Users</h1>
-        <p>Registered accounts, read-only. Role changes are not made from this screen.</p>
+        <p>{previewOnly ? "Sample data for the admin preview. No real accounts are shown." : "Registered accounts, read-only. Role changes are not made from this screen."}</p>
       </header>
 
       {state === "loading" && rows.length === 0 && (

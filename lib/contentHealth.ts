@@ -10,9 +10,9 @@ import type { Requirement, ResourceItem, Tutorial } from "./types";
  * actually did or didn't specify, not an opinion layered on top of it.
  *
  * Penalty rate being `not_specified` is NOT treated as a review flag here:
- * the client-provided workbook never gave penalty rates for almost any of
+ * the internal reference workbook never gave penalty rates for almost any of
  * the BIR requirements, so that field being unset is the expected, by-design
- * state for nearly the whole dataset (see CONTENT_AUDIT.md) — flagging it
+ * state for nearly the whole dataset  — flagging it
  * would just be noise. What IS flagged is a requirement whose deadline text
  * itself says it's an approximation, since that's the concrete gap a reader
  * should know about before relying on the date shown.

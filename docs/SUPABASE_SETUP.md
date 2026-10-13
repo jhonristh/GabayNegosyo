@@ -1816,3 +1816,10 @@ You're storing business details such as projected sales and expenses. Keep RLS e
 ## v0.12 migration
 
 Run `database/migrations/002_task_progress.sql` once in the SQL editor. It creates `task_progress` (checked steps) with owner-only Row Level Security. Fresh installs get it from `database/supabase_setup.sql`.
+
+## Google sign-in checklist (fixes "Google sign-up error")
+1. Supabase → Authentication → Providers → **Google** → enable, paste the Google client ID and secret.
+2. Google Cloud Console → OAuth client → **Authorized redirect URI**: `https://<your-project-ref>.supabase.co/auth/v1/callback`.
+3. Supabase → Authentication → URL Configuration: set **Site URL** to your live address and add `https://<your-domain>/login` (and `http://localhost:3000/login` for local) under **Redirect URLs**.
+4. Set `NEXT_PUBLIC_ENABLE_GOOGLE_LOGIN=true` in Vercel and redeploy.
+The app returns to `/login` after Google; any error is shown there in plain language.

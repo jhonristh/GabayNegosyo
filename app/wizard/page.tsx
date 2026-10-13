@@ -6,16 +6,15 @@ import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { trackConversion } from "../../lib/webAnalytics";
 import barangayRdoData from "../../data/barangayRdo.json";
+import { NCR_LOCALITIES, getLocality, localityIdOf, formatLocation } from "../../lib/ncr";
 import type { BusinessProfile, TaxpayerType } from "../../lib/types";
 
 /**
  * REGISTRATION WIZARD
  * ───────────────────
- * Question order and wording follow the client-provided content source:
- * "Actual Contents for Registration Wizard.txt" and Flowchart.FINAL.xlsx
- * ("Registration" sheet). The Barangay → RDO Code lookup is data-driven
- * from data/barangayRdo.json (merged from both sources; currently scoped
- * to Quezon City, matching what the source provides).
+ * Question order and wording follow Gabay Negosyo's registration guide.
+ * The Barangay → RDO Code lookup is data-driven from data/barangayRdo.json
+ * (available for Quezon City only; other NCR localities enter the barangay as text and verify the RDO with the BIR).
  *
  * "Business name" is a prototype UX addition (not part of the source
  * questionnaire) kept only so the dashboard has something to greet the
@@ -66,6 +65,7 @@ function WizardInner() {
 
   const [isRegisteringNewBusiness, setIsRegisteringNewBusiness] = useState<boolean | null>(existing ? existing.isRegisteringNewBusiness : null);
   const [taxpayerType, setTaxpayerType] = useState<TaxpayerType>(existing?.taxpayerType ?? "purely_business");
+  const [locality, setLocality] = useState(localityIdOf(existing));
   const [barangay, setBarangay] = useState(existing?.barangay ?? "");
   const [hasLease, setHasLease] = useState<boolean | null>(existing ? existing.hasLease : null);
   const [hasEmployees, setHasEmployees] = useState<boolean | null>(existing ? existing.hasEmployees : null);
@@ -74,7 +74,11 @@ function WizardInner() {
   const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
   const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
 
-  const rdoCode = useMemo(() => BARANGAY_RDO.find((b) => b.barangay === barangay)?.rdoCode ?? "", [barangay]);
+  const localityInfo = getLocality(locality);
+  const rdoCode = useMemo(
+    () => (localityInfo?.barangayLookup ? BARANGAY_RDO.find((b) => b.barangay === barangay)?.rdoCode ?? "" : ""),
+    [barangay, localityInfo]
+  );
 
   function next() {
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
@@ -85,7 +89,7 @@ function WizardInner() {
 
   function canProceed(): boolean {
     if (step === 0) return isRegisteringNewBusiness !== null;
-    if (step === 2) return barangay.trim().length > 0;
+    if (step === 2) return Boolean(localityInfo) && barangay.trim().length > 0;
     if (step === 3) return hasLease !== null;
     if (step === 4) return hasEmployees !== null && (hasEmployees === false || (Number.isInteger(employeeCount) && employeeCount >= 1));
     if (step === 5) return projectedGrossSales !== "" && projectedExpenses !== "" && projectedGrossSales >= 0 && projectedExpenses >= 0;
@@ -99,7 +103,8 @@ function WizardInner() {
       userId: user ? user.id : "guest",
       isRegisteringNewBusiness: Boolean(isRegisteringNewBusiness),
       taxpayerType,
-      barangay,
+      locality,
+      barangay: barangay.trim(),
       rdoCode,
       hasLease: Boolean(hasLease),
       hasEmployees: Boolean(hasEmployees),
@@ -107,7 +112,7 @@ function WizardInner() {
       projectedGrossSales: Number(projectedGrossSales) || 0,
       projectedExpenses: Number(projectedExpenses) || 0,
       businessName: businessName.trim(),
-      location: `${barangay}, Quezon City`,
+      location: formatLocation(barangay, locality),
       status: isRegisteringNewBusiness ? "planning" : "operating",
       // legacy MVP fields — kept for backward compatibility, not asked by the
       // actual registration wizard content source
@@ -172,32 +177,70 @@ function WizardInner() {
 
       {step === 2 && (
         <section className="question">
-          <label className="question-label" htmlFor="barangay">
-            Business Location (in Quezon City): Barangay
+          <label className="question-label" htmlFor="locality">
+            City or municipality (NCR)
           </label>
-          <input
-            id="barangay"
-            list="barangay-list"
+          <select
+            id="locality"
             className="text-input"
-            value={barangay}
-            onChange={(e) => setBarangay(e.target.value)}
-            placeholder="Start typing your barangay…"
-          />
-          <datalist id="barangay-list">
-            {BARANGAY_RDO.map((b) => (
-              <option key={b.barangay} value={b.barangay} />
+            value={locality}
+            onChange={(e) => {
+              setLocality(e.target.value);
+              setBarangay("");
+            }}
+          >
+            <option value="">Select your city or municipality…</option>
+            {NCR_LOCALITIES.map((l) => (
+              <option key={l.id} value={l.id}>
+                {l.name}
+                {l.type === "municipality" ? " (municipality)" : ""}
+              </option>
             ))}
-          </datalist>
-          {rdoCode && (
-            <p className="hint">
-              RDO Code: <strong>{rdoCode}</strong> (auto-determined from your barangay)
-            </p>
-          )}
-          {barangay && !rdoCode && (
-            <p className="hint">
-              We don't have an RDO Code on file for that barangay yet. Double-check the spelling, or continue and
-              verify with your RDO directly.
-            </p>
+          </select>
+          <p className="hint">
+            Covers the National Capital Region. National requirements (BIR, SSS, PhilHealth, Pag-IBIG) are the same
+            wherever you are; local permit steps vary by LGU.
+          </p>
+
+          {localityInfo && (
+            <>
+              <label className="question-label" htmlFor="barangay" style={{ marginTop: 16 }}>
+                Barangay
+              </label>
+              <input
+                id="barangay"
+                list={localityInfo.barangayLookup ? "barangay-list" : undefined}
+                className="text-input"
+                value={barangay}
+                onChange={(e) => setBarangay(e.target.value)}
+                placeholder={localityInfo.barangayLookup ? "Start typing your barangay…" : "Type your barangay"}
+              />
+              {localityInfo.barangayLookup && (
+                <datalist id="barangay-list">
+                  {BARANGAY_RDO.map((b) => (
+                    <option key={b.barangay} value={b.barangay} />
+                  ))}
+                </datalist>
+              )}
+              {rdoCode && (
+                <p className="hint">
+                  RDO Code: <strong>{rdoCode}</strong> (auto-determined from your barangay)
+                </p>
+              )}
+              {barangay && localityInfo.barangayLookup && !rdoCode && (
+                <p className="hint">
+                  We don&apos;t have an RDO Code on file for that barangay yet. Double-check the spelling, or continue and
+                  verify with your RDO directly.
+                </p>
+              )}
+              {!localityInfo.barangayLookup && (
+                <p className="hint">
+                  Automatic RDO lookup is not available for {localityInfo.name} yet. Confirm your Revenue District Office
+                  with the BIR before registering. Local permit guidance for {localityInfo.name} is general and not yet
+                  verified against that LGU&apos;s own rules.
+                </p>
+              )}
+            </>
           )}
         </section>
       )}
@@ -297,7 +340,7 @@ function WizardInner() {
             <dt>Taxpayer Type</dt>
             <dd>{TAXPAYER_TYPES.find((t) => t.value === taxpayerType)?.label}</dd>
             <dt>Barangay</dt>
-            <dd>{barangay || "—"} (Quezon City)</dd>
+            <dd>{barangay ? formatLocation(barangay, locality) : "—"}</dd>
             <dt>RDO Code</dt>
             <dd>{rdoCode || "Not found for this barangay"}</dd>
             <dt>Leases business space?</dt>
@@ -318,8 +361,8 @@ function WizardInner() {
         <section className="review-summary">
           <h2>Ready to generate your roadmap</h2>
           <p>
-            After answering the questions above, we'll match your profile against BIR compliance content sourced
-            from the Flowchart.FINAL.xlsx reference workbook and build your personalized compliance checklist.
+            After answering the questions above, we'll match your profile against Gabay Negosyo's BIR compliance
+            guide and build your personalized compliance checklist.
             {!user && " You can preview it now and create a free account afterwards to save it."}
           </p>
         </section>

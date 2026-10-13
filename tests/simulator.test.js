@@ -5,12 +5,12 @@
 // agencies[].penaltyRatePercent / penaltyRateNote fields — none of which
 // exist anywhere in this codebase (checked: data/agencies.json has no such
 // fields). It was testing a different, never-built simulator design
-// against an unconnected "client specification §5/§6/§31/§32" numbering
+// against an unconnected "project specification §5/§6/§31/§32" numbering
 // scheme. The real simulator (lib/penalty.ts, app/premium/penalty-
 // simulator/page.tsx) takes a requirement's penaltyRule plus an amount and
-// daysLate, mirroring the client's actual "Sample Computation" workbook
+// daysLate, mirroring Gabay Negosyo's actual "Sample Computation" workbook
 // sheet, which shows worked examples, not an automated 8%-threshold
-// calculator (see CONTENT_AUDIT.md "Known gaps" #3). This file now tests
+// calculator . This file now tests
 // that real implementation.
 
 const test = require("node:test");

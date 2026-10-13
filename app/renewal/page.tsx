@@ -6,7 +6,7 @@ import FilingTutorialVideos from "../../components/FilingTutorialVideos";
 import { JourneyHeader, JourneyNext } from "../../components/JourneyStepper";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
-import guide from "../../data/clientGuide.json";
+import guide from "../../data/businessGuide.json";
 
 const SECTIONS = [
   { stage: "Renew an existing business", title: "Renewal requirements" },
@@ -20,7 +20,7 @@ function RenewalContent() {
   const visible = guide.filter((i) => i.audience !== "employees" || profile?.hasEmployees !== false);
 
   return (
-    <main className="screen client-guide">
+    <main className="screen business-guide">
       <JourneyHeader
         current="renewal"
         title="Renewal & Post-Registration"
@@ -54,7 +54,6 @@ function RenewalContent() {
                     <p className="guide-locked">Premium shows the document list and action steps. <Link href="/account">View your plan</Link></p>
                   )}
                   {item.officialUrl && <a href={item.officialUrl} target="_blank" rel="noopener noreferrer">Visit agency ↗</a>}
-                  <small>Client reference: {item.source}</small>
                 </article>
               ))}
             </div>

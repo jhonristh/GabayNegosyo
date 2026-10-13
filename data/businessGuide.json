@@ -1,0 +1,287 @@
+[
+  {
+    "id": "dti-new",
+    "stage": "Start a business",
+    "agency": "DTI",
+    "title": "Register your business name with DTI",
+    "audience": "all",
+    "timing": "Before applying for the barangay clearance and business permit.",
+    "steps": [
+      "Go to the BNRS website and click New Registration.",
+      "Provide the required information and review it.",
+      "Submit the application.",
+      "Pay the registration fee for your territorial scope (Barangay ₱200, City/Municipality ₱500, Regional ₱1,000, National ₱2,000) plus ₱30 documentary stamp tax."
+    ],
+    "documents": [
+      "One valid government-issued ID of the applicant",
+      "Tax Identification Number (TIN) of the owner, if applicable",
+      "Duly accomplished DTI Business Name Registration Application Form",
+      "Authorization letter and valid ID of the representative, if filed through a representative",
+      "Non-Philippine nationals, if applicable: certified copy of Alien Certificate of Registration (ACR) and Certificate of Authority to engage in business in the Philippines"
+    ],
+    "officialUrl": ""
+  },
+  {
+    "id": "barangay-new",
+    "stage": "Start a business",
+    "agency": "LGU",
+    "title": "Get barangay business clearance",
+    "audience": "all",
+    "timing": "Before applying for the local business permit; details vary by barangay.",
+    "steps": [
+      "Apply at the barangay where the business is located.",
+      "Submit the business registration document, if applicable, proof of right to occupy the premises and a government ID.",
+      "Pay the local fee and keep the official receipt."
+    ],
+    "documents": [
+      "Valid ID (National ID, Passport, Driver's License, or Voter's ID)",
+      "Proof of residency",
+      "Community Tax Certificate (cedula)",
+      "Application form (provided at the barangay hall)"
+    ],
+    "officialUrl": ""
+  },
+  {
+    "id": "mayor-new",
+    "stage": "Start a business",
+    "agency": "LGU",
+    "title": "Apply for a business permit",
+    "audience": "all",
+    "timing": "Before operations; fees and requirements depend on the city or municipality.",
+    "steps": [
+      "Prepare business registration and the basis for computing local fees.",
+      "Prepare occupancy permit if required, lease contract if renting, and barangay clearance as applicable.",
+      "File with the concerned local government unit."
+    ],
+    "documents": [
+      "Application form from the local Business Permits and Licensing Department",
+      "DTI certificate",
+      "Barangay clearance",
+      "Notarized contract of lease, if renting",
+      "Transfer Certificate of Title (TCT) or Tax Declaration, if the property is owned",
+      "Community Tax Certificate (cedula)",
+      "Photos of the establishment (front, right and left sides, including the road)",
+      "Locational/zoning clearance",
+      "Fire Safety Inspection Certificate (BFP)",
+      "Sanitary permit (local health office)",
+      "Certificate of occupancy",
+      "Public liability insurance, for high-traffic places"
+    ],
+    "officialUrl": ""
+  },
+  {
+    "id": "bir-new",
+    "stage": "Start a business",
+    "agency": "BIR",
+    "title": "Register with BIR",
+    "audience": "all",
+    "timing": "At the registration stage; confirm filing method and requirements with the assigned RDO.",
+    "steps": [
+      "Use the available online registration route or file BIR Form 1901 at the assigned RDO.",
+      "For manual filing, prepare a government ID and the required invoice option.",
+      "Check the certificate of registration and the tax types assigned to the business."
+    ],
+    "documents": [
+      "Any government-issued ID (e.g. PhilID/ePhilID, Passport, Driver's License)",
+      "Additional proof of residence or business address, if the ID has no address",
+      "Final clear sample of your own invoices, or a BIR-printed invoice (BPI)",
+      "DTI certificate, if you have a registered business name"
+    ],
+    "officialUrl": "https://www.bir.gov.ph/"
+  },
+  {
+    "id": "sss-new",
+    "stage": "If you hire employees",
+    "agency": "SSS",
+    "title": "Register the employer and employees",
+    "audience": "employees",
+    "timing": "When hiring staff; registration itself is generally one-time.",
+    "steps": [
+      "Get an SSS employer number through the available portal or SSS branch.",
+      "For manual filing prepare Form R-1 and business identification.",
+      "Report employees and ensure they have SS numbers."
+    ],
+    "documents": [
+      "SSS Employer Registration Form (R-1), if applicable",
+      "Employment Report (R-1A)",
+      "DTI Certificate of Business Name Registration",
+      "Valid government-issued ID of the business owner/employer",
+      "Tax Identification Number (TIN) of the employer",
+      "Business/Mayor's Permit, if applicable",
+      "Certification and Agreement on Data Privacy Notice",
+      "Letter of Authority (LOA) or Special Power of Attorney (SPA), if filed through an authorized representative",
+      "For employees: SS number, or SSS Personal Record (E-1/E-1V) if none yet",
+      "Valid ID/supporting documents of employees, when required"
+    ],
+    "officialUrl": "https://www.sss.gov.ph/"
+  },
+  {
+    "id": "philhealth-new",
+    "stage": "If you hire employees",
+    "agency": "PhilHealth",
+    "title": "Register employer and employees",
+    "audience": "employees",
+    "timing": "When hiring staff; registration itself is generally one-time.",
+    "steps": [
+      "Register the employer with PhilHealth.",
+      "Report newly hired employees and arrange premium remittance."
+    ],
+    "documents": [
+      "PhilHealth Employer Data Record (ER1)",
+      "DTI Certificate of Business Name Registration",
+      "BIR Certificate of Registration (Form 2303), when required",
+      "Valid government-issued ID of the business owner/authorized signatory",
+      "Business/Mayor's Permit, when applicable",
+      "Authorization letter and valid IDs, if filed through a representative",
+      "For employees: PhilHealth Identification Number (PIN), or PhilHealth Member Registration Form (PMRF) if none yet",
+      "Report of Employee-Members (ER2)"
+    ],
+    "officialUrl": "https://www.philhealth.gov.ph/"
+  },
+  {
+    "id": "pagibig-new",
+    "stage": "If you hire employees",
+    "agency": "Pag-IBIG",
+    "title": "Register as an employer",
+    "audience": "employees",
+    "timing": "When hiring staff; registration itself is generally one-time.",
+    "steps": [
+      "Register the employer with Pag-IBIG Fund.",
+      "Prepare employee membership details for subsequent remittances."
+    ],
+    "documents": [
+      "Employer's Data Form (EDF), HQP-PFF-002",
+      "DTI Certificate of Business Name Registration",
+      "Proof of business existence",
+      "Valid government-issued ID of the business owner/employer",
+      "Business/Mayor's Permit, when applicable",
+      "Authorization letter and valid IDs, if filed through a representative",
+      "For employees: Pag-IBIG Membership ID (MID) number, or Member's Data Form (MDF) for new members",
+      "Employee personal and employment information"
+    ],
+    "officialUrl": "https://www.pagibigfund.gov.ph/"
+  },
+  {
+    "id": "dti-renew",
+    "stage": "Renew an existing business",
+    "agency": "DTI",
+    "title": "Renew your DTI business name",
+    "audience": "all",
+    "timing": "After 5 years from the validity date. Late renewal is charged an additional 50%.",
+    "steps": [
+      "Go to the BNRS website.",
+      "Click Renewal and provide the required information.",
+      "Review the information provided.",
+      "Submit the renewal application.",
+      "Complete the required payment."
+    ],
+    "documents": [
+      "Business name registration details for the BNRS renewal form"
+    ],
+    "officialUrl": ""
+  },
+  {
+    "id": "barangay-renew",
+    "stage": "Renew an existing business",
+    "agency": "LGU",
+    "title": "Renew barangay clearance",
+    "audience": "all",
+    "timing": "1 year after the issuance date.",
+    "steps": [
+      "Go to the designated office or Business One-Stop Shop (BOSS) of your city or municipality.",
+      "Submit the documents required for renewing the barangay business clearance, as specified by the LGU.",
+      "Pay the barangay clearance fee, if required.",
+      "Receive the renewed Barangay Business Clearance or proof of clearance."
+    ],
+    "documents": [
+      "Existing clearance and locally required supporting papers"
+    ],
+    "officialUrl": ""
+  },
+  {
+    "id": "mayor-renew",
+    "stage": "Renew an existing business",
+    "agency": "LGU",
+    "title": "Renew the local business permit",
+    "audience": "all",
+    "timing": "Valid for 1 year. Renew within the first month of the year or on the anniversary date of the permit's issuance.",
+    "steps": [
+      "Prepare the basis for computing local taxes and fees, such as income tax returns.",
+      "Submit renewed barangay clearance and other local requirements.",
+      "Pay the assessment and retain the renewed permit."
+    ],
+    "documents": [
+      "Basis for local taxes and fees",
+      "Barangay clearance",
+      "Existing business permit"
+    ],
+    "officialUrl": ""
+  },
+  {
+    "id": "bir-returns",
+    "stage": "Keep operating",
+    "agency": "BIR",
+    "title": "File the applicable tax returns",
+    "audience": "all",
+    "timing": "Income tax is commonly annual and quarterly; exact forms and schedules depend on taxpayer classification and registration.",
+    "steps": [
+      "Confirm registered tax types on the BIR certificate of registration.",
+      "Determine the applicable income, VAT or percentage, and withholding tax returns.",
+      "File required returns and pay tax due by the applicable deadlines."
+    ],
+    "documents": [
+      "Certificate of Registration",
+      "Applicable BIR tax return"
+    ],
+    "officialUrl": "https://www.bir.gov.ph/bir-forms"
+  },
+  {
+    "id": "sss-remit",
+    "stage": "Keep operating",
+    "agency": "SSS",
+    "title": "Remit SSS and EC contributions",
+    "audience": "employees",
+    "timing": "Monthly; exact payment schedule depends on current SSS rules.",
+    "steps": [
+      "Compute the employer and employee SSS shares and employer EC contribution.",
+      "Remit the amounts through an accepted channel and keep proof of payment."
+    ],
+    "documents": [
+      "Payroll and contribution schedule"
+    ],
+    "officialUrl": "https://www.sss.gov.ph/"
+  },
+  {
+    "id": "philhealth-remit",
+    "stage": "Keep operating",
+    "agency": "PhilHealth",
+    "title": "Remit PhilHealth premiums",
+    "audience": "employees",
+    "timing": "Monthly; confirm current remittance and reporting schedule.",
+    "steps": [
+      "Compute employer and employee premium shares.",
+      "Remit premiums and submit required reports."
+    ],
+    "documents": [
+      "Payroll and remittance records"
+    ],
+    "officialUrl": "https://www.philhealth.gov.ph/"
+  },
+  {
+    "id": "pagibig-remit",
+    "stage": "Keep operating",
+    "agency": "Pag-IBIG",
+    "title": "Remit Pag-IBIG savings",
+    "audience": "employees",
+    "timing": "Monthly; confirm current remittance and reporting schedule.",
+    "steps": [
+      "Compute employer and employee membership savings.",
+      "Remit savings and submit the Membership Savings Remittance Form as required."
+    ],
+    "documents": [
+      "Payroll records",
+      "MSRF when required"
+    ],
+    "officialUrl": "https://www.pagibigfund.gov.ph/"
+  }
+]

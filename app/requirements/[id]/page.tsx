@@ -75,11 +75,9 @@ function RequirementDetailInner() {
   }
 
   const sourceLabel =
-    requirement.contentSource === "flowchart_final_workbook"
-      ? "Client-provided reference workbook (Flowchart.FINAL.xlsx)"
-      : requirement.contentSource === "registration_wizard_txt"
-        ? "Client-provided registration wizard content"
-        : "Prototype placeholder content, not yet sourced from client material";
+    requirement.contentSource === "prototype_placeholder"
+      ? "Placeholder content, not yet reviewed"
+      : "Gabay Negosyo compliance guide";
 
   return (
     <main className="screen">

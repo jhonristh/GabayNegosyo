@@ -3,9 +3,9 @@
 // Rewritten for V0.3: the previous version of this file asserted a
 // 3-question wizard ("Business Type, Tax Type, Employees") with Filipino
 // option wording ("May empleyado"/"Walang empleyado") — that was never the
-// real client source. The actual source is the client-provided
-// Flowchart.FINAL.xlsx workbook and "Actual Contents for Registration
-// Wizard.txt" (see CONTENT_AUDIT.md), which specify seven real questions:
+// real source. The actual source is the Gabay Negosyo
+// the Gabay Negosyo reference content workbook and "the registration wizard
+// the registration wizard content, which specify seven real questions:
 // registering a new business?, taxpayer type, barangay (→ auto RDO code),
 // lease?, employees?, projected annual gross sales, projected annual
 // expenses. This file now tests that real, source-grounded wizard instead.
@@ -19,7 +19,7 @@ const barangayRdo = require("../data/barangayRdo.json");
 
 const wizard = fs.readFileSync(path.join(__dirname, "..", "app", "wizard", "page.tsx"), "utf8");
 
-test("wizard asks the seven real client questions, plus business name, review, and result steps", () => {
+test("wizard asks the seven real intake questions, plus business name, review, and result steps", () => {
   const match = wizard.match(/const STEPS = \[(.*?)\];/s);
   assert.ok(match, "STEPS array not found");
   const steps = match[1].split(",").map((s) => s.trim()).filter((s) => s.length > 0);
@@ -28,9 +28,9 @@ test("wizard asks the seven real client questions, plus business name, review, a
   assert.strictEqual(steps.length, 9, `expected 9 wizard steps, got ${steps.length}`);
 });
 
-test("wizard uses the client's exact taxpayer-type wording", () => {
+test("wizard uses Gabay Negosyo's exact taxpayer-type wording", () => {
   for (const wording of ["Purely Compensation", "Self-Employment or Profession", "Purely Business", "Mixed Income Earner"]) {
-    assert.ok(wizard.includes(wording), `missing client wording: ${wording}`);
+    assert.ok(wizard.includes(wording), `missing Gabay Negosyo wording: ${wording}`);
   }
 });
 

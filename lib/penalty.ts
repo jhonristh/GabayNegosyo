@@ -77,13 +77,13 @@ export const MANDATORY_DISCLAIMER =
   "Estimate lang ito para sa awareness. Hindi ito kapalit ng aktwal na computation ng isang accountant o ng BIR para sa opisyal na pag-file.";
 
 /**
- * BIR late-filing / late-payment rates approved by the client for this release.
+ * BIR late-filing / late-payment rates approved by the Gabay Negosyo team for this release.
  * One source of truth: the Penalties page rate table AND the calculator below
  * both read these constants, so the displayed rates can never drift from the math.
  *
  * - Micro business: 10% surcharge, 6% per annum interest (halved).
  * - General taxpayer: 12% per annum interest. The 25% surcharge for the general
- *   case comes from the client's PENALTIES.pdf (NIRC Sec. 248) and is unchanged.
+ *   case comes from Gabay Negosyo's the penalties reference (NIRC Sec. 248) and is unchanged.
  */
 export const BIR_PENALTY_RATES = {
   microSurcharge: 0.1,
@@ -112,7 +112,7 @@ const peso = (n: number) => `₱${n.toLocaleString("en-PH", { minimumFractionDig
 /**
  * Surcharge is a one-time percentage of the unpaid tax; interest is a per-annum
  * rate accrued daily (rate × days late ÷ 365). The compromise penalty is not
- * computed (the client source gives only a range, scaled per RMO 7-2015).
+ * computed (the reference gives only a range, scaled per RMO 7-2015).
  */
 export function estimateBirPenalty(input: { taxDue: number; daysLate: number; tier: BirTaxpayerTier }): BirPenaltyResult | null {
   const { taxDue, daysLate, tier } = input;

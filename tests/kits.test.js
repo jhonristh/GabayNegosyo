@@ -119,8 +119,8 @@ test("landing preview stays labelled illustrative", () => {
   assert.match(read("app", "page.tsx"), /Illustrative product preview/);
 });
 
-test("the client logo asset is unchanged by the integration", () => {
-  assert.ok(fs.existsSync(path.join(root, "public", "icons", "gabaynegosyo-client-logo.jpg")));
+test("the Gabay Negosyo logo asset is unchanged by the integration", () => {
+  assert.ok(fs.existsSync(path.join(root, "public", "icons", "gabaynegosyo-logo.jpg")));
 });
 
 // Regression: Overdue/Completed badges once shipped at 4.3:1 because the contrast

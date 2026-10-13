@@ -157,11 +157,10 @@ running or demonstrating the prototype.
 
 ---
 
-## Phase 13 — Real Content Migration (Flowchart.FINAL.xlsx)
+## Phase 13 — Real Content Migration (the Gabay Negosyo reference content)
 
-- [x] Audited all 26 sheets of the client-provided `Flowchart.FINAL.xlsx` and the
-      registration-wizard txt content source (see `docs/CONTENT_AUDIT.md` for the
-      full sheet-by-sheet mapping and known gaps)
+- [x] Audited all 26 sheets of the internal reference workbook and the
+      registration-wizard txt content source 
 - [x] Replaced the Registration Wizard with the real 7-question flow (new
       business? / taxpayer type / barangay+RDO / lease? / employees? /
       projected sales & expenses)
@@ -176,7 +175,7 @@ running or demonstrating the prototype.
       doesn't specify — new `"not_specified"` penalty type, honest UI message
 - [x] Required Filipino penalty-simulator disclaimer wording applied verbatim
 - [ ] Flowchart images (17 embedded PNGs across the per-form sheets) not yet
-      transcribed — see `docs/CONTENT_AUDIT.md` §Known gaps
+      transcribed
 - [ ] No automatic VAT/8%-vs-graduated tax-type calculator (source shows a
       manual sample computation only, no stated threshold rule to encode)
 - [ ] SSS / PhilHealth / Pag-IBIG / LGU-renewal requirements are still MVP
@@ -245,8 +244,8 @@ Badge tints and hero progress track adjusted; contrast checker now reads the rea
 ## v0.11 lifecycle restructure
 - Journey: Checklist → Business Registration → BIR Forms → Penalties → Renewal & Post-Registration (`lib/journey.ts`, `components/JourneyStepper.tsx`). Stages stay individually linkable.
 - New routes: `/registration`, `/bir-forms`, `/penalties`, `/renewal`. `/guide` and `/premium/penalty-simulator` redirect into them. Wizard now lands on `/checklist`.
-- BIR penalty rates (client-approved): micro 10%, micro interest 6% p.a., general interest 12% p.a. (+25% general surcharge from PENALTIES.pdf). Single source: `BIR_PENALTY_RATES` in `lib/penalty.ts`.
-- BIR Forms: checkbox conditions from `data/birConditions.json` (Forms 1706, 1800 from BIR Forms.pdf).
+- BIR penalty rates (approved): micro 10%, micro interest 6% p.a., general interest 12% p.a. (+25% general surcharge from the penalties reference). Single source: `BIR_PENALTY_RATES` in `lib/penalty.ts`.
+- BIR Forms: checkbox conditions from `data/birConditions.json` (Forms 1706, 1800 from the BIR forms reference).
 - Filing tutorial videos: placeholder; add entries to `data/filingVideos.json`.
 
 ## v0.12 feature-validation fixes
@@ -256,10 +255,10 @@ Badge tints and hero progress track adjusted; contrast checker now reads the rea
 - [x] Requirement detail: free/premium boundary re-cut, "why it is on your checklist"
 - [x] Task-level steps with persistence (`task_progress`, migration 002)
 - [x] Guest-first wizard + read-only preview + profile adoption on sign-in
-- [ ] Open: tax-type / stage questions (client decision), verified sources and tutorials, server-side admin content, credits
+- [ ] Open: tax-type / stage questions (team decision), verified sources and tutorials, server-side admin content, credits
 
 Details: `docs/V0.12_CHANGES.md`.
 
-## v0.12 Final = v0.12 + updated client PDFs (UpdatedFiles.zip)
+## v0.12 Final = v0.12 + updated content (the content update)
 - BIR Forms, Business Registration and Penalties PDFs were unchanged. Checklist and Renewal PDFs changed: DTI registration/renewal guide entries added, document lists expanded, barangay renewal steps updated.
-- Filing tutorial videos: 8 client-provided YouTube links in `data/filingVideos.json`, embedded on `/renewal` (placeholder shows only if the list is empty).
+- Filing tutorial videos: 8 YouTube links in `data/filingVideos.json`, embedded on `/renewal` (placeholder shows only if the list is empty).

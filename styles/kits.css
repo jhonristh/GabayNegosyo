@@ -389,13 +389,13 @@ html[data-theme="night"] .text-btn { color: var(--ink-muted); }
 
 /* landing */
 html[data-theme="night"] .v05-hero h1 em { color: #a0ed59; }
-html[data-theme="night"] .client-brand-intro,
+html[data-theme="night"] .brand-intro,
 html[data-theme="night"] .v05-step-grid article,
 html[data-theme="night"] .kit-mosaic article,
 html[data-theme="night"] .v07-plan-grid article,
 html[data-theme="night"] .credit-person { background: var(--kit-panel); border-color: var(--kit-line); color: var(--ink); }
-html[data-theme="night"] .client-brand-intro { color: #f5f7f3; }
-html[data-theme="night"] .client-brand-intro small { color: #a0ed59; }
+html[data-theme="night"] .brand-intro { color: #f5f7f3; }
+html[data-theme="night"] .brand-intro small { color: #a0ed59; }
 html[data-theme="night"] .v05-feature-band,
 html[data-theme="night"] .v07-plan-grid article.featured,
 html[data-theme="night"] .kit-mosaic { background: #1f2a20; }
@@ -470,4 +470,63 @@ html[data-theme="night"] .toast-error { color: var(--red-text); }
 /* ---------- 9. Motion ---------- */
 @media (prefers-reduced-motion: reduce) {
   .kit-side-nav a, .kit-theme-toggle { transition: none !important; }
+}
+
+/* ───────── v0.13 additions ───────── */
+
+/* Demo banner */
+.demo-banner { display: flex; flex-wrap: wrap; gap: 10px 16px; align-items: center; justify-content: space-between; padding: 10px 16px; background: #fff4d6; color: #5c3d00; border-bottom: 2px solid #e0a800; font-size: 0.88rem; }
+.demo-banner p { margin: 0; flex: 1 1 280px; }
+.demo-banner-actions { display: flex; gap: 8px; }
+.demo-banner .secondary-btn { width: auto; min-height: 40px; padding: 0 14px; }
+html[data-theme="night"] .demo-banner { background: #3a2f0a; color: #ffe9a8; border-color: #b8860b; }
+
+/* Destructive actions */
+.danger-btn { display: inline-flex; align-items: center; justify-content: center; min-height: 48px; padding: 0 18px; border-radius: 12px; border: 1.5px solid var(--red-text, #b03052); background: #fff; color: var(--red-text, #b03052); font: 600 0.95rem inherit; cursor: pointer; }
+.danger-btn:hover:not(:disabled) { background: var(--red-text, #b03052); color: #fff; }
+.danger-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+.danger-zone { border-color: color-mix(in srgb, var(--red-text, #b03052) 40%, transparent); }
+.confirm-dialog { max-width: min(480px, calc(100vw - 32px)); border: 1px solid var(--solid-border, #ccc); border-radius: 18px; padding: 22px; background: var(--solid-surface, #fff); color: var(--ink); box-shadow: 0 24px 60px rgba(0, 0, 0, 0.3); }
+.confirm-dialog::backdrop { background: rgba(10, 20, 12, 0.55); }
+html[data-theme="night"] .confirm-dialog { background: var(--kit-panel, #1b231c); }
+html[data-theme="night"] .danger-btn { background: transparent; }
+
+/* Clear keyboard focus everywhere */
+a:focus-visible, button:focus-visible, select:focus-visible, input:focus-visible, textarea:focus-visible, summary:focus-visible {
+  outline: 3px solid var(--gn-green, #145d2d); outline-offset: 2px;
+}
+
+/* Navigation: outlined items, stronger active state */
+.navbar-public nav a:not(.primary-btn), .navbar-desktop nav a, .admin-nav a {
+  border: 1px solid transparent; border-radius: 10px; padding: 6px 10px;
+  transition: border-color .15s ease, background-color .15s ease;
+}
+.navbar-public nav a:not(.primary-btn):hover, .navbar-desktop nav a:hover, .admin-nav a:hover { border-color: color-mix(in srgb, var(--gn-green, #145d2d) 35%, transparent); }
+.navbar-desktop nav a.active, .admin-nav a.active { border-color: var(--gn-green, #145d2d); background: color-mix(in srgb, var(--gn-green, #145d2d) 10%, transparent); }
+
+/* Buttons: restrained depth, pressed state */
+.primary-btn { box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 2px 6px rgba(20, 93, 45, 0.25); transition: transform .12s ease, box-shadow .12s ease; }
+.primary-btn:hover:not(:disabled) { box-shadow: 0 1px 0 rgba(255,255,255,.25) inset, 0 6px 14px rgba(20, 93, 45, 0.28); }
+.primary-btn:active:not(:disabled) { transform: translateY(1px); box-shadow: 0 1px 2px rgba(20, 93, 45, 0.3) inset; }
+.primary-btn:disabled, .secondary-btn:disabled { cursor: not-allowed; }
+
+/* Bento preview: subtle entrance + hover (no perpetual animation) */
+@keyframes gn-rise { from { opacity: 0; translate: 0 10px; } to { opacity: 1; translate: 0 0; } }
+.kit-mosaic article { animation: gn-rise .5s ease both; transition: box-shadow .2s ease, translate .2s ease; }
+.kit-mosaic article:nth-of-type(2) { animation-delay: .08s; }
+.kit-mosaic article:nth-of-type(3) { animation-delay: .16s; }
+.kit-mosaic article:hover { translate: 0 -3px; box-shadow: 0 10px 22px rgba(20, 93, 45, 0.16); }
+.v05-step-grid article, .v07-plan-grid article { transition: box-shadow .2s ease, translate .2s ease; }
+.v05-step-grid article:hover, .v07-plan-grid article:hover { translate: 0 -2px; box-shadow: 0 8px 18px rgba(20, 93, 45, 0.12); }
+
+/* Credits */
+.credits-heading { margin: 22px 0 0; font: 600 1rem var(--font-display); }
+ul.credits-grid { list-style: none; padding: 0; grid-template-columns: repeat(3, minmax(0, 1fr)); }
+ul.credits-grid--single { grid-template-columns: minmax(0, 360px); }
+@media (max-width: 700px) { ul.credits-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); } }
+@media (max-width: 420px) { ul.credits-grid { grid-template-columns: minmax(0, 1fr); } }
+
+@media (prefers-reduced-motion: reduce) {
+  .kit-mosaic article, .v05-step-grid article, .v07-plan-grid article, .primary-btn { animation: none !important; transition: none !important; }
+  .kit-mosaic article:hover, .v05-step-grid article:hover, .v07-plan-grid article:hover { translate: none; }
 }

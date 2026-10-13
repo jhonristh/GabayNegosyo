@@ -25,7 +25,7 @@ const required = [
     name: "NEXT_PUBLIC_CONTACT_EMAIL",
     value: process.env.NEXT_PUBLIC_CONTACT_EMAIL,
     isPlaceholder: (v) => !v,
-    reason: "shown on the footer, Privacy, Terms and Disclaimer pages as the real contact address (client rule L12 — no invented contact details).",
+    reason: "shown on the footer, Privacy, Terms and Disclaimer pages as the real contact address (rule L12: no invented contact details).",
   },
 ];
 

@@ -1543,7 +1543,7 @@ button:active,.primary-btn:active,.secondary-btn:active { transform: scale(.985)
 @media(max-width:700px) { .v07-account-grid,.v07-plan-grid { grid-template-columns: 1fr; }.v07-progress-panel { grid-template-columns: 1fr; justify-items: start; }.v07-calendar-grid button { min-height: 42px; padding: 5px; font-size: .73rem; flex-direction: column; }.v07-calendar-grid button b { min-width: 15px; height: 15px; font-size: .6rem; }.v07-account-hero { padding: 18px; }.v07-avatar { width: 64px; height: 64px; }.v07-calendar-events a { flex-wrap: wrap; } }
 
 /* Client guide: readable steps without changing the existing product system. */
-.client-guide { max-width: 1160px; }
+.business-guide { max-width: 1160px; }
 .guide-note { background: #eaf2ec; border: 1px solid #b7d3c1; padding: 1.15rem 1.35rem; border-radius: 16px; margin: 1.5rem 0; }
 .guide-note p { margin: .4rem 0 0; }
 .guide-stage { margin: 2rem 0; }
@@ -1585,9 +1585,9 @@ button:active,.primary-btn:active,.secondary-btn:active { transform: scale(.985)
 .brand-highlight { color: #146b31; }
 .brand small { font: 600 .68rem var(--font-body); letter-spacing: .02em; background: #e6f4e7; padding: 5px 7px; border-radius: 6px; vertical-align: middle; }
 .navbar-public,.navbar-desktop,.navbar-admin { border-color: #d2e4d1; background: rgba(255,255,255,.96); }
-.client-brand-intro { display: flex; gap: 12px; align-items: center; width: fit-content; background: white; border: 1px solid #d8ead5; border-radius: 14px; padding: 6px 16px 6px 7px; margin-bottom: 26px; font: 700 1rem var(--font-display); color: #0b3a25; }
-.client-brand-intro img { width: 48px; height: 48px; }
-.client-brand-intro small { display: block; font: 700 .59rem var(--font-body); letter-spacing: .14em; color: #176a34; margin-top: 3px; }
+.brand-intro { display: flex; gap: 12px; align-items: center; width: fit-content; background: white; border: 1px solid #d8ead5; border-radius: 14px; padding: 6px 16px 6px 7px; margin-bottom: 26px; font: 700 1rem var(--font-display); color: #0b3a25; }
+.brand-intro img { width: 48px; height: 48px; }
+.brand-intro small { display: block; font: 700 .59rem var(--font-body); letter-spacing: .14em; color: #176a34; margin-top: 3px; }
 .v05-preview { background: #e6f3e4; box-shadow: 12px 18px 0 #d1e8cc, var(--v06-shadow-hover); }
 .v05-feature-band { background: #e7f3e4; }
 .v05-dash-hero .dashboard-progress { background: #092f22; }
@@ -1598,7 +1598,7 @@ button:active,.primary-btn:active,.secondary-btn:active { transform: scale(.985)
 .site-footer { background: #edf5ec; }
 .footer-logo { display: inline-flex; border-radius: 16px; overflow: hidden; background: #fff; }
 .footer-logo img { display: block; width: clamp(135px, 20vw, 184px); height: auto; }
-@media (max-width: 580px) { .brand { font-size: .9rem; } .brand img { width: 36px; height: 36px; } .client-brand-intro { margin-bottom: 20px; } }
+@media (max-width: 580px) { .brand { font-size: .9rem; } .brand img { width: 36px; height: 36px; } .brand-intro { margin-bottom: 20px; } }
 .mobile-brand-head { display: none; }
 @media (max-width: 859px) {
   .mobile-brand-head { display: flex; align-items: center; padding: 8px 16px; background: #fff; border-bottom: 1px solid #d5e7d1; }
@@ -1690,3 +1690,27 @@ button:active,.primary-btn:active,.secondary-btn:active { transform: scale(.985)
 .penalty-summary dt { color: var(--ink-muted); }
 .penalty-summary dd { margin: 0; font-weight: 700; }
 @media (prefers-reduced-motion: no-preference) { .journey-step a { transition: border-color .15s; } }
+
+/* ---------- Button text safety: labels wrap instead of overlapping, controls grow with content ---------- */
+.primary-btn, .secondary-btn {
+  height: auto; min-width: 0; padding: 12px 20px; gap: 0.5rem;
+  line-height: 1.3; white-space: normal; overflow-wrap: anywhere; text-wrap: balance;
+}
+.option-btn { height: auto; min-width: 0; line-height: 1.35; white-space: normal; overflow-wrap: anywhere; }
+.option-row { flex-wrap: wrap; }
+.option-row .option-btn { flex: 1 1 220px; }
+.option-row .option-btn.small { flex: 0 1 auto; }
+.wizard-actions { flex-wrap: wrap; }
+.wizard-actions > * { flex: 1 1 160px; min-width: 0; }
+.v05-hero .hero-actions a { white-space: normal; gap: 10px; flex: 1 1 240px; text-align: center; }
+.v05-dashboard .quick-action-btn { display: flex; align-items: center; justify-content: space-between; gap: 12px; line-height: 1.3; overflow-wrap: anywhere; }
+.v05-dashboard .quick-action-btn::after { float: none; flex: none; }
+.quick-action-btn { overflow-wrap: anywhere; line-height: 1.3; }
+.navbar-public .nav-cta { white-space: nowrap; }
+.v06-card-actions, .v06-dialog-actions { flex-wrap: wrap; }
+.v06-card-actions .secondary-btn, .v06-dialog-actions .secondary-btn, .v06-dialog-actions .primary-btn { white-space: normal; text-align: center; }
+.admin-row .secondary-btn { width: auto; flex: 0 0 auto; }
+@media (max-width: 520px) {
+  .primary-btn, .secondary-btn { padding: 12px 16px; font-size: 0.94rem; }
+  .journey-next > a { flex-basis: 100%; }
+}

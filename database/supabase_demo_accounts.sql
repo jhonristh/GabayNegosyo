@@ -1,3 +1,10 @@
+-- ⚠️ DEPRECATED in v0.13. Do NOT run this file for new setups.
+-- Demo mode is now browser-only (lib/demoAccounts.ts): it creates no Supabase users or
+-- profiles and needs no password. Nothing in the app signs in with these accounts anymore.
+-- If you ALREADY created them, they are harmless but unused; delete those three users in
+-- Supabase → Authentication → Users when convenient (this release deletes nothing for you).
+-- Kept only so existing projects can see what was created.
+
 -- GabayNegosyo — demo accounts (free / premium / admin)
 -- Run in Supabase → SQL Editor AFTER you have created the 3 users in
 -- Authentication → Users (see docs/SUPABASE_SETUP.md, "Demo accounts").

@@ -1,4 +1,4 @@
-// The mandatory disclaimer is a hard client requirement (§8): exact wording,
+// The mandatory disclaimer is a hard requirement (§8): exact wording,
 // not shortened, not paraphrased, not replaced with English. This test exists
 // so a future refactor can't quietly reword it.
 
@@ -14,7 +14,7 @@ const penaltySrc = fs.readFileSync(path.join(__dirname, "..", "lib", "penalty.ts
 const simulatorSrc = fs.readFileSync(path.join(__dirname, "..", "components", "PenaltyCalculator.tsx"), "utf8");
 
 test("the exact disclaimer string is defined in lib/penalty.ts", () => {
-  assert.ok(penaltySrc.includes(EXPECTED), "MANDATORY_DISCLAIMER does not match the client's exact wording");
+  assert.ok(penaltySrc.includes(EXPECTED), "MANDATORY_DISCLAIMER does not match Gabay Negosyo's exact wording");
 });
 
 test("the simulator renders the mandatory disclaimer constant", () => {
@@ -27,6 +27,6 @@ test("the simulator renders the mandatory disclaimer constant", () => {
 test("the disclaimer is not replaced by a generic English disclaimer", () => {
   assert.ok(
     !penaltySrc.includes("Penalty estimates are for informational purposes only. Actual penalties may vary"),
-    "generic English disclaimer must not replace the client's required Filipino wording"
+    "generic English disclaimer must not replace Gabay Negosyo's required Filipino wording"
   );
 });

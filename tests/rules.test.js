@@ -46,10 +46,10 @@ test("employer gets all three agency registrations", () => {
   assert.ok(ids.includes("pagibig-employer-reg"));
 });
 
-test("taxpayer type selects a matching income tax return (client-sourced BIR forms, not the old MVP taxType field)", () => {
-  // rules.test.js pre-dates the real content migration (see CONTENT_AUDIT.md):
+test("taxpayer type selects a matching income tax return (Gabay Negosyo-sourced BIR forms, not the old MVP taxType field)", () => {
+  // rules.test.js pre-dates the real content migration :
   // "bir-1701a"/"bir-1701q" were placeholder MVP ids keyed off a `taxType`
-  // question the actual client wizard never asks. The real wizard asks
+  // question the actual wizard never asks. The real wizard asks
   // `taxpayerType` (see lib/types.ts TaxpayerType), and the workbook-sourced
   // requirements are "bir-1701a-8percent" / "bir-1701q-quarterly", matched
   // on taxpayerType. Re-implementing that matcher here rather than importing
@@ -108,7 +108,7 @@ test("penalty grows with days late", () => {
 
 test("penalty scales with amount", () => {
   // bir-1701a-8percent's penalty is honestly "not_specified" (see
-  // CONTENT_AUDIT.md) — using lgu-permit-renewal instead, which does carry
+  // ) — using lgu-permit-renewal instead, which does carry
   // a real numeric rate from the original MVP seed data.
   const rule = requirements.find((r) => r.id === "lgu-permit-renewal").penaltyRule;
   assert.ok(estimate(rule, 100000, 30) > estimate(rule, 10000, 30));
@@ -120,8 +120,8 @@ test("zero amount produces zero percentage-based penalty", () => {
 });
 
 test("every requirement's penalty rule is a recognized type, and not_specified is never given a fabricated rate", () => {
-  // "not_specified" is a deliberate, honest state (see R2 / CONTENT_AUDIT.md):
-  // the client-provided workbook did not give penalty rates for almost every
+  // "not_specified" is a deliberate, honest state :
+  // the internal reference workbook did not give penalty rates for almost every
   // BIR requirement, so this field says so instead of inventing a number.
   const valid = ["percentage_surcharge_plus_monthly_interest", "monthly_percentage", "flat_plus_daily", "not_specified"];
   for (const r of requirements) {

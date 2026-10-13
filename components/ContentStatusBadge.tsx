@@ -1,7 +1,7 @@
 import type { ContentStatus } from "../lib/contentHealth";
 
 const LABELS: Record<ContentStatus, string> = {
-  workbook_verified: "Workbook-sourced",
+  workbook_verified: "Verified content",
   needs_review: "Needs review",
   placeholder: "Prototype placeholder",
 };

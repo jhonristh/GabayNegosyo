@@ -3,25 +3,35 @@
 import { useEffect, useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { friendlyAuthError, takeOAuthCallbackError } from "../../lib/authErrors";
+import { db } from "../../lib/db";
 import { useAuth } from "../../lib/auth";
-import { DEMO_ACCOUNTS, DEMO_ENABLED, DEMO_PASSWORD } from "../../lib/demoAccounts";
+import { DEMO_ACCOUNTS, DEMO_ENABLED, type DemoRole } from "../../lib/demoAccounts";
 
 const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_LOGIN === "true";
 
 export default function LoginPage() {
-  const { login, loginWithGoogle, user, loading } = useAuth();
+  const { login, loginWithGoogle, startDemo, user, loading } = useAuth();
   const router = useRouter();
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
+  const [googlePending, setGooglePending] = useState(false);
 
   // Already signed in (or just finished signing in) → go to the right home screen.
   useEffect(() => {
     if (!loading && user) {
-      router.replace(user.role === "admin" ? "/admin" : "/dashboard");
+      // New accounts (e.g. first Google sign-in) have no business profile yet → start the wizard.
+      router.replace(user.role === "admin" ? "/admin" : db.getBusinessProfile(user.id) ? "/dashboard" : "/wizard");
     }
   }, [user, loading, router]);
+
+  // Google sign-in round-trip errors come back in the URL: show them in plain language.
+  useEffect(() => {
+    const raw = takeOAuthCallbackError();
+    if (raw) setError(friendlyAuthError(raw));
+  }, []);
 
   async function handleSubmit() {
     setError(null);
@@ -34,22 +44,21 @@ export default function LoginPage() {
     // On success, the effect above redirects once `user` is set.
   }
 
-  async function handleDemo(demoEmail: string) {
+  function handleDemo(role: DemoRole) {
     setError(null);
-    setSubmitting(true);
-    const result = await login(demoEmail, DEMO_PASSWORD);
-    setSubmitting(false);
-    if (!result.ok) {
-      setError(
-        `${result.error ?? "Could not log in."} If this is a fresh setup, the demo accounts may not be created in Supabase yet.`
-      );
-    }
+    startDemo(role); // browser-only: no Supabase call, no password
   }
 
   async function handleGoogle() {
+    if (googlePending) return; // prevent duplicate clicks while the redirect starts
     setError(null);
+    setGooglePending(true);
     const result = await loginWithGoogle();
-    if (!result.ok) setError(result.error ?? "Could not start Google sign-in.");
+    if (!result.ok) {
+      setError(result.error ?? friendlyAuthError(null));
+      setGooglePending(false);
+    }
+    // On success the browser leaves for Google, so the button stays disabled.
   }
 
   return (
@@ -108,21 +117,27 @@ export default function LoginPage() {
       </button>
 
       {GOOGLE_ENABLED && (
-        <button type="button" className="secondary-btn" style={{ marginTop: 10 }} onClick={handleGoogle}>
-          Continue with Google
+        <button
+          type="button"
+          className="secondary-btn"
+          style={{ marginTop: 10 }}
+          disabled={googlePending}
+          aria-busy={googlePending}
+          onClick={handleGoogle}
+        >
+          {googlePending ? "Opening Google…" : "Continue with Google"}
         </button>
       )}
 
       {DEMO_ENABLED && (
         <section className="demo-account-list">
-          <p className="hint">Just looking around? Try a demo account:</p>
+          <p className="hint">Just looking around? Try a demo. It runs only in this browser, with sample data. No account is created.</p>
           {DEMO_ACCOUNTS.map((a) => (
             <button
-              key={a.email}
+              key={a.role}
               type="button"
               className="option-btn demo-account-btn"
-              disabled={submitting}
-              onClick={() => handleDemo(a.email)}
+              onClick={() => handleDemo(a.role)}
             >
               <strong>{a.role.toUpperCase()}</strong>: {a.name}
               <br />

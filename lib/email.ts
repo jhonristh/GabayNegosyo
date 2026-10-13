@@ -17,6 +17,12 @@ import { getSupabase } from "./supabase";
  * ignores it and always uses the signed-in user's verified email.
  */
 export async function sendEmail(to: string, subject: string, body: string): Promise<SentEmail> {
+  // Demo mode: never call the server route or Supabase. Log a mock reminder locally.
+  if (db.isDemo()) {
+    const mock: SentEmail = { id: `demo-email-${Date.now()}`, to, subject, body, sentAt: new Date().toISOString() };
+    db.addDemoSentEmail(mock);
+    return mock;
+  }
   const { data } = await getSupabase().auth.getSession();
   const token = data.session?.access_token;
   if (!token) throw new Error("You need to be logged in to send email.");

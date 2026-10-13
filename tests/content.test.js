@@ -4,8 +4,8 @@
 // history) asserted a contentStatus/sourceType/frequency schema that was
 // never actually implemented — it tested an earlier draft spec, not this
 // app. The real content-provenance model is `contentSource` on Requirement
-// (see lib/types.ts, CONTENT_AUDIT.md): "flowchart_final_workbook" |
-// "registration_wizard_txt" | "prototype_placeholder". That field, plus the
+// : "gabay_guide" |
+// "gabay_wizard" | "prototype_placeholder". That field, plus the
 // `not_specified` penalty type and the deadline-approximation flags it
 // enables, exist specifically so this content's real provenance is always
 // visible — this file now checks THAT, instead of fields nothing sets.
@@ -19,7 +19,7 @@ const agencies = require("../data/agencies.json");
 const resources = require("../data/resources.json");
 const tutorials = require("../data/tutorials.json");
 
-const VALID_CONTENT_SOURCE = ["flowchart_final_workbook", "registration_wizard_txt", "prototype_placeholder"];
+const VALID_CONTENT_SOURCE = ["gabay_guide", "gabay_wizard", "prototype_placeholder"];
 
 test("every requirement references a real agency", () => {
   const ids = new Set(agencies.map((a) => a.id));

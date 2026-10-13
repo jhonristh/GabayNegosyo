@@ -1,0 +1,15 @@
+{
+  "_note": "Edit names here. Nothing in this file is confirmed: replace each placeholder with the team's confirmed name and contribution label. 9 researchers + 1 web developer.",
+  "researchers": [
+    { "name": "Researcher 1", "contribution": "Contribution to be confirmed" },
+    { "name": "Researcher 2", "contribution": "Contribution to be confirmed" },
+    { "name": "Researcher 3", "contribution": "Contribution to be confirmed" },
+    { "name": "Researcher 4", "contribution": "Contribution to be confirmed" },
+    { "name": "Researcher 5", "contribution": "Contribution to be confirmed" },
+    { "name": "Researcher 6", "contribution": "Contribution to be confirmed" },
+    { "name": "Researcher 7", "contribution": "Contribution to be confirmed" },
+    { "name": "Researcher 8", "contribution": "Contribution to be confirmed" },
+    { "name": "Researcher 9", "contribution": "Contribution to be confirmed" }
+  ],
+  "developer": { "name": "Web developer", "contribution": "Website design and development (name to be confirmed)" }
+}

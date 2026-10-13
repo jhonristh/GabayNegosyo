@@ -3,6 +3,7 @@ import requirementsSeed from "../data/requirements.json";
 import resourcesSeed from "../data/resources.json";
 import tutorialsSeed from "../data/tutorials.json";
 import { getSupabase } from "./supabase";
+import { DEMO_CONTENT_KEY, DEMO_DATA_KEY, isDemoUserId } from "./demoAccounts";
 import type {
   Agency,
   Requirement,
@@ -66,10 +67,15 @@ function emptyStore(): Store {
   };
 }
 
+/** Demo mode keeps admin content edits in its own key so they never mix with real ones. */
+function contentKey(): string {
+  return isDemoUserId(currentUserId) ? DEMO_CONTENT_KEY : STORE_KEY;
+}
+
 function readStore(): Store {
   if (typeof window === "undefined") return emptyStore();
   try {
-    const raw = window.localStorage.getItem(STORE_KEY);
+    const raw = window.localStorage.getItem(contentKey());
     if (!raw) return emptyStore();
     const parsed = JSON.parse(raw);
     return { adminOverrides: { ...emptyStore().adminOverrides, ...parsed.adminOverrides } };
@@ -80,7 +86,7 @@ function readStore(): Store {
 
 function writeStore(store: Store) {
   if (typeof window === "undefined") return;
-  window.localStorage.setItem(STORE_KEY, JSON.stringify(store));
+  window.localStorage.setItem(contentKey(), JSON.stringify(store));
 }
 
 /** In-memory copy of the signed-in user's rows from Supabase. */
@@ -142,6 +148,20 @@ function mergeWithOverrides<T extends { id: string; archived?: boolean }>(
 ): T[] {
   const seedMerged = seed.map((item) => ({ ...item, ...(overrides[item.id] ?? {}) }));
   return [...seedMerged, ...created].filter((item) => !item.archived);
+}
+
+/** True while a browser-only demo session is active. Every write below checks this first. */
+function inDemo(): boolean {
+  return isDemoUserId(currentUserId);
+}
+
+function saveDemoData() {
+  if (typeof window === "undefined" || !inDemo()) return;
+  try {
+    window.localStorage.setItem(DEMO_DATA_KEY, JSON.stringify({ userId: currentUserId, data: userData }));
+  } catch {
+    /* storage blocked: the demo simply will not persist across reloads */
+  }
 }
 
 export const db = {
@@ -311,6 +331,32 @@ export const db = {
     userData = emptyUserData();
   },
 
+  // ---- Browser-only demo mode (never touches Supabase) ----
+  /** Loads (or seeds) this browser's demo data for `userId` (e.g. "demo-free"). */
+  enterDemo(userId: string, seed: BusinessProfile) {
+    if (!isDemoUserId(userId)) return;
+    currentUserId = userId;
+    let loaded: UserData | null = null;
+    try {
+      const raw = typeof window !== "undefined" ? window.localStorage.getItem(DEMO_DATA_KEY) : null;
+      const parsed = raw ? (JSON.parse(raw) as { userId?: string; data?: UserData }) : null;
+      if (parsed?.userId === userId && parsed.data) loaded = { ...emptyUserData(), ...parsed.data };
+    } catch {
+      loaded = null;
+    }
+    userData = loaded ?? { ...emptyUserData(), businessProfile: { ...seed, userId } };
+    saveDemoData();
+  },
+  /** Demo-only: log a mock reminder locally (the real send route is never called in demo). */
+  addDemoSentEmail(email: SentEmail) {
+    if (!inDemo()) return;
+    userData.sentEmails = [email, ...userData.sentEmails].slice(0, 50);
+    saveDemoData();
+  },
+  isDemo(): boolean {
+    return inDemo();
+  },
+
   // ---- Business profile (one per user) ----
   getBusinessProfile(userId: string): BusinessProfile | null {
     return userId === currentUserId ? userData.businessProfile : null;
@@ -318,6 +364,10 @@ export const db = {
   saveBusinessProfile(profile: BusinessProfile) {
     if (!currentUserId || profile.userId !== currentUserId) return; // never write another user's row
     userData.businessProfile = profile;
+    if (inDemo()) {
+      saveDemoData();
+      return;
+    }
     persist(
       "saveBusinessProfile",
       getSupabase()
@@ -346,6 +396,10 @@ export const db = {
       dueDate,
       completedAt,
     };
+    if (inDemo()) {
+      saveDemoData();
+      return;
+    }
     persist(
       "markComplete",
       getSupabase().from("checklist_progress").upsert(
@@ -367,6 +421,10 @@ export const db = {
     if (!item) return;
     delete item.completedAt;
     item.status = "upcoming";
+    if (inDemo()) {
+      saveDemoData();
+      return;
+    }
     persist(
       "markIncomplete",
       getSupabase()
@@ -388,6 +446,10 @@ export const db = {
     if (done) {
       const completedAt = new Date().toISOString();
       (userData.taskProgress[key] ??= {})[taskIndex] = completedAt;
+      if (inDemo()) {
+        saveDemoData();
+        return;
+      }
       persist(
         "setTaskDone",
         getSupabase().from("task_progress").upsert(
@@ -397,6 +459,10 @@ export const db = {
       );
     } else {
       if (userData.taskProgress[key]) delete userData.taskProgress[key][taskIndex];
+      if (inDemo()) {
+        saveDemoData();
+        return;
+      }
       persist(
         "setTaskDone",
         getSupabase()
@@ -458,6 +524,10 @@ export const db = {
   setReminderConfig(config: ReminderConfig) {
     if (!currentUserId) return;
     userData.reminderConfigs[config.requirementId] = config;
+    if (inDemo()) {
+      saveDemoData();
+      return;
+    }
     persist(
       "setReminderConfig",
       getSupabase().from("reminder_configs").upsert(
@@ -482,7 +552,7 @@ export const db = {
   // a send, so the UI (and the admin dashboard's log) reflects the row the
   // server just wrote, without a second, client-triggered insert.
   async refreshSentEmails(): Promise<void> {
-    if (!currentUserId) return;
+    if (!currentUserId || inDemo()) return;
     const { data, error } = await getSupabase()
       .from("sent_emails")
       .select("*")

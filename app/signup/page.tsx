@@ -3,6 +3,7 @@
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
+import { friendlyAuthError } from "../../lib/authErrors";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { trackConversion } from "../../lib/webAnalytics";
@@ -19,6 +20,7 @@ export default function SignupPage() {
   const [error, setError] = useState<string | null>(null);
   const [submitting, setSubmitting] = useState(false);
   const [checkEmailFor, setCheckEmailFor] = useState<string | null>(null);
+  const [googlePending, setGooglePending] = useState(false);
 
   const canSubmit = name.trim() && email.trim() && password.length >= MIN_PASSWORD_LENGTH && !submitting;
 
@@ -43,9 +45,14 @@ export default function SignupPage() {
   }
 
   async function handleGoogle() {
+    if (googlePending) return;
     setError(null);
+    setGooglePending(true);
     const result = await loginWithGoogle();
-    if (!result.ok) setError(result.error ?? "Could not start Google sign-in.");
+    if (!result.ok) {
+      setError(result.error ?? friendlyAuthError(null));
+      setGooglePending(false);
+    }
   }
 
   if (checkEmailFor) {
@@ -55,7 +62,7 @@ export default function SignupPage() {
           <h1>Check your email</h1>
           <p>
             We sent a confirmation link to <strong>{checkEmailFor}</strong>. Open it on this device to finish creating
-            your account, then land on the setup wizard.
+            your account, then continue to the setup wizard.
           </p>
         </header>
         <p className="hint">
@@ -128,8 +135,15 @@ export default function SignupPage() {
       </button>
 
       {GOOGLE_ENABLED && (
-        <button type="button" className="secondary-btn" style={{ marginTop: 10 }} onClick={handleGoogle}>
-          Sign up with Google
+        <button
+          type="button"
+          className="secondary-btn"
+          style={{ marginTop: 10 }}
+          disabled={googlePending}
+          aria-busy={googlePending}
+          onClick={handleGoogle}
+        >
+          {googlePending ? "Opening Google…" : "Sign up with Google"}
         </button>
       )}
 

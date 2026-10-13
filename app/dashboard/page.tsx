@@ -10,6 +10,7 @@ import StatusBadge from "../../components/StatusBadge";
 import RequirementCard from "../../components/RequirementCard";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
+import { localityLabel } from "../../lib/ncr";
 import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
 import type { BusinessProfile, RequirementStatus } from "../../lib/types";
 
@@ -104,7 +105,7 @@ function DashboardInner() {
         <div className="business-chip-row">
           <span className="business-name">{profile.businessName}</span>
           <span className="chip">{profile.taxpayerType.replace(/_/g, " ")}</span>
-          <span className="chip">{profile.barangay}{profile.rdoCode ? ` · ${profile.rdoCode}` : ""}</span>
+          <span className="chip">{[profile.barangay, localityLabel(profile)].filter(Boolean).join(", ")}{profile.rdoCode ? ` · ${profile.rdoCode}` : ""}</span>
         </div>
       </header>
 

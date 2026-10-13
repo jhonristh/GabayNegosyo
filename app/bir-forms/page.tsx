@@ -63,7 +63,7 @@ function BirFormsContent() {
           ))}
           <label className={`bir-check ${other ? "checked" : ""}`}>
             <input type="checkbox" checked={other} onChange={(e) => setOther(e.target.checked)} />
-            <span><strong>Another transaction not listed here</strong><small>We do not guess forms for situations outside the client’s guide.</small></span>
+            <span><strong>Another transaction not listed here</strong><small>We only list forms we can support with official sources.</small></span>
           </label>
         </fieldset>
         {other && (
@@ -85,7 +85,6 @@ function BirFormsContent() {
                 <h3>BIR Form {c.formCode}: {c.formTitle}</h3>
                 <p className="deadline">Deadline: {c.deadline}</p>
                 <a href={c.url} target="_blank" rel="noopener noreferrer" className="tutorial-link">Open BIR Form {c.formCode} ↗</a>
-                <p className="verified">Client reference: {c.source}</p>
               </article>
             ))}
           </div>

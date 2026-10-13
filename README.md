@@ -14,10 +14,7 @@ business owners.
 > government services. This is a prototype/academic project — verify current
 > requirements at official sources before acting on anything shown here.
 
-> **Content source:** BIR-related content (registration wizard, requirement
-> checklists, forms) is migrated from a client-provided reference workbook,
-> `Flowchart.FINAL.xlsx`. See `docs/CONTENT_AUDIT.md` for exactly what was migrated,
-> what's still a placeholder, and known gaps.
+> **Content:** BIR-related content (registration wizard, requirement checklists, forms) comes from Gabay Negosyo's own compliance guide. Anything still marked as a placeholder is flagged in the app.
 
 > **Design system:** See `docs/DESIGN.md` for the current visual language
 > (Minimalism, brand-green accent, glass-shell/solid-data split) and why an
@@ -33,7 +30,7 @@ business owners.
 
 A complete, runnable V0 covering every item in the MVP priority list:
 
-- Landing page, sign up, and demo login (no password required)
+- Landing page, email/password + Google sign-up (Supabase Auth), and browser-only demo previews (v0.13: NCR-wide)
 - 7-step Registration Wizard → rule engine → personalized checklist
 - Compliance Dashboard (progress bar, pending/overdue/completed, quick actions)
 - Requirement Detail pages (free vs. Premium content, mark-as-complete)
@@ -51,7 +48,7 @@ A complete, runnable V0 covering every item in the MVP priority list:
 
 | Feature | Status | Why |
 |---|---|---|
-| Auth | Local demo accounts (`lib/auth.tsx`) | Runs with zero setup. Swap for Supabase Auth + Google OAuth later — see below. |
+| Auth | **Real Supabase Auth** (`lib/auth.tsx`) | Demo mode is separate and browser-only (`lib/demoAccounts.ts`): no Supabase user, no password, no real admin access. |
 | Database | `localStorage` via `lib/db.ts` | Same reason. Schema is fully documented in `database/schema.sql` for the real migration. |
 | Email reminders | Logged to a local "sent mail" list, visible on `/admin` | No paid email provider required to run the prototype. |
 | Admin analytics (total users, growth, etc.) | Static demo numbers, clearly labeled on screen | This is a single-browser prototype with no real multi-user backend; content counts (agencies/requirements/resources/tutorials) and the email log ARE real and live. |
@@ -93,11 +90,8 @@ npm run dev
 ```
 Visit `http://localhost:3000`.
 
-### Demo accounts (no password)
-On `/login`, use any of:
-- `free@demo.gabaynegosyo.ph` — Free tier
-- `premium@demo.gabaynegosyo.ph` — Premium tier
-- `admin@demo.gabaynegosyo.ph` — Admin
+### Demo previews (browser-only)
+With `NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS=true`, `/login` offers Free / Premium / Admin **previews**. They run only in your browser with sample data (banner + Reset/Exit); no accounts are created. See `docs/V0.13_CHANGES.md`.
 
 Or use "Sign up" to create your own free-tier demo account and go through the
 Registration Wizard yourself.
@@ -214,9 +208,12 @@ anything.
 ## v0.7 interface update
 The checklist has a progress ring with status filters; Deadlines offers a monthly view. Account picture upload is a **browser-only personalization** (PNG/JPEG/WebP under 500 KB), not a synced Supabase avatar. Free/Premium plan boundaries and academic-project context appear on the landing page. Contributor names must be added after the study and web team confirm their preferred attribution. Admin Users role filters operate on the currently loaded page and do not alter Supabase roles.
 
-## Client content update — September 2026
+## Gabay Negosyo business guide
 
-The authenticated `/guide` page summarizes the five client PDFs in `docs/client-sources/` by registration, renewal, employee responsibilities, and ongoing filing. Its content lives in `data/clientGuide.json`. The guide respects the existing Free/Premium distinction. Read `docs/CLIENT_CONTENT_REVIEW.md` before treating form choices, deadlines, or penalties as approved rules. The legacy calendar still has annual placeholders for some nonannual obligations. Supabase integration and database schema have not been changed.
+The authenticated `/registration` and `/renewal` pages present Gabay Negosyo's step-by-step guide for registering, renewing and maintaining a sole proprietorship. The content lives in `data/businessGuide.json`; filing tutorial videos live in `data/filingVideos.json`. The guide respects the Free/Premium split. Always confirm form choices, deadlines and penalties with the issuing agency.
 
-### v0.10 client identity
-The client-supplied logo now appears in navigation, the footer and the social preview; its derived checklist-and-growth emblem is used for app icons. The deep and bright green UI palette matches the client mark. See `Design-System.md` for palette and asset paths. The image supplied by the client is included in `public/icons/gabaynegosyo-client-logo.jpg`. Supabase settings and rules are unchanged.
+### Brand identity
+The Gabay Negosyo logo appears in navigation, the footer and the social preview (`public/icons/gabaynegosyo-logo.jpg`); its derived emblem is used for app icons. See `Design-System.md` for the palette and assets.
+
+## v0.13 setup docs
+`docs/GOOGLE_OAUTH_SETUP.md`, `docs/SUPABASE_REDIRECT_SETUP.md`, `docs/USER_INPUT_REQUIRED.md`, `docs/QA_REPORT.md`. Account deletion needs the server-only `SUPABASE_SERVICE_ROLE_KEY` (see `.env.example`).

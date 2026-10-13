@@ -9,10 +9,8 @@ export type TaxType = "8_percent" | "graduated" | "vat_registered" | "not_sure";
 export type BusinessStatus = "planning" | "newly_registered" | "operating";
 
 /**
- * Taxpayer Type — the four options from the Registration Wizard content
- * source (Flowchart.FINAL.xlsx > Registration sheet; "Actual Contents for
- * Registration Wizard.txt"). These are the actual BIR taxpayer categories
- * the client's intake flow is built around.
+ * Taxpayer Type — the four options from the registration wizard. These are the actual BIR taxpayer categories
+ * Gabay Negosyo's intake flow is built around.
  */
 export type TaxpayerType =
   | "purely_compensation"
@@ -26,6 +24,8 @@ export interface User {
   name: string;
   role: Role;
   createdAt: string;
+  /** True for the browser-only demo session. Demo users never exist in Supabase. */
+  isDemo?: boolean;
 }
 
 export interface BusinessProfile {
@@ -34,7 +34,9 @@ export interface BusinessProfile {
   // ── Fields from the actual Registration Wizard content source ──
   isRegisteringNewBusiness: boolean;
   taxpayerType: TaxpayerType;
-  barangay: string; // Quezon City barangay, looked up against data/barangayRdo.json
+  /** NCR locality id from lib/ncr.ts. Optional: profiles saved before v0.13 were Quezon City. */
+  locality?: string;
+  barangay: string; // barangay name; auto-RDO lookup exists only for Quezon City (data/barangayRdo.json)
   rdoCode: string; // auto-derived from barangay, e.g. "RDO 39"
   hasLease: boolean;
   hasEmployees: boolean;
@@ -100,9 +102,9 @@ export interface ApplicabilityRule {
  * required by the "no invented compliance content" rule.
  */
 export type ContentSource =
-  | "flowchart_final_workbook" // Flowchart.FINAL.xlsx — authoritative
-  | "registration_wizard_txt" // Actual Contents for Registration Wizard.txt
-  | "prototype_placeholder"; // earlier MVP demo content, not yet sourced from client material
+  | "gabay_guide" // Gabay Negosyo compliance guide, authoritative
+  | "gabay_wizard" // Gabay Negosyo registration wizard content
+  | "prototype_placeholder"; // earlier MVP demo content, not yet reviewed
 
 export type DeadlineKind = "fixed_annual" | "one_time" | "recurring_variable";
 

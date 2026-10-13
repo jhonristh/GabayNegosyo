@@ -74,7 +74,7 @@
     "title": "BIR Form 1901: Application for Registration (Self-Employed/Mixed Income/Estates/Trusts)",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1901 PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1901 (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1901%20October%202025%20ENCS%20Final.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -83,7 +83,7 @@
     "title": "BIR Form 1905: Application for Registration Information Update/Correction/Cancellation",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1905 PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1905 (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1905%20October%202025%20ENCS%20Final.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -92,7 +92,7 @@
     "title": "BIR Form 1900: Application for Authority to Use Computerized Accounting System / Components",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1900 PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1900 (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1900%20October%202025%20ENCS%20Final.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -101,7 +101,7 @@
     "title": "BIR Form 1906: Application for Authority to Print Receipts/Invoices",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1906 PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1906 (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/1906%20October%202025%20ENCS%20Final.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -110,7 +110,7 @@
     "title": "BIR Form 2000: Documentary Stamp Tax Declaration/Return",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 2000 PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 2000 (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/2000-DST%20Jan%202018%20final.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -119,7 +119,7 @@
     "title": "BIR Form 0619-E: Monthly Remittance Form of Creditable Income Taxes Withheld (Expanded)",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 0619-E PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 0619-E (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/0619-E%20Jan%202018%20rev%20final.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -128,7 +128,7 @@
     "title": "BIR Form 1601-C: Monthly Remittance Return of Income Taxes Withheld on Compensation",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1601-C PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1601-C (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/1601C%20final%20Jan%202018%20with%20DPA.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -137,7 +137,7 @@
     "title": "BIR Form 1601-EQ: Quarterly Remittance Return of Creditable Income Taxes Withheld (Expanded)",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1601-EQ PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1601-EQ (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/1601-EQ%20January%202019%20ENCS%20final.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -146,7 +146,7 @@
     "title": "BIR Form 2551Q: Quarterly Percentage Tax Return",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 2551Q PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 2551Q (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/2551Q%20Jan%202018%20ENCS%20final%20rev%203_copy.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -155,7 +155,7 @@
     "title": "BIR Form 1701Q: Quarterly Income Tax Return for Self-Employed, Estates and Trusts",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1701Q PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1701Q (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701Q%20Jan%202018%20final%20rev2_copy.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -164,7 +164,7 @@
     "title": "BIR Form 1604-C: Annual Information Return of Income Taxes Withheld on Compensation",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1604-C PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1604-C (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/1604-C%20Jan%202018%20Final.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -173,7 +173,7 @@
     "title": "BIR Form 1604-E: Annual Information Return of Creditable Income Taxes Withheld (Expanded)",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1604-E PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1604-E (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/1604E%20Jan%202018%20ENCS%20Final2.pdf",
     "lastVerified": "2026-09-20"
   },
@@ -182,7 +182,7 @@
     "title": "BIR Form 1701A: Annual Income Tax Return for Individuals (8% Flat Rate / OSD, No Mixed Income)",
     "resourceType": "form",
     "agencyId": "bir",
-    "description": "Official BIR form 1701A PDF, as listed in the client-provided registration wizard content source.",
+    "description": "Official BIR form 1701A (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701A%20Jan%202018%20v5%20with%20rates.pdf",
     "lastVerified": "2026-09-20"
   }

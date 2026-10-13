@@ -11,7 +11,7 @@ import { track as vercelTrack } from "@vercel/analytics";
  * pre-existing feature: an in-app, localStorage-only event log the admin
  * dashboard aggregates for product-usage insight. That system stays as it
  * is; this one is real Vercel Web Analytics for actual traffic/conversion
- * measurement, which is what "analytics actually installed" (client rule)
+ * measurement, which is what "analytics actually installed" (project rule)
  * requires and lib/analytics.ts alone does not provide.
  *
  * Note for the report: the <Analytics /> component and these events are

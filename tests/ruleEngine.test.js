@@ -36,7 +36,7 @@ test("8% and graduated-rate income tax requirements target the right taxpayer ty
 });
 
 test("workbook-sourced requirements declare a real contentSource and no invented penalty numbers", () => {
-  const sourced = requirements.filter((r) => r.contentSource === "flowchart_final_workbook");
+  const sourced = requirements.filter((r) => r.contentSource === "gabay_guide");
   assert.ok(sourced.length > 0, "expected at least one workbook-sourced requirement");
   for (const req of sourced) {
     if (req.penaltyRule.type === "not_specified") {

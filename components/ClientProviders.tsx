@@ -6,6 +6,7 @@ import Footer from "./Footer";
 import ServiceWorkerRegistration from "./ServiceWorkerRegistration";
 import { ToastProvider } from "./ToastProvider";
 import DbErrorToasts from "./DbErrorToasts";
+import DemoBanner from "./DemoBanner";
 import type { ReactNode } from "react";
 
 /**
@@ -19,6 +20,7 @@ function Frame({ children }: { children: ReactNode }) {
   const shell = !user ? "public" : user.role === "admin" ? "command" : "ledger";
   return (
     <div className={`kit-shell kit-shell--${shell}`} data-shell={shell}>
+      <DemoBanner />
       <Navbar />
       <div className="kit-shell-body">
         <div className="page-content">{children}</div>
