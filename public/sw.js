@@ -20,7 +20,7 @@
 //   - supports a "purge" message so the app can clear runtime caches on
 //     logout (see components/ServiceWorkerRegistration.tsx).
 
-const CACHE_VERSION = "gn-v4"; // v4: only ok, full responses are cached (a cached 404 for /_next/static was served forever)
+const CACHE_VERSION = "gn-v5"; // v5: never intercept localhost/dev (a cache-first /_next/static entry served stale CSS forever); v4: only ok, full responses are cached
 const PRECACHE = `${CACHE_VERSION}-precache`;
 const RUNTIME = `${CACHE_VERSION}-runtime`;
 
@@ -65,7 +65,12 @@ function putInRuntimeCache(request, response) {
   caches.open(RUNTIME).then((cache) => cache.put(request, copy)).catch(() => {});
 }
 
+// Local development: Next.js dev chunks are NOT content-hashed, so cache-first serves stale CSS/JS
+// (half-styled pages after an edit). Never intercept on local hosts.
+const IS_LOCAL_HOST = ["localhost", "127.0.0.1", "[::1]"].includes(self.location.hostname);
+
 function isNeverCached(request, url) {
+  if (IS_LOCAL_HOST) return true;
   if (request.method !== "GET") return true;
   if (!isSameOrigin(url)) return true; // cross-origin: Supabase, analytics, anything else
   if (url.pathname.startsWith("/api/")) return true;

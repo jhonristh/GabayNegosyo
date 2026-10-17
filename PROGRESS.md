@@ -271,3 +271,10 @@ Details: `docs/V0.12_CHANGES.md`.
 - [x] Verified: `npm test` 132/132, `npm run lint`, `npm run contrast-check` (40/40), `npm run build`
 - [ ] Not reviewed: Learning Hub layout vs reference, admin pages in Night Shift, real Supabase login (placeholder credentials only)
 - [ ] Owner to confirm: "Gabay Negosyo's reference" wording on /penalties; demo seed deadline dated Jan 20, 2026 is now in the past
+
+## v0.15 round 2
+- [x] Login redesign with show/hide password (also on Sign up); proper `<form>` so password managers and Enter work
+- [x] Terms, Privacy, Disclaimer on a shared `LegalPage` layout (wording unchanged); new `/credits` page; footer rebuilt
+- [x] Supabase account sync: `database/migrations/003_sync_profiles.sql`, admin overview + Sync now, hardened signup trigger; Admin → Users role filter now server-side
+- [ ] Owner: run migration 003 in Supabase; put real names in `data/credits.json`
+- [ ] Not verified: the admin dashboard against a real admin session and real Supabase (SQL syntax-checked and the panel tested against mocked responses only)

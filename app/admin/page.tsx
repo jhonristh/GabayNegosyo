@@ -5,6 +5,7 @@ import { useMemo } from "react";
 import AdminGuard from "../../components/AdminGuard";
 import { db } from "../../lib/db";
 import AdminHelp from "../../components/AdminHelp";
+import AccountSyncPanel from "../../components/AccountSyncPanel";
 import { agencyShortName } from "../../components/AgencyProgress";
 import ContentStatusBadge from "../../components/ContentStatusBadge";
 import { isResourceStale, requirementContentStatus } from "../../lib/contentHealth";
@@ -46,15 +47,17 @@ function AdminInner() {
   return (
     <main className="screen admin-screen kit-command">
       <header className="intro">
-        <p className="v06-eyebrow">ADMIN · CONTENT IN THIS BROWSER</p>
+        <p className="v06-eyebrow">ADMIN · ACCOUNTS FROM SUPABASE · CONTENT IN THIS BROWSER</p>
         <h1>Admin dashboard</h1>
         <p>Review content, see what needs attention, and open an editor in one click.</p>
       </header>
 
       <section className="v07-admin-links" aria-label="Admin sections">
-        {[ ["Users", "/admin/users", "Review Free, Premium, and Admin accounts"], ["Requirements", "/admin/requirements", "Inspect stages and content status"], ["Agencies", "/admin/agencies", "Manage agency references"], ["Resources", "/admin/resources", "Review source links and forms"], ["Tutorials", "/admin/tutorials", "Review learning material"] ].map(([title,href,description]) => <Link key={href} href={href}><strong>{title} ↗</strong><span>{description}</span></Link>)}
+        {[ ["Users", "/admin/users", "Review Free, Premium, and Admin accounts"], ["Requirements", "/admin/requirements", "Inspect stages and content status"], ["Agencies", "/admin/agencies", "Manage agency references"], ["Resources", "/admin/resources", "Review source links and forms"], ["Tutorials", "/admin/tutorials", "Review learning material"] ].map(([title,href,description]) => <Link key={href} href={href}><strong>{title} →</strong><span>{description}</span></Link>)}
       </section>
       <AdminHelp>Start with items needing review, then open Agencies, Requirements, Resources, or Tutorials. Content changes here are stored only in this browser; the Users tab reads Supabase and is read-only.</AdminHelp>
+      <AccountSyncPanel />
+      <h2 className="admin-subhead">Content</h2>
       <section className="metric-grid" aria-label="Content overview">
         {[["Agencies in scope", agencies.length], ["Requirements", requirements.length], ["Resources", resources.length], ["Tutorials", tutorials.length], ["Requirements needing review",requirements.filter(r=>r.contentSource==="prototype_placeholder").length], ["Videos awaiting verification", tutorials.filter(t=>t.isPlaceholder).length]].map(([label,value])=><article key={label} className="metric-card"><p className="metric-label">{label}</p><p className="metric-value">{value}</p></article>)}
       </section>

@@ -1,5 +1,6 @@
 "use client";
 
+import PasswordField from "../../components/PasswordField";
 import { useState } from "react";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
@@ -113,14 +114,7 @@ export default function SignupPage() {
         <label className="question-label" htmlFor="password">
           Password
         </label>
-        <input
-          id="password"
-          type="password"
-          autoComplete="new-password"
-          className="text-input"
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
-        />
+        <PasswordField id="password" autoComplete="new-password" value={password} onChange={setPassword} />
         <p className="hint">At least {MIN_PASSWORD_LENGTH} characters.</p>
       </section>
 

@@ -1,3 +1,4 @@
+import LegalPage from "../../components/LegalPage";
 import { siteConfig } from "../../lib/siteConfig";
 
 export const metadata = {
@@ -25,78 +26,100 @@ export const metadata = {
  */
 export default function PrivacyPage() {
   return (
-    <main className="screen legal-page">
-      <header className="intro">
-        <h1>Privacy Policy</h1>
-        <p className="hint">Last updated: see the date of this deployment.</p>
-      </header>
-
-      <section className="req-detail-section">
-        <h2>What we collect</h2>
-        <p>When you create an account and use GabayNegosyo, we store:</p>
-        <ul className="doc-checklist">
-          <li>Your account email and name.</li>
-          <li>Your business profile answers from the registration wizard: taxpayer type, barangay and RDO code, whether you lease your space, whether you have employees and how many, projected annual gross sales and expenses, and your business name.</li>
-          <li>Your checklist progress: which requirements you've marked complete, and when.</li>
-          <li>Your reminder settings, if you turn reminders on.</li>
-          <li>A log of reminder emails sent to you (subject, body, and timestamp), so you and we can see what was sent.</li>
-        </ul>
-      </section>
-
-      <section className="req-detail-section">
-        <h2>Where it's stored</h2>
-        <p>
-          In a Supabase project (hosted Postgres database with Row Level Security), which only
-          you (and administrators, for support) can read your own data from. Your session is
-          kept in your browser&apos;s local storage, not in a cookie.
-        </p>
-      </section>
-
-      <section className="req-detail-section">
-        <h2>Cookies</h2>
-        <p>
-          GabayNegosyo does not set cookies. Sign-in uses your browser&apos;s local storage
-          instead, and the analytics we use (Vercel Web Analytics) is cookieless by design. That
-          is why this site does not show a cookie consent banner.
-        </p>
-      </section>
-
-      <section className="req-detail-section">
-        <h2>Analytics</h2>
-        <p>
-          We use Vercel Web Analytics to understand which pages are used, without cookies or
-          personal data in the events themselves. We also record a small number of named actions
-          (for example, completing signup or the registration wizard) with no personal
-          information attached.
-        </p>
-      </section>
-
-      <section className="req-detail-section">
-        <h2>Requesting removal</h2>
-        <p>
-          To request that your account and data be deleted, contact us at{" "}
-          {siteConfig.contactEmail ? (
-            <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>
-          ) : (
-            "the contact address below"
-          )}
-          . We will confirm the request and remove your account data from our systems.
-        </p>
-      </section>
-
-      <section className="req-detail-section">
-        <h2>Contact</h2>
-        <p>
-          {siteConfig.legalEntityName ? `${siteConfig.legalEntityName}. ` : ""}
-          Questions about this policy:{" "}
-          {siteConfig.contactEmail ? (
-            <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>
-          ) : (
-            "contact address not yet configured"
-          )}
-          .
-        </p>
-      </section>
-    </main>
+    <LegalPage
+      current="privacy"
+      eyebrow="LEGAL · PRIVACY"
+      title="Privacy Policy"
+      lead="What GabayNegosyo collects, why, where it is stored, and how to ask for removal."
+      updated="Last updated: see the date of this deployment."
+      facts={[
+        { label: "No cookies", text: "Sign-in uses local storage." },
+        { label: "Row Level Security", text: "Your data is readable by you and admins." },
+        { label: "Removal on request", text: "Ask us to delete your account data." },
+      ]}
+      sections={[
+        {
+          id: "what-we-collect",
+          title: "What we collect",
+          children: (
+            <>
+              <p>When you create an account and use GabayNegosyo, we store:</p>
+              <ul className="doc-checklist">
+                <li>Your account email and name.</li>
+                <li>Your business profile answers from the registration wizard: taxpayer type, barangay and RDO code, whether you lease your space, whether you have employees and how many, projected annual gross sales and expenses, and your business name.</li>
+                <li>Your checklist progress: which requirements you&apos;ve marked complete, and when.</li>
+                <li>Your reminder settings, if you turn reminders on.</li>
+                <li>A log of reminder emails sent to you (subject, body, and timestamp), so you and we can see what was sent.</li>
+              </ul>
+            </>
+          ),
+        },
+        {
+          id: "where-stored",
+          title: "Where it’s stored",
+          children: (
+            <p>
+              In a Supabase project (hosted Postgres database with Row Level Security), which only
+              you (and administrators, for support) can read your own data from. Your session is
+              kept in your browser&apos;s local storage, not in a cookie.
+            </p>
+          ),
+        },
+        {
+          id: "cookies",
+          title: "Cookies",
+          children: (
+            <p>
+              GabayNegosyo does not set cookies. Sign-in uses your browser&apos;s local storage
+              instead, and the analytics we use (Vercel Web Analytics) is cookieless by design. That
+              is why this site does not show a cookie consent banner.
+            </p>
+          ),
+        },
+        {
+          id: "analytics",
+          title: "Analytics",
+          children: (
+            <p>
+              We use Vercel Web Analytics to understand which pages are used, without cookies or
+              personal data in the events themselves. We also record a small number of named actions
+              (for example, completing signup or the registration wizard) with no personal
+              information attached.
+            </p>
+          ),
+        },
+        {
+          id: "removal",
+          title: "Requesting removal",
+          children: (
+            <p>
+              To request that your account and data be deleted, contact us at{" "}
+              {siteConfig.contactEmail ? (
+                <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>
+              ) : (
+                "the contact address below"
+              )}
+              . We will confirm the request and remove your account data from our systems.
+            </p>
+          ),
+        },
+        {
+          id: "contact",
+          title: "Contact",
+          children: (
+            <p>
+              {siteConfig.legalEntityName ? `${siteConfig.legalEntityName}. ` : ""}
+              Questions about this policy:{" "}
+              {siteConfig.contactEmail ? (
+                <a href={`mailto:${siteConfig.contactEmail}`}>{siteConfig.contactEmail}</a>
+              ) : (
+                "contact address not yet configured"
+              )}
+              .
+            </p>
+          ),
+        },
+      ]}
+    />
   );
 }

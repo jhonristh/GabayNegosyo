@@ -34,3 +34,10 @@ Source of truth for colour, radius, shadow and motion tokens is the `:root` bloc
 - **Signed-in shell.** In the Growth Ledger shell the sidebar spans grid rows 1-2 and the demo banner sits in the content column, so the sidebar always starts at the top of the window. `.kit-side-nav` scrolls independently; `.kit-side-foot` (theme toggle) is pinned and always visible. Phones use the toggle in `.mobile-brand-head`.
 - **Lifecycle stepper.** States are completed (check mark, "Visited stage"), current (filled number, "You are here", mint panel, ring) and upcoming ("Next stages"). State is always stated in text, never colour alone.
 - **Penalty simulator.** `.penalty-sim` is a two-column grid from 960px (inputs left, estimate right, sticky); below that the result stacks under the inputs. The headline figure is the result `h3`; `dl.penalty-summary` rows stay body-sized.
+
+## v0.15 Auth, legal and credits
+- **Soft surface token.** Use `--surface-soft` for mint panels. `--kit-mint` does not remap in Night Shift.
+- **Auth.** `.auth-shell` is a two-panel layout from 900px (emerald brand panel + form card); on phones the brand panel collapses to a slim banner so the form comes first. `PasswordField` provides the show/hide control (44px target, `aria-pressed`, label switches between "Show password" and "Hide password"); it is used on Log in and Sign up.
+- **Legal and credits.** `components/LegalPage.tsx` is the only layout for Terms, Privacy and Disclaimer: hero with three key points, a sticky "On this page" list (a horizontal chip row on phones), numbered section cards, one `tone: "key"` card per page. The component adds no wording of its own; copy lives in each page. `/credits` reads `data/credits.json` and states plainly when names are still pending.
+- **Footer.** Brand block plus Explore and Legal columns. Credits links to `/credits`.
+- **Admin.** `AccountSyncPanel` shows live account numbers and sync status (see `docs/SUPABASE_USER_SYNC.md`).

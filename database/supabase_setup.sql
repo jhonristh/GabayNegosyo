@@ -46,9 +46,10 @@ begin
   insert into public.profiles (id, email, name)
   values (
     new.id,
-    new.email,
+    coalesce(new.email, ''),
     coalesce(new.raw_user_meta_data ->> 'name', new.raw_user_meta_data ->> 'full_name', '')
-  );
+  )
+  on conflict (id) do nothing;
   return new;
 end;
 $$;

@@ -64,14 +64,17 @@ function UsersInner() {
         const supabase = getSupabase();
         const from = page * PAGE_SIZE;
         const to = from + PAGE_SIZE - 1;
-        const [{ data, error }, { count, error: countError }] = await Promise.all([
-          supabase
-            .from("profiles")
-            .select("id, email, name, role, is_demo, created_at")
-            .order("created_at", { ascending: false })
-            .range(from, to),
-          supabase.from("profiles").select("id", { count: "exact", head: true }),
-        ]);
+        let listQuery = supabase
+          .from("profiles")
+          .select("id, email, name, role, is_demo, created_at")
+          .order("created_at", { ascending: false })
+          .range(from, to);
+        let countQuery = supabase.from("profiles").select("id", { count: "exact", head: true });
+        if (filter !== "all") {
+          listQuery = listQuery.eq("role", filter);
+          countQuery = countQuery.eq("role", filter);
+        }
+        const [{ data, error }, { count, error: countError }] = await Promise.all([listQuery, countQuery]);
         if (cancelled) return;
         if (error || countError) {
           setErrorMessage(error?.message ?? countError?.message ?? "Could not load users.");
@@ -91,7 +94,7 @@ function UsersInner() {
     return () => {
       cancelled = true;
     };
-  }, [page, retry, previewOnly]);
+  }, [page, retry, previewOnly, filter]);
 
   const hasNextPage = total !== null && (page + 1) * PAGE_SIZE < total;
 
@@ -121,14 +124,14 @@ function UsersInner() {
         </div>
       )}
 
-      <div className="filter-row" role="group" aria-label="Filter account roles on this page">{(["all","free","premium","admin"] as const).map(role=><button type="button" key={role} className={`filter-chip ${filter===role?"selected":""}`} onClick={()=>setFilter(role)}>{role === "all" ? "All roles" : role}</button>)}</div>
-      <p className="hint">Role filters apply to this page of {PAGE_SIZE} accounts. Total account counts are unfiltered.</p>
+      <div className="filter-row" role="group" aria-label="Filter accounts by role">{(["all","free","premium","admin"] as const).map(role=><button type="button" key={role} className={`filter-chip ${filter===role?"selected":""}`} onClick={()=>{ setFilter(role); setPage(0); }}>{role === "all" ? "All roles" : role}</button>)}</div>
+      <p className="hint">Filters search all accounts, {PAGE_SIZE} per page.</p>
       {rows.length > 0 && (
         <>
           <section className="dashboard-section">
             <div className="metric-grid">
               <div className="metric-card">
-                <p className="metric-label">Total accounts</p>
+                <p className="metric-label">{filter === "all" ? "Total accounts" : `${filter} accounts`}</p>
                 <p className="metric-value">{total ?? "…"}</p>
               </div>
               <div className="metric-card">

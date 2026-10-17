@@ -6,7 +6,7 @@ import { siteConfig } from "../lib/siteConfig";
 // in their page.tsx files), so they are not actually public and should
 // never have been in a public sitemap.
 export default function sitemap(): MetadataRoute.Sitemap {
-  const routes = ["", "/login", "/signup", "/privacy", "/terms", "/disclaimer"];
+  const routes = ["", "/login", "/signup", "/privacy", "/terms", "/disclaimer", "/credits"];
   return routes.map((route) => ({
     url: `${siteConfig.siteUrl}${route}`,
     lastModified: new Date(),

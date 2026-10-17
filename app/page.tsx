@@ -44,7 +44,7 @@ export default function LandingPage() {
         <picture className="hero-growth-arrow-wrap">
           <source srcSet="/images/gabaynegosyo-growth-arrow.webp" type="image/webp" />
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/images/gabaynegosyo-growth-arrow.png" alt="" aria-hidden="true" className="hero-growth-arrow" width={1400} height={836} fetchPriority="high" decoding="async" />
+          <img src="/images/gabaynegosyo-growth-arrow.png" alt="" aria-hidden="true" className="hero-growth-arrow" width={1400} height={836} decoding="async" />
         </picture>
         <div className="gn-roadmap" role="group" aria-label="Illustrative preview of the checklist interface">
           <div className="gn-roadmap-head"><Image src="/icons/icon-192.png" width={28} height={28} alt="" /><span>YOUR ROADMAP</span></div>
