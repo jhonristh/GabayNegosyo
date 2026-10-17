@@ -76,7 +76,7 @@ export default function Navbar() {
           <Link href="/login">Log in</Link>
           <ThemeToggle className="kit-theme-toggle--icon" />
           <Link href="/wizard" className="primary-btn nav-cta">
-            Get started ↗
+            Get started <span className="nav-arrow" aria-hidden="true">↗</span>
           </Link>
         </nav>
       </header>

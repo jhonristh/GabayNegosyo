@@ -5,8 +5,7 @@
  * row and uses no password. State lives under its own localStorage keys and
  * lib/db.ts routes every write to that store while demo mode is active, so a
  * demo action can never reach a Supabase mutation or touch a real account.
- * The "admin" demo only previews admin screens with synthetic data; it has no
- * real admin authority (RLS knows nothing about it).
+ * There is no public admin demo: admin access is kept internal and uses real accounts only.
  *
  * Enabled with NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS=true. No password is needed any more.
  */
@@ -22,7 +21,6 @@ export interface DemoAccount {
 export const DEMO_ACCOUNTS: DemoAccount[] = [
   { role: "free", name: "Sample Free User", email: "free@demo.invalid", blurb: "Basic checklist and deadlines" },
   { role: "premium", name: "Sample Premium User", email: "premium@demo.invalid", blurb: "Full details, tutorials, penalty simulator (local preview)" },
-  { role: "admin", name: "Sample Admin (preview)", email: "admin@demo.invalid", blurb: "Admin screens with sample data. No real admin access." },
 ];
 
 export const DEMO_ENABLED = process.env.NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS === "true";
@@ -44,7 +42,7 @@ export function getActiveDemoRole(): DemoRole | null {
   if (typeof window === "undefined") return null;
   try {
     const v = window.localStorage.getItem(DEMO_SESSION_KEY);
-    return v === "free" || v === "premium" || v === "admin" ? v : null;
+    return v === "free" || v === "premium" ? v : null; // a stale "admin" demo session is ignored
   } catch {
     return null;
   }

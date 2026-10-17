@@ -267,6 +267,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   function startDemo(role: DemoRole) {
     if (!DEMO_ENABLED || currentId.current) return; // never replace a signed-in real user
+    if (role === "admin") return; // there is no public admin demo
     wipeDemoStorage();
     setActiveDemoRole(role);
     applyDemo(role);

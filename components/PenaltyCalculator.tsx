@@ -71,7 +71,8 @@ export default function PenaltyCalculator() {
   const peso = (n: number) => `₱${n.toLocaleString("en-PH", { minimumFractionDigits: 2, maximumFractionDigits: 2 })}`;
 
   return (
-    <>
+    <div className="penalty-sim">
+      <div className="penalty-sim-inputs">
       <section className="question">
         <p className="question-label" id="mode-label">What are you estimating?</p>
         <div className="option-row" role="group" aria-labelledby="mode-label">
@@ -117,9 +118,18 @@ export default function PenaltyCalculator() {
       {error && <p role="alert" className="hint" style={{ color: "var(--red-text)" }}>{error}</p>}
 
       <button type="button" className="primary-btn" onClick={calculate}>Calculate estimated penalty</button>
+      </div>
+
+      <div className="penalty-sim-result" aria-live="polite">
+      {!bir && !agency && (
+        <section className="checklist-card penalty-sim-empty">
+          <h3>Your estimate</h3>
+          <p className="hint">Fill in the amount and days late, then choose Calculate. The estimate and its breakdown appear here. It is a reference only, not an official BIR computation.</p>
+        </section>
+      )}
 
       {bir && (
-        <section className="checklist-card" style={{ marginTop: 16 }} aria-live="polite">
+        <section className="checklist-card">
           <h3>Estimated penalty: {peso(bir.totalPenalty)}</h3>
           <dl className="penalty-summary">
             <div><dt>Base (unpaid tax)</dt><dd>{peso(bir.taxDue)}</dd></div>
@@ -135,12 +145,13 @@ export default function PenaltyCalculator() {
       )}
 
       {agency && (
-        <section className="checklist-card" style={{ marginTop: 16 }} aria-live="polite">
+        <section className="checklist-card">
           <h3>Estimated penalty: ₱{agency.estimatedPenalty.toLocaleString()}</h3>
           <ul className="doc-checklist">{agency.breakdown.map((l, i) => <li key={i}>{l}</li>)}</ul>
           <p className="penalty" style={{ marginTop: 10 }}>{MANDATORY_DISCLAIMER}</p>
         </section>
       )}
-    </>
+      </div>
+    </div>
   );
 }

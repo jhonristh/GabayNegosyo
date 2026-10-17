@@ -262,3 +262,12 @@ Details: `docs/V0.12_CHANGES.md`.
 ## v0.12 Final = v0.12 + updated content (the content update)
 - BIR Forms, Business Registration and Penalties PDFs were unchanged. Checklist and Renewal PDFs changed: DTI registration/renewal guide entries added, document lists expanded, barangay renewal steps updated.
 - Filing tutorial videos: 8 YouTube links in `data/filingVideos.json`, embedded on `/renewal` (placeholder shows only if the list is empty).
+
+## v0.15 (fixes on the v0.14 Emerald Growth redesign)
+- [x] Hero: arrow moved into the art column (it was a hero grid item that displaced the copy and ran under the text); own band on small screens
+- [x] Signed-in sidebar: theme toggle and full nav visible at first paint on laptop heights
+- [x] Night Shift: stepper, BIR checks and current-step label/number use theme tokens (were white boxes / dark-on-dark / white-on-mint)
+- [x] Penalty simulator: two-column on desktop; breakdown typography fixed; calculation and disclaimer untouched
+- [x] Verified: `npm test` 132/132, `npm run lint`, `npm run contrast-check` (40/40), `npm run build`
+- [ ] Not reviewed: Learning Hub layout vs reference, admin pages in Night Shift, real Supabase login (placeholder credentials only)
+- [ ] Owner to confirm: "Gabay Negosyo's reference" wording on /penalties; demo seed deadline dated Jan 20, 2026 is now in the past

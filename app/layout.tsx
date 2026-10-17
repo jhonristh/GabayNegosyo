@@ -2,6 +2,9 @@ import "../styles/globals.css";
 // Design-kit layer (Growth Ledger, Regulatory Atlas, Command Desk, Pocket Guide, Night Shift).
 // Loaded after globals.css on purpose: it refines those rules rather than replacing them.
 import "../styles/kits.css";
+// Emerald Growth (v0.14 redesign): tokens + shell + homepage. Loaded last; light theme only —
+// Night Shift keeps its own variables because html[data-theme="night"] out-specifies :root.
+import "../styles/emerald.css";
 // K2: self-hosted via @fontsource (npm-bundled WOFF2 files, no runtime
 // fetch to fonts.googleapis.com / fonts.gstatic.com at build or request
 // time — more robust than next/font/google, which still makes a live
@@ -55,7 +58,7 @@ export const viewport = {
   initialScale: 1,
   // K1: no maximumScale — pinch-zoom must never be blocked (accessibility).
   viewportFit: "cover",
-  themeColor: "#145D2D",
+  themeColor: "#064E3B",
 };
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {

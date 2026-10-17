@@ -1,0 +1,331 @@
+/* ==========================================================================
+   GabayNegosyo — Emerald Growth (v0.14, Phases 1–2)
+   Loaded LAST. Presentation only. Re-points the existing design tokens at the
+   Emerald Growth palette so every route inherits it, then restyles the shared
+   shell (header, buttons, footer) and the homepage. Night Shift is untouched:
+   html[data-theme="night"] (kits.css) out-specifies :root and keeps its values.
+   ========================================================================== */
+
+/* ---------- 1. Tokens ---------- */
+:root {
+  --gn-emerald: #064e3b;      /* primary actions, nav, headings */
+  --gn-forest: #17352b;       /* body text */
+  --gn-lime: #84cc16;         /* accent only: arrow, progress highlights, selected details */
+  --gn-mint: #e8f5ec;         /* selected states, gentle panels */
+  --gn-canvas: #f5f8f5;       /* page background */
+  --gn-muted: #52665c;        /* secondary copy */
+  --gn-line: #d3e2d8;         /* thin green-gray borders */
+
+  --gn-green: var(--gn-emerald);
+  --gn-green-deep: #04382b;
+  --gn-sand: var(--gn-canvas);
+  --page-tint: var(--gn-canvas);
+  --ink: var(--gn-forest);
+  --ink-muted: var(--gn-muted);
+  --ink-faint: var(--gn-muted);
+  --glass-border: rgba(6, 78, 59, 0.14);
+
+  --kit-canvas: var(--gn-canvas);
+  --kit-line: var(--gn-line);
+  --kit-mint: var(--gn-mint);
+  --kit-track: #d9e9de;
+  --kit-nav-on-bg: var(--gn-mint);
+  --kit-nav-on-fg: var(--gn-emerald);
+  --kit-lime: var(--gn-lime);
+  --kit-rail-bg: var(--gn-emerald);
+  --kit-mosaic-bg: var(--gn-mint);
+
+  /* 4px spacing scale + shape + motion */
+  --gn-r-card: 16px;
+  --gn-r-ctl: 10px;
+  --gn-shadow: 0 1px 2px rgba(6, 78, 59, 0.05), 0 8px 24px rgba(6, 78, 59, 0.07);
+  --gn-ease: cubic-bezier(0.2, 0.7, 0.2, 1);
+}
+
+html:not([data-theme="night"]) body { background: var(--gn-canvas); color: var(--ink); }
+
+/* ---------- 2. Shared controls ---------- */
+.primary-btn {
+  border-radius: var(--gn-r-ctl);
+  background: var(--gn-green);
+  box-shadow: 0 1px 2px rgba(6, 78, 59, 0.2), 0 6px 16px rgba(6, 78, 59, 0.18);
+}
+.primary-btn:hover, .primary-btn:active { background: var(--gn-green-deep); }
+.secondary-btn { border-radius: var(--gn-r-ctl); border: 1px solid var(--gn-green); color: var(--gn-green); background: #fff; font-weight: 600; }
+.secondary-btn:hover { background: var(--gn-mint); }
+html[data-theme="night"] .secondary-btn { background: transparent; }
+.text-input, select.text-input, textarea.text-input { border-radius: var(--gn-r-ctl); }
+
+/* Focus: emerald ring + soft lime halo (lime alone would be < 3:1 on white). */
+:where(a, button, input, select, textarea, summary, [tabindex]):focus-visible {
+  outline: 3px solid var(--gn-green);
+  outline-offset: 2px;
+  box-shadow: 0 0 0 6px rgba(132, 204, 22, 0.4);
+}
+
+.gn-kicker { margin: 0 0 12px; font-size: 0.74rem; font-weight: 700; letter-spacing: 0.14em; color: var(--gn-green); text-transform: uppercase; }
+
+/* ---------- 3. Public header ---------- */
+.kit-shell--public .navbar-public {
+  max-width: 1200px; padding: 14px 24px; margin: 0 auto;
+  background: rgba(245, 248, 245, 0.92); backdrop-filter: blur(8px); -webkit-backdrop-filter: blur(8px);
+  border-bottom: 1px solid var(--gn-line);
+  position: sticky; top: 0; z-index: 30; border-radius: 0 0 var(--gn-r-card) var(--gn-r-card);
+}
+.brand { color: var(--gn-green-deep); }
+.brand-highlight { color: #15803d; }
+.navbar-public nav a:not(.primary-btn) { color: var(--gn-forest); border-bottom: 2px solid transparent; }
+.navbar-public nav a:not(.primary-btn):hover { color: var(--gn-green); border-color: var(--gn-lime); }
+.navbar-public .nav-cta { border-radius: var(--gn-r-ctl); min-height: 42px; padding: 9px 18px; color: #fff; }
+html[data-theme="night"] .brand, html[data-theme="night"] .navbar-public nav a:not(.primary-btn) { color: #f5f7f3; }
+html[data-theme="night"] .kit-shell--public .navbar-public { background: rgba(21, 25, 23, 0.92); border-color: #33403a; }
+
+/* Signed-in shell picks up emerald via the tokens above; sidebar brand strip gets a hairline. */
+.kit-side-nav a.on { box-shadow: inset 3px 0 0 var(--gn-lime); }
+
+/* ---------- 4. Homepage ---------- */
+.gn-home { max-width: 1200px; padding: 24px 24px 80px; }
+
+.gn-hero { display: grid; grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr); gap: clamp(24px, 4vw, 64px); align-items: center; padding: 40px 0 56px; }
+.gn-hero-copy h1 { text-wrap: balance; font: 600 clamp(2.5rem, 4.8vw, 4.4rem) / 1.06 var(--font-display); letter-spacing: -0.045em; color: var(--gn-green-deep); margin: 0 0 20px; }
+.gn-hero-copy h1 em { font-style: normal; color: #15803d; }
+html[data-theme="night"] .gn-hero-copy h1 { color: #f5f7f3; }
+html[data-theme="night"] .gn-hero-copy h1 em { color: var(--gn-lime); }
+.gn-hero .hero-sub { font-size: 1.08rem; line-height: 1.65; max-width: 500px; color: var(--ink-muted); }
+.gn-hero .hero-actions { flex-direction: row; flex-wrap: wrap; margin: 28px 0 18px; }
+.gn-hero .hero-actions a { width: auto; min-height: 50px; padding: 12px 24px; gap: 14px; white-space: nowrap; }
+
+.gn-hero { position: relative; }
+.gn-hero-copy { position: relative; z-index: 1; }
+.hero-growth-arrow-wrap { position: absolute; inset: 0; z-index: 0; pointer-events: none; display: block; }
+.hero-growth-arrow { position: absolute; right: -1%; bottom: -4%; width: 112%; max-width: none; height: auto; animation: gn-arrow-reveal 900ms var(--gn-ease) both; }
+@keyframes gn-arrow-reveal { from { clip-path: inset(0 100% 0 0); opacity: 0.2; } to { clip-path: inset(0 0 0 0); opacity: 1; } }
+.gn-hero-art { position: relative; min-height: 480px; isolation: isolate; }
+.gn-home { overflow-x: clip; }
+
+.gn-roadmap {
+  position: absolute; z-index: 1; left: 0; top: 6%; width: min(86%, 400px);
+  background: #fff; border: 1px solid var(--gn-line); border-radius: 20px; padding: 22px 24px;
+  box-shadow: 0 2px 4px rgba(6, 78, 59, 0.06), 0 24px 48px rgba(6, 78, 59, 0.14);
+}
+.gn-roadmap-head { display: flex; align-items: center; gap: 10px; font-size: 0.68rem; font-weight: 700; letter-spacing: 0.14em; color: var(--gn-green); }
+.gn-roadmap-head img { border-radius: 8px; }
+.gn-roadmap h2 { font: 600 1.45rem / 1.15 var(--font-display); letter-spacing: -0.03em; margin: 12px 0 14px; color: var(--ink); }
+.gn-roadmap ul { list-style: none; margin: 0; padding: 0; }
+.gn-roadmap li { display: flex; gap: 12px; align-items: flex-start; padding: 11px 0; border-top: 1px solid var(--gn-line); }
+.gn-roadmap li div { display: grid; gap: 2px; font-size: 0.9rem; }
+.gn-roadmap li small { color: var(--ink-muted); font-size: 0.78rem; }
+.gn-tick { flex: none; width: 24px; height: 24px; border-radius: 50%; display: grid; place-items: center; background: var(--gn-mint); color: var(--gn-green); font-size: 0.8rem; font-weight: 700; border: 1px solid var(--gn-line); }
+.gn-tick--next { background: var(--gn-green); color: #fff; border-color: var(--gn-green); }
+.gn-roadmap > p { margin: 10px 0 0; font-size: 0.72rem; color: var(--ink-muted); }
+html[data-theme="night"] .gn-roadmap { background: var(--kit-panel); }
+
+.gn-pillars { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; margin-bottom: 8px; }
+.gn-pillars article, .gn-trust-grid article { background: #fff; border: 1px solid var(--gn-line); border-radius: var(--gn-r-card); padding: 24px; box-shadow: var(--gn-shadow); }
+.gn-pillars h3 { font: 600 1.2rem var(--font-display); margin: 4px 0 8px; letter-spacing: -0.02em; }
+.gn-pillars p { margin: 0; color: var(--ink-muted); font-size: 0.9rem; line-height: 1.6; }
+html[data-theme="night"] .gn-pillars article, html[data-theme="night"] .gn-trust-grid article { background: var(--kit-panel); }
+
+.gn-wave { display: block; width: 100%; height: 56px; color: var(--gn-green); margin: 24px 0 0; }
+.gn-section { padding: 56px 0; }
+.gn-home .v05-section h2, .gn-home .v05-feature-band h2, .gn-home .v05-final-cta h2 { color: var(--gn-green-deep); }
+html[data-theme="night"] .gn-home .v05-section h2, html[data-theme="night"] .gn-home .v05-feature-band h2, html[data-theme="night"] .gn-home .v05-final-cta h2 { color: #f5f7f3; }
+.gn-home .v05-step-grid article { border-color: var(--gn-line); box-shadow: var(--gn-shadow); }
+.gn-home .v05-step-grid article span { color: var(--gn-green); }
+
+.gn-feature-band { background: var(--gn-emerald); color: #e8f5ec; border-radius: 24px; padding: clamp(28px, 5vw, 56px); }
+.gn-feature-band h2 { color: #fff !important; }
+.gn-feature-band p:not(.gn-kicker) { color: #cfe6d8; }
+.gn-feature-band .gn-kicker { color: #bef264; }
+.gn-feature-band .v05-feature-links a { border-bottom-color: rgba(232, 245, 236, 0.28); color: #fff; }
+.gn-feature-band .v05-feature-links a:hover { color: #bef264; }
+
+.gn-trust-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; }
+.gn-trust-grid strong { display: block; font: 600 clamp(1.8rem, 3vw, 2.6rem) / 1.1 var(--font-display); color: var(--gn-green); letter-spacing: -0.04em; font-variant-numeric: tabular-nums; }
+.gn-trust-grid span { display: block; margin-top: 6px; font-size: 0.86rem; color: var(--ink-muted); }
+.gn-trust-note { margin: 18px 0 0; font-size: 0.84rem; color: var(--ink-muted); }
+.gn-trust-note a { color: var(--gn-green); font-weight: 600; text-decoration: underline; }
+
+.gn-home .v07-plan-grid article { border-radius: var(--gn-r-card); border-color: var(--gn-line); }
+.gn-home .v07-plan-grid article.featured { border-color: var(--gn-lime); box-shadow: 0 0 0 2px rgba(132, 204, 22, 0.35), var(--gn-shadow); }
+
+.gn-final { text-align: center; }
+
+/* ---------- 5. Footer ---------- */
+.site-footer { background: var(--gn-emerald); border-top: 0; color: #e8f5ec; margin-top: 56px; }
+.site-footer-inner { max-width: 1200px; }
+.site-footer .footer-logo { background: #fff; border-radius: 14px; padding: 6px; display: inline-block; line-height: 0; }
+.site-footer .footer-logo img { width: 112px; height: 112px; object-fit: contain; }
+.site-footer-links a { color: #cfe6d8; }
+.site-footer-links a:hover { color: #bef264; }
+.site-footer-tagline { margin: 0; font-size: 0.9rem; color: #e8f5ec; }
+.site-footer-disclaimer { color: #cfe6d8; max-width: 640px; }
+.site-footer :focus-visible { outline-color: #fff; }
+
+/* ---------- 6. Responsive ---------- */
+@media (max-width: 859px) {
+  .gn-hero { grid-template-columns: 1fr; padding: 24px 0 40px; }
+  .gn-hero-art { min-height: 0; }
+  /* Small screens: the arrow gets its own band above the card, so it is fully visible and overlaps nothing */
+  .hero-growth-arrow-wrap { position: relative; inset: auto; display: block; margin: 0 auto 4px; max-width: 460px; }
+  .hero-growth-arrow { position: static; display: block; width: 100%; max-width: 100%; }
+  .gn-roadmap { position: relative; left: auto; top: auto; width: 100%; max-width: 440px; margin: 0 auto; z-index: 1; }
+  .gn-pillars, .gn-trust-grid { grid-template-columns: 1fr; }
+  .gn-section { padding: 40px 0; }
+  .navbar-public nav a[href="/#how-it-works"], .navbar-public nav a[href="/#features"] { display: none; }
+}
+@media (max-width: 520px) {
+  .gn-home { padding: 12px 20px 64px; }
+  .gn-hero .hero-actions { flex-direction: column; }
+  .gn-hero .hero-actions a { width: 100%; }
+  .kit-shell--public .navbar-public { padding: 8px 10px; gap: 6px; }
+  .navbar-public nav { gap: 6px !important; min-width: 0; }
+  .navbar-public .brand { font-size: 0.86rem; gap: 6px; min-width: 0; }
+  .navbar-public .brand img { width: 28px; height: 28px; }
+  .navbar-public .nav-cta { padding: 8px 12px; font-size: 0.8rem; min-height: 40px; }
+  .navbar-public .nav-arrow { display: none; }
+}
+
+/* ---------- 7. Motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .hero-growth-arrow { animation: none; clip-path: none; }
+  .primary-btn, .secondary-btn { transition: none; }
+}
+
+/* ---------- 8. Signed-in grid fix ----------
+   The demo banner is the first child of the shell grid; without explicit placement it took the
+   sidebar column and pushed the sidebar into the wide column, swapping sidebar and content. */
+@media (min-width: 860px) {
+  .kit-shell--command > .demo-banner { grid-column: 1 / -1; grid-row: 1; border-radius: 12px; margin-bottom: 8px; }
+  /* Ledger: the sidebar spans the banner row, so its footer (theme toggle) is on screen from the first paint. */
+  .kit-shell--ledger > .demo-banner { grid-column: 2; grid-row: 1; border-radius: 12px; margin: 13px 13px 0 0; }
+  .kit-shell--ledger > .kit-sidebar { grid-column: 1; grid-row: 1 / span 2; }
+  .kit-shell--ledger > .kit-shell-body { grid-column: 2; grid-row: 2; min-width: 0; }
+  .kit-shell--command > .kit-rail { grid-column: 1; grid-row: 2; }
+  .kit-shell--command > .kit-menu { grid-column: 2; grid-row: 2; }
+  .kit-shell--command > .kit-shell-body { grid-column: 3; grid-row: 2; min-width: 0; }
+}
+
+/* ==========================================================================
+   Phase 3 — product pages (presentation only; no markup or logic changes)
+   ========================================================================== */
+
+/* Cards & panels share one surface language */
+.checklist-card, .req-card, .kit-panel, .review-summary, .req-detail-section, .admin-add-form, .metric-card, .v05-next-card, .state-block {
+  border-radius: var(--gn-r-card);
+  border: 1px solid var(--gn-line);
+  box-shadow: var(--gn-shadow);
+}
+html[data-theme="night"] .checklist-card, html[data-theme="night"] .req-card, html[data-theme="night"] .review-summary { box-shadow: none; }
+.req-card { transition: border-color 160ms var(--gn-ease), transform 160ms var(--gn-ease); }
+.req-card:hover { border-color: var(--gn-green); transform: translateY(-1px); }
+.req-agency-tag { color: var(--gn-green); background: var(--gn-mint); }
+
+/* Selected options: mint fill, emerald border, lime edge (never colour alone: bold + border) */
+.option-btn { border-radius: var(--gn-r-ctl); border-color: var(--gn-line); transition: border-color 140ms var(--gn-ease), background 140ms var(--gn-ease); }
+.option-btn:hover { border-color: var(--gn-green); }
+.option-btn.selected { background: var(--gn-mint); border-color: var(--gn-green); color: var(--gn-emerald); font-weight: 700; box-shadow: inset 4px 0 0 var(--gn-lime); }
+html[data-theme="night"] .option-btn.selected { color: #f5f7f3; }
+.filter-chip.selected { background: var(--gn-green); }
+
+/* Wizard: readable column, segmented progress (done = emerald, current = emerald→lime) */
+.wizard { max-width: 720px; }
+.wizard .question-label { font-size: 1.05rem; color: var(--gn-green-deep); }
+html[data-theme="night"] .wizard .question-label { color: #f5f7f3; }
+.wizard-stepper { gap: 6px; }
+.wizard-step-dot { height: 6px; background: var(--kit-track); }
+.wizard-step-dot.done { background: var(--gn-green); }
+.wizard-step-dot.active { background: linear-gradient(90deg, var(--gn-green), var(--gn-lime)); }
+.wizard-actions { align-items: stretch; }
+.review-summary dt { color: var(--gn-muted); }
+
+/* Progress (reflects real saved state only) */
+.progress-bar-fill { background: linear-gradient(90deg, var(--gn-green), var(--gn-lime)); }
+.progress-bar-track { background: var(--kit-track); }
+
+/* Lifecycle stepper */
+.journey-num { border: 1.5px solid var(--gn-line); background: #fff; color: var(--gn-green); }
+.journey-step--done .journey-num { background: var(--gn-green); border-color: var(--gn-green); color: #fff; }
+.journey-step--current .journey-num { background: var(--gn-green); border-color: var(--gn-green); color: #fff; box-shadow: 0 0 0 3px rgba(132, 204, 22, 0.45); font-weight: 700; }
+.journey-step--current .journey-label { color: var(--gn-green-deep); font-weight: 700; }
+html[data-theme="night"] .journey-num { background: transparent; }
+
+/* Alerts and states */
+.state-block { background: var(--gn-mint); border-style: dashed; box-shadow: none; }
+.state-block-error { background: #fdecef; border-color: #b03052; }
+html[data-theme="night"] .state-block { background: var(--kit-panel); }
+.empty-state h2 { color: var(--gn-green-deep); }
+html[data-theme="night"] .empty-state h2 { color: #f5f7f3; }
+
+/* Learning hub / resources / external links */
+.tutorial-link { color: var(--gn-green); font-weight: 600; text-decoration: underline; text-underline-offset: 3px; text-decoration-color: var(--gn-lime); text-decoration-thickness: 2px; }
+.tutorial-link:hover { text-decoration-color: var(--gn-green); }
+html[data-theme="night"] .tutorial-link { color: var(--gn-lime); }
+.agency-group h2 { color: var(--gn-green-deep); border-bottom: 2px solid var(--gn-lime); display: inline-block; padding-bottom: 4px; }
+html[data-theme="night"] .agency-group h2 { color: #f5f7f3; }
+.source-tag { color: var(--gn-muted); }
+
+/* Penalty simulator: result reads as a calculation, estimate disclaimer stays visible */
+.doc-checklist { background: var(--gn-canvas); border: 1px solid var(--gn-line); border-radius: 12px; padding: 12px 16px 12px 32px; }
+html[data-theme="night"] .doc-checklist { background: transparent; }
+
+/* Sign-in demo options (Free / Premium) */
+.demo-account-list { gap: 10px; }
+.demo-account-btn { border-radius: var(--gn-r-ctl); }
+
+/* Signed-in pages: comfortable content width on desktop, roomy on tablet */
+@media (min-width: 860px) {
+  .kit-shell--ledger .screen { max-width: 960px; padding-left: 32px; padding-right: 32px; }
+}
+@media (prefers-reduced-motion: reduce) {
+  .req-card, .option-btn { transition: none; }
+  .req-card:hover { transform: none; }
+}
+
+/* ==========================================================================
+   v0.15 fixes
+   ========================================================================== */
+
+/* Hero card must stack above the arrow inside the art column */
+.gn-roadmap { z-index: 1; }
+
+/* Signed-in sidebar: the nav scrolls on its own, the footer (theme toggle) is pinned and always visible */
+@media (min-width: 860px) {
+  .kit-sidebar { overflow: hidden; gap: 14px; }
+  .kit-side-nav { flex: 1 1 auto; min-height: 0; overflow-y: auto; overscroll-behavior: contain; scrollbar-width: thin; padding-right: 2px; }
+  .kit-side-foot { flex: none; margin-top: 0; padding-top: 12px; border-top: 1px solid var(--kit-line); }
+  .kit-side-foot .kit-theme-toggle { width: 100%; justify-content: flex-start; }
+}
+@media (min-width: 860px) and (max-height: 860px) {
+  .kit-side-nav a { padding: 8px 12px; }
+  .kit-sidebar { padding: 14px 12px; gap: 10px; }
+}
+
+/* Lifecycle stepper + BIR checks: use theme tokens instead of hard-coded white (was unreadable in Night Shift) */
+.journey-step a { background: var(--kit-panel); border-color: var(--kit-line); color: var(--ink-muted); }
+.journey-step a:hover { border-color: var(--gn-green); }
+.journey-step--current a { background: var(--gn-mint); border-color: var(--gn-green); box-shadow: 0 0 0 2px rgba(132, 204, 22, 0.4); }
+.journey-step--current .journey-state { font-weight: 700; color: var(--gn-green-deep); }
+html[data-theme="night"] .journey-step--current a { background: #26301f; box-shadow: 0 0 0 2px rgba(160, 237, 89, 0.45); }
+html[data-theme="night"] .journey-step--done .journey-num, html[data-theme="night"] .journey-step--current .journey-num { color: #102218; }
+.journey-num { background: var(--kit-mint); }
+.bir-check { background: var(--kit-panel); border-color: var(--kit-line); }
+.bir-check.checked { background: var(--gn-mint); border-color: var(--gn-green); }
+html[data-theme="night"] .bir-check.checked { background: #26301f; }
+
+/* Penalty simulator: inputs left, estimate right on desktop; stacked on mobile (DOM order = reading order) */
+.penalty-sim { display: grid; gap: 24px; align-items: start; }
+.penalty-sim-inputs { display: grid; gap: 4px; min-width: 0; }
+.penalty-sim-result { min-width: 0; }
+.penalty-sim-empty { border-style: dashed; box-shadow: none; background: var(--gn-mint); }
+html[data-theme="night"] .penalty-sim-empty { background: var(--kit-panel); }
+@media (min-width: 960px) {
+  .penalty-sim { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); }
+  .penalty-sim-result { position: sticky; top: 16px; }
+}
+
+/* The headline figure is the h3; the breakdown rows (dl.penalty-summary) stay body-sized (a headline rule was bloating them) */
+.penalty-sim-result .checklist-card > h3 { font: 600 clamp(1.4rem, 2.6vw, 1.85rem) / 1.2 var(--font-display); letter-spacing: -0.03em; color: var(--gn-emerald); font-variant-numeric: tabular-nums; margin: 0 0 12px; }
+html[data-theme="night"] .penalty-sim-result .checklist-card > h3 { color: var(--gn-lime); }
+.penalty-summary { font-size: 0.95rem; font-variant-numeric: tabular-nums; }
+html[data-theme="night"] .penalty-summary div { border-color: var(--kit-line); }

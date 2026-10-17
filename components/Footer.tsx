@@ -1,6 +1,10 @@
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "../lib/siteConfig";
+import credits from "../data/credits.json";
+
+const creditsConfirmed =
+  credits.researchers.every((r) => !/^Researcher \d+$/.test(r.name)) && !/^Web developer$/i.test(credits.developer.name);
 
 /**
  * K8/WP1: footer was missing entirely, so the legal pages built for L12
@@ -18,15 +22,16 @@ export default function Footer() {
           <Link href="/#how-it-works">How it works</Link>
           <Link href="/#features">Features</Link>
           <Link href="/#plans">Plans</Link>
-          <Link href="/#credits">Credits</Link>
+          {creditsConfirmed && <Link href="/#credits">Credits</Link>}
           <Link href="/login">Log in</Link>
           <Link href="/privacy">Privacy</Link>
           <Link href="/terms">Terms</Link>
           <Link href="/disclaimer">Disclaimer</Link>
           {siteConfig.contactEmail && <a href={`mailto:${siteConfig.contactEmail}`}>Contact</a>}
         </nav>
+        <p className="site-footer-tagline"><b>Real guidance for real entrepreneurs.</b> Stay informed. Stay compliant. Keep growing.</p>
         <p className="site-footer-disclaimer">
-          GabayNegosyo is an independent informational platform, not a government agency.
+          GabayNegosyo is an independent informational platform, not a government agency, and is not affiliated with or an official portal of any government agency. It does not file documents, submit official transactions, or produce official computations.
         </p>
       </div>
     </footer>

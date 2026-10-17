@@ -4,8 +4,8 @@
   "description": "Your guide to business compliance: a personalized BIR checklist for Philippine micro-entrepreneurs, with SSS, PhilHealth, Pag-IBIG and LGU as outline content.",
   "start_url": "/",
   "display": "standalone",
-  "background_color": "#F7FAF6",
-  "theme_color": "#145D2D",
+  "background_color": "#F5F8F5",
+  "theme_color": "#064E3B",
   "orientation": "portrait",
   "icons": [
     {
