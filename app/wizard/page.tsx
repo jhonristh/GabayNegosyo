@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
@@ -73,6 +73,22 @@ function WizardInner() {
   const [projectedGrossSales, setProjectedGrossSales] = useState<number | "">(existing ? existing.projectedGrossSales : "");
   const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
   const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
+
+  useEffect(() => {
+    if (!user) return;
+    const saved = db.getBusinessProfile(user.id);
+    if (!saved) return;
+    setIsRegisteringNewBusiness(saved.isRegisteringNewBusiness);
+    setTaxpayerType(saved.taxpayerType);
+    setLocality(localityIdOf(saved));
+    setBarangay(saved.barangay ?? "");
+    setHasLease(saved.hasLease);
+    setHasEmployees(saved.hasEmployees);
+    setEmployeeCount(saved.employeeCount ?? 0);
+    setProjectedGrossSales(saved.projectedGrossSales);
+    setProjectedExpenses(saved.projectedExpenses);
+    setBusinessName(saved.businessName ?? "");
+  }, [user]);
 
   const localityInfo = getLocality(locality);
   const rdoCode = useMemo(
@@ -391,14 +407,8 @@ function WizardInner() {
 
 export default function WizardPage() {
   const { loading } = useAuth();
-  // Wait for the session check so a signed-in person's saved answers are loaded
-  // before the form reads them (useState initial values are read once).
-  if (loading) {
-    return (
-      <main className="screen">
-        <p>Loading…</p>
-      </main>
-    );
-  }
-  return <WizardInner />;
+  return <>
+    {loading && <p className="guest-auth-note" role="status">You can continue as a guest. We’ll check your saved account in the background.</p>}
+    <WizardInner />
+  </>;
 }

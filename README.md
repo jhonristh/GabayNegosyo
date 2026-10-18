@@ -80,7 +80,7 @@ All of the above are optional. See `.env.example`.
 ## Getting started
 
 ### Requirements
-- Node.js 18.18+ (Next.js 14 requirement)
+- Node.js 22.18+ (matches the current Next.js and package engine requirement)
 - npm 9+
 
 ### Installation

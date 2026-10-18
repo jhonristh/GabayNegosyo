@@ -14,6 +14,8 @@ import { trackConversion } from "../../../lib/webAnalytics";
 import { resolveObligation, explainApplicability, formatDueLabel } from "../../../lib/ruleEngine";
 import { isPremiumRole } from "../../../lib/authorization";
 import type { RequirementStatus } from "../../../lib/types";
+import ContentStatusBadge from "../../../components/ContentStatusBadge";
+import { requirementContentStatus } from "../../../lib/contentHealth";
 
 function RequirementDetailInner() {
   const { id } = useParams<{ id: string }>();
@@ -92,6 +94,7 @@ function RequirementDetailInner() {
         </p>
         <h1>{requirement.name}</h1>
         <div className="req-detail-meta">
+          <ContentStatusBadge status={requirementContentStatus(requirement)} />
           <StatusBadge status={status} />
           <span className="deadline">{dueDate ? `Due: ${formatDueLabel(dueDate)}` : `No fixed date: ${requirement.deadlineDescription}`}</span>
         </div>

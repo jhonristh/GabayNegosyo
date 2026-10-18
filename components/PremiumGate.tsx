@@ -17,13 +17,12 @@ export default function PremiumGate({ children }: { children: ReactNode }) {
 
   return (
     <div className="premium-lock">
-      <p className="premium-lock-title">Available with Premium</p>
+      <p className="premium-lock-title">Available in Premium preview</p>
       <p className="premium-lock-body">
-        Upgrade to unlock full requirement details, tutorials, the penalty simulator, and email
-        reminders.
+        Preview full requirement details, tutorials, the penalty simulator, and email reminders.
       </p>
       <Link href="/account" className="primary-btn premium-lock-btn">
-        Upgrade to Premium
+        Preview Premium
       </Link>
     </div>
   );

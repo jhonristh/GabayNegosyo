@@ -1,9 +1,9 @@
 import type { ContentStatus } from "../lib/contentHealth";
 
 const LABELS: Record<ContentStatus, string> = {
-  workbook_verified: "Verified content",
-  needs_review: "Needs review",
-  placeholder: "Prototype placeholder",
+  workbook_verified: "Sourced guidance",
+  needs_review: "Needs verification",
+  placeholder: "Outline content",
 };
 
 /**
@@ -13,5 +13,5 @@ const LABELS: Record<ContentStatus, string> = {
  * content for confirmed official guidance.
  */
 export default function ContentStatusBadge({ status }: { status: ContentStatus }) {
-  return <span className={`content-badge content-badge-${status}`}>{LABELS[status]}</span>;
+  return <span className={`content-badge content-badge-${status}`} title="Check the issuing agency before filing or paying">{LABELS[status]}</span>;
 }

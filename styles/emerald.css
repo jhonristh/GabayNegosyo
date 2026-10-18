@@ -471,3 +471,105 @@ html[data-theme="night"] { --surface-soft: #243026; }
   .auth-aside-title { font-size: 1.35rem; max-width: none; }
 }
 .acct-head h2 { font: 600 1.35rem var(--font-display); letter-spacing: -0.02em; }
+
+/* ==========================================================================
+   v0.15.3 — Mobile & tablet polish
+   Desktop is unchanged. Small screens now mirror the desktop composition in miniature: the arrow
+   rises from behind the top-right of the roadmap card (instead of floating alone in its own band),
+   spacing is tightened, and tablets keep the two-column hero.
+   ========================================================================== */
+
+/* Tablet (760–859px): keep the desktop two-column hero, scaled down */
+@media (min-width: 760px) and (max-width: 859px) {
+  .gn-hero { grid-template-columns: minmax(0, 1fr) minmax(0, 1fr); gap: 28px; padding: 28px 0 40px; }
+  .gn-hero-copy h1 { font-size: 2.3rem; }
+  .gn-hero-art { min-height: 440px; }
+  .hero-growth-arrow-wrap { position: absolute; inset: 0; margin: 0; max-width: none; }
+  .hero-growth-arrow { position: absolute; right: -2%; bottom: -2%; width: 108%; max-width: none; }
+  .gn-roadmap { position: absolute; left: 0; top: 4%; width: min(92%, 340px); max-width: none; margin: 0; padding: 18px 20px; }
+  .gn-pillars { grid-template-columns: repeat(3, 1fr); }
+  .gn-trust-grid { grid-template-columns: repeat(3, 1fr); }
+}
+
+/* Phones & small tablets (< 760px): arrow peeks out from behind the card's top-right corner */
+@media (max-width: 759px) {
+  .gn-home { padding: 8px 18px 56px; }
+  .gn-hero { gap: 22px; padding: 14px 0 28px; }
+  .gn-hero-copy h1 { font-size: clamp(2rem, 8.6vw, 2.6rem); line-height: 1.08; margin-bottom: 14px; }
+  .gn-hero .hero-sub { font-size: 1rem; line-height: 1.6; }
+  .gn-hero .hero-actions { margin: 20px 0 14px; gap: 10px; }
+  .v05-hero-note { font-size: 0.8rem; }
+
+  .gn-hero-art { display: block; min-height: 0; padding-top: clamp(84px, 24vw, 150px); }
+  .hero-growth-arrow-wrap { position: absolute; inset: auto; top: 0; right: -3%; left: auto; width: min(82%, 430px); max-width: none; margin: 0; z-index: 0; }
+  .hero-growth-arrow { position: static; display: block; width: 100%; height: auto; }
+  .gn-roadmap { position: relative; left: auto; top: auto; width: 100%; max-width: none; margin: 0; padding: 18px 18px 16px; border-radius: 18px; z-index: 1; }
+  .gn-roadmap h2 { font-size: 1.25rem; margin: 10px 0 8px; }
+
+  .gn-pillars { grid-template-columns: 1fr; gap: 10px; }
+  .gn-pillars article { padding: 18px; }
+  .gn-agencies ul { grid-template-columns: repeat(2, 1fr); gap: 10px; }
+  .gn-agencies li { padding: 14px; }
+  .gn-agencies li:last-child { grid-column: 1 / -1; }
+  .gn-section { padding: 32px 0; }
+  .gn-feature-band { padding: 26px 22px; border-radius: 20px; }
+  .gn-trust-grid { grid-template-columns: 1fr; gap: 10px; }
+  .gn-trust-grid article { padding: 16px 18px; display: flex; align-items: baseline; justify-content: space-between; gap: 14px; }
+  .gn-trust-grid strong { font-size: 1.7rem; flex: none; }
+  .gn-trust-grid span { margin: 0; text-align: right; }
+  .v07-plan-grid { gap: 12px; }
+  .gn-final h2 { font-size: 1.9rem; }
+}
+
+/* Very small phones */
+@media (max-width: 380px) {
+  .gn-home { padding-left: 14px; padding-right: 14px; }
+  .gn-hero-copy h1 { font-size: 1.95rem; }
+  .gn-kicker { font-size: 0.68rem; letter-spacing: 0.1em; }
+}
+
+/* Touch devices: comfortable tap targets, no sticky hover lift */
+@media (hover: none) {
+  .req-card:hover, .primary-btn:hover { transform: none; }
+}
+
+/* ---------- Audit refinements: confidence and task clarity ---------- */
+.guest-auth-note {
+  max-width: 720px;
+  margin: 10px auto 0;
+  padding: 10px 16px;
+  border: 1px solid var(--gn-line);
+  border-radius: 999px;
+  background: var(--gn-mint);
+  color: var(--gn-green-deep);
+  font-size: 0.82rem;
+  text-align: center;
+}
+.req-card-badges { display: inline-flex; align-items: center; gap: 6px; flex-wrap: wrap; justify-content: flex-end; }
+.checklist-card-tags { display: flex; align-items: center; gap: 8px; flex-wrap: wrap; }
+.content-badge { border: 1px solid var(--gn-line); letter-spacing: 0.01em; }
+.content-badge-workbook_verified { background: var(--gn-mint); color: var(--gn-green-deep); }
+.content-badge-needs_review { background: #fff4d9; color: #6e4b0c; }
+.content-badge-placeholder { background: #edf1ea; color: var(--gn-muted); }
+.gn-coverage-note {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 8px 18px;
+  align-items: baseline;
+  margin-top: 16px;
+  padding: 14px 16px;
+  border-left: 3px solid var(--gn-lime);
+  background: var(--gn-mint);
+  border-radius: 0 12px 12px 0;
+  font-size: 0.86rem;
+}
+.gn-coverage-note strong { color: var(--gn-green-deep); }
+.gn-coverage-note span { color: var(--ink-muted); }
+.auth-recovery-link { align-self: flex-end; margin-top: -2px; color: var(--gn-green); font-size: 0.82rem; font-weight: 600; text-decoration: underline; text-underline-offset: 3px; }
+.auth-privacy-note { margin: 0; color: var(--ink-muted); font-size: 0.78rem; line-height: 1.5; text-align: center; }
+.auth-simple { max-width: 560px; }
+@media (max-width: 520px) {
+  .guest-auth-note { margin-inline: 16px; border-radius: 14px; }
+  .req-card-badges { justify-content: flex-start; }
+  .gn-coverage-note { display: grid; gap: 4px; }
+}

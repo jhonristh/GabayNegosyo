@@ -1,0 +1,26 @@
+{
+  "routes": [
+    { "path": "/", "title": "Home" },
+    { "path": "/login", "title": "Log in" },
+    { "path": "/signup", "title": "Create an account" },
+    { "path": "/reset-password", "title": "Reset password" },
+    { "path": "/wizard", "title": "Registration wizard" },
+    { "path": "/preview", "title": "Checklist preview" },
+    { "path": "/dashboard", "title": "Dashboard" },
+    { "path": "/checklist", "title": "Checklist" },
+    { "path": "/requirements/:id", "title": "Requirement detail" },
+    { "path": "/registration", "title": "Business registration" },
+    { "path": "/bir-forms", "title": "BIR forms" },
+    { "path": "/penalties", "title": "Penalties" },
+    { "path": "/renewal", "title": "Renewal" },
+    { "path": "/deadlines", "title": "Deadlines" },
+    { "path": "/resources", "title": "Resources" },
+    { "path": "/tutorials", "title": "Tutorials" },
+    { "path": "/account", "title": "Account" },
+    { "path": "/privacy", "title": "Privacy" },
+    { "path": "/terms", "title": "Terms" },
+    { "path": "/disclaimer", "title": "Disclaimer" },
+    { "path": "/credits", "title": "Credits" },
+    { "path": "/offline", "title": "Offline" }
+  ]
+}

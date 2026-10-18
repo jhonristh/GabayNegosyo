@@ -78,7 +78,7 @@ export default function SignupPage() {
     <main className="screen">
       <header className="intro">
         <h1>Create your account</h1>
-        <p>Free forever. Upgrade later if you want the full detail.</p>
+        <p>Save your personalized checklist and revisit it whenever you need to.</p>
       </header>
 
       <section className="question">
@@ -144,6 +144,7 @@ export default function SignupPage() {
       <p className="hint" style={{ marginTop: 20 }}>
         Already have an account? <Link href="/login">Log in</Link>
       </p>
+      <p className="auth-privacy-note">Your answers build your checklist. GabayNegosyo does not file anything for you.</p>
     </main>
   );
 }
