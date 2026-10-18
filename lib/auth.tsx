@@ -44,7 +44,6 @@ interface AuthContextValue {
   user: User | null;
   loading: boolean;
   login: (email: string, password: string) => Promise<AuthResult>;
-  resetPassword: (email: string) => Promise<AuthResult>;
   signup: (name: string, email: string, password: string) => Promise<AuthResult>;
   loginWithGoogle: () => Promise<AuthResult>;
   logout: () => Promise<void>;
@@ -133,19 +132,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
       return;
     }
     let active = true;
-    let sessionResolved = false;
 
-    // 1) Restore an existing session on page load / refresh. Guest routes must
-    // not wait forever when the auth service or network is unavailable.
-    const restoreSession = supabase.auth.getSession();
-    const restoreTimeout = new Promise<{ data: { session: null } }>((resolve) => {
-      window.setTimeout(() => resolve({ data: { session: null } }), 2500);
-    });
-
-    Promise.race([restoreSession, restoreTimeout])
+    // 1) Restore an existing session on page load / refresh.
+    supabase.auth
+      .getSession()
       .then(async ({ data }) => {
-        if (!active || sessionResolved) return;
-        sessionResolved = true;
+        if (!active) return;
         if (data.session) {
           await apply(data.session);
         } else if (DEMO_ENABLED && getActiveDemoRole()) {
@@ -155,11 +147,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
           await apply(null);
         }
       })
-      .catch((err) => {
-        console.error("[auth] could not restore your session:", err);
-        sessionResolved = true;
-        if (active) apply(null);
-      })
+      .catch((err) => console.error("[auth] could not restore your session:", err))
       .finally(() => {
         if (active) setLoading(false); // never leave the app stuck on "Loading…"
       });
@@ -188,15 +176,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (error) return { ok: false, error: friendlyEmailAuthError(error.message) };
     const u = await apply(data.session);
     return { ok: true, user: u ?? undefined };
-  }
-
-  async function resetPassword(email: string): Promise<AuthResult> {
-    const redirectTo = authRedirectUrl("/reset-password");
-    if (!redirectTo) {
-      return { ok: false, error: "This site's public web address is not configured, so we cannot send a safe reset link." };
-    }
-    const { error } = await getSupabase().auth.resetPasswordForEmail(email, { redirectTo });
-    return error ? { ok: false, error: friendlyEmailAuthError(error.message) } : { ok: true };
   }
 
   async function signup(name: string, email: string, password: string): Promise<AuthResult> {
@@ -330,7 +309,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, resetPassword, signup, loginWithGoogle, logout, upgradeToPremium, startDemo, resetDemo, deleteAccount }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, upgradeToPremium, startDemo, resetDemo, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );

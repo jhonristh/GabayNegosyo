@@ -109,7 +109,6 @@ export default function LoginPage() {
           <div className="auth-field">
             <label className="question-label" htmlFor="password">Password</label>
             <PasswordField id="password" autoComplete="current-password" value={password} onChange={setPassword} />
-            <Link href="/reset-password" className="auth-recovery-link">Forgot your password?</Link>
           </div>
 
           {error && (
@@ -155,7 +154,6 @@ export default function LoginPage() {
         <p className="auth-switch">
           New here? <Link href="/signup">Create a free account</Link>
         </p>
-        <p className="auth-privacy-note">Your answers build your checklist. GabayNegosyo does not file anything for you.</p>
       </section>
     </main>
   );

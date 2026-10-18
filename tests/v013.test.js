@@ -198,7 +198,12 @@ test("service-role key stays server-side only", () => {
   for (const f of ["lib", "components", "app"]) {
     const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]));
     for (const file of walk(path.join(__dirname, "..", f))) {
-      if (file.includes(path.join("api", "delete-account"))) continue;
+      // v0.16: the only server routes allowed to hold the service-role key (all under app/api, never client code).
+      const serverOnly = [["api", "delete-account"], ["api", "cron", "send-reminders"], ["api", "unsubscribe"]].some((seg) => file.includes(path.join(...seg)));
+      if (serverOnly) {
+        assert.ok(!/["']use client["']/.test(fs.readFileSync(file, "utf8")), `${file} must stay server-only`);
+        continue;
+      }
       if (!/\.(ts|tsx)$/.test(file)) continue;
       assert.ok(!fs.readFileSync(file, "utf8").includes("SERVICE_ROLE"), `${file} must not reference the service role key`);
     }

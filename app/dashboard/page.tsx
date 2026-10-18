@@ -117,11 +117,11 @@ function DashboardInner() {
           <p className="hint">{completed.length} of {items.length} requirements completed · {pending.length} pending</p>
         </section>
         <section className="v05-next-card">
-          <p className="v05-kicker">DO THIS NEXT</p>
+          <p className="v05-kicker">UP NEXT</p>
           {next ? <>
             <h2>{next.req.name}</h2>
             <p>{agencyName(next.req.agencyId)} · {next.dueDate ? dueLabel(next.dueDate) : next.req.deadlineDescription}</p>
-            <Link href={`/requirements/${next.req.id}`}>Open requirement <span aria-hidden="true">↗</span></Link>
+            <Link href={`/requirements/${next.req.id}`}>View requirement <span aria-hidden="true">↗</span></Link>
           </> : <><h2>All caught up.</h2><p>There are no pending items in your checklist.</p><Link href="/checklist">View checklist ↗</Link></>}
         </section>
       </div>

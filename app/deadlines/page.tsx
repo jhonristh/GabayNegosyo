@@ -13,6 +13,9 @@ import { sendEmail, buildReminderEmail } from "../../lib/email";
 import { useToast } from "../../components/ToastProvider";
 import type { ReminderConfig } from "../../lib/types";
 
+// Build-time flag: set NEXT_PUBLIC_REMINDERS_LIVE=true only when the daily digest job is live (REMINDERS_MODE=live).
+const REMINDERS_LIVE = process.env.NEXT_PUBLIC_REMINDERS_LIVE === "true";
+
 function DeadlinesInner() {
   const { user } = useAuth();
   const requirements = useMemo(() => db.getRequirements(), []);
@@ -111,6 +114,13 @@ function DeadlinesInner() {
               <p className="question-label">Remind me before this deadline</p>
               {!isPremium && <p className="hint">Email reminders are a Premium feature. Upgrade in Account to enable.</p>}
               {isPremium && !dueDate && <p className="hint">Reminders need a fixed date, and this requirement does not have one in the current content source.</p>}
+              {canRemind && (
+                <p className="hint">
+                  {REMINDERS_LIVE
+                    ? "You will get one summary email at 8:00 AM Philippine time on the day you choose, listing every requirement due then. Each email has a link to stop them."
+                    : "Your choice is saved. Automatic daily summaries are not switched on yet. \"Send test reminder\" emails you a sample."}
+                </p>
+              )}
               <div className="option-row">
                 {[7, 3, 1].map((d) => (
                   <button

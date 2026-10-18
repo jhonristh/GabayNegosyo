@@ -33,11 +33,11 @@ export default function LandingPage() {
   return <main className="screen landing v05-landing kit-atlas gn-home">
     <section className="gn-hero" aria-labelledby="hero-title">
       <div className="gn-hero-copy">
-        <p className="gn-kicker">FOR NCR MICROBUSINESS OWNERS</p>
+        <p className="gn-kicker">A CLEARER PATH FOR YOUR BUSINESS</p>
         <h1 id="hero-title">Business compliance, <em>made easier to follow.</em></h1>
-        <p className="hero-sub">Build a practical compliance checklist for your business in about two minutes, then keep your next requirement and deadline in view.</p>
-        <div className="hero-actions"><Link href="/wizard" className="primary-btn">Build my free checklist <span aria-hidden="true">↗</span></Link><a href="#how-it-works" className="secondary-btn">See how it works</a></div>
-        <p className="v05-hero-note">BIR-focused guidance · About 2-minute setup · No filing on your behalf</p>
+        <p className="hero-sub">Know what applies to your business, organize your requirements, and understand the next step, all in one place.</p>
+        <div className="hero-actions"><Link href="/wizard" className="primary-btn">Build my checklist <span aria-hidden="true">↗</span></Link><a href="#how-it-works" className="secondary-btn">Explore the roadmap</a></div>
+        <p className="v05-hero-note">Made for online sellers, freelancers, and small business owners across Metro Manila (NCR).</p>
       </div>
       <div className="gn-hero-art">
         {/* Decorative arrow lives INSIDE the art column so it can never sit under the headline, copy or CTAs. */}
@@ -71,7 +71,7 @@ export default function LandingPage() {
       <article><span>03 · FOLLOW THROUGH</span><h3>Track your progress</h3><p>Mark items complete and keep upcoming requirements in view.</p></article>
     </div></section>
 
-    <section id="features" className="v05-feature-band gn-feature-band"><div><p className="gn-kicker">WHAT YOU GET</p><h2>Less searching. More clarity.</h2><p>Explore {sourcedCount} BIR requirements with official sources in the current dataset. BIR coverage is strongest; other-agency and local-permit guidance may be general or still under review.</p></div><div className="v05-feature-links"><Link href="/signup">Personalized checklist <span>↗</span></Link><Link href="/signup">Deadline overview <span>↗</span></Link><Link href="/signup">Learning resources <span>↗</span></Link></div></section>
+    <section id="features" className="v05-feature-band gn-feature-band"><div><p className="gn-kicker">WHAT YOU GET</p><h2>Less searching. More clarity.</h2><p>Explore {sourcedCount} sourced BIR requirements in the current dataset. Coverage across BIR, SSS, PhilHealth, Pag-IBIG, and local business permits varies by your business profile; check official sources for current details.</p></div><div className="v05-feature-links"><Link href="/signup">Personalized checklist <span>↗</span></Link><Link href="/signup">Deadline overview <span>↗</span></Link><Link href="/signup">Learning resources <span>↗</span></Link></div></section>
 
     <section id="trust" className="v05-section gn-section" aria-labelledby="trust-title"><div className="v05-section-heading"><p className="gn-kicker">TRUSTED. TRANSPARENT. FOR YOU.</p><h2 id="trust-title">Clear about what we know, and what we don&apos;t.</h2><p>Every requirement links to its official source. Check the issuing agency before you file or pay anything.</p></div>
       <div className="gn-trust-grid">
@@ -79,11 +79,10 @@ export default function LandingPage() {
         <article><strong>NCR</strong><span>Initial coverage area</span></article>
         <article><strong>{lastVerified ?? "Per item"}</strong><span>{lastVerified ? "Most recent verification date in the dataset" : "Each requirement shows its own verification date"}</span></article>
       </div>
-      <div className="gn-coverage-note"><strong>Coverage at a glance</strong><span>BIR: sourced guidance · LGU: general guidance · SSS, PhilHealth, and Pag-IBIG: limited outline coverage</span></div>
       <p className="gn-trust-note">GabayNegosyo is an informational guide, not a government portal. It does not file forms or submit official transactions. <Link href="/disclaimer">Read the disclaimer ↗</Link></p>
     </section>
 
-    <section id="plans" className="v07-plans v05-section gn-section"><div className="v05-section-heading"><p className="gn-kicker">CHOOSE YOUR PATH</p><h2>Start free. Preview deeper guidance when you need it.</h2><p>Both paths start with the same business registration questions.</p></div><div className="v07-plan-grid"><article><span className="gn-kicker">FREE</span><h3>Know what applies</h3><ul><li>Registration wizard</li><li>Personalized basic checklist</li><li>Requirement name, agency, and deadline</li><li>Track completion and browse resources</li></ul><Link href="/signup" className="secondary-btn">Start free ↗</Link></article><article className="featured"><span className="gn-kicker">PREMIUM PREVIEW</span><h3>Understand the next steps</h3><ul><li>Everything in Free</li><li>Required documents and detailed guidance</li><li>Curated tutorials when verified</li><li>Penalty simulator and email reminders</li></ul><Link href="/signup" className="primary-btn">Preview Premium ↗</Link><p>Premium access is simulated in this prototype; no payment is processed.</p></article></div></section>
+    <section id="plans" className="v07-plans v05-section gn-section"><div className="v05-section-heading"><p className="gn-kicker">CHOOSE YOUR PATH</p><h2>Start free. Get more guidance when you need it.</h2><p>Both plans start with the same business registration questions.</p></div><div className="v07-plan-grid"><article><span className="gn-kicker">FREE</span><h3>Know what applies</h3><ul><li>Registration wizard</li><li>Personalized basic checklist</li><li>Requirement name, agency, and deadline</li><li>Track completion and browse resources</li></ul><Link href="/signup" className="secondary-btn">Start free ↗</Link></article><article className="featured"><span className="gn-kicker">PREMIUM · DEMO ACCESS</span><h3>Understand the next steps</h3><ul><li>Everything in Free</li><li>Required documents and detailed guidance</li><li>Curated tutorials when verified</li><li>Penalty simulator and email reminders</li></ul><Link href="/signup" className="primary-btn">Explore Premium ↗</Link><p>No payment is processed in this prototype.</p></article></div></section>
 
     {creditsConfirmed && <section id="credits" className="v07-credits v05-section gn-section" aria-labelledby="credits-title"><p className="gn-kicker">PROJECT CREDITS</p><h2 id="credits-title">The research and the website</h2><p>GabayNegosyo is based on a feasibility study by a team of {credits.researchers.length} researchers, with the website built by one web developer.</p><h3 className="credits-heading">Research team ({credits.researchers.length})</h3><ul className="credits-grid">{credits.researchers.map((r, i) => <li className="credit-person" key={i}><strong>{r.name}</strong><span>{r.contribution}</span></li>)}</ul><h3 className="credits-heading">Web developer (1)</h3><ul className="credits-grid credits-grid--single"><li className="credit-person"><strong>{credits.developer.name}</strong><span>{credits.developer.contribution}</span></li></ul><div><Link href="/disclaimer">Read the disclaimer ↗</Link><Link href="/privacy">Privacy &amp; data ↗</Link></div></section>}
 

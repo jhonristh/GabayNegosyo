@@ -11,8 +11,6 @@ import { db } from "../../lib/db";
 import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
 import { isPremiumRole } from "../../lib/authorization";
 import type { RequirementStatus } from "../../lib/types";
-import ContentStatusBadge from "../../components/ContentStatusBadge";
-import { requirementContentStatus } from "../../lib/contentHealth";
 
 /**
  * WP2/WP5/K10: the real /checklist route. Previously "Checklist" in the
@@ -184,7 +182,7 @@ function ChecklistInner() {
               <article key={req.id} className="checklist-card">
                 <div className="checklist-card-header">
                   <div>
-                    <div className="checklist-card-tags"><span className="req-agency-tag">{agencyName(req.agencyId)}</span><ContentStatusBadge status={requirementContentStatus(req)} /></div>
+                    <span className="req-agency-tag">{agencyName(req.agencyId)}</span>
                     <h3>
                       <Link href={`/requirements/${req.id}`}>{req.name}</Link>
                     </h3>

@@ -22,13 +22,13 @@ type NavItem = { href: string; label: string; mobileLabel?: string; icon: KitIco
 const USER_LINKS: NavItem[] = [
   { href: "/dashboard", label: "Overview", icon: "overview", mobile: false },
   { href: "/checklist", label: "1. Checklist", mobileLabel: "Checklist", icon: "checklist" },
-  { href: "/registration", label: "2. Business Registration", mobileLabel: "Guide", icon: "guide", mobile: false },
-  { href: "/bir-forms", label: "3. BIR Forms", icon: "requirements", mobile: false },
-  { href: "/penalties", label: "4. Penalties", icon: "penalties", mobile: false },
-  { href: "/renewal", label: "5. Renewal & Post-Registration", icon: "renewal", mobile: false },
+  { href: "/registration", label: "2. Business Registration", mobileLabel: "Register", icon: "guide" },
+  { href: "/bir-forms", label: "3. BIR Forms", mobileLabel: "BIR Forms", icon: "requirements" },
+  { href: "/penalties", label: "4. Penalties", mobileLabel: "Penalties", icon: "penalties" },
+  { href: "/renewal", label: "5. Renewal & Post-Registration", mobileLabel: "Renewal", icon: "renewal" },
   { href: "/resources", label: "Resources", icon: "resources", mobile: false },
-  { href: "/tutorials", label: "Tutorials", mobileLabel: "Learn", icon: "tutorials" },
-  { href: "/deadlines", label: "Deadlines", mobileLabel: "Deadlines", icon: "deadlines" },
+  { href: "/tutorials", label: "Tutorials", icon: "tutorials", mobile: false },
+  { href: "/deadlines", label: "Deadlines", icon: "deadlines", mobile: false },
   { href: "/account", label: "Account", icon: "account" },
 ];
 
