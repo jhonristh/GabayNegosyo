@@ -425,6 +425,7 @@ html[data-theme="night"] { --surface-soft: #243026; }
 .credit-grid--single { grid-template-columns: minmax(0, 420px); }
 .credit-card { display: flex; gap: 14px; align-items: center; padding: 16px; border: 1px solid var(--kit-line); border-radius: 18px; background: var(--kit-panel); }
 .credit-avatar { flex: none; width: 46px; height: 46px; display: grid; place-items: center; border-radius: 14px; background: linear-gradient(135deg, #064e3b, #16a34a); color: #fff; font: 700 1rem var(--font-display); }
+.credit-avatar--photo { object-fit: cover; padding: 0; }
 .credit-card--pending .credit-avatar { border: 1px dashed var(--gn-green); background: var(--surface-soft); color: var(--gn-green-deep); }
 .credit-card > div { display: grid; gap: 2px; min-width: 0; }
 .credit-card strong { color: var(--ink); }

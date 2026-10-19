@@ -10,11 +10,16 @@ const isPlaceholder = (name: string) => /^Researcher \d+$/.test(name) || /^Web d
 const initials = (name: string) =>
   isPlaceholder(name) ? (name.match(/\d+/)?.[0] ?? "W") : name.split(/\s+/).filter(Boolean).slice(0, 2).map((w) => w[0]?.toUpperCase()).join("");
 
-function Person({ name, contribution }: { name: string; contribution: string }) {
+function Person({ name, contribution, photo }: { name: string; contribution: string; photo?: string | null }) {
   const pending = isPlaceholder(name);
   return (
     <li className={`credit-card${pending ? " credit-card--pending" : ""}`}>
-      <span className="credit-avatar" aria-hidden="true">{initials(name)}</span>
+      {photo ? (
+        // eslint-disable-next-line @next/next/no-img-element
+        <img className="credit-avatar credit-avatar--photo" src={`/credits/${photo}.jpg`} alt={`Photo of ${name}`} loading="lazy" width={46} height={46} />
+      ) : (
+        <span className="credit-avatar" aria-hidden="true">{initials(name)}</span>
+      )}
       <div>
         <strong>{name}</strong>
         <span>{contribution}</span>
@@ -51,14 +56,14 @@ export default function CreditsPage() {
         <section aria-labelledby="cr-research">
           <h2 id="cr-research">Research team <span>({credits.researchers.length})</span></h2>
           <ul className="credit-grid">
-            {credits.researchers.map((r, i) => <Person key={i} name={r.name} contribution={r.contribution} />)}
+            {credits.researchers.map((r, i) => <Person key={i} name={r.name} contribution={r.contribution} photo={r.photo} />)}
           </ul>
         </section>
 
         <section aria-labelledby="cr-dev">
           <h2 id="cr-dev">Web developer <span>(1)</span></h2>
           <ul className="credit-grid credit-grid--single">
-            <Person name={credits.developer.name} contribution={credits.developer.contribution} />
+            <Person name={credits.developer.name} contribution={credits.developer.contribution} photo={credits.developer.photo} />
           </ul>
         </section>
 

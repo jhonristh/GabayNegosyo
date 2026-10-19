@@ -1,15 +1,55 @@
 {
-  "_note": "Edit names here. Nothing in this file is confirmed: replace each placeholder with the team's confirmed name and contribution label. 9 researchers + 1 web developer.",
+  "_note": "Confirmed names from the team's Names and roles list. Add a photo slug (file in public/credits/) or leave null to show initials.",
   "researchers": [
-    { "name": "Researcher 1", "contribution": "Contribution to be confirmed" },
-    { "name": "Researcher 2", "contribution": "Contribution to be confirmed" },
-    { "name": "Researcher 3", "contribution": "Contribution to be confirmed" },
-    { "name": "Researcher 4", "contribution": "Contribution to be confirmed" },
-    { "name": "Researcher 5", "contribution": "Contribution to be confirmed" },
-    { "name": "Researcher 6", "contribution": "Contribution to be confirmed" },
-    { "name": "Researcher 7", "contribution": "Contribution to be confirmed" },
-    { "name": "Researcher 8", "contribution": "Contribution to be confirmed" },
-    { "name": "Researcher 9", "contribution": "Contribution to be confirmed" }
+    {
+      "name": "Raia Angiline A. Ramirez",
+      "contribution": "Research leader",
+      "photo": "raia"
+    },
+    {
+      "name": "Angel Claire C. Arabia",
+      "contribution": "Research member",
+      "photo": "angel"
+    },
+    {
+      "name": "Jay Ann E. Ascaño",
+      "contribution": "Research member",
+      "photo": "jay-ann"
+    },
+    {
+      "name": "Christine Joy N. Barcinilla",
+      "contribution": "Research member",
+      "photo": "christine"
+    },
+    {
+      "name": "Shiela Mae M. Manuel",
+      "contribution": "Research member",
+      "photo": "shiela"
+    },
+    {
+      "name": "Trisha Mae F. Queriones",
+      "contribution": "Research member",
+      "photo": "trisha"
+    },
+    {
+      "name": "Jasmen O. Relloso",
+      "contribution": "Research member",
+      "photo": null
+    },
+    {
+      "name": "Jasmine I. Sedayon",
+      "contribution": "Research member",
+      "photo": "jasmine"
+    },
+    {
+      "name": "Eithan Keith P. Sumajit",
+      "contribution": "Research member",
+      "photo": "eithan"
+    }
   ],
-  "developer": { "name": "Web developer", "contribution": "Website design and development (name to be confirmed)" }
+  "developer": {
+    "name": "Jhon Rey D. Oquendo",
+    "contribution": "Website design and development",
+    "photo": "jhon-rey"
+  }
 }
