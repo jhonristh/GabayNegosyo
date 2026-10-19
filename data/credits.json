@@ -3,53 +3,53 @@
   "researchers": [
     {
       "name": "Raia Angiline A. Ramirez",
-      "contribution": "Research leader",
+      "contribution": "Research Leader",
       "photo": "raia"
     },
     {
       "name": "Angel Claire C. Arabia",
-      "contribution": "Research member",
+      "contribution": "Research Member",
       "photo": "angel"
     },
     {
       "name": "Jay Ann E. Ascaño",
-      "contribution": "Research member",
+      "contribution": "Research Member",
       "photo": "jay-ann"
     },
     {
       "name": "Christine Joy N. Barcinilla",
-      "contribution": "Research member",
+      "contribution": "Research Member",
       "photo": "christine"
     },
     {
       "name": "Shiela Mae M. Manuel",
-      "contribution": "Research member",
+      "contribution": "Research Member",
       "photo": "shiela"
     },
     {
       "name": "Trisha Mae F. Queriones",
-      "contribution": "Research member",
+      "contribution": "Research Member",
       "photo": "trisha"
     },
     {
       "name": "Jasmen O. Relloso",
-      "contribution": "Research member",
-      "photo": null
+      "contribution": "Research Member",
+      "photo": "jasmen"
     },
     {
       "name": "Jasmine I. Sedayon",
-      "contribution": "Research member",
+      "contribution": "Research Member",
       "photo": "jasmine"
     },
     {
       "name": "Eithan Keith P. Sumajit",
-      "contribution": "Research member",
+      "contribution": "Research Member",
       "photo": "eithan"
     }
   ],
   "developer": {
     "name": "Jhon Rey D. Oquendo",
-    "contribution": "Website design and development",
+    "contribution": "Website Design and Development",
     "photo": "jhon-rey"
   }
 }
