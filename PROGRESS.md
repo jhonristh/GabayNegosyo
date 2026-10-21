@@ -278,3 +278,15 @@ Details: `docs/V0.12_CHANGES.md`.
 - [x] Supabase account sync: `database/migrations/003_sync_profiles.sql`, admin overview + Sync now, hardened signup trigger; Admin → Users role filter now server-side
 - [ ] Owner: run migration 003 in Supabase; put real names in `data/credits.json`
 - [ ] Not verified: the admin dashboard against a real admin session and real Supabase (SQL syntax-checked and the panel tested against mocked responses only)
+
+
+## v0.16.3 — Consultant changelog implementation (partial)
+
+- Updated registration wizard taxpayer choices to remove the redundant Purely Compensation and Purely Business options; retained Self-Employed or Professional and Mixed Income Earner. Existing legacy values remain supported by the domain type for saved profiles.
+- Added a Tax Type & Deductions step after projected annual sales: 8% Option or Graduated Tax; Graduated Tax reveals OSD / Itemized Deductions and projected expenses. Added a non-advisory ₱3,000,000 threshold reminder.
+- Added a Not Applicable lease response for remote/home-based users and included the choice in review.
+- Expanded Mayor’s Permit renewal documents and instructions from the supplied consultant changelog, including separate Mayor’s Permit/LBT costs and LGU-specific variation.
+- Added the requested YouTube creator attribution note to tutorial cards and filing video cards.
+- Added EOPT annual registration fee and invoice guidance where invoice-related BIR requirements are present.
+- Validation note: dependencies are not installed in this workspace, so TypeScript/build validation could not run. Existing `npm test` has environment-related `.ts` import failures in several tests; the wizard expectation tests were updated for the intentional new step and options.
+- Still needing a deeper pass: official BIR deadline/penalty verification, agency-specific registration links and details, DTI renewal content, premium/free plan content and pricing confirmation, and comprehensive browser QA.

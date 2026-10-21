@@ -38,6 +38,7 @@ export default function FilingTutorialVideos() {
                   {v.category && <p className="v06-eyebrow">{v.category}</p>}
                   <h3>{v.title}</h3>
                   {v.description && <p>{v.description}</p>}
+                  <p className="hint">Videos are from YouTube and belong to their creators.</p>
                   {!id && <a className="tutorial-link" href={v.videoUrl} target="_blank" rel="noopener noreferrer">Watch video ↗</a>}
                 </div>
               </article>

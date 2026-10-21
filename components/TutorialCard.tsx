@@ -12,7 +12,7 @@ export default function TutorialCard({ tutorial }: { tutorial: Tutorial }) {
       {videoId && !play && <button className="v06-play" type="button" onClick={()=>setPlay(true)} aria-label={`Play ${tutorial.title}`}>▶</button>}
     </div>
     <div className="v06-media-content"><p className="v06-eyebrow">{tutorial.agencyId.toUpperCase()} · {tutorial.category}</p><h3>{tutorial.title}</h3><p>{tutorial.description}</p>
-      {tutorial.isPlaceholder ? <p className="v06-unavailable">A curated video has not been verified yet.</p> : <a className="tutorial-link" href={tutorial.videoUrl} target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>}
+      {tutorial.isPlaceholder ? <p className="v06-unavailable">A curated video has not been verified yet.</p> : <><a className="tutorial-link" href={tutorial.videoUrl} target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a><p className="hint">Videos are from YouTube and belong to their creators.</p></>}
     </div>
   </article>;
 }

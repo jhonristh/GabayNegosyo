@@ -24,12 +24,12 @@ test("wizard asks the seven real intake questions, plus business name, review, a
   assert.ok(match, "STEPS array not found");
   const steps = match[1].split(",").map((s) => s.trim()).filter((s) => s.length > 0);
   // 9 steps: New Business?, Taxpayer Type, Business Location, Lease,
-  // Employees, Projected Sales & Expenses, Business Name, Review, Generate.
-  assert.strictEqual(steps.length, 9, `expected 9 wizard steps, got ${steps.length}`);
+  // Employees, Projected Sales, Tax Type & Deductions, Business Name, Review, Generate.
+  assert.strictEqual(steps.length, 10, `expected 10 wizard steps, got ${steps.length}`);
 });
 
 test("wizard uses Gabay Negosyo's exact taxpayer-type wording", () => {
-  for (const wording of ["Purely Compensation", "Self-Employment or Profession", "Purely Business", "Mixed Income Earner"]) {
+  for (const wording of ["Self-Employed or Professional", "Mixed Income Earner"]) {
     assert.ok(wizard.includes(wording), `missing Gabay Negosyo wording: ${wording}`);
   }
 });

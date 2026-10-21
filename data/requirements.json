@@ -191,7 +191,7 @@
     "id": "lgu-permit-renewal",
     "agencyId": "lgu",
     "name": "Business Permit Renewal (Mayor's Permit)",
-    "description": "Annual renewal of your local business permit, required to legally continue operating in your city/municipality.",
+    "description": "Annual renewal of your local business permit. The Mayor’s Permit/business permit and Local Business Tax (LBT) are separate LGU charges; applicable amounts and requirements vary by city or municipality.",
     "whoItAppliesTo": "Every operating business, regardless of type or structure.",
     "applicabilityRules": {
       "status": [
@@ -200,37 +200,62 @@
     },
     "requiredDocuments": [
       {
-        "name": "Prior year's business permit",
-        "description": "Original or copy"
+        "name": "Latest Barangay Business Permit/Clearance and official payment receipt",
+        "description": "Confirm the exact document name and format with your LGU."
       },
       {
-        "name": "Barangay clearance",
-        "description": "From your barangay hall"
+        "name": "Completed renewal application form",
+        "description": "Other barangay or LGU-specific requirements may apply."
       },
       {
-        "name": "Proof of gross sales/receipts",
-        "description": "For computing local business tax"
+        "name": "Community Tax Certificate (Cedula)",
+        "description": "If required by the LGU."
+      },
+      {
+        "name": "Latest Income Tax Return and Audited Financial Statements with proof of payment",
+        "description": "As applicable to the business and LGU."
+      },
+      {
+        "name": "VAT or Percentage Tax Returns",
+        "description": "Whichever applies to the taxpayer."
+      },
+      {
+        "name": "Latest notarized Contract of Lease",
+        "description": "If renting the business premises."
+      },
+      {
+        "name": "DTI, SEC, or CDA registration",
+        "description": "As applicable to the business structure."
+      },
+      {
+        "name": "Employee count and SSS, Pag-IBIG, and PhilHealth registration details",
+        "description": "If the business has employees."
+      },
+      {
+        "name": "Affidavit of No Operations",
+        "description": "If the business did not operate during the previous year, where required."
       }
     ],
     "instructions": [
-      "Secure your barangay clearance for the current year.",
-      "Visit or use the online portal of your city/municipality's Business Permits and Licensing Office.",
-      "Submit renewal requirements and pay the local business tax and fees.",
-      "Claim your renewed Mayor's Permit."
+      "Check the current renewal checklist and online application options published by your city or municipality.",
+      "Prepare the latest barangay clearance/business permit and official payment receipt, renewal form, Cedula, applicable tax returns and financial statements, lease contract if renting, business registration, and employee registration details if applicable.",
+      "Confirm the applicable Mayor’s Permit fee, Local Business Tax (LBT), and any zoning, sanitary, health, or Fire Safety Inspection Certificate (FSIC) charges with the LGU; these are separate charges and amounts vary by local ordinance.",
+      "Submit the requirements and pay the assessed taxes and fees through the LGU-approved channel.",
+      "Renewal is generally due between January 1 and January 20. Confirm current local deadlines and any extensions directly with the LGU."
     ],
-    "deadlineDescription": "Annually, on or before January 20",
+    "deadlineDescription": "Annually; generally January 1–20. Confirm the current deadline with your LGU.",
     "deadlineMonth": 1,
     "deadlineDay": 20,
     "penaltyRule": {
       "type": "percentage_surcharge_plus_monthly_interest",
       "surchargeRate": 0.25,
       "monthlyRate": 0.02,
-      "description": "25% surcharge plus 2% monthly interest on unpaid local business tax. Exact rates vary by LGU ordinance; confirm with your city/municipality."
+      "description": "The changelog lists a 25% surcharge on business tax due and 2% monthly interest on unpaid taxes, but enforcement and amounts must be confirmed against the applicable LGU revenue code."
     },
     "officialUrl": "https://www.dilg.gov.ph",
     "tutorialId": "tut-lgu-renewal",
     "lastVerified": "2026-08-01",
-    "contentSource": "prototype_placeholder",
+    "contentSource": "gabay_guide",
     "deadlineKind": "fixed_annual"
   },
   {
@@ -474,7 +499,8 @@
       "Apply for Authority to Print using BIR Form 1906.",
       "Submit a sample layout of the receipt/invoice.",
       "Coordinate with a BIR-accredited printer.",
-      "Issue an official receipt for each transaction once printed."
+      "Issue an official receipt for each transaction once printed.",
+      "New business registrants may use BIR-printed invoices during the first year of operation or until fully consumed, whichever comes first. From the second year, taxpayers are generally required to secure an Authority to Print (ATP) for their principal invoices unless an applicable exception applies; printer costs vary."
     ],
     "complianceStage": "Receipt Compliance",
     "deadlineDescription": "Before issuing receipts/invoices.",

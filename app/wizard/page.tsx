@@ -27,16 +27,15 @@ const STEPS = [
   "Business Location",
   "Lease",
   "Employees",
-  "Projected Sales & Expenses",
+  "Projected Sales",
+  "Tax Type & Deductions",
   "Business Name",
   "Review",
   "Generate My Compliance Roadmap",
 ];
 
 const TAXPAYER_TYPES: { value: TaxpayerType; label: string }[] = [
-  { value: "purely_compensation", label: "Purely Compensation" },
-  { value: "self_employment_or_profession", label: "Self-Employment or Profession" },
-  { value: "purely_business", label: "Purely Business" },
+  { value: "self_employment_or_profession", label: "Self-Employed or Professional" },
   { value: "mixed_income_earner", label: "Mixed Income Earner" },
 ];
 
@@ -64,7 +63,7 @@ function WizardInner() {
   const existing = useMemo(() => (user ? db.getBusinessProfile(user.id) : db.getGuestProfile()), [user]);
 
   const [isRegisteringNewBusiness, setIsRegisteringNewBusiness] = useState<boolean | null>(existing ? existing.isRegisteringNewBusiness : null);
-  const [taxpayerType, setTaxpayerType] = useState<TaxpayerType>(existing?.taxpayerType ?? "purely_business");
+  const [taxpayerType, setTaxpayerType] = useState<TaxpayerType>(existing?.taxpayerType === "mixed_income_earner" ? "mixed_income_earner" : "self_employment_or_profession");
   const [locality, setLocality] = useState(localityIdOf(existing));
   const [barangay, setBarangay] = useState(existing?.barangay ?? "");
   const [hasLease, setHasLease] = useState<boolean | null>(existing ? existing.hasLease : null);
@@ -72,6 +71,9 @@ function WizardInner() {
   const [employeeCount, setEmployeeCount] = useState(existing?.employeeCount ?? 0);
   const [projectedGrossSales, setProjectedGrossSales] = useState<number | "">(existing ? existing.projectedGrossSales : "");
   const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
+  const [taxType, setTaxType] = useState<"8_percent" | "graduated">(existing?.taxType === "graduated" ? "graduated" : "8_percent");
+  const [deductionMethod, setDeductionMethod] = useState<"osd" | "itemized">("osd");
+  const [leaseApplicability, setLeaseApplicability] = useState<"yes" | "no" | "na">(existing ? (existing.hasLease ? "yes" : "no") : "");
   const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
 
   const localityInfo = getLocality(locality);
@@ -90,10 +92,11 @@ function WizardInner() {
   function canProceed(): boolean {
     if (step === 0) return isRegisteringNewBusiness !== null;
     if (step === 2) return Boolean(localityInfo) && barangay.trim().length > 0;
-    if (step === 3) return hasLease !== null;
+    if (step === 3) return leaseApplicability !== "";
     if (step === 4) return hasEmployees !== null && (hasEmployees === false || (Number.isInteger(employeeCount) && employeeCount >= 1));
-    if (step === 5) return projectedGrossSales !== "" && projectedExpenses !== "" && projectedGrossSales >= 0 && projectedExpenses >= 0;
-    if (step === 6) return businessName.trim().length > 0;
+    if (step === 5) return projectedGrossSales !== "" && projectedGrossSales >= 0;
+    if (step === 6) return taxType === "8_percent" || (deductionMethod === "osd" || deductionMethod === "itemized");
+    if (step === 7) return businessName.trim().length > 0;
     return true;
   }
 
@@ -106,11 +109,11 @@ function WizardInner() {
       locality,
       barangay: barangay.trim(),
       rdoCode,
-      hasLease: Boolean(hasLease),
+      hasLease: leaseApplicability === "yes",
       hasEmployees: Boolean(hasEmployees),
       employeeCount: hasEmployees ? employeeCount : 0,
       projectedGrossSales: Number(projectedGrossSales) || 0,
-      projectedExpenses: Number(projectedExpenses) || 0,
+      projectedExpenses: taxType === "graduated" ? (Number(projectedExpenses) || 0) : 0,
       businessName: businessName.trim(),
       location: formatLocation(barangay, locality),
       status: isRegisteringNewBusiness ? "planning" : "operating",
@@ -118,7 +121,7 @@ function WizardInner() {
       // actual registration wizard content source
       businessType: "other",
       businessStructure: "sole_proprietor",
-      taxType: "not_sure",
+      taxType,
       createdAt: existing?.createdAt ?? new Date().toISOString(),
     };
     trackConversion("wizard_completed");
@@ -248,13 +251,9 @@ function WizardInner() {
       {step === 3 && (
         <section className="question">
           <label className="question-label">Do you lease the space for your business?</label>
-          <div className="option-row">
-            <button type="button" aria-pressed={hasLease === true} className={`option-btn ${hasLease === true ? "selected" : ""}`} onClick={() => setHasLease(true)}>
-              Yes
-            </button>
-            <button type="button" aria-pressed={hasLease === false} className={`option-btn ${hasLease === false ? "selected" : ""}`} onClick={() => setHasLease(false)}>
-              No
-            </button>
+          <p className="hint">Choose Not Applicable if you work remotely or from home and no separate business space is leased.</p>
+          <div className="option-grid">
+            {([{value:"yes",label:"Yes"},{value:"no",label:"No"},{value:"na",label:"Not Applicable"}] as const).map(option => <button key={option.value} type="button" aria-pressed={leaseApplicability === option.value} className={`option-btn ${leaseApplicability === option.value ? "selected" : ""}`} onClick={() => {setLeaseApplicability(option.value); setHasLease(option.value === "yes" ? true : option.value === "no" ? false : null);}}>{option.label}</button>)}
           </div>
         </section>
       )}
@@ -292,7 +291,7 @@ function WizardInner() {
         <>
           <section className="question">
             <label className="question-label" htmlFor="gross">
-              How much is your projected annual gross sales? (₱)
+              What are your projected annual gross sales/receipts? (₱)
             </label>
             <input
               id="gross"
@@ -304,24 +303,34 @@ function WizardInner() {
               placeholder="e.g. 2000000"
             />
           </section>
-          <section className="question">
-            <label className="question-label" htmlFor="expenses">
-              How much is your projected annual expenses? (₱)
-            </label>
-            <input
-              id="expenses"
-              type="number"
-              min={0}
-              className="text-input"
-              value={projectedExpenses}
-              onChange={(e) => setProjectedExpenses(e.target.value === "" ? "" : Number(e.target.value))}
-              placeholder="e.g. 250000"
-            />
-          </section>
+
         </>
       )}
 
       {step === 6 && (
+        <section className="question">
+          <label className="question-label">Tax Type</label>
+          <p className="hint">The 8% option is available only to qualified taxpayers and is generally for annual gross sales/receipts not exceeding ₱3,000,000. Confirm eligibility with the BIR or a tax professional. If sales/receipts reach or exceed the threshold, additional VAT registration and compliance may apply.</p>
+          <div className="option-grid">
+            <button type="button" aria-pressed={taxType === "8_percent"} className={`option-btn ${taxType === "8_percent" ? "selected" : ""}`} onClick={() => setTaxType("8_percent")}>8% Option</button>
+            <button type="button" aria-pressed={taxType === "graduated"} className={`option-btn ${taxType === "graduated" ? "selected" : ""}`} onClick={() => setTaxType("graduated")}>Graduated Tax</button>
+          </div>
+          {taxType === "graduated" && <>
+            <label className="question-label" style={{marginTop:16}}>Deduction method</label>
+            <div className="option-grid">
+              <button type="button" aria-pressed={deductionMethod === "osd"} className={`option-btn ${deductionMethod === "osd" ? "selected" : ""}`} onClick={() => setDeductionMethod("osd")}>Optional Standard Deduction (OSD)</button>
+              <button type="button" aria-pressed={deductionMethod === "itemized"} className={`option-btn ${deductionMethod === "itemized" ? "selected" : ""}`} onClick={() => setDeductionMethod("itemized")}>Itemized Deductions</button>
+            </div>
+            <section className="question">
+              <label className="question-label" htmlFor="expenses">Projected annual expenses (₱)</label>
+              <input id="expenses" type="number" min={0} className="text-input" value={projectedExpenses} onChange={(e) => setProjectedExpenses(e.target.value === "" ? "" : Number(e.target.value))} placeholder="e.g. 250000" />
+              <p className="hint">Expenses are relevant to the itemized deduction method. This estimate is for guidance only, not an official tax computation.</p>
+            </section>
+          </>}
+        </section>
+      )}
+
+      {step === 7 && (
         <section className="question">
           <label className="question-label" htmlFor="bizName">
             Business name
@@ -331,7 +340,7 @@ function WizardInner() {
         </section>
       )}
 
-      {step === 7 && (
+      {step === 8 && (
         <section className="review-summary">
           <h2>Review your answers</h2>
           <dl>
@@ -344,20 +353,21 @@ function WizardInner() {
             <dt>RDO Code</dt>
             <dd>{rdoCode || "Not found for this barangay"}</dd>
             <dt>Leases business space?</dt>
-            <dd>{hasLease ? "Yes" : "No"}</dd>
+            <dd>{leaseApplicability === "na" ? "Not Applicable" : leaseApplicability === "yes" ? "Yes" : "No"}</dd>
             <dt>Employees?</dt>
             <dd>{hasEmployees ? `Yes (${employeeCount})` : "No"}</dd>
             <dt>Projected annual gross sales</dt>
             <dd>₱{Number(projectedGrossSales || 0).toLocaleString()}</dd>
-            <dt>Projected annual expenses</dt>
-            <dd>₱{Number(projectedExpenses || 0).toLocaleString()}</dd>
+            <dt>Tax Type</dt>
+            <dd>{taxType === "8_percent" ? "8% Option" : `Graduated Tax — ${deductionMethod === "osd" ? "OSD" : "Itemized Deductions"}`}</dd>
+            {taxType === "graduated" && <><dt>Projected annual expenses</dt><dd>₱{Number(projectedExpenses || 0).toLocaleString()}</dd></>}
             <dt>Business name</dt>
             <dd>{businessName || "—"}</dd>
           </dl>
         </section>
       )}
 
-      {step === 8 && (
+      {step === 9 && (
         <section className="review-summary">
           <h2>Ready to generate your roadmap</h2>
           <p>
