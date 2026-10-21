@@ -4,11 +4,12 @@ const test = require("node:test");
 const assert = require("node:assert");
 const fs = require("node:fs");
 const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 
 const read = (p) => fs.readFileSync(path.join(__dirname, "..", p), "utf8");
 const canImportTs = Boolean(process.features && process.features.typescript);
 const opts = { skip: canImportTs ? false : "needs Node with TypeScript type stripping (22.18+)" };
-const load = (p) => import(path.join(__dirname, "..", p));
+const load = (p) => import(pathToFileURL(path.join(__dirname, "..", p)).href);
 
 test("manilaDateKey uses the Asia/Manila calendar date, not UTC", opts, async () => {
   const { manilaDateKey } = await load("lib/reminderDigest.ts");

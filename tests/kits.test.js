@@ -5,13 +5,14 @@ const test = require("node:test");
 const assert = require("node:assert/strict");
 const fs = require("node:fs");
 const path = require("node:path");
+const { pathToFileURL } = require("node:url");
 
 const root = path.join(__dirname, "..");
 const read = (...p) => fs.readFileSync(path.join(root, ...p), "utf8");
 
 let theme;
 test.before(async () => {
-  theme = await import(path.join(root, "lib", "theme.ts"));
+  theme = await import(pathToFileURL(path.join(root, "lib", "theme.ts")).href);
 });
 
 test("parseThemePreference accepts the three values and falls back to light", () => {

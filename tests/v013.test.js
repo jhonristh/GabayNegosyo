@@ -211,9 +211,17 @@ test("service-role key stays server-side only", () => {
 });
 
 // ── Credits ────────────────────────────────────────────────────────────
-test("credits show exactly 9 researchers and 1 developer with no invented names", () => {
+test("credits list 9 researchers and 1 developer, each named, with an existing photo", () => {
   const credits = JSON.parse(read("data", "credits.json"));
   assert.strictEqual(credits.researchers.length, 9);
-  assert.ok(credits.developer && credits.developer.name);
-  assert.ok(credits.researchers.every((r) => /^Researcher \d$/.test(r.name)), "names must stay placeholders until confirmed");
+  const everyone = [...credits.researchers, credits.developer];
+  for (const p of everyone) {
+    assert.ok(p && typeof p.name === "string" && p.name.trim(), "every credit needs a name");
+    assert.ok(!/^Researcher \d$/.test(p.name) && !/to be confirmed/i.test(p.name), `${p.name} is still a placeholder`);
+    assert.ok(p.contribution, `${p.name} needs a contribution label`);
+    if (p.photo) {
+      assert.ok(fs.existsSync(path.join(__dirname, "..", "public", "credits", `${p.photo}.jpg`)), `missing photo for ${p.name}`);
+    }
+  }
+  assert.strictEqual(new Set(everyone.map((p) => p.name)).size, everyone.length, "credit names must be unique");
 });
