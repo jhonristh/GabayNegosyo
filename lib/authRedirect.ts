@@ -8,7 +8,7 @@
  *  - Only allow-listed in-app paths can be used as a redirect target, so a
  *    caller can never smuggle an arbitrary URL into `redirectTo`.
  */
-export const ALLOWED_AUTH_PATHS = ["/auth/confirmed", "/login", "/wizard", "/dashboard", "/checklist"] as const;
+export const ALLOWED_AUTH_PATHS = ["/auth/confirmed", "/login", "/reset-password", "/wizard", "/dashboard", "/checklist"] as const;
 export type AuthPath = (typeof ALLOWED_AUTH_PATHS)[number];
 
 const LOCAL_HOSTS = new Set(["localhost", "127.0.0.1", "[::1]", "::1", "0.0.0.0"]);
