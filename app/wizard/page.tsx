@@ -5,8 +5,8 @@ import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { trackConversion } from "../../lib/webAnalytics";
-import barangayRdoData from "../../data/barangayRdo.json";
 import { NCR_LOCALITIES, getLocality, localityIdOf, formatLocation } from "../../lib/ncr";
+import { getBarangays } from "../../lib/barangays";
 import type { BusinessProfile, TaxpayerType } from "../../lib/types";
 
 /**
@@ -14,7 +14,7 @@ import type { BusinessProfile, TaxpayerType } from "../../lib/types";
  * ───────────────────
  * Question order and wording follow Gabay Negosyo's registration guide.
  * The Barangay → RDO Code lookup is data-driven from data/barangayRdo.json
- * (available for Quezon City only; other NCR localities enter the barangay as text and verify the RDO with the BIR).
+ * QC RDOs are app-supplied. Every NCR locality now has a barangay dropdown (data/ncrBarangays.json, PSA PSGC 2Q 2026); other localities only show a *suggested* RDO from the BIR office name, which is never saved.
  *
  * "Business name" is a prototype UX addition (not part of the source
  * questionnaire) kept only so the dashboard has something to greet the
@@ -39,7 +39,6 @@ const TAXPAYER_TYPES: { value: TaxpayerType; label: string }[] = [
   { value: "mixed_income_earner", label: "Mixed Income Earner" },
 ];
 
-const BARANGAY_RDO: { barangay: string; rdoCode: string }[] = barangayRdoData;
 
 function Stepper({ step }: { step: number }) {
   return (
@@ -73,16 +72,17 @@ function WizardInner() {
   const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
   const [taxType, setTaxType] = useState<"8_percent" | "graduated">(existing?.taxType === "graduated" ? "graduated" : "8_percent");
   const [deductionMethod, setDeductionMethod] = useState<"osd" | "itemized">("osd");
-  const [leaseApplicability, setLeaseApplicability] = useState<"yes" | "no" | "na" | "">(
-    existing ? (existing.hasLease ? "yes" : "no") : ""
-  );
+  const [leaseApplicability, setLeaseApplicability] = useState<"yes" | "no" | "na">(existing ? (existing.hasLease ? "yes" : "no") : "");
   const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
 
   const localityInfo = getLocality(locality);
-  const rdoCode = useMemo(
-    () => (localityInfo?.barangayLookup ? BARANGAY_RDO.find((b) => b.barangay === barangay)?.rdoCode ?? "" : ""),
-    [barangay, localityInfo]
-  );
+  const barangayOptions = useMemo(() => getBarangays(locality), [locality]);
+  const selectedBarangay = barangayOptions.find((b) => b.name === barangay);
+  // Saved only when backed by app data or a BIR order; "office" matches are suggestions only.
+  const rdoCode = selectedBarangay && selectedBarangay.rdoBasis !== "office" ? selectedBarangay.rdoCode ?? "" : "";
+  const suggestedRdo = selectedBarangay && selectedBarangay.rdoBasis === "office" ? selectedBarangay.rdoCode ?? "" : "";
+  const hasDistricts = barangayOptions.some((b) => b.district);
+  const [barangayNotListed, setBarangayNotListed] = useState(Boolean(existing?.barangay) && !getBarangays(localityIdOf(existing)).some((b) => b.name === existing?.barangay));
 
   function next() {
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
@@ -192,6 +192,7 @@ function WizardInner() {
             onChange={(e) => {
               setLocality(e.target.value);
               setBarangay("");
+              setBarangayNotListed(false);
             }}
           >
             <option value="">Select your city or municipality…</option>
@@ -212,37 +213,73 @@ function WizardInner() {
               <label className="question-label" htmlFor="barangay" style={{ marginTop: 16 }}>
                 Barangay
               </label>
-              <input
+              <select
                 id="barangay"
-                list={localityInfo.barangayLookup ? "barangay-list" : undefined}
                 className="text-input"
-                value={barangay}
-                onChange={(e) => setBarangay(e.target.value)}
-                placeholder={localityInfo.barangayLookup ? "Start typing your barangay…" : "Type your barangay"}
-              />
-              {localityInfo.barangayLookup && (
-                <datalist id="barangay-list">
-                  {BARANGAY_RDO.map((b) => (
-                    <option key={b.barangay} value={b.barangay} />
-                  ))}
-                </datalist>
+                value={barangayNotListed ? "__other__" : barangay}
+                onChange={(e) => {
+                  if (e.target.value === "__other__") {
+                    setBarangayNotListed(true);
+                    setBarangay("");
+                  } else {
+                    setBarangayNotListed(false);
+                    setBarangay(e.target.value);
+                  }
+                }}
+              >
+                <option value="">Select your barangay…</option>
+                {hasDistricts
+                  ? Array.from(new Set(barangayOptions.map((b) => b.district ?? ""))).map((d) => (
+                      <optgroup key={d} label={d}>
+                        {barangayOptions
+                          .filter((b) => (b.district ?? "") === d)
+                          .map((b) => (
+                            <option key={b.code} value={b.name}>
+                              {b.name}
+                            </option>
+                          ))}
+                      </optgroup>
+                    ))
+                  : barangayOptions.map((b) => (
+                      <option key={b.code} value={b.name}>
+                        {b.name}
+                      </option>
+                    ))}
+                <option value="__other__">My barangay isn&apos;t listed</option>
+              </select>
+              {barangayNotListed && (
+                <input
+                  id="barangay-other"
+                  className="text-input"
+                  style={{ marginTop: 8 }}
+                  value={barangay}
+                  onChange={(e) => setBarangay(e.target.value)}
+                  placeholder="Type your barangay"
+                  aria-label="Barangay (not listed)"
+                />
               )}
+              <p className="hint">Barangay list: PSA Philippine Standard Geographic Code, 2Q 2026.</p>
               {rdoCode && (
                 <p className="hint">
                   RDO Code: <strong>{rdoCode}</strong> (auto-determined from your barangay)
                 </p>
               )}
-              {barangay && localityInfo.barangayLookup && !rdoCode && (
+              {suggestedRdo && (
                 <p className="hint">
-                  We don&apos;t have an RDO Code on file for that barangay yet. Double-check the spelling, or continue and
-                  verify with your RDO directly.
+                  Likely RDO: <strong>{suggestedRdo}</strong> (based on the BIR office name for {localityInfo.name}, not a
+                  confirmed barangay list). Confirm your Revenue District Office with the BIR before registering.
                 </p>
               )}
-              {!localityInfo.barangayLookup && (
+              {barangay && !rdoCode && !suggestedRdo && (
                 <p className="hint">
-                  Automatic RDO lookup is not available for {localityInfo.name} yet. Confirm your Revenue District Office
-                  with the BIR before registering. Local permit guidance for {localityInfo.name} is general and not yet
-                  verified against that LGU&apos;s own rules.
+                  We don&apos;t have a confirmed RDO Code on file for that barangay yet. Confirm your Revenue District
+                  Office with the BIR before registering.
+                </p>
+              )}
+              {localityInfo.lguGuidance !== "verified" && (
+                <p className="hint">
+                  Local permit guidance for {localityInfo.name} is general and not yet verified against that LGU&apos;s own
+                  rules.
                 </p>
               )}
             </>

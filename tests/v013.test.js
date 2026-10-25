@@ -21,7 +21,7 @@ test("NCR dataset has the 16 cities and Pateros, with unique ids", async () => {
 test("no locality claims verified LGU guidance without a source", async () => {
   const { NCR_LOCALITIES } = await load("../lib/ncr.ts");
   assert.ok(NCR_LOCALITIES.every((l) => l.lguGuidance === "generic_unverified"));
-  assert.ok(NCR_LOCALITIES.filter((l) => l.barangayLookup).every((l) => l.id === "quezon_city"), "barangay→RDO data exists for QC only");
+  assert.ok(NCR_LOCALITIES.every((l) => l.barangayLookup), "every NCR locality has a barangay dropdown list");
 });
 
 test("profiles saved before v0.13 (barangay, no locality) resolve to Quezon City", async () => {

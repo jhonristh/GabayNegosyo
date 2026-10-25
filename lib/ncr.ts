@@ -14,12 +14,12 @@ export interface Locality {
   id: string;
   name: string;
   type: LocalityType;
-  /** Whether a barangay → RDO lookup exists in data/barangayRdo.json for this locality. */
+  /** Whether a barangay list exists in data/ncrBarangays.json for this locality (true for all NCR localities). */
   barangayLookup: boolean;
   lguGuidance: LguGuidanceStatus;
 }
 
-const L = (id: string, name: string, type: LocalityType = "city", barangayLookup = false): Locality => ({
+const L = (id: string, name: string, type: LocalityType = "city", barangayLookup = true): Locality => ({
   id,
   name,
   type,
@@ -29,7 +29,7 @@ const L = (id: string, name: string, type: LocalityType = "city", barangayLookup
 
 export const NCR_LOCALITIES: readonly Locality[] = [
   L("manila", "City of Manila"),
-  L("quezon_city", "Quezon City", "city", true),
+  L("quezon_city", "Quezon City"),
   L("caloocan", "Caloocan"),
   L("las_pinas", "Las Piñas"),
   L("makati", "Makati"),
@@ -46,6 +46,21 @@ export const NCR_LOCALITIES: readonly Locality[] = [
   L("valenzuela", "Valenzuela"),
   L("pateros", "Pateros", "municipality"),
 ];
+
+export type RdoBasis = "app_data" | "official" | "office";
+export interface BarangayOption {
+  name: string;
+  /** PSA PSGC 10-digit code. */
+  code: string;
+  /** Manila only: PSGC sub-municipality (district). */
+  district?: string;
+  rdoCode?: string;
+  /**
+   * app_data = pre-existing data/barangayRdo.json (Quezon City); official = listed in a BIR order (RAO 004-19);
+   * office = only inferred from the RDO office name for the city/district -> show as a suggestion, never store.
+   */
+  rdoBasis?: RdoBasis;
+}
 
 export const DEFAULT_LOCALITY_ID = "quezon_city";
 

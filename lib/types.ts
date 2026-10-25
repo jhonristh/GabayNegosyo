@@ -36,7 +36,7 @@ export interface BusinessProfile {
   taxpayerType: TaxpayerType;
   /** NCR locality id from lib/ncr.ts. Optional: profiles saved before v0.13 were Quezon City. */
   locality?: string;
-  barangay: string; // barangay name; auto-RDO lookup exists only for Quezon City (data/barangayRdo.json)
+  barangay: string; // barangay name; dropdown from data/ncrBarangays.json; stored RDO only for Quezon City (data/barangayRdo.json) or BIR-order matches
   rdoCode: string; // auto-derived from barangay, e.g. "RDO 39"
   hasLease: boolean;
   hasEmployees: boolean;

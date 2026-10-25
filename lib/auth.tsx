@@ -53,8 +53,6 @@ interface AuthContextValue {
   startDemo: (role: DemoRole) => void;
   /** Resets this browser's demo data to the sample records. */
   resetDemo: () => void;
-  /** Requests a Supabase password-reset email for this address. */
-  resetPassword: (email: string) => Promise<AuthResult>;
   /** Permanently deletes the signed-in real account through the server route. */
   deleteAccount: (password?: string) => Promise<{ ok: boolean; error?: string }>;
 }
@@ -282,26 +280,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     applyDemo(role);
   }
 
-  async function resetPassword(email: string): Promise<AuthResult> {
-    const redirectTo = authRedirectUrl("/reset-password");
-    if (!redirectTo) {
-      return {
-        ok: false,
-        error: "This site's public web address is not configured, so we cannot send a safe password-reset link. Please contact the site owner.",
-      };
-    }
-    try {
-      const { error } = await getSupabase().auth.resetPasswordForEmail(email.trim(), { redirectTo });
-      if (error) return { ok: false, error: friendlyEmailAuthError(error.message) };
-      return { ok: true };
-    } catch (err) {
-      return {
-        ok: false,
-        error: friendlyAuthError(err instanceof Error ? err.message : String(err)),
-      };
-    }
-  }
-
   async function deleteAccount(password?: string): Promise<{ ok: boolean; error?: string }> {
     // Demo mode must never reach the real deletion endpoint.
     if (!user || user.isDemo) return { ok: false, error: "Demo accounts are not real. Use Reset demo data instead." };
@@ -331,7 +309,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, upgradeToPremium, startDemo, resetDemo, deleteAccount, resetPassword }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, upgradeToPremium, startDemo, resetDemo, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );
