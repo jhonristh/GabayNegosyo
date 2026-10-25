@@ -2,7 +2,7 @@
  * B4: thin observability adapter. Logs structured errors — never personal
  * data or tokens — and forwards to an error-tracking service only when its
  * DSN is configured. No third-party account has been created or connected
- * in this pass (see docs/V0.3_STATUS.md: "adapter ready, no account
+ * in this pass (see CHANGELOG.md (v0.3 hardening pass): "adapter ready, no account
  * connected"). Wiring a real service later is a small, documented step:
  * set NEXT_PUBLIC_ERROR_TRACKING_DSN and fill in `forward()` below.
  *

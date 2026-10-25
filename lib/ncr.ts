@@ -5,7 +5,7 @@
  * depend on the locality. Only LGU permit guidance is locality-aware, and only
  * where `lguGuidance` is "verified". No NCR locality is marked verified yet:
  * the LGU permit content in data/requirements.json is generic and unverified per city.
- * Do not flip a locality to "verified" without an official source (see docs/USER_INPUT_REQUIRED.md).
+ * Do not flip a locality to "verified" without an official source (see docs/OPEN_ITEMS.md).
  */
 export type LocalityType = "city" | "municipality";
 export type LguGuidanceStatus = "verified" | "generic_unverified";

@@ -5,7 +5,7 @@
 // to sanity-check the applicability rules encoded in data/requirements.json.
 //
 // For full TS-aware testing, wire up ts-node or vitest — noted in
-// PROGRESS.md under Phase 12.
+// CHANGELOG.md.
 
 const test = require("node:test");
 const assert = require("node:assert");

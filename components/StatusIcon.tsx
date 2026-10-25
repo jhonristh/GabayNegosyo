@@ -5,7 +5,7 @@ import type { RequirementStatus } from "../lib/types";
  * used via CSS `content`, which rendered inconsistently on Android
  * (notably ⚠ as a colored emoji glyph on some devices). Same shape
  * semantics per status — documented as an accessibility requirement in
- * DESIGN.md §3 — implemented as hand-written inline SVG (no icon-font
+ * docs/DESIGN.md §3 — implemented as hand-written inline SVG (no icon-font
  * package) to keep bundle size flat on low-end Android hardware.
  */
 export default function StatusIcon({ status }: { status: RequirementStatus }) {

@@ -32,7 +32,7 @@ import type {
  *  CONTENT  (agencies, requirements, resources, tutorials + admin edits)
  *    - Unchanged for now: seed JSON in /data plus admin overrides in this
  *      browser's localStorage. Moving this to Supabase tables is the next
- *      stage — see docs/SUPABASE_SETUP.md, "What is still local".
+ *      stage — see docs/SETUP.md, "What is still local".
  */
 
 const STORE_KEY = "gn_store_v1";

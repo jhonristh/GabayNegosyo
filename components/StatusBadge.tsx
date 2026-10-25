@@ -12,7 +12,7 @@ const LABELS: Record<RequirementStatus, string> = {
 
 /**
  * Status is never color alone: shape (StatusIcon, hand-written SVG — see
- * K11 in docs/V0.3_STATUS.md) plus color plus a text label together.
+ * K11 in CHANGELOG.md) plus color plus a text label together.
  */
 export default function StatusBadge({ status }: { status: RequirementStatus }) {
   return (

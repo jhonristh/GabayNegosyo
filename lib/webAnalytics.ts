@@ -4,7 +4,7 @@ import { track as vercelTrack } from "@vercel/analytics";
 
 /**
  * C10/L12: thin wrapper around @vercel/analytics (cookieless page
- * analytics — no consent banner needed, see docs/DESIGN.md privacy notes).
+ * analytics — no consent banner needed, see docs/DESIGN.md and the Privacy page).
  * A no-op outside production so local/dev work never sends events.
  *
  * Deliberately separate from lib/analytics.ts, which is a different,

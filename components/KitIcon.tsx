@@ -5,7 +5,7 @@
  * (or as emoji / missing boxes) across Android fonts. These are plain SVG
  * paths, decorative only (aria-hidden): every control that uses one also
  * carries a visible or aria label. No icon-font or library dependency, in
- * line with Design-System.md.
+ * line with docs/DESIGN.md.
  */
 export type KitIconName =
   | "overview"

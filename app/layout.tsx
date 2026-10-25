@@ -9,7 +9,7 @@ import "../styles/emerald.css";
 // fetch to fonts.googleapis.com / fonts.gstatic.com at build or request
 // time — more robust than next/font/google, which still makes a live
 // network call to Google during `next build`). Only the weights actually
-// used in styles/globals.css are imported (D2) — see docs/V0.3_STATUS.md.
+// used in styles/globals.css are imported (D2) — see CHANGELOG.md (v0.3 hardening pass).
 import "@fontsource/inter/400.css";
 import "@fontsource/inter/500.css";
 import "@fontsource/inter/600.css";

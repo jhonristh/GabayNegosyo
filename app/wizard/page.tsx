@@ -18,7 +18,7 @@ import type { BusinessProfile, TaxpayerType } from "../../lib/types";
  *
  * "Business name" is a prototype UX addition (not part of the source
  * questionnaire) kept only so the dashboard has something to greet the
- * user with — see PROGRESS.md.
+ * user with — see CHANGELOG.md.
  */
 
 const STEPS = [

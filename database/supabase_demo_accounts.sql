@@ -7,7 +7,7 @@
 
 -- GabayNegosyo — demo accounts (free / premium / admin)
 -- Run in Supabase → SQL Editor AFTER you have created the 3 users in
--- Authentication → Users (see docs/SUPABASE_SETUP.md, "Demo accounts").
+-- Authentication → Users (deprecated; see docs/SETUP.md section 9).
 -- Idempotent: safe to run again. Also safe if you ran an older supabase_setup.sql
 -- that did not have the is_demo column yet.
 

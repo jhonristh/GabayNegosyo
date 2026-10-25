@@ -8,7 +8,7 @@ import KitIcon, { type KitIconName } from "./KitIcon";
 import { ThemeToggle } from "./ThemeControls";
 
 /**
- * Navigation for the three shells (see docs/DESIGN_KITS.md):
+ * Navigation for the three shells (see docs/DESIGN.md §4):
  *   - signed out  → Regulatory Atlas header
  *   - user        → Growth Ledger sidebar (desktop) + Pocket Guide bar (mobile)
  *   - admin       → Command Desk icon rail + menu (desktop), scrolling bar (mobile)

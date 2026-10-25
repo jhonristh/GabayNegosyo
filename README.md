@@ -1,219 +1,103 @@
-> **v0.9 scope:** BIR, SSS, PhilHealth, Pag-IBIG, and LGU business permits. See [the content editor guide](docs/V0.9_EDITOR_GUIDE.md) for admin workflow, preview support, and browser-only content persistence.
-
 # GabayNegosyo
 
 **Your guide to business compliance.**
 
-GabayNegosyo is a Progressive Web App that consolidates BIR, SSS, PhilHealth,
-Pag-IBIG, and LGU compliance requirements into one personalized checklist for
-Philippine micro-entrepreneurs — online sellers, freelancers, and small
-business owners.
+GabayNegosyo is a Progressive Web App that puts BIR, SSS, PhilHealth, Pag-IBIG and LGU (business permit) requirements for Philippine micro-entrepreneurs into one personalized checklist. It is built for online sellers, freelancers and small business owners, with Metro Manila (NCR) as the current coverage area.
 
-> GabayNegosyo is an independent informational and compliance guidance
-> platform. It is **not** a government agency and does not replace official
-> government services. This is a prototype/academic project — verify current
-> requirements at official sources before acting on anything shown here.
+> GabayNegosyo is an independent informational platform. It is **not** a government agency, does not file documents, and does not replace official services. It began as a feasibility study and academic project. Always verify current forms, deadlines, fees and penalties with the issuing agency before acting.
 
-> **Content:** BIR-related content (registration wizard, requirement checklists, forms) comes from Gabay Negosyo's own compliance guide. Anything still marked as a placeholder is flagged in the app.
+## What it does
 
-> **Design system:** See `docs/DESIGN.md` for the current visual language
-> (Minimalism, brand-green accent, glass-shell/solid-data split) and why an
-> earlier gradient-heavy draft was rejected.
->
-> **v0.12:** fixes from the feature-validation audit (honest deadlines, task-level steps, guest-first wizard). Developer notes and the one required database migration are in `docs/V0.12_CHANGES.md`.
-
-> **Design kits (v0.11):** the five responsive kits are applied as a layer; developer notes are in `docs/DESIGN_KITS.md`. Night Shift is an optional theme under Account → Appearance.
-
----
-
-## What was built
-
-A complete, runnable V0 covering every item in the MVP priority list:
-
-- Landing page, email/password + Google sign-up (Supabase Auth), and browser-only demo previews (v0.13: NCR-wide)
-- 7-step Registration Wizard → rule engine → personalized checklist
-- Compliance Dashboard (progress bar, pending/overdue/completed, quick actions)
-- Requirement Detail pages (free vs. Premium content, mark-as-complete)
-- Learning Hub (tutorials grouped by agency, filterable)
-- Resource Library (search, agency/type filters, sorting)
-- Deadline tracking with reminder configuration (Premium-gated)
-- Penalty Simulator (Premium-gated, disclaimer included)
-- Free / Premium / Admin role system with gating at both UI and service layers
-- Admin Dashboard (aggregate metrics) + CRUD for Agencies, Requirements,
-  Resources, and Tutorials
-- Installable PWA: manifest, service worker, offline shell, real icons
-- Mobile / tablet / desktop responsive layout throughout
-
-## What is mocked (and why)
-
-| Feature | Status | Why |
-|---|---|---|
-| Auth | **Real Supabase Auth** (`lib/auth.tsx`) | Demo mode is separate and browser-only (`lib/demoAccounts.ts`): no Supabase user, no password, no real admin access. |
-| Database | `localStorage` via `lib/db.ts` | Same reason. Schema is fully documented in `database/schema.sql` for the real migration. |
-| Email reminders | Logged to a local "sent mail" list, visible on `/admin` | No paid email provider required to run the prototype. |
-| Admin analytics (total users, growth, etc.) | Static demo numbers, clearly labeled on screen | This is a single-browser prototype with no real multi-user backend; content counts (agencies/requirements/resources/tutorials) and the email log ARE real and live. |
-| Payments (Premium upgrade) | One-click demo toggle, no processor | Real payments are out of scope for V0 per the build brief. |
-| Government URLs / tutorial videos | Real official domains where confirmed (bir.gov.ph, sss.gov.ph, etc.); tutorial video links are YouTube **search** URLs, clearly marked as placeholders | The brief requires never fabricating a specific official endpoint or video as verified when it hasn't been checked. |
-
-## What requires external credentials (not needed to run the prototype)
-
-- Supabase project URL + anon key (for real auth/database)
-- Google OAuth client (configured inside Supabase, not this app)
-- A transactional email provider (Resend, SendGrid, SES, etc.)
-
-All of the above are optional. See `.env.example`.
-
-## Known limitations
-
-- Single-browser demo: checklist progress, business profile, and admin edits
-  are stored in that browser's `localStorage`, not a shared database.
-- Admin CRUD writes only persist in the browser that made them (no real
-  backend to sync across devices/users).
-- Penalty formulas use representative rates for the prototype (surcharge,
-  monthly interest) — always confirm exact current rates with the relevant
-  agency.
-- No automated test suite beyond a rule-engine data-integrity smoke test
-  (`npm test`) — see PROGRESS.md Phase 12 for what a fuller test pass would add.
-
----
-
-## Getting started
-
-### Requirements
-- Node.js 18.18+ (Next.js 14 requirement)
-- npm 9+
-
-### Installation
-```bash
-npm install
-npm run dev
-```
-Visit `http://localhost:3000`.
-
-### Demo previews (browser-only)
-With `NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS=true`, `/login` offers Free / Premium / Admin **previews**. They run only in your browser with sample data (banner + Reset/Exit); no accounts are created. See `docs/V0.13_CHANGES.md`.
-
-Or use "Sign up" to create your own free-tier demo account and go through the
-Registration Wizard yourself.
+- **Registration wizard** (guest-friendly): a short questionnaire (new or existing business, taxpayer type, city and barangay, lease, employees, projected sales, tax type) that feeds the rule engine.
+- **Personalized checklist, dashboard and deadlines:** requirements that apply to you, grouped by stage, with per-cycle completion, a monthly deadline calendar, and "No fixed date" shown honestly where the source gives none.
+- **Business guide:** `/registration` and `/renewal` walk through registering, renewing and staying compliant, with BIR form previews (`/bir-forms`), a penalty simulator (`/penalties`), filing tutorial videos and a graduated tax-table reference.
+- **Learning Hub and Resource library:** tutorials, official forms, document checklists and links, searchable and filterable by agency and type. DTI and BMBE resources appear in the library only.
+- **Plans:** Free and Premium (see below). Premium upgrade is a demo: no payment provider is connected.
+- **Reminders:** a daily email digest for Premium users, sent through Vercel Cron (off by default).
+- **Admin area:** content editors for agencies, requirements, resources and tutorials, plus user and account-sync views. Content edits are saved **per browser only** (see [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md)).
+- **PWA:** installable, offline shell, Night Shift (dark) theme.
 
 ### Free vs. Premium
+
 | | Free | Premium |
 |---|---|---|
-| Business profile & wizard | ✅ | ✅ |
-| Basic checklist (form names, deadlines) | ✅ | ✅ |
-| Mark requirements complete | ✅ | ✅ |
-| Resource library | ✅ | ✅ |
-| Full requirement details (docs, instructions, tutorial, official source) | ❌ | ✅ |
-| Penalty Simulator | ❌ | ✅ |
+| Wizard, business profile, checklist (names, agency, deadline) | ✅ | ✅ |
+| Mark requirements complete, resource library, Learning Hub list | ✅ | ✅ |
+| Why an item is on your checklist, official source | ✅ | ✅ |
+| Documents, steps, forms, tutorial and penalty detail per requirement | ❌ | ✅ |
+| Penalty simulator | ❌ | ✅ |
 | Email reminders | ❌ | ✅ |
 
-Upgrade from `/account` (demo toggle, no real payment).
+## Tech stack
 
-### Testing
+Next.js (App Router, Turbopack), React 18, TypeScript, Supabase (Auth, Postgres with Row Level Security), Vercel (hosting, Cron, Analytics), Nodemailer (Gmail) or Resend for email. Compliance rules live in `data/*.json` and `lib/ruleEngine.ts`, not in UI components.
+
+## Quick start
+
+Requires Node.js 22.18 or newer.
+
 ```bash
-npm test
+npm install
+cp .env.example .env.local   # then fill in the values
+npm run dev                  # http://localhost:3000
 ```
-Runs data-integrity smoke tests against the rule engine's seed data
-(every requirement references a real agency, employer-only rules require
-`hasEmployees`, etc.) using Node's built-in test runner — no extra
-dependencies required.
 
-### Production build
-```bash
-npm run build
-npm run start
-```
-Verified locally: builds clean with zero TypeScript errors across all 18
-routes (see PROGRESS.md).
+The public pages work without Supabase. Sign-in, saved data and admin need a Supabase project: follow **[docs/SETUP.md](docs/SETUP.md)**.
 
-### Deployment to Vercel
-1. Push this project to a GitHub repo.
-2. Import the repo in Vercel.
-3. (Optional) Add environment variables from `.env.example` if you're
-   connecting real Supabase/email infrastructure.
-4. Deploy — no build configuration changes needed.
+### Scripts
 
-### Supabase setup (for a real backend, optional)
-1. Create a Supabase project.
-2. Run `database/schema.sql` in the SQL editor.
-3. Set `NEXT_PUBLIC_SUPABASE_URL` and `NEXT_PUBLIC_SUPABASE_ANON_KEY` in
-   `.env.local`.
-4. Reimplement the functions in `lib/db.ts` and `lib/auth.tsx` to call
-   `supabase.from(...)` / `supabase.auth` instead of `localStorage` — the
-   function signatures are designed to stay the same so no page needs to
-   change.
+| Command | What it does |
+|---|---|
+| `npm run dev` | Development server |
+| `npm run build` | Production build (runs `scripts/check-env.mjs` first) |
+| `npm run start` | Serve the production build |
+| `npm run lint` | Type check (`tsc --noEmit`) |
+| `npm test` | Node's built-in test runner over `tests/*.test.js` |
+| `npm run contrast-check` | WCAG contrast check; rewrites `docs/CONTRAST_REPORT.md` |
 
-### Google OAuth setup
-Configured inside your Supabase project (Authentication → Providers →
-Google), not in this codebase directly.
+Before shipping, run `npm run lint && npm test && npm run contrast-check && npm run build`. A production build (`VERCEL_ENV=production`) **fails** if `NEXT_PUBLIC_SITE_URL` or `NEXT_PUBLIC_CONTACT_EMAIL` is missing; elsewhere it only warns.
 
-### Email configuration
-Set `NEXT_PUBLIC_EMAIL_PROVIDER` and related vars in `.env.example` to move
-`lib/email.ts` off mock mode. The function signature (`sendEmail(to, subject,
-body)`) doesn't change — only its internal implementation would.
+### Demo previews
 
-### Troubleshooting
-- **`npm run build` fails on Node version** — Next.js 14 requires Node
-  18.18+. Check with `node -v`.
-- **Blank checklist after the wizard** — the rule engine only shows
-  requirements whose `applicabilityRules` match your profile; try toggling
-  "Do you have employees?" to Yes to see employer-specific requirements.
-- **Admin edits disappear** — they're stored in that browser's
-  `localStorage` under `gn_store_v1`; clearing site data resets them.
-- **Service worker not updating** — hard-refresh or unregister it via
-  DevTools → Application → Service Workers during development.
-
----
+With `NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS=true`, `/login` offers Free / Premium / Admin **previews**. They run only in the visitor's browser with sample data: no Supabase user, no password, no real admin access.
 
 ## Project structure
 
 ```
-GabayNegosyo/
-├── app/                    # Next.js App Router pages
-│   ├── admin/               # Admin dashboard + CRUD (agencies/requirements/resources/tutorials)
-│   ├── premium/penalty-simulator/
-│   ├── requirements/[id]/
-│   ├── dashboard/, deadlines/, resources/, tutorials/, account/
-│   ├── login/, signup/, wizard/
-│   └── page.tsx             # Landing page
-├── components/              # Navbar, guards, cards, badges, gates
-├── lib/                     # Types, rule engine, penalty calc, auth, db, email, authorization
-├── data/                    # Seed content — agencies/requirements/resources/tutorials
-├── database/schema.sql      # Target Postgres schema for a real backend
-├── public/                  # manifest.json, service worker, icons
-├── styles/globals.css       # Global styles (mobile-first)
-├── tests/                   # Data-integrity smoke tests
-├── .env.example
-└── PROGRESS.md
+app/            Routes (App Router), API routes (/api/send-email, /api/delete-account,
+                /api/cron/send-reminders, /api/unsubscribe)
+components/     Navbar, guards, cards, badges, gates, legal layout
+lib/            Auth, data access (db.ts), rule engine, penalty maths, email, site config
+data/           Requirements, resources, tutorials, forms, tax table, NCR barangays
+database/       supabase_setup.sql (fresh install) and migrations/
+docs/           Project documentation (index below)
+public/         Manifest, service worker, icons, images
+scripts/        check-env.mjs, contrast-check.mjs
+styles/         globals.css, kits.css, emerald.css (loaded in that order)
+tests/          Node test suite
 ```
 
-## Important notes
+## Documentation
 
-- The compliance rules live entirely in `data/*.json` + `lib/ruleEngine.ts` —
-  never hardcoded into UI components. Admins can edit content without
-  touching source code (persisted per-browser in this prototype; a real
-  deployment would persist to Postgres per `database/schema.sql`).
-- Feature gating is enforced at both the UI (`PremiumGate`, `AdminGuard`)
-  and service layer (`lib/authorization.ts`) — clicking around the UI is
-  not sufficient to reach a gated action.
+| File | Contents |
+|---|---|
+| [docs/SETUP.md](docs/SETUP.md) | Supabase, auth redirects, Google sign-in, admin, account sync, deploy to Vercel, troubleshooting |
+| [docs/REMINDERS_SETUP.md](docs/REMINDERS_SETUP.md) | Daily reminder digest: migration, email provider, staged rollout |
+| [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md) | Scope, admin workflow, media previews, current limits |
+| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Runtime, data flow, design-layer boundaries |
+| [docs/PRODUCT.md](docs/PRODUCT.md) | Purpose, scope, plan boundaries, content integrity |
+| [docs/DESIGN.md](docs/DESIGN.md) | Tokens, components, themes, branding, accessibility |
+| [docs/TESTING.md](docs/TESTING.md) | Verification gates and the manual regression checklist |
+| [docs/OPEN_ITEMS.md](docs/OPEN_ITEMS.md) | Decisions, links and content the owner still needs to supply |
+| [docs/CONTRAST_REPORT.md](docs/CONTRAST_REPORT.md) | Generated by `npm run contrast-check` |
+| [data/ncr-barangays/README_REPORT.md](data/ncr-barangays/README_REPORT.md) | NCR barangay and RDO dataset report |
+| [CHANGELOG.md](CHANGELOG.md) | Release history |
+| [AGENTS.md](AGENTS.md) | Working agreement for contributors |
 
-## Disclaimer
+## Known limitations
 
-GabayNegosyo is a prototype built for a feasibility study and academic
-demonstration. It does not replace official government services. Always
-verify current forms, deadlines, and penalty rates directly with BIR, SSS,
-PhilHealth, Pag-IBIG, and your local government unit before filing or paying
-anything.
-
-## v0.7 interface update
-The checklist has a progress ring with status filters; Deadlines offers a monthly view. Account picture upload is a **browser-only personalization** (PNG/JPEG/WebP under 500 KB), not a synced Supabase avatar. Free/Premium plan boundaries and academic-project context appear on the landing page. Contributor names must be added after the study and web team confirm their preferred attribution. Admin Users role filters operate on the currently loaded page and do not alter Supabase roles.
-
-## Gabay Negosyo business guide
-
-The authenticated `/registration` and `/renewal` pages present Gabay Negosyo's step-by-step guide for registering, renewing and maintaining a sole proprietorship. The content lives in `data/businessGuide.json`; filing tutorial videos live in `data/filingVideos.json`. The guide respects the Free/Premium split. Always confirm form choices, deadlines and penalties with the issuing agency.
-
-### Brand identity
-The Gabay Negosyo logo appears in navigation, the footer and the social preview (`public/icons/gabaynegosyo-logo.jpg`); its derived emblem is used for app icons. See `Design-System.md` for the palette and assets.
-
-## v0.13 setup docs
-`docs/GOOGLE_OAUTH_SETUP.md`, `docs/SUPABASE_REDIRECT_SETUP.md`, `docs/USER_INPUT_REQUIRED.md`, `docs/QA_REPORT.md`. Account deletion needs the server-only `SUPABASE_SERVICE_ROLE_KEY` (see `.env.example`).
+- Admin content edits live in the browser's `localStorage`; they are not shared with other visitors.
+- Premium upgrade is a demo (`upgrade_to_premium_demo()`); any signed-in user can self-upgrade. Remove it before real billing.
+- LGU permit guidance is generic for all NCR localities and not verified per LGU. Barangay-to-RDO lookup is partial (see the dataset report).
+- Penalty rates are representative and must be confirmed against current agency issuances.
+- Many requirement links point to agency home pages; see [docs/OPEN_ITEMS.md](docs/OPEN_ITEMS.md).

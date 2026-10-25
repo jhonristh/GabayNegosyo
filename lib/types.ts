@@ -43,7 +43,7 @@ export interface BusinessProfile {
   projectedGrossSales: number; // annual, PHP
   projectedExpenses: number; // annual, PHP
   // ── Prototype UX additions (not part of the source questionnaire,
-  //    kept for personalization / legacy screens; see PROGRESS.md) ──
+  //    kept for personalization / legacy screens; see CHANGELOG.md) ──
   businessName: string;
   employeeCount: number;
   location: string;

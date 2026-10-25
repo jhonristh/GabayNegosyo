@@ -1,7 +1,7 @@
 /**
  * Beautification pass §4, corrected: the original draft used --gn-blue and
  * --gn-violet at reduced opacity for decorative line art. --gn-blue no
- * longer exists (see DESIGN.md v3 — the blue-violet pairing was the exact
+ * longer exists (see docs/DESIGN.md §1 — the blue-violet pairing was the exact
  * pattern that draft was rejected for elsewhere), and violet is reserved
  * for Premium surfaces only. Redrawn using the brand green plus the
  * functional teal ("completed") hue instead — same simple geometric line
