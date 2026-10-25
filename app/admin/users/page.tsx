@@ -2,6 +2,7 @@
 
 import { useEffect, useState } from "react";
 import AdminGuard from "../../../components/AdminGuard";
+import AdminHelp from "../../../components/AdminHelp";
 import { getSupabase } from "../../../lib/supabase";
 import { useAuth } from "../../../lib/auth";
 
@@ -104,6 +105,25 @@ function UsersInner() {
         <h1>Users</h1>
         <p>{previewOnly ? "Sample data for the admin preview. No real accounts are shown." : "Registered accounts, read-only. Role changes are not made from this screen."}</p>
       </header>
+
+      <AdminHelp
+        steps={[
+          "Use the role filter to show Free, Premium, or Admin accounts. Use the page buttons to move through the list.",
+          "To change someone's plan, open the Supabase SQL editor (not this page) and run the statement below, replacing the email address.",
+          "Refresh this page to confirm the change. The list only shows real accounts when you are signed in as a real admin.",
+        ]}
+        warnings={[
+          "Admin gives access to every admin page. Grant it only to people who maintain the content.",
+          "Plans are stored in the database, so this page cannot change them. Demo previews show sample data only.",
+        ]}
+        title="Read-only user list"
+        storageNote={false}
+      >
+        Look up accounts and their plans. This page does not change roles.
+      </AdminHelp>
+      <p className="admin-help-code">
+        <code>update public.profiles set role = &apos;premium&apos; where lower(email) = &apos;person@example.com&apos;;</code>
+      </p>
 
       {state === "loading" && rows.length === 0 && (
         <div className="skeleton-list" aria-live="polite" aria-busy="true">

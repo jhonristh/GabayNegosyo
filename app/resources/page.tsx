@@ -11,7 +11,7 @@ const TYPES: ResourceType[] = ["form", "guide", "tutorial", "official_website", 
 
 export default function ResourcesPage() {
   const resources = useMemo(() => db.getResources(), []);
-  const agencies = useMemo(() => db.getAgencies(), []);
+  const agencies = useMemo(() => db.getResourceAgencies(), []);
   const [query, setQuery] = useState("");
   const [agencyFilter, setAgencyFilter] = useState("all");
   const [typeFilter, setTypeFilter] = useState<"all" | ResourceType>("all");

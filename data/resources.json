@@ -185,5 +185,217 @@
     "description": "Official BIR form 1701A (PDF download).",
     "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701A%20Jan%202018%20v5%20with%20rates.pdf",
     "lastVerified": "2026-09-20"
+  },
+  {
+    "id": "res-dti-bnrs",
+    "title": "DTI Business Name Registration System (BNRS)",
+    "resourceType": "official_website",
+    "agencyId": "dti",
+    "description": "Register or renew a sole proprietorship's business name. Documents listed in the source: one valid government-issued ID of the applicant; owner's TIN, if applicable; the accomplished DTI Business Name Registration Application Form; authorization letter and valid ID of the authorized representative, if applying through a representative; and, for non-Philippine nationals, applicable additional documents such as an Alien Certificate of Registration (ACR) and authority or certificate to engage in business in the Philippines.",
+    "url": "https://bnrs.dti.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-dti-renewal",
+    "title": "DTI business name validity and renewal",
+    "resourceType": "guide",
+    "agencyId": "dti",
+    "description": "Business-name registration is described as valid for up to five years, with early, regular, and late renewal periods. Check the current BNRS instructions for the applicable expiry date and renewal window before relying on those periods.",
+    "url": "https://bnrs.dti.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-dti-fees",
+    "title": "DTI business name registration fees",
+    "resourceType": "document",
+    "agencyId": "dti",
+    "description": "Fees by territorial scope as recorded in the feasibility source: barangay ₱200 + ₱30 DST; city/municipality ₱500 + ₱30 DST; regional ₱1,000 + ₱30 DST; national ₱2,000 + ₱30 DST. These are transcribed amounts, not independently verified current quotations. Confirm on DTI BNRS before paying.",
+    "url": "https://bnrs.dti.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-dti-bmbe-portal",
+    "title": "DTI BMBE online registration portal",
+    "resourceType": "official_website",
+    "agencyId": "dti",
+    "description": "Check eligibility and register a Barangay Micro Business Enterprise (BMBE). Optional, eligibility-based resource.",
+    "url": "https://bmbe.dti.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-dti-bmbe-guide",
+    "title": "BMBE requirements and eligibility notes",
+    "resourceType": "guide",
+    "agencyId": "dti",
+    "description": "Listed in the source: BMBE Form 01 (three copies); business registration certificate, such as DTI registration for a sole proprietorship; asset information for checking eligibility; business activity and qualification information; a business email for online registration; and the BMBE certificate issued after successful registration. The source describes an asset ceiling of ₱3 million excluding land and a registration validity of two years. Verify current eligibility rules, tax treatment, labor-law implications, and renewal requirements with DTI and the relevant agencies before relying on these statements.",
+    "url": "https://bmbe.dti.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-dti-requirements-overview",
+    "title": "Which requirements apply to you (universal vs. conditional)",
+    "resourceType": "guide",
+    "agencyId": "dti",
+    "description": "Core registration: DTI business name registration (if applicable to the business structure), barangay clearance, local business permit, and BIR registration. Conditional: lease contract, zoning or sanitary documents, VAT or Percentage Tax filings, and other premises- or activity-specific permits. When hiring employees: employer and employee registration with SSS, PhilHealth, and Pag-IBIG, plus required contributions and remittances. Optional: BMBE registration. Ongoing: tax returns, invoices, books of accounts, permit renewals, employee records, and proof of payments. Not every business needs every document; confirm current requirements with the responsible agency or LGU.",
+    "url": "https://www.dti.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-lgu-barangay-clearance",
+    "title": "Barangay clearance: requirements",
+    "resourceType": "document",
+    "agencyId": "lgu",
+    "description": "General requirements listed in the source: valid government-issued ID (such as National ID, passport, driver's license, or voter's ID); proof of residency; Community Tax Certificate (cedula); and the barangay application form, usually provided at the barangay hall. Keep the contact details of the barangay where the business is located, plus its clearance form, fee schedule, and renewal instructions.",
+    "url": "https://www.dilg.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-lgu-new-permit",
+    "title": "Mayor's Permit / Business Permit: new business",
+    "resourceType": "document",
+    "agencyId": "lgu",
+    "description": "Documents to keep, subject to the specific LGU's requirements: business registration certificate (such as the DTI certificate); barangay clearance; Business Permit application form; proof of business address or occupancy; lease contract, if the premises are rented; applicable zoning, sanitary, health, and fire safety documents; and other documents required by the local BPLO. The source gives a more detailed list for renewals than for initial applications, so verify this list against your LGU's actual checklist.",
+    "url": "https://www.dilg.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-lgu-renewal-docs",
+    "title": "Business permit renewal documents",
+    "resourceType": "document",
+    "agencyId": "lgu",
+    "description": "Listed in the source: latest Barangay Business Permit and official receipt or proof of payment; completed Business Permit Renewal Application Form and other required barangay documents; Community Tax Certificate (cedula); latest Income Tax Return and Audited Financial Statements with proof of payment, when applicable; latest VAT or Percentage Tax Returns, as applicable; latest notarized lease contract, if the premises are rented; valid DTI, SEC, or CDA registration, as applicable; employee count and SSS, Pag-IBIG, and PhilHealth registration details; and an Affidavit of No Operations if the business did not operate during the previous year. Use your city or municipal website and look for Business Permits and Licensing Office (BPLO), Business One-Stop Shop, Business Permit Renewal, or eBOSS.",
+    "url": "https://www.dilg.gov.ph",
+    "relatedRequirementId": "lgu-permit-renewal",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-lgu-fee-resources",
+    "title": "Local permit fee resources to retain",
+    "resourceType": "guide",
+    "agencyId": "lgu",
+    "description": "There is no single universal LGU application link. For each city or municipality, keep: the official Local Revenue Code or Revenue Ordinance; the current BPLO fee schedule; the barangay clearance fee schedule, where published; zoning clearance, sanitary permit, health certificate, and Fire Safety Inspection Certificate (FSIC) requirements and fees; Local Business Tax (LBT) computation rules; and renewal deadline, surcharge, and interest rules. The source distinguishes the Mayor's Permit fee from the Local Business Tax and other regulatory fees. Fee estimates in the source are budgeting references, not guaranteed fees.",
+    "url": "https://www.dilg.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-lgu-penalties",
+    "title": "LGU / BPLO penalties to track",
+    "resourceType": "guide",
+    "agencyId": "lgu",
+    "description": "Track late business permit renewal and local business tax surcharge and interest. Store the official ordinance or circular, its effective date, the affected taxpayer category, and the link to the current official source. Penalty amounts in a feasibility paper are not universal across all cases.",
+    "url": "https://www.dilg.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-bir-orus",
+    "title": "BIR Online Registration and Update System (ORUS)",
+    "resourceType": "official_website",
+    "agencyId": "bir",
+    "description": "Online tax registration and applicable registration services.",
+    "url": "https://orus.bir.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-bir-docreq",
+    "title": "BIR registration: supporting documents",
+    "resourceType": "document",
+    "agencyId": "bir",
+    "description": "Listed in the source: government-issued ID; additional proof of residence or business address if the ID does not show an address; DTI certificate, if the business has a registered business name; final invoice sample or a BIR-printed invoice, as applicable; Authority to Print (ATP) documentation if using a custom invoice layout and ATP is required; and the Certificate of Registration (COR/eCOR). See the BIR documentary requirements checklist on the BIR website.",
+    "url": "https://www.bir.gov.ph/registration-requirements",
+    "relatedRequirementId": "bir-cor",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-bir-forms-overview",
+    "title": "BIR income tax forms for sole proprietors",
+    "resourceType": "guide",
+    "agencyId": "bir",
+    "description": "Forms named in the source for existing businesses: BIR Form 1701 (annual income tax return for applicable individuals, including sole proprietors); 1701-Q (quarterly income tax return); 1701-A (annual return for qualified individuals earning purely business/professional income under the applicable rules); and 1701-MS (included in the source; verify current applicability and availability with the BIR before treating it as a standard requirement). The forms required depend on your classification and chosen tax regime.",
+    "url": "https://www.bir.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-bir-tax-regime",
+    "title": "Tax regime references: 8%, graduated, OSD, itemized",
+    "resourceType": "guide",
+    "agencyId": "bir",
+    "description": "The source discusses the optional 8% income tax rate for qualified self-employed individuals and professionals with annual gross sales or receipts not exceeding ₱3 million, subject to applicable rules, contrasted with graduated income tax rates and percentage tax treatment. Keep together: 8% eligibility and election guidance; graduated rate tables; Optional Standard Deduction (OSD) guidance; itemized deduction guidance and expense records; VAT or Percentage Tax guidance; annual and quarterly return forms; books of accounts and invoice compliance instructions; and the current BIR tax calendar.",
+    "url": "https://www.bir.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-bir-costs-eopt",
+    "title": "BIR registration costs and EOPT note",
+    "resourceType": "guide",
+    "agencyId": "bir",
+    "description": "Amounts recorded in the source: BIR registration fee ₱0 (the source says the ₱500 annual registration fee is no longer collected under EOPT); Documentary Stamp Tax ₱30 for the COR process; books of accounts approximately ₱200–₱300; BIR-printed invoice approximately ₱50 per booklet; own printed invoice approximately ₱200–₱400 per booklet. These are transcribed from the source, not verified current quotations. Confirm the applicable DST and other charges with the BIR.",
+    "url": "https://www.bir.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-bir-rr-6-2024",
+    "title": "BIR Revenue Regulations No. 6-2024: penalty reference",
+    "resourceType": "document",
+    "agencyId": "bir",
+    "description": "Penalty and tax compliance reference cited in the source. BIR penalties to track: late filing/payment, unpaid tax interest, required records and information, and applicable compromise penalties. Verify against the latest official rules before use.",
+    "url": "https://www.bir.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-sss-employer-docs",
+    "title": "SSS employer and employee registration documents",
+    "resourceType": "document",
+    "agencyId": "sss",
+    "description": "Listed in the source: SSS Employer Registration Form (R-1), if applicable; Form L-501 specimen signature card; Employment Report (R-1A); DTI Business Name Registration Certificate; valid government-issued ID of the owner/employer; Employer TIN; Business or Mayor's Permit, if applicable; Data Privacy Notice certification and agreement; Letter of Authority or Special Power of Attorney if an authorized representative files; employee SSS numbers; Employee Personal Record (E-1/E-1V) if an employee has no SS number yet; and employee identification and supporting documents, when required.",
+    "url": "https://www.sss.gov.ph",
+    "relatedRequirementId": "sss-employer-reg",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-philhealth-employer-docs",
+    "title": "PhilHealth employer and employee registration documents",
+    "resourceType": "document",
+    "agencyId": "philhealth",
+    "description": "Listed in the source: Employer Data Record (ER1); DTI Business Name Registration Certificate; BIR Certificate of Registration (Form 2303), when required; valid ID of the owner or authorized signatory; Business or Mayor's Permit, when applicable; authorization letter and IDs if filing through a representative; employee PhilHealth Identification Numbers (PINs); PhilHealth Member Registration Form (PMRF) if an employee has no PIN; Report of Employee-Members (ER2); and supporting identification documents, as required.",
+    "url": "https://www.philhealth.gov.ph",
+    "relatedRequirementId": "philhealth-employer-reg",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-pagibig-employer-docs",
+    "title": "Pag-IBIG employer registration documents",
+    "resourceType": "document",
+    "agencyId": "pagibig",
+    "description": "Listed in the source: Employer's Data Form (EDF); DTI registration certificate for a sole proprietorship; business name and address, contact details, and TIN; SSS Employer Number for private employers; employer or authorized representative details and signature; additional supporting documents required by Pag-IBIG, depending on the business; employee membership information; and the Membership Savings Remittance Form (MSRF) and contribution remittance records, as applicable. The source also cites a third-party copy of the EDF; use Pag-IBIG's official website for the authoritative current form.",
+    "url": "https://www.pagibigfund.gov.ph",
+    "relatedRequirementId": "pagibig-employer-reg",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-sss-penalties",
+    "title": "SSS: late or unpaid contributions",
+    "resourceType": "guide",
+    "agencyId": "sss",
+    "description": "Track late or unpaid contributions. Keep employee registration confirmations and membership numbers, monthly contribution computations, payment receipts and remittance confirmations, submitted employer reports and forms, and current deadlines and late-payment rules. The source lists monthly contributions/remittances as an ongoing employer obligation. Verify penalties against the latest official rules.",
+    "url": "https://www.sss.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-philhealth-penalties",
+    "title": "PhilHealth: missed employer contributions and interest",
+    "resourceType": "guide",
+    "agencyId": "philhealth",
+    "description": "Track missed employer contributions and applicable interest. Keep employee membership numbers, monthly contribution computations, payment receipts and remittance confirmations, submitted reports and forms, and current deadlines and late-payment rules. Verify penalties against the latest official rules.",
+    "url": "https://www.philhealth.gov.ph",
+    "lastVerified": "2026-10-25"
+  },
+  {
+    "id": "res-pagibig-penalties",
+    "title": "Pag-IBIG: delayed contributions and remittance",
+    "resourceType": "guide",
+    "agencyId": "pagibig",
+    "description": "Track delayed contributions and remittance obligations. Keep employee membership numbers, monthly contribution records, remittance receipts, submitted forms, and current deadlines and late-payment rules. Verify penalties against the latest official rules.",
+    "url": "https://www.pagibigfund.gov.ph",
+    "lastVerified": "2026-10-25"
   }
 ]

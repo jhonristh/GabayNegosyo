@@ -7,6 +7,7 @@ import { JourneyHeader, JourneyNext } from "../../components/JourneyStepper";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import guide from "../../data/businessGuide.json";
+import TaxTableReference from "../../components/TaxTableReference";
 
 type Path = "without" | "with";
 
@@ -76,6 +77,8 @@ function RegistrationContent() {
           ))}
         </ol>
       </section>
+
+      <TaxTableReference />
 
       <JourneyNext current="registration" />
     </main>

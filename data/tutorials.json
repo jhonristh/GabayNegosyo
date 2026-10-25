@@ -10,14 +10,43 @@
     "isPlaceholder": true
   },
   {
-    "id": "tut-bir-filing",
-    "title": "Filing Your Income Tax Return via eBIRForms",
-    "description": "Step-by-step guide to filing 1701A/1701Q using the eBIRForms offline package.",
-    "videoUrl": "https://www.youtube.com/results?search_query=eBIRForms+1701A+1701Q+filing+tutorial",
+    "id": "tut-bir-1701",
+    "title": "Filing BIR Form 1701",
+    "description": "Video walkthrough of BIR Form 1701, the annual income tax return for self-employed and mixed-income earners.",
+    "videoUrl": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s",
     "agencyId": "bir",
-    "relatedRequirementId": "bir-1701a",
+    "relatedRequirementId": "bir-1701-self-employed",
     "category": "filing",
-    "isPlaceholder": true
+    "isPlaceholder": false
+  },
+  {
+    "id": "tut-bir-1701q",
+    "title": "Filing BIR Form 1701-Q (quarterly)",
+    "description": "Video walkthrough of BIR Form 1701Q, the quarterly income tax return for self-employed taxpayers.",
+    "videoUrl": "https://www.youtube.com/watch?v=8C0TBHccWbc",
+    "agencyId": "bir",
+    "relatedRequirementId": "bir-1701q-quarterly",
+    "category": "filing",
+    "isPlaceholder": false
+  },
+  {
+    "id": "tut-bir-1701a",
+    "title": "Filing BIR Form 1701-A",
+    "description": "Video walkthrough of BIR Form 1701A, the annual return for the 8% flat rate or the Optional Standard Deduction.",
+    "videoUrl": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s",
+    "agencyId": "bir",
+    "relatedRequirementId": "bir-1701a-8percent",
+    "category": "filing",
+    "isPlaceholder": false
+  },
+  {
+    "id": "tut-bir-1701ms",
+    "title": "Filing BIR Form 1701-MS (micro and small taxpayers)",
+    "description": "Video walkthrough of BIR Form 1701-MS for micro and small taxpayers.",
+    "videoUrl": "https://www.youtube.com/watch?v=0MQLh_jxlak",
+    "agencyId": "bir",
+    "category": "filing",
+    "isPlaceholder": false
   },
   {
     "id": "tut-sss-registration",
@@ -60,13 +89,23 @@
     "isPlaceholder": true
   },
   {
+    "id": "tut-lgu-permit-application",
+    "title": "Barangay clearance and Mayor's permit application",
+    "description": "Video walkthrough of the barangay clearance and Mayor's permit application steps.",
+    "videoUrl": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
+    "agencyId": "lgu",
+    "relatedRequirementId": "lgu-barangay-mayors-clearance",
+    "category": "application",
+    "isPlaceholder": false
+  },
+  {
     "id": "tut-lgu-renewal",
-    "title": "Renewing Your Business Permit",
-    "description": "General walkthrough of the annual Mayor's Permit renewal process.",
-    "videoUrl": "https://www.youtube.com/results?search_query=business+permit+renewal+philippines+tutorial",
+    "title": "Renewing your Mayor's permit",
+    "description": "Video walkthrough of the annual Mayor's permit renewal. Requirements and fees vary by LGU; check your city or municipality.",
+    "videoUrl": "https://www.youtube.com/watch?v=KysPCsJjbKI",
     "agencyId": "lgu",
     "relatedRequirementId": "lgu-permit-renewal",
     "category": "renewal",
-    "isPlaceholder": true
+    "isPlaceholder": false
   }
 ]

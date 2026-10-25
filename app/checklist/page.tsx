@@ -88,12 +88,10 @@ function ChecklistInner() {
     counts[resolveObligation(req, progress[req.id], new Date(), profile.createdAt).status] += 1;
   }
 
-  const grouped = items.reduce<Record<string, typeof items>>((acc, item) => {
-    const stage = item.req.complianceStage ?? agencyName(item.req.agencyId);
-    if (!acc[stage]) acc[stage] = [];
-    acc[stage].push(item);
-    return acc;
-  }, {});
+  // Hierarchy: open items first (To do), completed items below in their own section.
+  // Each section is then grouped by compliance stage.
+  const openItems = items.filter((i) => i.status !== "completed");
+  const doneItems = items.filter((i) => i.status === "completed");
 
   function toggle(requirementId: string, dueKey: string | null, isCompleted: boolean) {
     if (!user) return;
@@ -103,6 +101,49 @@ function ChecklistInner() {
       db.markComplete(requirementId, `biz-${user.id}`, dueKey);
     }
     rerender((n) => n + 1);
+  }
+
+  function renderStageGroups(list: typeof items) {
+    const grouped = list.reduce<Record<string, typeof items>>((acc, item) => {
+      const stage = item.req.complianceStage ?? agencyName(item.req.agencyId);
+      if (!acc[stage]) acc[stage] = [];
+      acc[stage].push(item);
+      return acc;
+    }, {});
+    return Object.entries(grouped).map(([stage, stageItems]) => (
+      <section key={stage} className="agency-group">
+        <h3>{stage}</h3>
+        {stageItems.map(({ req, status, dueDate, dueKey, cycle }) => {
+          const isCompleted = status === "completed";
+          const stepTotal = isPremiumRole(user!.role) ? req.instructions.length : 0; // steps are a Premium feature
+          const stepsDone = db.getDoneTasks(req.id, cycle).filter((i) => i < stepTotal).length;
+          return (
+            <article key={req.id} className={`checklist-card ${isCompleted ? "is-completed" : "is-open"}`}>
+              <div className="checklist-card-header">
+                <div>
+                  <span className="req-agency-tag">{agencyName(req.agencyId)}</span>
+                  <h4>
+                    <Link href={`/requirements/${req.id}`}>{req.name}</Link>
+                  </h4>
+                  <p className="deadline">
+                    {dueDate ? `Due ${formatDueLabel(dueDate)}` : `No fixed date: ${req.deadlineDescription}`}
+                  </p>
+                  {stepTotal > 0 && (
+                    <p className="task-count">
+                      {stepsDone} of {stepTotal} steps done
+                    </p>
+                  )}
+                </div>
+                <StatusBadge status={status} />
+              </div>
+              <button type="button" className="secondary-btn" onClick={() => toggle(req.id, dueKey, isCompleted)}>
+                {isCompleted ? "Mark as not completed" : "Mark as completed"}
+              </button>
+            </article>
+          );
+        })}
+      </section>
+    ));
   }
 
   return (
@@ -171,40 +212,20 @@ function ChecklistInner() {
         </div>
       )}
 
-      {Object.entries(grouped).map(([stage, stageItems]) => (
-        <section key={stage} className="agency-group">
-          <h2>{stage}</h2>
-          {stageItems.map(({ req, status, dueDate, dueKey, cycle }) => {
-            const isCompleted = status === "completed";
-            const stepTotal = isPremiumRole(user.role) ? req.instructions.length : 0; // steps are a Premium feature
-            const stepsDone = db.getDoneTasks(req.id, cycle).filter((i) => i < stepTotal).length;
-            return (
-              <article key={req.id} className="checklist-card">
-                <div className="checklist-card-header">
-                  <div>
-                    <span className="req-agency-tag">{agencyName(req.agencyId)}</span>
-                    <h3>
-                      <Link href={`/requirements/${req.id}`}>{req.name}</Link>
-                    </h3>
-                    <p className="deadline">
-                      {dueDate ? `Due ${formatDueLabel(dueDate)}` : `No fixed date: ${req.deadlineDescription}`}
-                    </p>
-                    {stepTotal > 0 && (
-                      <p className="task-count">
-                        {stepsDone} of {stepTotal} steps done
-                      </p>
-                    )}
-                  </div>
-                  <StatusBadge status={status} />
-                </div>
-                <button type="button" className="secondary-btn" onClick={() => toggle(req.id, dueKey, isCompleted)}>
-                  {isCompleted ? "Mark as not completed" : "Mark as completed"}
-                </button>
-              </article>
-            );
-          })}
+      {openItems.length > 0 && (
+        <section className="checklist-section checklist-open" aria-labelledby="checklist-open-h">
+          <h2 id="checklist-open-h">To do <span className="checklist-count">({openItems.length})</span></h2>
+          {renderStageGroups(openItems)}
         </section>
-      ))}
+      )}
+
+      {doneItems.length > 0 && (
+        <section className="checklist-section checklist-done" aria-labelledby="checklist-done-h">
+          <h2 id="checklist-done-h">Completed <span className="checklist-count">({doneItems.length})</span></h2>
+          <p className="hint">Completed items stay here. Mark one as not completed to move it back to To do.</p>
+          {renderStageGroups(doneItems)}
+        </section>
+      )}
 
       <JourneyNext current="checklist" />
     </main>

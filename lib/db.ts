@@ -37,6 +37,9 @@ import type {
 
 const STORE_KEY = "gn_store_v1";
 const IN_SCOPE_AGENCIES = new Set(["bir", "sss", "philhealth", "pagibig", "lgu"]);
+/** DTI (business name, BMBE) appears in the Resource library only. It is not one of the five
+ *  agencies tracked on the dashboard/checklist, so it stays out of IN_SCOPE_AGENCIES. */
+const RESOURCE_AGENCIES = new Set([...IN_SCOPE_AGENCIES, "dti"]);
 
 /** localStorage store — now ONLY holds admin content overrides. */
 interface Store {
@@ -178,9 +181,13 @@ export const db = {
       s.adminOverrides.createdRequirements
     ).filter(r => IN_SCOPE_AGENCIES.has(r.agencyId));
   },
+  /** Agencies selectable for resources: the five tracked agencies plus DTI. */
+  getResourceAgencies(): Agency[] {
+    return [...db.getAgencies(), { id: "dti", name: "Department of Trade and Industry (DTI)", description: "Business name registration and BMBE.", officialUrl: "https://www.dti.gov.ph" }];
+  },
   getResources(): ResourceItem[] {
     const s = readStore();
-    return mergeWithOverrides(resourcesSeed as ResourceItem[], s.adminOverrides.resources, s.adminOverrides.createdResources).filter(r => IN_SCOPE_AGENCIES.has(r.agencyId));
+    return mergeWithOverrides(resourcesSeed as ResourceItem[], s.adminOverrides.resources, s.adminOverrides.createdResources).filter(r => RESOURCE_AGENCIES.has(r.agencyId));
   },
   getTutorials(): Tutorial[] {
     const s = readStore();

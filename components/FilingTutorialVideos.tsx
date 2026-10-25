@@ -15,6 +15,19 @@ export default function FilingTutorialVideos() {
   return (
     <section className="guide-stage" aria-labelledby="videos-h">
       <h2 id="videos-h">Filing Tutorial Videos</h2>
+      <aside className="youtube-notice" role="note" aria-labelledby="yt-notice-h">
+        <p className="youtube-notice-kicker">IMPORTANT · READ BEFORE WATCHING</p>
+        <h3 id="yt-notice-h">We do not own these YouTube videos</h3>
+        <p>
+          Every video on this page is made and owned by its creator and hosted on YouTube. GabayNegosyo does not own, produce, or control them, and we claim no rights in them. They are listed only to help you learn the steps.
+        </p>
+        <p>
+          <strong>CTTO: credit to the owner.</strong> Full credit goes to the original creators. Open a video on YouTube to see the creator&apos;s own details and to support them.
+        </p>
+        <p>
+          Owners can edit or remove their videos at any time, and a video may not match current agency forms, fees, or deadlines. Confirm every step with the official agency before you file or pay.
+        </p>
+      </aside>
       <p>Step-by-step video guides for filing and maintaining your business compliance.</p>
       <div className="v06-media-grid">
         {items.length === 0 ? (

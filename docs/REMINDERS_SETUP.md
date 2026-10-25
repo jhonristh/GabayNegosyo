@@ -49,3 +49,6 @@ the scheduled hour. A same-day re-run sends nothing new (`reminder_deliveries` p
 
 ## Re-enable someone after they unsubscribed
 `update public.profiles set reminders_unsubscribed_at = null where lower(email) = 'person@example.com';`
+
+## Test send from the app (v0.16.4)
+"Send test reminder" on Deadlines uses the same `EMAIL_PROVIDER` as the daily digest. It says "sent" only when the provider accepted the email. If no provider is configured, it logs the attempt and tells the user that nothing was sent.

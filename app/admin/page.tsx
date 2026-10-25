@@ -55,7 +55,17 @@ function AdminInner() {
       <section className="v07-admin-links" aria-label="Admin sections">
         {[ ["Users", "/admin/users", "Review Free, Premium, and Admin accounts"], ["Requirements", "/admin/requirements", "Inspect stages and content status"], ["Agencies", "/admin/agencies", "Manage agency references"], ["Resources", "/admin/resources", "Review source links and forms"], ["Tutorials", "/admin/tutorials", "Review learning material"] ].map(([title,href,description]) => <Link key={href} href={href}><strong>{title} →</strong><span>{description}</span></Link>)}
       </section>
-      <AdminHelp>Start with items needing review, then open Agencies, Requirements, Resources, or Tutorials. Content changes here are stored only in this browser; the Users tab reads Supabase and is read-only.</AdminHelp>
+      <AdminHelp
+        title="Start here"
+        steps={[
+          "Work through the Content review queue first. Each row links to the editor for that item.",
+          "Open Agencies, Requirements, Resources, or Tutorials to correct content. Each editor has its own steps.",
+          "Open Users to look up accounts and plans. That page is read-only.",
+          "Check Recent emails to confirm reminder and test emails were logged. Use the email setup guide in docs/REMINDERS_SETUP.md before turning on daily reminders.",
+        ]}
+      >
+        Review what needs attention, then fix it in the editor linked from each row.
+      </AdminHelp>
       <AccountSyncPanel />
       <h2 className="admin-subhead">Content</h2>
       <section className="metric-grid" aria-label="Content overview">
@@ -97,8 +107,9 @@ function AdminInner() {
       </section>
 
       <section className="dashboard-section">
-        <h2>Recent reminder emails sent</h2>
-        {sentEmails.length === 0 && <p className="hint">No reminders sent yet.</p>}
+        <h2>Recent emails (sent or logged)</h2>
+        <p className="hint">Each row is an email the server logged. If email delivery is not switched on for this site, rows are logged but not delivered.</p>
+        {sentEmails.length === 0 && <p className="hint">No emails logged yet.</p>}
         {sentEmails.slice(0, 10).map((e) => (
           <article key={e.id} className="checklist-card">
             <p className="docs">

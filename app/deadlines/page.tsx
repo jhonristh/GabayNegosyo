@@ -72,8 +72,14 @@ function DeadlinesInner() {
     setSending(true);
     try {
       const { subject, body } = buildReminderEmail(requirementName, dueLabel, days);
-      await sendEmail(user.email, subject, body);
-      notify("Test reminder sent to your account email.");
+      const result = await sendEmail(user.email, subject, body);
+      if (result.mode === "sent") {
+        notify("Test reminder sent to your account email.");
+      } else if (result.mode === "demo") {
+        notify("Demo account: the test reminder was logged only. Nothing was emailed.", "error");
+      } else {
+        notify("No email was sent. Email delivery is not switched on for this site yet.", "error");
+      }
     } catch (err) {
       notify(err instanceof Error ? err.message : "We couldn't send the test reminder. Try again in a moment.", "error");
     } finally {

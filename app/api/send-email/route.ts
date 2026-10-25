@@ -1,12 +1,18 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { mailerConfigured, sendMail } from "../../../lib/mailer";
+import { escapeHtml } from "../../../lib/reminderDigest";
 
 /**
  * POST /api/send-email   body: { subject: string, body: string }
  * Header: Authorization: Bearer <Supabase access token>
  *
- * Server-side only. Uses RESEND_API_KEY / EMAIL_FROM (NOT prefixed with
- * NEXT_PUBLIC_, so they never reach the browser).
+ * Server-side only. Sends through the same provider as the daily digest (lib/mailer.ts):
+ * EMAIL_PROVIDER=gmail (GMAIL_USER + GMAIL_APP_PASSWORD) or resend (RESEND_API_KEY + EMAIL_FROM).
+ * None of these reach the browser (no NEXT_PUBLIC_ prefix).
+ *
+ * The response's `mode` tells the client what really happened:
+ *   "sent" = handed to the provider; "mock" = nothing was sent (demo account or no provider configured).
  *
  * Demo accounts (profiles.is_demo) always get mock mode: their addresses are fake,
  * and real sends to fake addresses would bounce and hurt your sender reputation.
@@ -106,25 +112,26 @@ export async function POST(req: Request) {
 
   if (profile.is_demo) {
     await logSend("mock");
-    return NextResponse.json({ ok: true, mode: "mock" });
+    return NextResponse.json({ ok: true, mode: "mock", note: "Demo account: nothing was sent." });
   }
 
-  const apiKey = process.env.RESEND_API_KEY;
-  const from = process.env.EMAIL_FROM;
-  if (!apiKey || !from) {
-    // Mock mode: nothing is sent, the route still logs the email like before.
+  if (!mailerConfigured()) {
+    // No provider configured (EMAIL_PROVIDER unset or missing its keys): nothing is sent.
+    // Still logged as a mock so the per-hour limit keeps applying.
     await logSend("mock");
-    return NextResponse.json({ ok: true, mode: "mock" });
+    return NextResponse.json({ ok: true, mode: "mock", note: "Email delivery is not switched on for this site yet, so nothing was sent." });
   }
 
-  const res = await fetch("https://api.resend.com/emails", {
-    method: "POST",
-    headers: { Authorization: `Bearer ${apiKey}`, "Content-Type": "application/json" },
-    body: JSON.stringify({ from, to: [userEmail], subject, text: body }),
-  });
-
-  if (!res.ok) {
-    console.error("[send-email] provider error", res.status, await res.text());
+  // Same provider as the daily digest (lib/mailer.ts: EMAIL_PROVIDER=gmail or resend).
+  try {
+    await sendMail({
+      to: userEmail,
+      subject,
+      text: body,
+      html: `<p style="font-family:Arial,Helvetica,sans-serif;line-height:1.6">${escapeHtml(body).replace(/\n/g, "<br>")}</p>`,
+    });
+  } catch (err) {
+    console.error("[send-email] provider error", err instanceof Error ? err.message : "unknown");
     return NextResponse.json({ error: "The email provider rejected the request." }, { status: 502 });
   }
   await logSend("sent");

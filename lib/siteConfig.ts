@@ -12,8 +12,14 @@
  * still literally the word "example" — see that script for the exact rule.
  */
 
-function readEnv(name: string): string | null {
-  const value = process.env[name];
+/**
+ * NOTE: Next.js only inlines NEXT_PUBLIC_* values into the browser bundle when
+ * they are referenced statically (process.env.NEXT_PUBLIC_X). A dynamic lookup
+ * like process.env[name] works on the server but is empty in the browser,
+ * which caused hydration mismatches (e.g. the footer "Contact" link). So each
+ * value is passed in explicitly below.
+ */
+function clean(value: string | undefined): string | null {
   if (!value || value.trim().length === 0) return null;
   return value.trim();
 }
@@ -36,10 +42,10 @@ export interface SiteConfig {
 const PLACEHOLDER_SITE_URL = "https://gabaynegosyo.example";
 
 export const siteConfig: SiteConfig = {
-  siteUrl: readEnv("NEXT_PUBLIC_SITE_URL") ?? PLACEHOLDER_SITE_URL,
-  siteUrlConfigured: readEnv("NEXT_PUBLIC_SITE_URL") !== null,
-  contactEmail: readEnv("NEXT_PUBLIC_CONTACT_EMAIL"),
-  legalEntityName: readEnv("NEXT_PUBLIC_LEGAL_ENTITY_NAME"),
-  teamName: readEnv("NEXT_PUBLIC_TEAM_NAME"),
-  premiumPriceLabel: readEnv("NEXT_PUBLIC_PREMIUM_PRICE_LABEL"),
+  siteUrl: clean(process.env.NEXT_PUBLIC_SITE_URL) ?? PLACEHOLDER_SITE_URL,
+  siteUrlConfigured: clean(process.env.NEXT_PUBLIC_SITE_URL) !== null,
+  contactEmail: clean(process.env.NEXT_PUBLIC_CONTACT_EMAIL),
+  legalEntityName: clean(process.env.NEXT_PUBLIC_LEGAL_ENTITY_NAME),
+  teamName: clean(process.env.NEXT_PUBLIC_TEAM_NAME),
+  premiumPriceLabel: clean(process.env.NEXT_PUBLIC_PREMIUM_PRICE_LABEL),
 };

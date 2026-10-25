@@ -16,12 +16,22 @@ import { getSupabase } from "./supabase";
  * The `to` argument is kept so existing callers don't change, but the server
  * ignores it and always uses the signed-in user's verified email.
  */
-export async function sendEmail(to: string, subject: string, body: string): Promise<SentEmail> {
+/**
+ * mode says what really happened:
+ *  - "sent": the email provider accepted the message.
+ *  - "mock": nothing was sent (demo account, or no email provider configured on the server).
+ *  - "demo": browser-only demo mode; nothing was sent and nothing left the browser.
+ */
+export interface SendResult extends SentEmail {
+  mode: "sent" | "mock" | "demo";
+}
+
+export async function sendEmail(to: string, subject: string, body: string): Promise<SendResult> {
   // Demo mode: never call the server route or Supabase. Log a mock reminder locally.
   if (db.isDemo()) {
     const mock: SentEmail = { id: `demo-email-${Date.now()}`, to, subject, body, sentAt: new Date().toISOString() };
     db.addDemoSentEmail(mock);
-    return mock;
+    return { ...mock, mode: "demo" };
   }
   const { data } = await getSupabase().auth.getSession();
   const token = data.session?.access_token;
@@ -37,6 +47,7 @@ export async function sendEmail(to: string, subject: string, body: string): Prom
     const payload = await res.json().catch(() => ({}));
     throw new Error(payload.error ?? `Email request failed (${res.status})`);
   }
+  const result = (await res.json().catch(() => ({}))) as { mode?: string };
 
   // B2: the route itself writes the sent_emails log row server-side (using
   // the caller's own token) as part of enforcing the per-user rate limit —
@@ -45,15 +56,14 @@ export async function sendEmail(to: string, subject: string, body: string): Prom
   // cache from Supabase instead of appending a locally-built record.
   await db.refreshSentEmails();
   const [latest] = db.getSentEmails();
-  return (
-    latest ?? {
-      id: `email-${Date.now()}`,
-      to,
-      subject,
-      body,
-      sentAt: new Date().toISOString(),
-    }
-  );
+  const record: SentEmail = latest ?? {
+    id: `email-${Date.now()}`,
+    to,
+    subject,
+    body,
+    sentAt: new Date().toISOString(),
+  };
+  return { ...record, mode: result.mode === "sent" ? "sent" : "mock" };
 }
 
 export function buildReminderEmail(requirementName: string, dueDateLabel: string, daysBefore: number) {

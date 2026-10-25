@@ -261,6 +261,7 @@
   {
     "id": "lgu-barangay-mayors-clearance",
     "agencyId": "lgu",
+    "tutorialId": "tut-lgu-permit-application",
     "name": "Barangay Clearance & Mayor's Permit",
     "description": "Local government clearances required before BIR registration: Barangay Clearance from the barangay office covering the business address, and the Mayor's Permit from the City/Municipal Hall. Business address is also verified at this stage.",
     "whoItAppliesTo": "All businesses registering with a physical business address.",
@@ -612,6 +613,7 @@
   {
     "id": "bir-1701-self-employed",
     "agencyId": "bir",
+    "tutorialId": "tut-bir-1701",
     "name": "Annual Income Tax Return: Self-Employed / Mixed Income (BIR Form 1701)",
     "description": "BIR Form 1701 is for self-employed individuals and mixed-income earners to report and pay annual income tax.",
     "whoItAppliesTo": "Self-employed individuals and mixed-income earners.",
@@ -665,6 +667,7 @@
   {
     "id": "bir-1701q-quarterly",
     "agencyId": "bir",
+    "tutorialId": "tut-bir-1701q",
     "name": "Quarterly Income Tax Return (BIR Form 1701Q)",
     "description": "BIR Form 1701Q is the quarterly income tax return for self-employed taxpayers and mixed-income earners.",
     "whoItAppliesTo": "Self-employed individuals and mixed-income earners, filed quarterly.",
@@ -707,6 +710,7 @@
   {
     "id": "bir-1701a-8percent",
     "agencyId": "bir",
+    "tutorialId": "tut-bir-1701a",
     "name": "Annual Income Tax Return: 8% Flat Rate / OSD (BIR Form 1701A)",
     "description": "BIR Form 1701A is a simplified annual return for individuals using the 8% income tax rate or the Optional Standard Deduction (OSD), with no mixed income.",
     "whoItAppliesTo": "Self-employed individuals or purely-business taxpayers who qualify for the 8% flat rate or OSD option (not mixed-income earners).",

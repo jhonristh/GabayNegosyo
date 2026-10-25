@@ -282,7 +282,7 @@
   .kit-pocket .v07-progress-panel p { font-size: 0.8rem; margin: 0 0 10px; }
   .kit-pocket .v07-progress-actions button { min-height: 40px; padding: 8px 10px; font-size: 0.78rem; }
   .kit-pocket .checklist-card { border-radius: 17px; box-shadow: none; padding: 14px; border-color: var(--kit-line); }
-  .kit-pocket .agency-group h2 { font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); }
+  .kit-pocket .agency-group h2, .kit-pocket .agency-group h3 { font-size: 0.82rem; letter-spacing: 0.06em; text-transform: uppercase; color: var(--ink-muted); }
   .kit-pocket .v07-account-hero { border-radius: 19px; }
 }
 

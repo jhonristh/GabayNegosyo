@@ -22,7 +22,10 @@ export default function TutorialsPage() {
       <main className="screen v06-library">
         <header className="intro">
           <h1>Learning hub</h1>
-          <p>Step-by-step guides and curated videos for every requirement.</p>
+          <p>Curated video walkthroughs for key requirements. Where a verified video is not available yet, the card says so.</p>
+          <p className="hint">
+            {tutorials.filter((t) => !t.isPlaceholder).length} video(s) available · {tutorials.filter((t) => t.isPlaceholder).length} awaiting a verified video. The videos are hosted on YouTube and belong to their creators (CTTO: credit to the owner).
+          </p>
         </header>
 
         <div className="filter-row">

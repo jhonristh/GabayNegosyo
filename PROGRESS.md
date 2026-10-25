@@ -290,3 +290,22 @@ Details: `docs/V0.12_CHANGES.md`.
 - Added EOPT annual registration fee and invoice guidance where invoice-related BIR requirements are present.
 - Validation note: dependencies are not installed in this workspace, so TypeScript/build validation could not run. Existing `npm test` has environment-related `.ts` import failures in several tests; the wizard expectation tests were updated for the intentional new step and options.
 - Still needing a deeper pass: official BIR deadline/penalty verification, agency-specific registration links and details, DTI renewal content, premium/free plan content and pricing confirmation, and comprehensive browser QA.
+
+## v0.16.4 — owner review fixes
+
+- [x] Registration: Tax tables reference (graduated individual rates from `data/taxTable.json`, worked example, 8% option note). Display only; it does not compute tax.
+- [x] Checklist hierarchy: **To do** section first, **Completed** section below (each split by compliance stage). Stage headings are h3 under the section h2s.
+- [x] Learning hub: six owner-supplied YouTube walkthroughs wired into `data/tutorials.json` and linked from the matching requirements (`tutorialId`). Five placeholders remain where no verified video exists. DTI videos stay on Renewal, because DTI is not an in-scope agency in `lib/db.ts`.
+- [x] Reminders: the in-app "Send test reminder" now uses the same provider as the daily digest (`EMAIL_PROVIDER` gmail or resend). It reports "sent" only when the provider accepted the email; otherwise it says nothing was sent.
+- [x] Premium: upgrade opens `/premium/checkout` in a new tab. It states that payments are not connected, collects no payment details, and offers a demo upgrade that takes no payment.
+- [x] Admin: numbered steps and warnings on Agencies, Requirements, Resources, Tutorials, Users and the dashboard. Archive confirmations say that items you added are deleted permanently.
+- [x] BIR forms: "Preview form" for official BIR-hosted PDFs (same rule as the Resource library).
+- [x] Renewal & Post-Registration: prominent notice that the YouTube videos are not owned by GabayNegosyo, with CTTO (credit to the owner).
+
+Verification in this session: `tests/v0164.test.js` (14 new tests); full suite 154/154 on the modified copy versus 140/140 on the original; no new TypeScript errors (checked against the original copy; without installed React/Next types, the compiler reports many missing-type errors on both copies). Not verified: browser behaviour, live Supabase, a real email send, and `next build`. The YouTube links were not checked live.
+
+## v0.16.4 build-fix pass
+- lib/siteConfig.ts: NEXT_PUBLIC_* env vars now read statically so server and client agree (fixes footer/404 hydration mismatches).
+- nodemailer is declared in package.json/package-lock.json; run `npm install` to resolve "Can't resolve 'nodemailer'".
+- task_progress warning: apply database/migrations/002_task_progress.sql in Supabase.
+- data/resources.json: +23 resources transcribed from the "Universal Resource and Document Checklist" (DTI/BNRS/BMBE, barangay and BPLO permits, BIR, SSS, PhilHealth, Pag-IBIG, fees, penalty trackers). DTI is resource-library-only (lib/db.ts RESOURCE_AGENCIES). Links to confirm before launch: bnrs.dti.gov.ph, bmbe.dti.gov.ph, orus.bir.gov.ph; other items point to agency home pages because the source gave no URLs.

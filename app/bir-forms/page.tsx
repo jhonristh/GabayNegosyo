@@ -9,6 +9,7 @@ import { db } from "../../lib/db";
 import { generateApplicableRequirements } from "../../lib/ruleEngine";
 import conditions from "../../data/birConditions.json";
 import allForms from "../../data/birForms.json";
+import PdfPreviewButton from "../../components/PdfPreviewButton";
 
 /** BIR requirements that belong to Business Registration (stage 2), not to periodic filing. */
 const REGISTRATION_IDS = new Set(["bir-cor", "bir-registration-filing", "bir-books-of-accounts", "bir-orus-registration", "bir-1906-authority-to-print"]);
@@ -84,7 +85,10 @@ function BirFormsContent() {
                 <span className="req-agency-tag">BIR</span>
                 <h3>BIR Form {c.formCode}: {c.formTitle}</h3>
                 <p className="deadline">Deadline: {c.deadline}</p>
-                <a href={c.url} target="_blank" rel="noopener noreferrer" className="tutorial-link">Open BIR Form {c.formCode} ↗</a>
+                <div className="v06-card-actions">
+                  <PdfPreviewButton url={c.url} title={`BIR Form ${c.formCode}: ${c.formTitle}`} />
+                  <a href={c.url} target="_blank" rel="noopener noreferrer" className="tutorial-link">Open BIR Form {c.formCode} ↗</a>
+                </div>
               </article>
             ))}
           </div>
@@ -99,7 +103,12 @@ function BirFormsContent() {
                 <span className="req-agency-tag">BIR</span>
                 <h3><Link href={`/requirements/${r.id}`}>{r.name}</Link></h3>
                 <p className="deadline">{r.deadlineDescription}</p>
-                {r.officialUrl && <a href={r.officialUrl} target="_blank" rel="noopener noreferrer" className="tutorial-link">Official source ↗</a>}
+                {r.officialUrl && (
+                  <div className="v06-card-actions">
+                    <PdfPreviewButton url={r.officialUrl} title={r.name} />
+                    <a href={r.officialUrl} target="_blank" rel="noopener noreferrer" className="tutorial-link">Official source ↗</a>
+                  </div>
+                )}
               </article>
             ))}
           </div>
@@ -110,8 +119,18 @@ function BirFormsContent() {
       <details className="guide-note">
         <summary><strong>All BIR forms in this guide (downloads)</strong></summary>
         <ul>
-          {allForms.map((f) => <li key={f.code}><a href={f.url} target="_blank" rel="noopener noreferrer">BIR Form {f.code}</a> — {f.title}</li>)}
-          {conditions.map((c) => <li key={c.id}><a href={c.url} target="_blank" rel="noopener noreferrer">BIR Form {c.formCode}</a> — {c.formTitle}</li>)}
+          {allForms.map((f) => (
+            <li key={f.code}>
+              <a href={f.url} target="_blank" rel="noopener noreferrer">BIR Form {f.code}</a> — {f.title}{" "}
+              <PdfPreviewButton url={f.url} title={`BIR Form ${f.code}: ${f.title}`} label="Preview" />
+            </li>
+          ))}
+          {conditions.map((c) => (
+            <li key={c.id}>
+              <a href={c.url} target="_blank" rel="noopener noreferrer">BIR Form {c.formCode}</a> — {c.formTitle}{" "}
+              <PdfPreviewButton url={c.url} title={`BIR Form ${c.formCode}: ${c.formTitle}`} label="Preview" />
+            </li>
+          ))}
         </ul>
       </details>
 
