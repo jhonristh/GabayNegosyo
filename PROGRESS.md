@@ -309,3 +309,4 @@ Verification in this session: `tests/v0164.test.js` (14 new tests); full suite 1
 - nodemailer is declared in package.json/package-lock.json; run `npm install` to resolve "Can't resolve 'nodemailer'".
 - task_progress warning: apply database/migrations/002_task_progress.sql in Supabase.
 - data/resources.json: +23 resources transcribed from the "Universal Resource and Document Checklist" (DTI/BNRS/BMBE, barangay and BPLO permits, BIR, SSS, PhilHealth, Pag-IBIG, fees, penalty trackers). DTI is resource-library-only (lib/db.ts RESOURCE_AGENCIES). Links to confirm before launch: bnrs.dti.gov.ph, bmbe.dti.gov.ph, orus.bir.gov.ph; other items point to agency home pages because the source gave no URLs.
+- v0.16.4 TS fixes: wizard leaseApplicability type; auth resetPassword/updatePassword + app/reset-password page; '/reset-password' allowed redirect (add it to Supabase Auth → URL Configuration → Redirect URLs).

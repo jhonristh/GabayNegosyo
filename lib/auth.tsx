@@ -47,6 +47,10 @@ interface AuthContextValue {
   signup: (name: string, email: string, password: string) => Promise<AuthResult>;
   loginWithGoogle: () => Promise<AuthResult>;
   logout: () => Promise<void>;
+  /** Emails a password-reset link to the address (always reports success for unknown emails to avoid account enumeration). */
+  resetPassword: (email: string) => Promise<AuthResult>;
+  /** Sets a new password for the user who arrived from a reset link (recovery session). */
+  updatePassword: (newPassword: string) => Promise<AuthResult>;
   /** Resolves true when the role change was saved; false when it was not. */
   upgradeToPremium: () => Promise<boolean>;
   /** Browser-only demo session. No Supabase user, profile or password is involved. */
@@ -223,6 +227,26 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
+  async function resetPassword(email: string): Promise<AuthResult> {
+    try {
+      const redirectTo = authRedirectUrl("/reset-password");
+      if (!redirectTo) return { ok: false, error: friendlyAuthError("redirect invalid") };
+      const { error } = await getSupabase().auth.resetPasswordForEmail(email.trim(), { redirectTo });
+      return error ? { ok: false, error: friendlyEmailAuthError(error.message) } : { ok: true };
+    } catch (err) {
+      return { ok: false, error: friendlyEmailAuthError(err instanceof Error ? err.message : String(err)) };
+    }
+  }
+
+  async function updatePassword(newPassword: string): Promise<AuthResult> {
+    try {
+      const { error } = await getSupabase().auth.updateUser({ password: newPassword });
+      return error ? { ok: false, error: friendlyEmailAuthError(error.message) } : { ok: true };
+    } catch (err) {
+      return { ok: false, error: friendlyEmailAuthError(err instanceof Error ? err.message : String(err)) };
+    }
+  }
+
   async function logout() {
     if (user?.isDemo) {
       // Exit demo: clear only the demo session. A real Supabase session (if any) is untouched.
@@ -309,7 +333,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   }
 
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, upgradeToPremium, startDemo, resetDemo, deleteAccount }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, resetPassword, updatePassword, upgradeToPremium, startDemo, resetDemo, deleteAccount }}>
       {children}
     </AuthContext.Provider>
   );

@@ -109,6 +109,7 @@ export default function LoginPage() {
           <div className="auth-field">
             <label className="question-label" htmlFor="password">Password</label>
             <PasswordField id="password" autoComplete="current-password" value={password} onChange={setPassword} />
+            <p className="hint"><Link href="/reset-password">Forgot password?</Link></p>
           </div>
 
           {error && (

@@ -72,7 +72,7 @@ function WizardInner() {
   const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
   const [taxType, setTaxType] = useState<"8_percent" | "graduated">(existing?.taxType === "graduated" ? "graduated" : "8_percent");
   const [deductionMethod, setDeductionMethod] = useState<"osd" | "itemized">("osd");
-  const [leaseApplicability, setLeaseApplicability] = useState<"yes" | "no" | "na">(existing ? (existing.hasLease ? "yes" : "no") : "");
+  const [leaseApplicability, setLeaseApplicability] = useState<"" | "yes" | "no" | "na">(existing ? (existing.hasLease ? "yes" : "no") : "");
   const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
 
   const localityInfo = getLocality(locality);
