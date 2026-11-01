@@ -8,7 +8,7 @@ import StatusBadge from "../../components/StatusBadge";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
-import { isPremiumRole } from "../../lib/authorization";
+import { hasPremiumAccess } from "../../lib/entitlements";
 import { sendEmail, buildReminderEmail } from "../../lib/email";
 import { useToast } from "../../components/ToastProvider";
 import type { ReminderConfig } from "../../lib/types";
@@ -42,7 +42,7 @@ function DeadlinesInner() {
 
   const applicable = generateApplicableRequirements(profile, requirements);
   const progress = db.getProgress();
-  const isPremium = isPremiumRole(user.role);
+  const isPremium = hasPremiumAccess(user);
 
   const items = applicable
     .map((req) => {

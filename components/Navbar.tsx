@@ -39,6 +39,7 @@ const ADMIN_LINKS: NavItem[] = [
   { href: "/admin/resources", label: "Resources", icon: "resources" },
   { href: "/admin/tutorials", label: "Tutorials", icon: "tutorials" },
   { href: "/admin/users", label: "Users", icon: "users" },
+  { href: "/admin/audit", label: "Audit log", icon: "requirements" },
 ];
 
 function isActive(pathname: string | null, href: string): boolean {

@@ -1,4 +1,5 @@
 import type { Role } from "./types";
+import { hasPremiumAccess } from "./entitlements";
 
 /**
  * Client-side authorization helpers. UI components use PremiumGate/
@@ -25,5 +26,15 @@ export function assertPremium(role: Role | undefined) {
 export function assertAdmin(role: Role | undefined) {
   if (!isAdminRole(role)) {
     throw new Error("ADMIN_REQUIRED: this action requires admin privileges.");
+  }
+}
+
+/**
+ * v0.17: entitlement-aware assertion. Prefer this over assertPremium(role): it honours expiry, revocation
+ * and deactivation, which a bare role string cannot.
+ */
+export function assertPremiumAccess(user: Parameters<typeof hasPremiumAccess>[0]) {
+  if (!hasPremiumAccess(user)) {
+    throw new Error("PREMIUM_REQUIRED: this action requires a Premium subscription.");
   }
 }

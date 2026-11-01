@@ -5,6 +5,7 @@ import AuthGuard from "../../components/AuthGuard";
 import FilingTutorialVideos from "../../components/FilingTutorialVideos";
 import { JourneyHeader, JourneyNext } from "../../components/JourneyStepper";
 import { useAuth } from "../../lib/auth";
+import { hasPremiumAccess } from "../../lib/entitlements";
 import { db } from "../../lib/db";
 import guide from "../../data/businessGuide.json";
 
@@ -16,7 +17,7 @@ const SECTIONS = [
 function RenewalContent() {
   const { user } = useAuth();
   const profile = user ? db.getBusinessProfile(user.id) : null;
-  const premium = user?.role === "premium" || user?.role === "admin";
+  const premium = hasPremiumAccess(user);
   const visible = guide.filter((i) => i.audience !== "employees" || profile?.hasEmployees !== false);
 
   return (

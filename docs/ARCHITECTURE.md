@@ -49,3 +49,7 @@ The design-kit layer (`styles/kits.css`) and the v0.15 Emerald Growth tokens (`s
 ## Verification
 
 See [TESTING.md](TESTING.md).
+
+## Access control (v0.17)
+
+`lib/entitlements.ts` is the single place for plan and feature checks (`hasPremiumAccess`, `canUse`, `FEATURE_TIER`, `resolveServerAccess`). The server decides the plan through `public.get_my_entitlement()` (migration 006); the browser only displays it. Account deactivation is enforced by restrictive RLS policies (migration 005) plus `AuthGuard`. Admin changes go through audited SECURITY DEFINER functions. See [ACCOUNT_AND_ACCESS.md](ACCOUNT_AND_ACCESS.md).

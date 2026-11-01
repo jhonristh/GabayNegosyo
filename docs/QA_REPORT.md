@@ -40,3 +40,20 @@ None. Existing demo users in Supabase are left untouched; delete them manually i
 
 ## 7. Manual regression checklist
 Sign up → confirm email on phone → lands in wizard · refresh stays logged in · expired link page · Google success/cancel/disabled · wizard for Manila, Makati, Pateros, QC · demo Free/Premium/Admin: banner, reset, exit, nothing appears in Supabase · real login after demo is clean · delete account (wrong password, success, then login fails) · mobile 360px landing/credits · keyboard through nav and dialog · reduced-motion.
+
+## v0.17 additions
+
+Automated (observed, `npm test`): 197 of 197, including 36 new tests in `tests/v017.test.js`. SQL migrations 005 and 006 and `supabase_setup.sql` were syntax-checked with the PostgreSQL parser; **they were not executed against a database**.
+
+Manual checks still required (need Supabase and a browser):
+
+1. Apply 005 then 006 on a copy or test project. Run each file's verification queries.
+2. Sign up a test account. Deactivate it from Account: it is signed out. Log in: the reactivation screen appears and no data loads. Reactivate: data returns.
+3. As admin, deactivate that account with a reason; confirm the user cannot reactivate; reactivate it as admin.
+4. As admin, grant Premium with a short expiry; confirm Premium features unlock after a refresh and the audit log shows the entry. Revoke; confirm Free. Let a grant expire (or set it a day out and edit `expires_at` in SQL on the test project) and confirm Free without any other action.
+5. As a normal user, in the browser console call `supabase.rpc("admin_grant_premium", …)`: expect "Admins only". Try `supabase.from("entitlements").insert(…)`: expect permission denied.
+6. Delete the test account (email and Google). Confirm: wrong word refused, stale login asks to log in again, success signs out, `account_deletion_log` has one hashed row, and the user's rows are gone from every table.
+7. PWA: install on Android Chrome and desktop Chrome/Edge, launch standalone, switch to airplane mode (offline banner and /offline page), reconnect (banner says back online). Check on Samsung Internet and Safari.
+8. Responsive and keyboard passes at 320, 360, 375, 390, 414, 768, 1024, 1366 px on the pages listed in the brief; Tab through dialogs (focus stays inside, Esc closes, focus returns to the button).
+
+Not checked by anyone yet: items 1–8 above, real screen-reader testing, and low-end Android performance.

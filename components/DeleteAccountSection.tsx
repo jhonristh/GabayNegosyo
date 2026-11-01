@@ -9,6 +9,7 @@ export default function DeleteAccountSection() {
   const { user, deleteAccount, resetDemo } = useAuth();
   const router = useRouter();
   const dialogRef = useRef<HTMLDialogElement>(null);
+  const openerRef = useRef<HTMLButtonElement>(null);
   const [confirmText, setConfirmText] = useState("");
   const [password, setPassword] = useState("");
   const [busy, setBusy] = useState(false);
@@ -37,12 +38,13 @@ export default function DeleteAccountSection() {
   function close() {
     if (busy) return;
     dialogRef.current?.close();
+    openerRef.current?.focus();
   }
   async function confirm() {
     if (!ready) return;
     setBusy(true);
     setError(null);
-    const result = await deleteAccount(needsPassword && password ? password : undefined);
+    const result = await deleteAccount(confirmText, needsPassword && password ? password : undefined);
     setBusy(false);
     if (!result.ok) {
       setError(result.error ?? "We could not delete your account. Nothing was deleted.");
@@ -55,8 +57,8 @@ export default function DeleteAccountSection() {
   return (
     <section className="checklist-card danger-zone">
       <h2>Delete account</h2>
-      <p>Permanently delete your sign-in and the data linked to it: business profile, checklist progress, reminder settings and sent-reminder log. This cannot be undone.</p>
-      <button type="button" className="danger-btn" onClick={open}>Delete my account…</button>
+      <p>Permanently delete your sign-in and the data linked to it: business profile, checklist progress, reminder settings, sent-reminder log and any Premium access record. This cannot be undone. If you only want a break, use Deactivate account instead.</p>
+      <button ref={openerRef} type="button" className="danger-btn" onClick={open}>Delete my account…</button>
 
       <dialog ref={dialogRef} className="confirm-dialog" aria-labelledby="del-title" onCancel={(e) => busy && e.preventDefault()}>
         <h2 id="del-title">Delete your account?</h2>

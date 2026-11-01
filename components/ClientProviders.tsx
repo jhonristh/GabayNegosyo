@@ -7,6 +7,7 @@ import ServiceWorkerRegistration from "./ServiceWorkerRegistration";
 import { ToastProvider } from "./ToastProvider";
 import DbErrorToasts from "./DbErrorToasts";
 import DemoBanner from "./DemoBanner";
+import OfflineBanner from "./OfflineBanner";
 import type { ReactNode } from "react";
 
 /**
@@ -21,6 +22,7 @@ function Frame({ children }: { children: ReactNode }) {
   return (
     <div className={`kit-shell kit-shell--${shell}`} data-shell={shell}>
       <DemoBanner />
+      <OfflineBanner />
       <Navbar />
       <div className="kit-shell-body">
         <div className="page-content">{children}</div>

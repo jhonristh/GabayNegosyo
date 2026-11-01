@@ -9,17 +9,14 @@ const read = (f) => fs.readFileSync(path.join(root, f), "utf8");
 const requirements = require("../data/requirements.json");
 const credits = require("../data/credits.json");
 
-test("package.json and package-lock.json agree on 0.16.5", () => {
+test("package.json and package-lock.json agree on the version, and CHANGELOG starts with it", () => {
   const pkg = JSON.parse(read("package.json"));
   const lock = JSON.parse(read("package-lock.json"));
-  assert.strictEqual(pkg.version, "0.16.5");
-  assert.strictEqual(lock.version, "0.16.5");
-  assert.strictEqual(lock.packages[""].version, "0.16.5");
-});
-
-test("CHANGELOG starts with the v0.16.5 entry", () => {
+  assert.strictEqual(lock.version, pkg.version);
+  assert.strictEqual(lock.packages[""].version, pkg.version);
   const first = read("CHANGELOG.md").split("\n").find((l) => l.startsWith("## "));
-  assert.strictEqual(first, "## v0.16.5");
+  assert.strictEqual(first, `## v${pkg.version}`);
+  assert.ok(/^\d+\.\d+\.\d+$/.test(pkg.version));
 });
 
 test("landing BIR count is computed by agency, not across all agencies", () => {

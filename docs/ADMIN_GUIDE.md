@@ -32,3 +32,7 @@ Filing videos carry an ownership notice: GabayNegosyo does not own them, and "CT
 ## Credits
 
 `/credits` reads `data/credits.json` and states plainly when names are still pending. Confirm names, roles, school, photos and permission to publish before replacing placeholders.
+
+## Users, Premium and the audit log (v0.17)
+
+Admin → Users shows each account's plan and status and lets a real admin grant or revoke Premium and deactivate or reactivate an account. A reason is required and every change appears in Admin → Audit log. Details, limits and the legacy-Premium review are in [ACCOUNT_AND_ACCESS.md](ACCOUNT_AND_ACCESS.md). If you see "run the migration" messages, apply `005` and `006` first.

@@ -9,7 +9,7 @@ import JourneyStepper, { JourneyNext } from "../../components/JourneyStepper";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
-import { isPremiumRole } from "../../lib/authorization";
+import { hasPremiumAccess } from "../../lib/entitlements";
 import type { RequirementStatus } from "../../lib/types";
 
 /**
@@ -115,7 +115,7 @@ function ChecklistInner() {
         <h3>{stage}</h3>
         {stageItems.map(({ req, status, dueDate, dueKey, cycle }) => {
           const isCompleted = status === "completed";
-          const stepTotal = isPremiumRole(user!.role) ? req.instructions.length : 0; // steps are a Premium feature
+          const stepTotal = hasPremiumAccess(user) ? req.instructions.length : 0; // steps are a Premium feature
           const stepsDone = db.getDoneTasks(req.id, cycle).filter((i) => i < stepTotal).length;
           return (
             <article key={req.id} className={`checklist-card ${isCompleted ? "is-completed" : "is-open"}`}>

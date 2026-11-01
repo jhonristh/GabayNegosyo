@@ -76,22 +76,8 @@ revoke all on public.profiles from anon, authenticated;
 grant select on public.profiles to authenticated;
 grant update (name) on public.profiles to authenticated;
 
--- DEMO ONLY: lets the "Upgrade now (demo)" button work until real payments exist.
--- Delete this function when you add billing.
-create or replace function public.upgrade_to_premium_demo()
-returns void
-language plpgsql
-security definer
-set search_path = ''
-as $$
-begin
-  update public.profiles
-  set role = 'premium'
-  where id = (select auth.uid()) and role = 'free';
-end;
-$$;
-revoke execute on function public.upgrade_to_premium_demo() from public, anon;
-grant  execute on function public.upgrade_to_premium_demo() to authenticated;
+-- (v0.17) The old upgrade_to_premium_demo() self-upgrade function was removed. Premium is granted by an admin
+-- through database/migrations/006_entitlements.sql. After this file, also run migrations 003–006 in order.
 
 -- ════════════════════════════════════════════════════════════════════════
 -- 2. business_profiles — the wizard result, one per user.

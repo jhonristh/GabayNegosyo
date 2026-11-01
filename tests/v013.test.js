@@ -117,8 +117,8 @@ test("demo email, upgrade, logout and admin users never reach real services", ()
   const email = read("lib", "email.ts");
   assert.ok(email.indexOf("db.isDemo()") > -1 && email.indexOf("db.isDemo()") < email.indexOf('fetch("/api/send-email"'));
   const auth = read("lib", "auth.tsx");
-  const up = auth.slice(auth.indexOf("async function upgradeToPremium"));
-  assert.ok(up.indexOf("user.isDemo") < up.indexOf('rpc("upgrade_to_premium_demo")'));
+  // v0.17: the self-service upgrade is gone entirely (replaced by admin-granted entitlements).
+  assert.ok(!auth.includes("upgradeToPremium") && !auth.includes("upgrade_to_premium_demo"));
   const out = auth.slice(auth.indexOf("async function logout"));
   assert.ok(out.indexOf("user?.isDemo") < out.indexOf("signOut()"), "demo exit must not sign out a real user");
   const del = auth.slice(auth.indexOf("async function deleteAccount"));
@@ -133,6 +133,7 @@ test("starting a demo is refused while a real user is signed in", () => {
 });
 
 // ── Account deletion ───────────────────────────────────────────────────
+const CONFIRM = { confirm: "DELETE" }; // v0.17: the server re-checks the typed confirmation
 const deps = (over = {}) => {
   const calls = [];
   return {
@@ -158,17 +159,17 @@ test("delete: unauthenticated requests are rejected and nothing is deleted", asy
 test("delete: only the token's own user can be deleted (no target id is accepted)", async () => {
   const { handleDeleteAccount } = await load("../lib/deleteAccountHandler.ts");
   const a = deps();
-  const r = await handleDeleteAccount("Bearer good", a.deps);
+  const r = await handleDeleteAccount("Bearer good", a.deps, CONFIRM);
   assert.strictEqual(r.status, 200);
   assert.deepStrictEqual(a.calls, ["u1"]);
-  assert.strictEqual(handleDeleteAccount.length, 2, "signature has no user-id parameter");
+  assert.strictEqual(handleDeleteAccount.length, 2, "signature has no user-id parameter (third argument is optional input: confirm only)");
   assert.ok(!/userId|user_id/.test(read("app", "api", "delete-account", "route.ts").match(/req\.(json|text|formData)/)?.[0] ?? ""));
 });
 
 test("delete: stale sign-in requires re-authentication", async () => {
   const { handleDeleteAccount } = await load("../lib/deleteAccountHandler.ts");
   const a = deps({ now: () => 1_000_000 + 11 * 60_000 });
-  const r = await handleDeleteAccount("Bearer good", a.deps);
+  const r = await handleDeleteAccount("Bearer good", a.deps, CONFIRM);
   assert.strictEqual(r.status, 403);
   assert.strictEqual(r.body.code, "reauth_required");
   assert.deepStrictEqual(a.calls, []);
@@ -177,16 +178,16 @@ test("delete: stale sign-in requires re-authentication", async () => {
 test("delete: admin and demo identities are protected", async () => {
   const { handleDeleteAccount } = await load("../lib/deleteAccountHandler.ts");
   const admin = deps({ getRole: async () => "admin" });
-  assert.strictEqual((await handleDeleteAccount("Bearer good", admin.deps)).body.code, "admin_protected");
+  assert.strictEqual((await handleDeleteAccount("Bearer good", admin.deps, CONFIRM)).body.code, "admin_protected");
   const demo = deps({ getUserFromToken: async () => ({ id: "demo-admin", lastSignInAt: new Date(1_000_000).toISOString() }) });
-  assert.strictEqual((await handleDeleteAccount("Bearer good", demo.deps)).status, 403);
+  assert.strictEqual((await handleDeleteAccount("Bearer good", demo.deps, CONFIRM)).status, 403);
   assert.deepStrictEqual([...admin.calls, ...demo.calls], []);
 });
 
 test("delete: provider failure returns an honest error, not success", async () => {
   const { handleDeleteAccount } = await load("../lib/deleteAccountHandler.ts");
   const a = deps({ deleteAuthUser: async () => ({ error: "boom" }) });
-  const r = await handleDeleteAccount("Bearer good", a.deps);
+  const r = await handleDeleteAccount("Bearer good", a.deps, CONFIRM);
   assert.strictEqual(r.status, 500);
   assert.ok(!r.body.ok && /Nothing was changed/.test(r.body.error));
 });

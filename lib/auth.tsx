@@ -16,6 +16,7 @@ import {
   type DemoRole,
 } from "./demoAccounts";
 import { demoSeedProfile } from "./demoSeed";
+import { demoEntitlement, entitlementFromRole, parseEntitlementRow } from "./entitlements";
 import type { Role, User } from "./types";
 
 /**
@@ -51,14 +52,16 @@ interface AuthContextValue {
   resetPassword: (email: string) => Promise<AuthResult>;
   /** Sets a new password for the user who arrived from a reset link (recovery session). */
   updatePassword: (newPassword: string) => Promise<AuthResult>;
-  /** Resolves true when the role change was saved; false when it was not. */
-  upgradeToPremium: () => Promise<boolean>;
   /** Browser-only demo session. No Supabase user, profile or password is involved. */
   startDemo: (role: DemoRole) => void;
   /** Resets this browser's demo data to the sample records. */
   resetDemo: () => void;
-  /** Permanently deletes the signed-in real account through the server route. */
-  deleteAccount: (password?: string) => Promise<{ ok: boolean; error?: string }>;
+  /** Permanently deletes the signed-in real account through the server route. `confirm` must be the word DELETE. */
+  deleteAccount: (confirm: string, password?: string) => Promise<{ ok: boolean; error?: string }>;
+  /** Temporarily deactivates the signed-in real account (data is kept) and signs the person out. */
+  deactivateAccount: () => Promise<{ ok: boolean; error?: string }>;
+  /** Lifts a self-imposed deactivation for the signed-in person (they must already be logged in). */
+  reactivateAccount: () => Promise<{ ok: boolean; error?: string }>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -67,7 +70,7 @@ async function loadUser(session: Session): Promise<User> {
   const supabase = getSupabase();
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, email, name, role, created_at")
+    .select("id, email, name, role, created_at, deactivated_at")
     .eq("id", session.user.id)
     .maybeSingle();
 
@@ -78,10 +81,26 @@ async function loadUser(session: Session): Promise<User> {
     name: profile?.name || meta.name || meta.full_name || (session.user.email ?? "").split("@")[0],
     role: (profile?.role as Role) ?? "free",
     createdAt: profile?.created_at ?? session.user.created_at,
+    deactivatedAt: (profile as { deactivated_at?: string | null } | null)?.deactivated_at ?? null,
   };
 
+  // The plan is decided by the server (migration 006). If that function is not installed yet, fall back to the
+  // stored role so nobody loses access during rollout. Failure never grants more than the stored role would.
   try {
-    await db.hydrate(user.id);
+    const { data: entRow, error: entError } = await supabase.rpc("get_my_entitlement");
+    const parsed = entError ? null : parseEntitlementRow(entRow);
+    if (parsed) {
+      user.entitlement = parsed.entitlement;
+      user.deactivatedAt = parsed.deactivatedAt ?? user.deactivatedAt ?? null;
+    }
+  } catch {
+    /* fall through to the role-based fallback below */
+  }
+  if (!user.entitlement) user.entitlement = entitlementFromRole(user.role);
+
+  try {
+    // A deactivated account is blocked by the database for its own data, so there is nothing to load until it is reactivated.
+    if (!user.deactivatedAt) await db.hydrate(user.id);
   } catch (err) {
     console.error("[auth] could not load your saved data:", err);
   }
@@ -97,7 +116,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     const account = DEMO_ACCOUNTS.find((a) => a.role === role)!;
     const id = demoUserId(role);
     db.enterDemo(id, demoSeedProfile(id));
-    const demoUser: User = { id, email: account.email, name: account.name, role, createdAt: new Date(0).toISOString(), isDemo: true };
+    const demoUser: User = { id, email: account.email, name: account.name, role, createdAt: new Date(0).toISOString(), isDemo: true, entitlement: demoEntitlement(role) };
     currentId.current = id;
     setUser(demoUser);
     return demoUser;
@@ -266,29 +285,6 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
   }
 
-  /**
-   * DEMO ONLY. There is no payment system yet, so this calls a database
-   * function that flips the caller's own role from free → premium.
-   * Delete this (and the SQL function) when you add real billing.
-   */
-  async function upgradeToPremium(): Promise<boolean> {
-    if (!user) return false;
-    if (user.isDemo) {
-      // Local preview only: no RPC, no Supabase call.
-      setUser({ ...user, role: "premium" });
-      setActiveDemoRole("premium");
-      return true;
-    }
-    const supabase = getSupabase();
-    const { error } = await supabase.rpc("upgrade_to_premium_demo");
-    if (error) {
-      console.error("[auth] upgrade failed:", error.message);
-      return false;
-    }
-    setUser({ ...user, role: "premium" });
-    return true;
-  }
-
   function startDemo(role: DemoRole) {
     if (!DEMO_ENABLED || currentId.current) return; // never replace a signed-in real user
     if (role === "admin") return; // there is no public admin demo
@@ -304,9 +300,10 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     applyDemo(role);
   }
 
-  async function deleteAccount(password?: string): Promise<{ ok: boolean; error?: string }> {
+  async function deleteAccount(confirm: string, password?: string): Promise<{ ok: boolean; error?: string }> {
     // Demo mode must never reach the real deletion endpoint.
     if (!user || user.isDemo) return { ok: false, error: "Demo accounts are not real. Use Reset demo data instead." };
+    if (confirm.trim() !== "DELETE") return { ok: false, error: "Type DELETE to confirm." };
     const supabase = getSupabase();
     // Re-authenticate (email/password accounts) so a stolen open tab cannot delete the account.
     if (password !== undefined) {
@@ -318,7 +315,11 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     if (!token) return { ok: false, error: "Your session has expired. Please log in again, then retry." };
     let res: Response;
     try {
-      res = await fetch("/api/delete-account", { method: "POST", headers: { Authorization: `Bearer ${token}` } });
+      res = await fetch("/api/delete-account", {
+        method: "POST",
+        headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+        body: JSON.stringify({ confirm: confirm.trim() }), // the server re-checks this; it never accepts a user id
+      });
     } catch {
       return { ok: false, error: "We could not reach the server. Your account was not deleted." };
     }
@@ -332,8 +333,38 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { ok: true };
   }
 
+  function lifecycleError(message: string | undefined): string {
+    if (message && /administrator/i.test(message)) return "An administrator deactivated this account, so only an administrator can reactivate it.";
+    if (message && /admin accounts/i.test(message)) return "Admin accounts cannot be deactivated here.";
+    if (message && /could not find the function|does not exist/i.test(message)) return "Account deactivation is not set up on this site yet. Nothing was changed.";
+    return "We could not complete that. Nothing was changed. Please try again.";
+  }
+
+  async function deactivateAccount(): Promise<{ ok: boolean; error?: string }> {
+    if (!user || user.isDemo) return { ok: false, error: "Demo accounts are not real. Use Reset demo data instead." };
+    const supabase = getSupabase();
+    const { error } = await supabase.rpc("deactivate_my_account");
+    if (error) return { ok: false, error: lifecycleError(error.message) };
+    await supabase.auth.signOut().catch(() => undefined);
+    await apply(null);
+    if (typeof navigator !== "undefined" && navigator.serviceWorker?.controller) {
+      navigator.serviceWorker.controller.postMessage("purge-runtime-cache");
+    }
+    return { ok: true };
+  }
+
+  async function reactivateAccount(): Promise<{ ok: boolean; error?: string }> {
+    if (!user || user.isDemo) return { ok: false, error: "Demo accounts are not real." };
+    const supabase = getSupabase();
+    const { error } = await supabase.rpc("reactivate_my_account");
+    if (error) return { ok: false, error: lifecycleError(error.message) };
+    const { data } = await supabase.auth.getSession();
+    if (data.session) await apply(data.session); // reloads the profile, plan and saved data
+    return { ok: true };
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, resetPassword, updatePassword, upgradeToPremium, startDemo, resetDemo, deleteAccount }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, resetPassword, updatePassword, startDemo, resetDemo, deleteAccount, deactivateAccount, reactivateAccount }}>
       {children}
     </AuthContext.Provider>
   );

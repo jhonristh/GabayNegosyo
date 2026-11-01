@@ -2,6 +2,7 @@
 
 import { useMemo, useState } from "react";
 import AuthGuard from "../../components/AuthGuard";
+import FeatureGate from "../../components/FeatureGate";
 import SearchBar from "../../components/SearchBar";
 import FormPreviewCard from "../../components/FormPreviewCard";
 import { db } from "../../lib/db";
@@ -29,6 +30,7 @@ export default function ResourcesPage() {
 
   return (
     <AuthGuard>
+      <FeatureGate feature="resource_library">
       <main className="screen v06-library">
         <header className="intro">
           <h1>Resource library</h1>
@@ -67,6 +69,7 @@ export default function ResourcesPage() {
           <article key={r.id} className="v06-media-card"><div className="v06-resource-art" aria-hidden="true">{r.resourceType.replace(/_/g, " ")}</div><div className="v06-media-content"><p className="v06-eyebrow">{r.agencyId.toUpperCase()} · {r.resourceType.replace(/_/g, " ")}</p><h3>{r.title}</h3><p>{r.description}</p><a href={r.url} target="_blank" rel="noopener noreferrer" className="tutorial-link">Open source ↗</a><p className="verified">Source checked: {r.lastVerified}</p></div></article>
         )}</div>
       </main>
+      </FeatureGate>
     </AuthGuard>
   );
 }

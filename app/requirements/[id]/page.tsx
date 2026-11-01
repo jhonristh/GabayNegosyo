@@ -12,7 +12,7 @@ import { useAuth } from "../../../lib/auth";
 import { db } from "../../../lib/db";
 import { trackConversion } from "../../../lib/webAnalytics";
 import { resolveObligation, explainApplicability, formatDueLabel } from "../../../lib/ruleEngine";
-import { isPremiumRole } from "../../../lib/authorization";
+import { hasPremiumAccess } from "../../../lib/entitlements";
 import type { RequirementStatus } from "../../../lib/types";
 
 function RequirementDetailInner() {

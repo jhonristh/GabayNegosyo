@@ -26,6 +26,10 @@ export interface User {
   createdAt: string;
   /** True for the browser-only demo session. Demo users never exist in Supabase. */
   isDemo?: boolean;
+  /** Plan decided by the server (public.get_my_entitlement()) for real accounts; "demo" source for demo previews. */
+  entitlement?: import("./entitlements").Entitlement;
+  /** ISO timestamp while the account is deactivated; absent or null when active. */
+  deactivatedAt?: string | null;
 }
 
 export interface BusinessProfile {

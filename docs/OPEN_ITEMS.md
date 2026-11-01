@@ -51,3 +51,13 @@ Nothing here blocks running the app. Everything here blocks calling it productio
 - Run the SQL in [SETUP.md](SETUP.md) (including migrations 003 and 004) and set the Vercel variables.
 - Add `https://<your-site>/reset-password` to Supabase Redirect URLs.
 - Reminders: complete the staged rollout in [REMINDERS_SETUP.md](REMINDERS_SETUP.md). Nothing is sent while `REMINDERS_MODE=off`.
+
+## v0.17 follow-ups
+
+- **Feature tiers:** the brief lists deadline status, progress tracking and the resource library as Premium; the shipped product shows them to Free users. They are still Free (`PENDING_OWNER_TIERS` in `lib/entitlements.ts`). Confirm, then change one line each in `FEATURE_TIER` and wrap the progress and status displays with `canUse`.
+- **Legacy Premium accounts:** review accounts with `role = 'premium'` (see ACCOUNT_AND_ACCESS.md section 4).
+- **Reminder digest:** switch its audience query to `entitlement_for()` before enabling reminders.
+- **Deletion record:** confirm the 30-day purge routine (manual or pg_cron).
+- **Deactivated sign-ins** remain valid Supabase Auth sessions; the database and app block access. A full Auth-level ban would need a server route using the service key. Decide if you want it.
+- **Premium price and provider:** unchanged and undecided; no payment code was added.
+- **Nodemailer advisory:** `npm audit` still reports `nodemailer` 7.x (high). The fix is a breaking major (10.x). It is used only by the reminder email path (`lib/mailer.ts`), which is switched off. Upgrade and test sending before enabling reminders.

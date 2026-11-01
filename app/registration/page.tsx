@@ -5,6 +5,7 @@ import Link from "next/link";
 import AuthGuard from "../../components/AuthGuard";
 import { JourneyHeader, JourneyNext } from "../../components/JourneyStepper";
 import { useAuth } from "../../lib/auth";
+import { hasPremiumAccess } from "../../lib/entitlements";
 import { db } from "../../lib/db";
 import guide from "../../data/businessGuide.json";
 import TaxTableReference from "../../components/TaxTableReference";
@@ -15,7 +16,7 @@ function RegistrationContent() {
   const { user } = useAuth();
   const profile = user ? db.getBusinessProfile(user.id) : null;
   const [path, setPath] = useState<Path>(profile?.hasEmployees ? "with" : "without");
-  const premium = user?.role === "premium" || user?.role === "admin";
+  const premium = hasPremiumAccess(user);
 
   const core = guide.filter((i) => i.stage === "Start a business");
   const employer = guide.filter((i) => i.stage === "If you hire employees");

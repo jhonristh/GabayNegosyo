@@ -3,7 +3,7 @@
 import { useMemo, useState } from "react";
 import { useAuth } from "../lib/auth";
 import { db } from "../lib/db";
-import { assertPremium } from "../lib/authorization";
+import { assertPremiumAccess } from "../lib/authorization";
 import {
   BIR_PENALTY_RATES,
   MANDATORY_DISCLAIMER,
@@ -42,7 +42,7 @@ export default function PenaltyCalculator() {
 
   function calculate() {
     try {
-      assertPremium(user?.role);
+      assertPremiumAccess(user);
     } catch {
       setError("The penalty calculator is a Premium feature.");
       return;

@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useAuth } from "../lib/auth";
+import { hasPremiumAccess } from "../lib/entitlements";
 import type { ReactNode } from "react";
 
 /**
@@ -11,7 +12,7 @@ import type { ReactNode } from "react";
  */
 export default function PremiumGate({ children }: { children: ReactNode }) {
   const { user } = useAuth();
-  const isPremium = user?.role === "premium" || user?.role === "admin";
+  const isPremium = hasPremiumAccess(user);
 
   if (isPremium) return <>{children}</>;
 
@@ -22,7 +23,7 @@ export default function PremiumGate({ children }: { children: ReactNode }) {
         Upgrade to unlock full requirement details, tutorials, the penalty simulator, and email
         reminders.
       </p>
-      <Link href="/account" className="primary-btn premium-lock-btn">
+      <Link href="/premium/checkout" className="primary-btn premium-lock-btn">
         Upgrade to Premium
       </Link>
     </div>

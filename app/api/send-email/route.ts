@@ -2,6 +2,7 @@ import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
 import { mailerConfigured, sendMail } from "../../../lib/mailer";
 import { escapeHtml } from "../../../lib/reminderDigest";
+import { resolveServerAccess } from "../../../lib/entitlements";
 
 /**
  * POST /api/send-email   body: { subject: string, body: string }
@@ -19,7 +20,7 @@ import { escapeHtml } from "../../../lib/reminderDigest";
  *
  * Safety rules baked in — do not remove them, or this becomes an open mail relay:
  *   - caller must be logged in (token verified with Supabase)
- *   - caller must be premium or admin
+ *   - caller must have Premium access (server-side entitlement; admins included) and an active account
  *   - the recipient is ALWAYS the caller's own verified email
  *   - B2: rate limited server-side, per caller, and CANNOT be bypassed by
  *     skipping client code — the limit is enforced here by counting the
@@ -57,7 +58,16 @@ export async function POST(req: Request) {
 
   // Read the role through RLS, using the caller's own token.
   const { data: profile } = await supabase.from("profiles").select("role, is_demo").eq("id", userId).maybeSingle();
-  if (!profile || (profile.role !== "premium" && profile.role !== "admin")) {
+  if (!profile) {
+    return NextResponse.json({ error: "Email reminders are a Premium feature." }, { status: 403 });
+  }
+  // v0.17: the plan comes from the server-side entitlement (admin grants, expiry, revocation) and deactivated accounts are refused.
+  const { data: entRow, error: entError } = await supabase.rpc("get_my_entitlement");
+  const access = resolveServerAccess(profile.role, entRow, entError);
+  if (access.deactivated) {
+    return NextResponse.json({ error: "This account is deactivated." }, { status: 403 });
+  }
+  if (!access.premium) {
     return NextResponse.json({ error: "Email reminders are a Premium feature." }, { status: 403 });
   }
 

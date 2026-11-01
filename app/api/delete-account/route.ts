@@ -1,5 +1,6 @@
 import { NextResponse } from "next/server";
 import { createClient } from "@supabase/supabase-js";
+import { createHash } from "node:crypto";
 import { handleDeleteAccount } from "../../../lib/deleteAccountHandler";
 
 /**
@@ -8,7 +9,9 @@ import { handleDeleteAccount } from "../../../lib/deleteAccountHandler";
  * Server-only. Needs SUPABASE_SERVICE_ROLE_KEY (never NEXT_PUBLIC_, never in the browser).
  * Deleting the auth user cascades to profiles, business_profiles, checklist_progress,
  * reminder_configs, sent_emails and task_progress (all declared `on delete cascade`
- * in database/supabase_setup.sql and migrations/002). Shared content is not touched.
+ * in database/supabase_setup.sql and migrations/002), and the entitlements table (migration 006). Shared content is not touched.
+ * Body: { "confirm": "DELETE" }. The body never names a user: the token decides whose account is deleted.
+ * A minimal record (SHA-256 of the id, role, date; no email or name) is kept for at most 30 days (migration 005).
  */
 export async function POST(req: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -22,6 +25,14 @@ export async function POST(req: Request) {
   }
 
   const admin = createClient(url, serviceKey, { auth: { persistSession: false, autoRefreshToken: false } });
+
+  let input: { confirm?: unknown } = {};
+  try {
+    const parsed = await req.json();
+    if (parsed && typeof parsed === "object") input = { confirm: (parsed as { confirm?: unknown }).confirm };
+  } catch {
+    /* no or invalid body: the handler will refuse for lack of confirmation */
+  }
 
   const result = await handleDeleteAccount(req.headers.get("authorization"), {
     async getUserFromToken(token) {
@@ -38,8 +49,13 @@ export async function POST(req: Request) {
       const { error } = await admin.auth.admin.deleteUser(userId);
       return { error: error ? error.message : null };
     },
+    async recordDeletion(userId, role) {
+      const userRef = createHash("sha256").update(userId).digest("hex");
+      const { error } = await admin.from("account_deletion_log").insert({ user_ref: userRef, role_at_delete: role ?? "unknown" });
+      if (error) console.error("[delete-account] deletion record not written:", error.code ?? "error");
+    },
     now: () => Date.now(),
-  });
+  }, input);
 
   return NextResponse.json(result.body, { status: result.status });
 }
