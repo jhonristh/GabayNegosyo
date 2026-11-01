@@ -1,3 +1,5 @@
+> **Status (v0.17.1): automated reminders are OFF by design.** The first release sends Premium reminders manually through the GabayNegosyo team (see `docs/INTEGRATION_AND_QA_v0.17.md`, section 5). `vercel.json` schedules no cron job, `REMINDERS_MODE` defaults to `off`, and no email provider should be configured. This guide is kept for a later release; before using it, switch the audience to `entitlement_for()` (it still filters on `profiles.role`) and upgrade `nodemailer`.
+
 # Automatic reminder digest (v0.16) — setup
 
 What it does: once a day at **8:00 AM Philippine time**, Vercel Cron calls `/api/cron/send-reminders`.

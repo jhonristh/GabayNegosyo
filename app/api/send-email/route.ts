@@ -57,13 +57,22 @@ export async function POST(req: Request) {
   const userEmail = auth.user.email;
 
   // Read the role through RLS, using the caller's own token.
-  const { data: profile } = await supabase.from("profiles").select("role, is_demo").eq("id", userId).maybeSingle();
+  // deactivated_at is read independently of the entitlement function, so a deactivated account is refused even if that function fails.
+  // If the column does not exist yet (migration 005 not applied) there is no deactivation feature and we read without it.
+  let { data: profile, error: profileError } = await supabase.from("profiles").select("role, is_demo, deactivated_at").eq("id", userId).maybeSingle();
+  if (profileError?.code === "42703") {
+    ({ data: profile, error: profileError } = await supabase.from("profiles").select("role, is_demo").eq("id", userId).maybeSingle());
+  }
   if (!profile) {
     return NextResponse.json({ error: "Email reminders are a Premium feature." }, { status: 403 });
   }
   // v0.17: the plan comes from the server-side entitlement (admin grants, expiry, revocation) and deactivated accounts are refused.
   const { data: entRow, error: entError } = await supabase.rpc("get_my_entitlement");
-  const access = resolveServerAccess(profile.role, entRow, entError);
+  const access = resolveServerAccess(profile.role, entRow, entError, (profile as { deactivated_at?: string | null }).deactivated_at);
+  if (!access.verified) {
+    // Fail closed: never send mail when the plan could not be verified.
+    return NextResponse.json({ error: "We could not verify your plan right now. Please try again in a moment." }, { status: 503 });
+  }
   if (access.deactivated) {
     return NextResponse.json({ error: "This account is deactivated." }, { status: 403 });
   }

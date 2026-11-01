@@ -25,6 +25,15 @@ export default function DeleteAccountSection() {
       </section>
     );
   }
+  if (user.isDemoRecord) {
+    // An old shared demo login stored in the database: protected on the server too (delete route and database functions).
+    return (
+      <section className="checklist-card">
+        <h2>Demo account</h2>
+        <p>This is a shared demo account, so it cannot be deleted or deactivated.</p>
+      </section>
+    );
+  }
 
   const needsPassword = true; // email/password accounts re-enter their password; Google accounts see the sign-in-again hint on failure
   const ready = confirmText.trim() === "DELETE" && !busy;

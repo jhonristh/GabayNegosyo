@@ -330,3 +330,10 @@ Verification in this session: `tests/v0164.test.js` (14 new tests); full suite 1
 - [ ] Apply migrations 005 and 006 in Supabase, then run the manual QA in docs/QA_REPORT.md.
 - [ ] Owner decisions: feature tiers, legacy Premium review, reminder digest audience, deletion-record purge.
 
+## v0.17.1 — review fixes and QA preparation
+
+- [x] Issues 1–5 from the code review fixed and tested.
+- [x] Reminder cron unscheduled; manual-reminder roster function added; docs updated.
+- [x] `docs/INTEGRATION_AND_QA_v0.17.md` written (migration review, QA checklist, release blockers).
+- [ ] Rehearse and apply 005 then 006; run P0 QA; review legacy Premium; confirm no email variables on Vercel.
+

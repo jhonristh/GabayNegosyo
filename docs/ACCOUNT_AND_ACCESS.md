@@ -24,7 +24,7 @@ Verification queries and rollback notes are at the bottom of each file. Run the 
 | Demo access | Browser only (`lib/demoAccounts.ts`), source `demo` | Nobody: it never touches Supabase. |
 
 The plan is computed by `public.entitlement_for()` and returned by `public.get_my_entitlement()`:
-real admin → Premium; active entitlement (not revoked, started, not expired) → Premium; legacy `role = 'premium'` → Premium until an admin reviews it; otherwise expired / cancelled / free. **Expiry needs no job**: the comparison happens each time the plan is read.
+real admin → Premium; active entitlement (not revoked, started, not expired) → Premium; legacy `role = 'premium'` → Premium **only for accounts that have never had an entitlement** (granting moves them into the entitlement system so expiry works); otherwise expired / cancelled / free. **Expiry needs no job**: the comparison happens each time the plan is read.
 
 The browser calls `hasPremiumAccess(user)` and `canUse(user, feature)` from `lib/entitlements.ts`. Moving a feature between plans is one line in `FEATURE_TIER`.
 
@@ -40,7 +40,7 @@ Premium content (documents, steps, penalty text) is part of the app's data files
 | Who | The user (Account → Deactivate), or an admin (with a reason) | The user only (Account → Delete) |
 | Admins / demo | Cannot be deactivated here | Admins cannot self-delete; demo has nothing to delete |
 | Blocks app use | App shows a reactivation screen; restrictive RLS blocks the user's own data | Sign-in is removed |
-| Undo | Log in → **Reactivate**. If an admin deactivated the account, only an admin can reactivate it. | None |
+| Undo | Log in → **Reactivate**. If an admin deactivated the account, only an admin can reactivate it (recorded in `deactivated_by_admin`, which survives the admin's own account being deleted). | None |
 
 Reactivation requires a signed-in session, so it never bypasses authentication. Deactivation does not ban the sign-in at the Supabase Auth level; the database and the app block everything that matters.
 
@@ -65,3 +65,8 @@ Then revoke each from Admin → Users, or leave them if they should stay.
 ## 5. Not done in this release (on purpose)
 
 Email reminder delivery, the cron digest, a payment gateway and final pricing remain deferred. The digest still selects users by `role` (`app/api/cron/send-reminders/route.ts`); **before** turning reminders on, change it to use `entitlement_for()` so admin-granted Premium users are included.
+
+
+## 6. Review fixes in v0.17.1
+
+The admin Premium/Free filter uses the computed plan; legacy Premium cannot outlive an expiring grant; demo accounts are refused by the database functions and the delete route; `/api/send-email` fails closed (503) when the plan cannot be verified; admin-imposed deactivation is a stored flag. Pre-release review and QA plan: [INTEGRATION_AND_QA_v0.17.md](INTEGRATION_AND_QA_v0.17.md).

@@ -85,7 +85,9 @@ test("migration 004 is service-role only", () => {
   assert.ok(!/grant .* to (anon|authenticated)/i.test(sql));
 });
 
-test("vercel cron points at the route once a day", () => {
+test("no scheduled reminder job is configured (v0.17.1: Premium reminders are sent manually by the team)", () => {
+  // The route and its code remain for a future release. To schedule it again, add
+  // { "path": "/api/cron/send-reminders", "schedule": "0 0 * * *" } to vercel.json crons.
   const cfg = JSON.parse(read("vercel.json"));
-  assert.deepStrictEqual(cfg.crons, [{ path: "/api/cron/send-reminders", schedule: "0 0 * * *" }]);
+  assert.deepStrictEqual(cfg.crons, []);
 });

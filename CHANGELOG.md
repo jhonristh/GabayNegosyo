@@ -2,6 +2,21 @@
 
 Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V0.3_STATUS.md`, `V0.10_FIXES.md`, `V0.12_CHANGES.md`, `V0.13_CHANGES.md`, `QA_REPORT.md` and `OWNER_REVIEW_v0.16.4.md`. "Not verified" means the environment used could not check it (no browser, no live Supabase, no email send, often no `next build`).
 
+## v0.17.1
+
+Review fixes on v0.17.0. Client-facing content is unchanged. Migrations 005 and 006 were edited in place and remain safe to re-run if an earlier copy was applied.
+
+- Admin Premium/Free filter now uses the computed plan, so newly granted Premium accounts appear under Premium (they keep `role = 'free'`).
+- Legacy `role = 'premium'` can no longer outlive an expiring grant; granting Premium moves a legacy account into the entitlement system and records that in the audit log.
+- Demo accounts are refused by `deactivate_my_account()` and `admin_set_account_status()`, and by `/api/delete-account` when the database profile is flagged `is_demo`. The app now loads `is_demo` and hides the lifecycle actions.
+- `/api/send-email` fails closed: if the plan cannot be verified it returns 503; the profile's own `deactivated_at` is read independently. The role fallback remains only for "function not installed".
+- Admin-imposed deactivation is stored in `deactivated_by_admin`, so deleting the admin's account can no longer let the user reactivate themselves.
+- Deactivated accounts can no longer edit their profile row.
+- New read-only `admin_premium_roster()` lists current Premium users from the entitlement system for the manual reminder workflow.
+- `vercel.json` no longer schedules the reminder cron (Premium reminders are manual in the first release). The route and code remain, disabled.
+- New `docs/INTEGRATION_AND_QA_v0.17.md`: migration review, safe sequence, verification SQL, lifecycle and entitlement review, QA checklist, release blockers.
+- 206 of 206 tests pass (`npm test`). Not verified: migrations on a database, browser or device behaviour.
+
 ## v0.17.0
 
 Production functionality pass on v0.16.5. Client-facing content (all files in `data/`) is unchanged.

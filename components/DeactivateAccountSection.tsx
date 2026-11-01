@@ -12,7 +12,7 @@ export default function DeactivateAccountSection() {
   const openerRef = useRef<HTMLButtonElement>(null);
   const [busy, setBusy] = useState(false);
   const [error, setError] = useState<string | null>(null);
-  if (!user || user.isDemo || user.role === "admin") return null;
+  if (!user || user.isDemo || user.isDemoRecord || user.role === "admin") return null;
 
   function open() {
     setError(null);

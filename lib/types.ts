@@ -28,6 +28,8 @@ export interface User {
   isDemo?: boolean;
   /** Plan decided by the server (public.get_my_entitlement()) for real accounts; "demo" source for demo previews. */
   entitlement?: import("./entitlements").Entitlement;
+  /** True when the database profile itself is flagged as a demo account (old Supabase demo logins). Such accounts cannot be deactivated or deleted. */
+  isDemoRecord?: boolean;
   /** ISO timestamp while the account is deactivated; absent or null when active. */
   deactivatedAt?: string | null;
 }

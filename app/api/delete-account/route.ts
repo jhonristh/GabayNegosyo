@@ -45,6 +45,10 @@ export async function POST(req: Request) {
       const { data } = await admin.from("profiles").select("role").eq("id", userId).maybeSingle();
       return (data?.role as string | undefined) ?? null;
     },
+    async isDemoAccount(userId) {
+      const { data } = await admin.from("profiles").select("is_demo").eq("id", userId).maybeSingle();
+      return Boolean(data?.is_demo);
+    },
     async deleteAuthUser(userId) {
       const { error } = await admin.auth.admin.deleteUser(userId);
       return { error: error ? error.message : null };

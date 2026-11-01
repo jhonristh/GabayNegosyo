@@ -6,7 +6,7 @@
  *  - Only the identity proven by the bearer token can be deleted; there is no user-id input.
  *  - The token must have been issued by a recent sign-in (re-authentication window).
  *  - Admins cannot self-delete here (prevents locking the project out of its last admin).
- *  - Demo identities are refused.
+ *  - Demo identities are refused (browser demo ids by prefix; database profiles flagged is_demo by lookup).
  *  - v0.17: the typed confirmation word DELETE is re-checked here, so a request made without the dialog is refused.
  *  - v0.17: a minimal deletion record (hashed id, role, date; purged after 30 days) is written BEFORE the delete.
  *    If that record cannot be written (e.g. migration 005 not applied) the deletion still proceeds: the user's
@@ -17,6 +17,8 @@ export const REAUTH_WINDOW_MS = 10 * 60 * 1000;
 export interface DeleteDeps {
   getUserFromToken(token: string): Promise<{ id: string; lastSignInAt: string | null } | null>;
   getRole(userId: string): Promise<string | null>;
+  /** Optional: true when the database profile is flagged is_demo. Such accounts are refused. */
+  isDemoAccount?(userId: string): Promise<boolean>;
   deleteAuthUser(userId: string): Promise<{ error: string | null }>;
   /** Optional: records {hashed id, role, date}. Failures are ignored by the handler. */
   recordDeletion?(userId: string, role: string | null): Promise<void>;
@@ -56,6 +58,10 @@ export async function handleDeleteAccount(
   const role = await deps.getRole(caller.id);
   if (role === "admin") {
     return { status: 403, body: { error: "Admin accounts cannot be deleted from here. Ask another admin to change your role first.", code: "admin_protected" } };
+  }
+
+  if (await deps.isDemoAccount?.(caller.id)) {
+    return { status: 403, body: { error: "Demo accounts cannot be deleted.", code: "demo" } };
   }
 
   try {

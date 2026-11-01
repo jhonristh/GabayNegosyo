@@ -90,16 +90,39 @@ test("planLabel is honest about expired and revoked Premium", async () => {
 });
 
 // ── Server-side access decision (send-email) ───────────────────────────
-test("server access: entitlement decides; deactivated is refused; errors fall back to the stored role only", async () => {
+test("server access: entitlement decides; expired grants and deactivation are refused", async () => {
   const { resolveServerAccess } = await load("../lib/entitlements.ts");
-  assert.deepStrictEqual(resolveServerAccess("free", [{ status: "premium", source: "admin_grant", expires_at: FUTURE, deactivated_at: null }], null), { premium: true, deactivated: false });
-  assert.deepStrictEqual(resolveServerAccess("premium", [{ status: "expired", source: "admin_grant", expires_at: PAST, deactivated_at: null }], null), { premium: false, deactivated: false });
-  assert.deepStrictEqual(resolveServerAccess("free", [{ status: "premium", source: "admin_grant", expires_at: PAST, deactivated_at: null }], null), { premium: false, deactivated: false });
-  assert.strictEqual(resolveServerAccess("premium", [{ status: "premium", source: "legacy_role", expires_at: null, deactivated_at: PAST }], null).deactivated, true);
-  // function missing (migration 006 not applied): fall back to the stored role, which is the previous behaviour
-  assert.deepStrictEqual(resolveServerAccess("premium", null, { code: "PGRST202" }), { premium: true, deactivated: false });
-  assert.deepStrictEqual(resolveServerAccess("free", null, { code: "PGRST202" }), { premium: false, deactivated: false });
-  assert.deepStrictEqual(resolveServerAccess(undefined, "garbage", null), { premium: false, deactivated: false });
+  const row = (o) => [{ status: "premium", source: "admin_grant", expires_at: FUTURE, deactivated_at: null, ...o }];
+  assert.deepStrictEqual(resolveServerAccess("free", row({}), null), { premium: true, deactivated: false, verified: true });
+  assert.deepStrictEqual(resolveServerAccess("premium", row({ status: "expired", expires_at: PAST }), null), { premium: false, deactivated: false, verified: true });
+  assert.strictEqual(resolveServerAccess("free", row({ expires_at: PAST }), null).premium, false);
+  assert.deepStrictEqual(resolveServerAccess("premium", row({ source: "legacy_role", expires_at: null, deactivated_at: PAST }), null), { premium: false, deactivated: true, verified: true });
+  // the profile's own deactivated_at is honoured even if the entitlement row says active
+  assert.strictEqual(resolveServerAccess("free", row({}), null, PAST).deactivated, true);
+  assert.strictEqual(resolveServerAccess("free", row({}), null, PAST).premium, false);
+});
+
+test("server access FAILS CLOSED when the entitlement cannot be verified (Issue 4)", async () => {
+  const { resolveServerAccess } = await load("../lib/entitlements.ts");
+  for (const err of [{ code: "XX000", message: "internal error" }, { message: "network down" }, new Error("timeout"), { code: "42501", message: "permission denied" }]) {
+    const r = resolveServerAccess("premium", null, err);
+    assert.strictEqual(r.premium, false, JSON.stringify(err));
+    assert.strictEqual(r.verified, false, JSON.stringify(err));
+  }
+  // an unexpected-but-successful shape is also unverified, never a role fallback
+  assert.deepStrictEqual(resolveServerAccess("premium", "garbage", null), { premium: false, deactivated: false, verified: false });
+  assert.deepStrictEqual(resolveServerAccess("premium", [], null), { premium: false, deactivated: false, verified: false });
+  // a deactivated profile stays deactivated even when verification fails
+  assert.strictEqual(resolveServerAccess("premium", null, { code: "XX000" }, PAST).deactivated, true);
+});
+
+test("server access: the role fallback exists ONLY for 'function not installed' and never for deactivated accounts", async () => {
+  const { resolveServerAccess } = await load("../lib/entitlements.ts");
+  assert.deepStrictEqual(resolveServerAccess("premium", null, { code: "PGRST202" }), { premium: true, deactivated: false, verified: true });
+  assert.deepStrictEqual(resolveServerAccess("free", null, { message: "Could not find the function public.get_my_entitlement" }), { premium: false, deactivated: false, verified: true });
+  const legacyDeactivated = resolveServerAccess("premium", null, { code: "PGRST202" }, PAST);
+  assert.strictEqual(legacyDeactivated.premium, false);
+  assert.strictEqual(legacyDeactivated.deactivated, true);
 });
 
 test("send-email route uses the server entitlement and refuses deactivated accounts", () => {
@@ -107,6 +130,9 @@ test("send-email route uses the server entitlement and refuses deactivated accou
   assert.ok(route.includes('rpc("get_my_entitlement")') && route.includes("resolveServerAccess") && route.includes("lib/entitlements"));
   assert.ok(route.indexOf("resolveServerAccess(") < route.indexOf("req.json()"), "access is decided before the body is read");
   assert.ok(/deactivated/.test(route));
+  assert.ok(route.includes("deactivated_at") && route.includes("profile as { deactivated_at"), "the profile's own deactivation flag is read independently");
+  assert.ok(route.includes("!access.verified") && route.includes("status: 503"), "fail closed when the plan cannot be verified");
+  assert.ok(route.indexOf("!access.verified") < route.indexOf("!access.premium"));
 });
 
 // ── Permanent deletion ─────────────────────────────────────────────────
@@ -208,6 +234,7 @@ test("deactivated accounts do not load saved data into the app", () => {
 });
 
 // ── SQL migrations (static checks; syntax was parsed with the PostgreSQL parser, not executed) ──
+const noComments = (sql) => sql.replace(/--.*$/gm, "");
 const m5 = () => read("database", "migrations", "005_account_lifecycle.sql");
 const m6 = () => read("database", "migrations", "006_entitlements.sql");
 
@@ -266,7 +293,10 @@ test("migrations: deactivated accounts lose access to their own data via RESTRIC
   const sql = m5();
   for (const t of ["business_profiles", "checklist_progress", "task_progress", "reminder_configs", "sent_emails"]) assert.ok(sql.includes(`'${t}'`), t);
   assert.ok(/as restrictive for all to authenticated using \(public\.is_account_active\(\)\)/.test(sql));
-  assert.ok(!/policy[^;]*on public\.profiles as restrictive/i.test(sql));
+  // profiles gets a restrictive policy for UPDATE only; reading must stay allowed for the reactivation screen
+  const profilePolicies = noComments(sql).match(/create policy[^;]*on public\.profiles as restrictive[^;]*/gi) ?? [];
+  assert.strictEqual(profilePolicies.length, 1);
+  assert.ok(/for update/i.test(profilePolicies[0]) && !/for (select|all)/i.test(profilePolicies[0]));
   assert.ok(/deactivated_by is not null|by_admin is not null/.test(sql) && /deactivated by an administrator/.test(sql));
   assert.ok(/if r = 'admin' then raise exception/.test(sql), "admins cannot self-deactivate");
 });
@@ -375,4 +405,75 @@ test("client-facing content datasets keep their shape (this release changes beha
   const requirements = require("../data/requirements.json");
   assert.strictEqual(requirements.length, 24);
   assert.ok(require("../data/resources.json").length > 0 && require("../data/tutorials.json").length > 0);
+});
+
+// ── Review fixes: Issues 1–5 ───────────────────────────────────────────
+const fnBody = (sql, name) => {
+  const start = sql.indexOf(`create or replace function public.${name}(`);
+  assert.ok(start > -1, `${name} exists`);
+  return noComments(sql.slice(start, sql.indexOf("$$;", sql.indexOf("as $$", start)) + 3));
+};
+
+test("Issue 1: the admin directory filters on the COMPUTED plan, not profiles.role", () => {
+  const body = fnBody(m6(), "admin_user_directory");
+  assert.ok(!/p\.role\s*=\s*p_role/.test(body), "no filter against the stored role");
+  assert.ok(body.includes("public.entitlement_for(p.id)"));
+  assert.ok(/p_role = 'premium' and b_role <> 'admin' and b_status = 'premium'/.test(body));
+  assert.ok(/p_role = 'free'\s+and b_role <> 'admin' and b_status <> 'premium'/.test(body));
+  assert.ok(/p_role = 'admin'\s+and b_role = 'admin'/.test(body));
+  assert.ok(body.includes("(select count(*) from filtered)"), "the total reflects the filter");
+});
+
+test("Issue 2: legacy role='premium' cannot outlive an expiring grant", () => {
+  const ef = fnBody(m6(), "entitlement_for");
+  assert.ok(/prole = 'premium' and not exists \(select 1 from public\.entitlements x where x\.user_id = p_user\)/.test(ef), "legacy fallback only for accounts never placed under entitlements");
+  const grant = fnBody(m6(), "admin_grant_premium");
+  assert.ok(/if trole = 'premium' then\s+update public\.profiles set role = 'free' where id = p_target/.test(grant), "granting moves a legacy account into the entitlement system");
+  assert.ok(grant.includes("legacy_role_migrated"), "the migration is audited");
+  const revoke = fnBody(m6(), "admin_revoke_premium");
+  assert.ok(/update public\.profiles set role = 'free'/.test(revoke));
+});
+
+test("Issue 3: demo accounts are refused by the database functions, not just the UI", () => {
+  const five = m5();
+  assert.ok(/select role, is_demo into r, d from public\.profiles/.test(fnBody(five, "deactivate_my_account")));
+  assert.ok(/if coalesce\(d, false\) then raise exception 'Demo accounts cannot be deactivated'/.test(fnBody(five, "deactivate_my_account")));
+  assert.ok(/if coalesce\(tdemo, false\) then raise exception 'Demo accounts cannot be deactivated'/.test(fnBody(five, "admin_set_account_status")));
+  assert.ok(/Demo accounts do not use entitlements/.test(fnBody(m6(), "admin_grant_premium")));
+});
+
+test("Issue 3: the app loads is_demo and hides lifecycle actions; the delete route refuses flagged accounts", async () => {
+  const auth = read("lib", "auth.tsx");
+  assert.ok(auth.includes('"id, email, name, role, created_at, deactivated_at, is_demo"') && auth.includes("isDemoRecord"));
+  assert.ok(read("components", "DeactivateAccountSection.tsx").includes("user.isDemoRecord"));
+  assert.ok(read("components", "DeleteAccountSection.tsx").includes("user.isDemoRecord"));
+  assert.ok(read("app", "api", "delete-account", "route.ts").includes("isDemoAccount"));
+  const { handleDeleteAccount } = await load("../lib/deleteAccountHandler.ts");
+  const a = deleteDeps({ isDemoAccount: async () => true });
+  const r = await handleDeleteAccount("Bearer good", a.deps, { confirm: "DELETE" });
+  assert.strictEqual(r.status, 403);
+  assert.strictEqual(r.body.code, "demo");
+  assert.deepStrictEqual(a.calls, [], "no record written and nothing deleted");
+});
+
+test("Issue 5: admin-imposed deactivation is a stored fact, independent of the admin's account", () => {
+  const five = m5();
+  assert.ok(/add column if not exists deactivated_by_admin boolean not null default false/.test(five));
+  const react = fnBody(five, "reactivate_my_account");
+  assert.ok(react.includes("deactivated_by_admin") && !/by_admin uuid|if by_admin is not null/.test(react), "reactivation reads the flag, not the clearable foreign key");
+  assert.ok(/deactivated_by_admin = true/.test(fnBody(five, "admin_set_account_status")));
+  assert.ok(/deactivated_by_admin = false/.test(fnBody(five, "deactivate_my_account")));
+  assert.ok(/update public\.profiles set deactivated_by_admin = true\s+where deactivated_at is not null and deactivated_by is not null/.test(noComments(five)), "additive backfill of existing admin deactivations");
+});
+
+test("a deactivated account cannot edit its own profile row either", () => {
+  assert.ok(/create policy "profiles: active account only \(update\)"\s+on public\.profiles as restrictive for update/.test(m5()));
+});
+
+test("manual reminder audience comes from the entitlement, and the automated path stays off", () => {
+  const roster = fnBody(m6(), "admin_premium_roster");
+  assert.ok(roster.includes("entitlement_for(p.id)") && roster.includes("ef.status = 'premium'"));
+  assert.ok(/not p\.is_demo/.test(roster) && /p\.deactivated_at is null/.test(roster) && /reminders_unsubscribed_at is null/.test(roster) && /p\.role <> 'admin'/.test(roster));
+  assert.ok(/if not public\.is_admin\(\)/.test(roster));
+  assert.ok(read("app", "api", "cron", "send-reminders", "route.ts").includes('process.env.REMINDERS_MODE ?? "off"'));
 });

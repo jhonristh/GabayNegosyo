@@ -1,5 +1,5 @@
 -- GabayNegosyo v0.17 — Premium entitlements (admin-granted now, payment-ready later).
--- Run AFTER 005_account_lifecycle.sql. Safe to re-run.
+-- Run AFTER 005_account_lifecycle.sql. Safe to re-run: functions are replaced in place; tables and policies are created only if missing.
 --
 -- Separation of concerns:
 --   account      : auth.users + public.profiles (identity, role = free | premium | admin)
@@ -59,8 +59,10 @@ begin
     return query select 'premium'::text, ent.source, ent.expires_at; return;
   end if;
 
-  -- Accounts upgraded before entitlements existed (profiles.role = 'premium') keep access until an admin reviews or revokes them.
-  if prole = 'premium' then
+  -- Accounts upgraded before entitlements existed (profiles.role = 'premium') keep access until an admin reviews or revokes them,
+  -- BUT only while they have never been placed under the entitlement system. Once any entitlement row exists for the user
+  -- (granted, expired or revoked), that history governs and the old role can no longer extend or restore Premium.
+  if prole = 'premium' and not exists (select 1 from public.entitlements x where x.user_id = p_user) then
     return query select 'premium'::text, 'legacy_role'::text, null::timestamptz; return;
   end if;
 
@@ -117,8 +119,13 @@ begin
   insert into public.entitlements (user_id, source, expires_at, granted_by, grant_reason)
   values (p_target, 'admin_grant', p_expires, me, btrim(p_reason))
   returning id into new_id;
+  -- Move a legacy role='premium' account fully into the entitlement system so its expiry is honoured.
+  if trole = 'premium' then
+    update public.profiles set role = 'free' where id = p_target;
+  end if;
   perform public.log_admin_action(me, 'grant_premium', p_target,
-          jsonb_build_object('expires_at', p_expires, 'reason', btrim(p_reason), 'entitlement_id', new_id));
+          jsonb_build_object('expires_at', p_expires, 'reason', btrim(p_reason), 'entitlement_id', new_id,
+                             'legacy_role_migrated', trole = 'premium'));
   return new_id;
 end;
 $$;
@@ -161,6 +168,10 @@ revoke execute on function public.admin_revoke_premium(uuid, text) from public, 
 grant  execute on function public.admin_revoke_premium(uuid, text) to authenticated;
 
 -- Admin: one page of the user directory with plan and status. Real admins only; bounded page size.
+-- The role filter works on the COMPUTED plan, not on profiles.role (a newly granted Premium account keeps role = 'free'):
+--   'admin'   → role = admin
+--   'premium' → computed plan is Premium and the account is not an admin
+--   'free'    → not an admin and the computed plan is not Premium (free, expired or cancelled)
 create or replace function public.admin_user_directory(p_limit integer, p_offset integer, p_role text, p_search text)
 returns table (
   id uuid, email text, name text, role text, is_demo boolean, created_at timestamptz,
@@ -181,15 +192,24 @@ begin
   end if;
   return query
   with base as (
-    select p.* from public.profiles p
-     where (p_role is null or p.role = p_role)
-       and (needle = '' or position(needle in lower(p.email)) > 0 or position(needle in lower(p.name)) > 0)
+    select p.id as b_id, p.email as b_email, p.name as b_name, p.role as b_role, p.is_demo as b_demo,
+           p.created_at as b_created, p.deactivated_at as b_deact,
+           ef.status as b_status, ef.source as b_source, ef.expires_at as b_expires
+      from public.profiles p
+      cross join lateral public.entitlement_for(p.id) ef
+     where (needle = '' or position(needle in lower(p.email)) > 0 or position(needle in lower(p.name)) > 0)
+  ),
+  filtered as (
+    select * from base
+     where p_role is null
+        or (p_role = 'admin'   and b_role = 'admin')
+        or (p_role = 'premium' and b_role <> 'admin' and b_status = 'premium')
+        or (p_role = 'free'    and b_role <> 'admin' and b_status <> 'premium')
   )
-  select b.id, b.email, b.name, b.role, b.is_demo, b.created_at, b.deactivated_at,
-         ef.status, ef.source, ef.expires_at, (select count(*) from base)
-    from base b
-    cross join lateral public.entitlement_for(b.id) ef
-   order by b.created_at desc
+  select f.b_id, f.b_email, f.b_name, f.b_role, f.b_demo, f.b_created, f.b_deact,
+         f.b_status, f.b_source, f.b_expires, (select count(*) from filtered)
+    from filtered f
+   order by f.b_created desc
    limit lim offset off;
 end;
 $$;
@@ -218,6 +238,30 @@ $$;
 revoke execute on function public.admin_list_audit_log(integer, integer) from public, anon;
 grant  execute on function public.admin_list_audit_log(integer, integer) to authenticated;
 
+-- Admin: who currently has Premium. Read-only. This is the audience for the MANUAL reminder workflow (and for any future
+-- automated one): it uses the computed entitlement, never profiles.role. Excludes demo and deactivated accounts and anyone
+-- who unsubscribed from reminders. Admins are excluded because they are not customers.
+create or replace function public.admin_premium_roster()
+returns table (user_id uuid, email text, name text, plan_source text, plan_expires_at timestamptz)
+language plpgsql
+stable
+security definer
+set search_path = ''
+as $$
+begin
+  if not public.is_admin() then raise exception 'Admins only' using errcode = '42501'; end if;
+  return query
+  select p.id, p.email, p.name, ef.source, ef.expires_at
+    from public.profiles p
+    cross join lateral public.entitlement_for(p.id) ef
+   where ef.status = 'premium' and p.role <> 'admin' and not p.is_demo
+     and p.deactivated_at is null and p.reminders_unsubscribed_at is null
+   order by p.email;
+end;
+$$;
+revoke execute on function public.admin_premium_roster() from public, anon;
+grant  execute on function public.admin_premium_roster() to authenticated;
+
 -- Remove the self-service demo upgrade: no ordinary user can promote their own account any more.
 -- (Deploy the v0.17 app first or at the same time; the old app's "Upgrade now (demo)" button will simply report failure.)
 drop function if exists public.upgrade_to_premium_demo();
@@ -228,7 +272,8 @@ drop function if exists public.upgrade_to_premium_demo();
 -- 3) As a normal user:  select public.admin_grant_premium('<any uuid>', null, 'test');           -- ERROR: Admins only
 -- 4) As the real admin: select public.admin_grant_premium('<TEST user uuid>', now() + interval '7 days', 'QA test');
 --                       select * from public.admin_list_audit_log(10, 0);                       -- shows grant_premium
--- 5) Review legacy Premium:  select email, role from public.profiles where role = 'premium' and not is_demo;
+-- 5) Review legacy Premium:  select email, created_at from public.profiles where role = 'premium' and not is_demo;   (see docs/INTEGRATION_AND_QA_v0.17.md section 3)
+-- 6) As the real admin:       select * from public.admin_user_directory(20, 0, 'premium', null);   -- lists accounts granted Premium even though their role is 'free'
 --
 -- Rollback: drop the functions above and `drop table public.entitlements;` (this removes grants, not accounts).
 -- The dropped upgrade_to_premium_demo() is intentionally not restored.

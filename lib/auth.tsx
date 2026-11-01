@@ -70,7 +70,7 @@ async function loadUser(session: Session): Promise<User> {
   const supabase = getSupabase();
   const { data: profile } = await supabase
     .from("profiles")
-    .select("id, email, name, role, created_at, deactivated_at")
+    .select("id, email, name, role, created_at, deactivated_at, is_demo")
     .eq("id", session.user.id)
     .maybeSingle();
 
@@ -82,6 +82,7 @@ async function loadUser(session: Session): Promise<User> {
     role: (profile?.role as Role) ?? "free",
     createdAt: profile?.created_at ?? session.user.created_at,
     deactivatedAt: (profile as { deactivated_at?: string | null } | null)?.deactivated_at ?? null,
+    isDemoRecord: Boolean((profile as { is_demo?: boolean } | null)?.is_demo),
   };
 
   // The plan is decided by the server (migration 006). If that function is not installed yet, fall back to the
@@ -302,7 +303,7 @@ export function AuthProvider({ children }: { children: ReactNode }) {
 
   async function deleteAccount(confirm: string, password?: string): Promise<{ ok: boolean; error?: string }> {
     // Demo mode must never reach the real deletion endpoint.
-    if (!user || user.isDemo) return { ok: false, error: "Demo accounts are not real. Use Reset demo data instead." };
+    if (!user || user.isDemo || user.isDemoRecord) return { ok: false, error: "Demo accounts are not real. Use Reset demo data instead." };
     if (confirm.trim() !== "DELETE") return { ok: false, error: "Type DELETE to confirm." };
     const supabase = getSupabase();
     // Re-authenticate (email/password accounts) so a stolen open tab cannot delete the account.
@@ -336,12 +337,13 @@ export function AuthProvider({ children }: { children: ReactNode }) {
   function lifecycleError(message: string | undefined): string {
     if (message && /administrator/i.test(message)) return "An administrator deactivated this account, so only an administrator can reactivate it.";
     if (message && /admin accounts/i.test(message)) return "Admin accounts cannot be deactivated here.";
+    if (message && /demo accounts/i.test(message)) return "Demo accounts cannot be deactivated.";
     if (message && /could not find the function|does not exist/i.test(message)) return "Account deactivation is not set up on this site yet. Nothing was changed.";
     return "We could not complete that. Nothing was changed. Please try again.";
   }
 
   async function deactivateAccount(): Promise<{ ok: boolean; error?: string }> {
-    if (!user || user.isDemo) return { ok: false, error: "Demo accounts are not real. Use Reset demo data instead." };
+    if (!user || user.isDemo || user.isDemoRecord) return { ok: false, error: "Demo accounts are not real. Use Reset demo data instead." };
     const supabase = getSupabase();
     const { error } = await supabase.rpc("deactivate_my_account");
     if (error) return { ok: false, error: lifecycleError(error.message) };

@@ -116,22 +116,47 @@ export function planLabel(user: AccessSubject | null | undefined): string {
   return "Free";
 }
 
+export interface ServerAccess {
+  premium: boolean;
+  deactivated: boolean;
+  /** False when the plan could not be verified. Callers MUST refuse the action (fail closed). */
+  verified: boolean;
+}
+
+function isMissingFunction(error: unknown): boolean {
+  if (!error || typeof error !== "object") return false;
+  const e = error as { code?: unknown; message?: unknown };
+  return e.code === "PGRST202" || (typeof e.message === "string" && /could not find the function|does not exist/i.test(e.message));
+}
+
 /**
  * Server-side decision for API routes (e.g. /api/send-email). Inputs come from the CALLER'S OWN token:
- * the profile role read through row-level security and the result of public.get_my_entitlement().
- * If the entitlement function is unavailable (migration 006 not applied) it falls back to the stored role,
- * which can never grant more than the previous behaviour did.
+ * the profile role and deactivated_at read through row-level security, and the result of public.get_my_entitlement().
+ *
+ * FAILS CLOSED: if the entitlement cannot be verified for any reason other than "the function is not installed yet"
+ * (migration 006 not applied), `verified` is false and the caller must refuse. Only in that one rollout case does it fall back
+ * to the stored role, and even then an account whose own profile row says it is deactivated is never allowed.
  */
 export function resolveServerAccess(
   role: string | null | undefined,
   entitlementRow: unknown,
-  entitlementError: unknown
-): { premium: boolean; deactivated: boolean } {
+  entitlementError: unknown,
+  profileDeactivatedAt?: string | null
+): ServerAccess {
+  const profileDeactivated = typeof profileDeactivatedAt === "string" && profileDeactivatedAt !== "";
   const parsed = entitlementError ? null : parseEntitlementRow(entitlementRow);
   if (parsed) {
     const exp = parsed.entitlement.expiresAt;
     const expired = exp !== null && Date.parse(exp) <= Date.now();
-    return { premium: parsed.entitlement.status === "premium" && !expired, deactivated: parsed.deactivatedAt !== null };
+    const deactivated = parsed.deactivatedAt !== null || profileDeactivated;
+    return { premium: !deactivated && parsed.entitlement.status === "premium" && !expired, deactivated, verified: true };
   }
-  return { premium: entitlementFromRole(role as Role | undefined).status === "premium", deactivated: false };
+  if (entitlementError && isMissingFunction(entitlementError)) {
+    return {
+      premium: !profileDeactivated && entitlementFromRole(role as Role | undefined).status === "premium",
+      deactivated: profileDeactivated,
+      verified: true,
+    };
+  }
+  return { premium: false, deactivated: profileDeactivated, verified: false };
 }
