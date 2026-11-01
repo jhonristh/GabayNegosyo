@@ -2,6 +2,34 @@
 
 Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V0.3_STATUS.md`, `V0.10_FIXES.md`, `V0.12_CHANGES.md`, `V0.13_CHANGES.md`, `QA_REPORT.md` and `OWNER_REVIEW_v0.16.4.md`. "Not verified" means the environment used could not check it (no browser, no live Supabase, no email send, often no `next build`).
 
+## v0.17.0
+
+Production functionality pass on v0.16.5. Client-facing content (all files in `data/`) is unchanged.
+
+**Account lifecycle**
+- Temporary deactivation and reactivation (Account → Deactivate). Data is kept; a deactivated account sees only a reactivation screen, and restrictive RLS blocks its own data. Admins can deactivate with a reason; only an admin can lift that.
+- Permanent deletion now re-checks the typed `DELETE` on the server, writes a minimal 30-day deletion record (hashed id, role, date; no email or name) before deleting, and keeps the 10-minute fresh-login rule. Dialog focus returns to its button.
+- New migration `005_account_lifecycle.sql`.
+
+**Premium entitlements**
+- Plan is decided on the server (`get_my_entitlement()`), with grant, expiry, revocation, source and reason. Expired or revoked Premium falls back to Free automatically. Demo Premium is a separate, browser-only source.
+- `upgrade_to_premium_demo()` and the self-service upgrade button are removed; the Premium page now explains that an administrator turns Premium on.
+- Central module `lib/entitlements.ts` (`hasPremiumAccess`, `canUse`, `FEATURE_TIER`); scattered role checks replaced. `/api/send-email` uses the server entitlement and refuses deactivated accounts.
+- New migration `006_entitlements.sql`.
+
+**Admin**
+- Users page: search, plan and status, Grant/Revoke Premium (optional expiry, reason required), Deactivate/Reactivate. New Audit log page. Profile sync is now audited.
+
+**PWA / UX**
+- Manifest gains `id`, `scope`, `lang`, categories and no longer locks orientation to portrait. Offline/online banner.
+
+**Security**
+- Next.js raised from 16.3.5 to 16.4.3 (`npm audit` reported advisories against 16.0.0–16.4.0, one critical) along with `sharp` and `source-map-js` patch releases. Typecheck, tests and the production build pass on it. One advisory remains: `nodemailer` 7.x (high); its fix is a breaking major upgrade (10.x), so it was not forced. Nodemailer is used only by the deferred reminder email code. Upgrade and test it before turning reminders on.
+
+**Tests and verification**
+- 197 of 197 tests (162 before, one merged, 36 new). Five older assertions were updated on purpose (self-upgrade removed; delete now needs the confirmation word). Not verified: running the migrations on a database, browser/device behaviour, screen readers.
+- Deferred, unchanged: reminder delivery and cron, payments and pricing, content verification. Three features the brief marks Premium (deadline status, progress tracking, resource library) are left Free pending owner confirmation.
+
 ## v0.16.5
 
 Assessment-driven fixes on v0.16.4. No feature, route, auth, data or SQL changes.
@@ -105,3 +133,5 @@ Assessment-driven fixes on v0.16.4. No feature, route, auth, data or SQL changes
 - V0 scope complete: landing, auth, 7-step wizard → rule engine → checklist, dashboard, requirement detail, Learning Hub, Resource library, deadlines and reminders, penalty simulator, Free/Premium/Admin roles, admin CRUD, installable PWA.
 - Content migration from the reference workbook (26 sheets): real wizard flow, Quezon City barangay-to-RDO lookup, 22 BIR requirements tagged by `contentSource`, 13 BIR form PDFs, and a `not_specified` penalty type so the simulator never invents numbers.
 - Design system v3 replaced a rejected gradient draft; production-readiness pass added a custom 404, metadata, Open Graph image, `robots.txt` and a dynamic sitemap.
+
+
