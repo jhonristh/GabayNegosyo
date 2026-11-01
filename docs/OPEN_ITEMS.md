@@ -33,6 +33,11 @@ Nothing here blocks running the app. Everything here blocks calling it productio
 - **BIR form PDFs** (`data/birForms.json`, `birConditions.json`, `resources.json`): most file names carry a January 2018 version date (1701A, 1701Q, 1601-C, 0619-E, 1604-C, 1604-E, 2551Q, 2000, 1706, 1800), 1601-EQ January 2019; only 1901, 1905, 1900 and 1906 carry October 2025. Confirm each is current on bir.gov.ph. Test the preview in a browser on at least one form.
 - **Resource library additions:** the DTI, BMBE and ORUS links (`bnrs.dti.gov.ph`, `bmbe.dti.gov.ph`, `orus.bir.gov.ph`) were added from knowledge, not checked. The BMBE tutorial video was left out (the library accepts only government links). Resources without a published URL point to agency home pages. Their "source checked" date means "added", not "verified".
 
+## Freshness and deployment (v0.16.5)
+
+- **Dataset refresh:** the newest `lastVerified` date in `data/requirements.json` is 2026-09-20 and the landing page shows it. Re-check deadlines, penalties and links against the agencies, then update the dates. v0.16.5 did not re-verify anything.
+- **Contact link:** set `NEXT_PUBLIC_CONTACT_EMAIL` in Vercel. Without it the footer shows no Contact link and the 404, Privacy and Terms pages show no address.
+
 ## Content
 
 - Four requirements are still `prototype_placeholder`: `sss-employer-reg`, `sss-contribution`, `philhealth-employer-reg`, `pagibig-employer-reg`.

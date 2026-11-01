@@ -152,6 +152,7 @@ test suite beyond the current data-integrity smoke tests. None of these block
 running or demonstrating the prototype.
 
 ### Verified this session
+
 - `npm test` → 4/4 passing
 - `npm run build` → compiled successfully, 18/18 routes, zero TypeScript errors
 
@@ -160,7 +161,7 @@ running or demonstrating the prototype.
 ## Phase 13 — Real Content Migration (the Gabay Negosyo reference content)
 
 - [x] Audited all 26 sheets of the internal reference workbook and the
-      registration-wizard txt content source 
+      registration-wizard txt content source
 - [x] Replaced the Registration Wizard with the real 7-question flow (new
       business? / taxpayer type / barangay+RDO / lease? / employees? /
       projected sales & expenses)
@@ -217,6 +218,7 @@ custom 404), `node --test tests/ruleEngine.test.js` 5/5 passing, TypeScript
 strict check clean.
 
 ## v0.6 visual experience update
+
 - Added reusable visual resource cards and a native dialog PDF preview for BIR PDF URLs already present in the approved local resource dataset. Generic agency home pages remain external links; no preview or Drive link is invented.
 - Added reusable tutorial cards. Existing tutorial data contains only YouTube search placeholders, so these display an honest unavailable state rather than a misleading video thumbnail or watch action. Verified direct video URLs can display a thumbnail automatically.
 - Expanded resource library to a responsive card grid with existing search, agency/type filters, and sort preserved; requirement details surface related forms and tutorials inside the existing Premium gate.
@@ -224,6 +226,7 @@ strict check clean.
 - Browser QA with an authenticated Supabase project and live official PDF responses remains outstanding; external PDF embedding depends on source headers/browser support and has an explicit official-source fallback.
 
 ## v0.7 workspace release
+
 - Checklist progress donut reports completion as text and offers controls that filter completed, overdue and all items. It uses the existing progress records and applicability rules.
 - Deadlines displays a navigable monthly calendar of computed, incomplete deadlines. A selected day lists linked requirements. Reminder settings retain existing premium gating.
 - Account adds a local-only profile picture (PNG/JPEG/WebP, 500 KB cap) scoped to the signed-in user ID, plus grouped business, plan, preference and legal destinations. No Supabase Storage or profile schema changes were made.
@@ -231,17 +234,16 @@ strict check clean.
 - Landing adds explicit Free/Premium comparison and a transparent study/website attribution section. Names were absent from provided project material and are not asserted.
 - Backend, Supabase auth/data access, SQL, eligibility, content records and payments remain untouched. Browser QA with configured credentials remains necessary for auth-specific flows.
 
-
 ## v0.10 bug-fix pass
 
 See `docs/V0.10_FIXES.md`. tsc clean, 69/69 tests, contrast 13/13, build OK. Behaviour in a browser / live Supabase not verified.
-
 
 ## v0.11 contrast fix
 
 Badge tints and hero progress track adjusted; contrast checker now reads the real CSS (38 pairs). See `docs/DESIGN_KITS.md` "V0.11 fixes".
 
 ## v0.11 lifecycle restructure
+
 - Journey: Checklist → Business Registration → BIR Forms → Penalties → Renewal & Post-Registration (`lib/journey.ts`, `components/JourneyStepper.tsx`). Stages stay individually linkable.
 - New routes: `/registration`, `/bir-forms`, `/penalties`, `/renewal`. `/guide` and `/premium/penalty-simulator` redirect into them. Wizard now lands on `/checklist`.
 - BIR penalty rates (approved): micro 10%, micro interest 6% p.a., general interest 12% p.a. (+25% general surcharge from the penalties reference). Single source: `BIR_PENALTY_RATES` in `lib/penalty.ts`.
@@ -260,10 +262,12 @@ Badge tints and hero progress track adjusted; contrast checker now reads the rea
 Details: `docs/V0.12_CHANGES.md`.
 
 ## v0.12 Final = v0.12 + updated content (the content update)
+
 - BIR Forms, Business Registration and Penalties PDFs were unchanged. Checklist and Renewal PDFs changed: DTI registration/renewal guide entries added, document lists expanded, barangay renewal steps updated.
 - Filing tutorial videos: 8 YouTube links in `data/filingVideos.json`, embedded on `/renewal` (placeholder shows only if the list is empty).
 
 ## v0.15 (fixes on the v0.14 Emerald Growth redesign)
+
 - [x] Hero: arrow moved into the art column (it was a hero grid item that displaced the copy and ran under the text); own band on small screens
 - [x] Signed-in sidebar: theme toggle and full nav visible at first paint on laptop heights
 - [x] Night Shift: stepper, BIR checks and current-step label/number use theme tokens (were white boxes / dark-on-dark / white-on-mint)
@@ -273,12 +277,12 @@ Details: `docs/V0.12_CHANGES.md`.
 - [ ] Owner to confirm: "Gabay Negosyo's reference" wording on /penalties; demo seed deadline dated Jan 20, 2026 is now in the past
 
 ## v0.15 round 2
+
 - [x] Login redesign with show/hide password (also on Sign up); proper `<form>` so password managers and Enter work
 - [x] Terms, Privacy, Disclaimer on a shared `LegalPage` layout (wording unchanged); new `/credits` page; footer rebuilt
 - [x] Supabase account sync: `database/migrations/003_sync_profiles.sql`, admin overview + Sync now, hardened signup trigger; Admin → Users role filter now server-side
 - [ ] Owner: run migration 003 in Supabase; put real names in `data/credits.json`
 - [ ] Not verified: the admin dashboard against a real admin session and real Supabase (SQL syntax-checked and the panel tested against mocked responses only)
-
 
 ## v0.16.3 — Consultant changelog implementation (partial)
 
@@ -305,8 +309,17 @@ Details: `docs/V0.12_CHANGES.md`.
 Verification in this session: `tests/v0164.test.js` (14 new tests); full suite 154/154 on the modified copy versus 140/140 on the original; no new TypeScript errors (checked against the original copy; without installed React/Next types, the compiler reports many missing-type errors on both copies). Not verified: browser behaviour, live Supabase, a real email send, and `next build`. The YouTube links were not checked live.
 
 ## v0.16.4 build-fix pass
-- lib/siteConfig.ts: NEXT_PUBLIC_* env vars now read statically so server and client agree (fixes footer/404 hydration mismatches).
+
+- lib/siteConfig.ts: NEXT*PUBLIC*\* env vars now read statically so server and client agree (fixes footer/404 hydration mismatches).
 - nodemailer is declared in package.json/package-lock.json; run `npm install` to resolve "Can't resolve 'nodemailer'".
 - task_progress warning: apply database/migrations/002_task_progress.sql in Supabase.
 - data/resources.json: +23 resources transcribed from the "Universal Resource and Document Checklist" (DTI/BNRS/BMBE, barangay and BPLO permits, BIR, SSS, PhilHealth, Pag-IBIG, fees, penalty trackers). DTI is resource-library-only (lib/db.ts RESOURCE_AGENCIES). Links to confirm before launch: bnrs.dti.gov.ph, bmbe.dti.gov.ph, orus.bir.gov.ph; other items point to agency home pages because the source gave no URLs.
 - v0.16.4 TS fixes: wizard leaseApplicability type; auth resetPassword/updatePassword + app/reset-password page; '/reset-password' allowed redirect (add it to Supabase Auth → URL Configuration → Redirect URLs).
+
+## v0.16.5 — assessment fixes
+
+- [x] Landing BIR count corrected to BIR-only (18); coverage sentence aligned with site metadata (SSS, PhilHealth, Pag-IBIG, LGU are outline content).
+- [x] Version bumped to 0.16.5 in `package.json` and `package-lock.json`.
+- [x] Footer Contact verified as a `mailto:` link only when `NEXT_PUBLIC_CONTACT_EMAIL` is set.
+- [x] `tests/v0165.test.js` added (8 tests).
+- [ ] Open: refresh and re-verify requirement data (latest verification date 2026-09-20); set `NEXT_PUBLIC_CONTACT_EMAIL` on Vercel; browser/Supabase QA.

@@ -9,7 +9,9 @@ export const metadata = {
   description: "A clearer way to understand and track Philippine business compliance.",
 };
 
-const sourcedCount = requirements.filter((r) => r.contentSource !== "prototype_placeholder").length;
+// Counted by agency so the "BIR requirements" claim is literally true (v0.16.5: the old count also
+// included the two LGU items). Placeholder SSS / PhilHealth / Pag-IBIG items are never counted.
+const sourcedCount = requirements.filter((r) => r.agencyId === "bir" && r.contentSource !== "prototype_placeholder").length;
 
 // Newest "last verified" date in the real dataset (shown in the trust section; never invented).
 const lastVerified = (requirements as { lastVerified?: string }[])
@@ -71,7 +73,7 @@ export default function LandingPage() {
       <article><span>03 · FOLLOW THROUGH</span><h3>Track your progress</h3><p>Mark items complete and keep upcoming requirements in view.</p></article>
     </div></section>
 
-    <section id="features" className="v05-feature-band gn-feature-band"><div><p className="gn-kicker">WHAT YOU GET</p><h2>Less searching. More clarity.</h2><p>Explore {sourcedCount} sourced BIR requirements in the current dataset. Coverage across BIR, SSS, PhilHealth, Pag-IBIG, and local business permits varies by your business profile; check official sources for current details.</p></div><div className="v05-feature-links"><Link href="/signup">Personalized checklist <span>↗</span></Link><Link href="/signup">Deadline overview <span>↗</span></Link><Link href="/signup">Learning resources <span>↗</span></Link></div></section>
+    <section id="features" className="v05-feature-band gn-feature-band"><div><p className="gn-kicker">WHAT YOU GET</p><h2>Less searching. More clarity.</h2><p>Explore {sourcedCount} sourced BIR requirements in the current dataset. SSS, PhilHealth, Pag-IBIG, and local business permit guidance is outline content for now, and coverage varies by your business profile; check official sources for current details.</p></div><div className="v05-feature-links"><Link href="/signup">Personalized checklist <span>↗</span></Link><Link href="/signup">Deadline overview <span>↗</span></Link><Link href="/signup">Learning resources <span>↗</span></Link></div></section>
 
     <section id="trust" className="v05-section gn-section" aria-labelledby="trust-title"><div className="v05-section-heading"><p className="gn-kicker">TRUSTED. TRANSPARENT. FOR YOU.</p><h2 id="trust-title">Clear about what we know, and what we don&apos;t.</h2><p>Every requirement links to its official source. Check the issuing agency before you file or pay anything.</p></div>
       <div className="gn-trust-grid">
