@@ -6,9 +6,8 @@
 // database/rehearsal/run_rehearsal.sh is for (local throwaway Postgres only), and neither replaces a run against the
 // real Supabase project, which has NOT happened.
 //
-// Tests marked `todo` describe behaviour that SHOULD hold but does not yet (findings F-07 / F-08 in
-// docs/PROTOTYPE_AUDIT_v1.md, to be fixed in WP3). node:test reports them as TODO and they do not fail the suite;
-// remove `todo` when the fix lands so they become real guards.
+// WP3 update: the three tests that were marked `todo` (findings F-07 / F-08 in docs/PROTOTYPE_AUDIT_v1.md) are now real
+// guards, because Work Package 3 fixed the code. The service-role list below also names the new admin account-status route.
 const test = require("node:test");
 const assert = require("node:assert");
 const fs = require("node:fs");
@@ -182,7 +181,7 @@ test("plan values accepted by the app match what entitlement_for can return", as
 // ── Service-role containment ──────────────────────────────────────────
 test("the service-role key is used only by trusted server routes and is never exposed to the browser", () => {
   const users = srcFiles("app", "lib", "components").filter((f) => /SUPABASE_SERVICE_ROLE_KEY/.test(fs.readFileSync(f, "utf8"))).map((f) => path.relative(ROOT, f).split(path.sep).join("/")).sort();
-  assert.deepStrictEqual(users, ["app/api/cron/send-reminders/route.ts", "app/api/delete-account/route.ts", "app/api/unsubscribe/route.ts"]);
+  assert.deepStrictEqual(users, ["app/api/admin/account-status/route.ts", "app/api/cron/send-reminders/route.ts", "app/api/delete-account/route.ts", "app/api/unsubscribe/route.ts"]);
   for (const f of srcFiles("app", "lib", "components")) {
     const text = fs.readFileSync(f, "utf8");
     assert.ok(!/NEXT_PUBLIC_[A-Z_]*SERVICE/.test(text), `${f} must not expose a service key`);
@@ -233,14 +232,14 @@ test("server access: the server row wins over a stale or forged role, in both di
   assert.deepStrictEqual([d.premium, d.deactivated, d.verified], [false, true, true]);
 });
 
-// ── Known gaps (todo = should hold, does not yet; fix scheduled in WP3) ──
-test("F-08: an unrelated 'does not exist' database error must not be mistaken for 'migration 006 not installed'", { todo: "WP3: narrow isMissingFunction to PGRST202 / the function name" }, async () => {
+// ── Former known gaps (fixed in WP3; these used to be `todo`) ──
+test("F-08: an unrelated 'does not exist' database error must not be mistaken for 'migration 006 not installed'", async () => {
   const { resolveServerAccess } = await load("../lib/entitlements.ts");
   const a = resolveServerAccess("premium", null, { code: "42P01", message: 'relation "public.profiles" does not exist' });
   assert.deepStrictEqual([a.verified, a.premium], [false, false]);
 });
 
-test("F-07: deleting an account is refused when the role cannot be read", { todo: "WP3: treat an unreadable role as 'refuse and retry'" }, async () => {
+test("F-07: deleting an account is refused when the role cannot be read", async () => {
   const { handleDeleteAccount } = await load("../lib/deleteAccountHandler.ts");
   let deleted = false;
   const deps = {
@@ -255,7 +254,7 @@ test("F-07: deleting an account is refused when the role cannot be read", { todo
   assert.ok(r.status >= 400);
 });
 
-test("delete handler: a demo lookup that throws never results in a deletion", async () => {
+test("delete handler: a demo lookup that throws never results in a deletion (WP3: refused with 503, no exception escapes)", async () => {
   const { handleDeleteAccount } = await load("../lib/deleteAccountHandler.ts");
   let deleted = false;
   const deps = {
@@ -265,11 +264,12 @@ test("delete handler: a demo lookup that throws never results in a deletion", as
     deleteAuthUser: async () => { deleted = true; return { error: null }; },
     now: () => Date.now(),
   };
-  await assert.rejects(() => handleDeleteAccount("Bearer t", deps, { confirm: "DELETE" }));
+  const r = await handleDeleteAccount("Bearer t", deps, { confirm: "DELETE" });
   assert.strictEqual(deleted, false);
+  assert.strictEqual(r.status, 503);
 });
 
-test("F-07: the delete route reads the error from its role and demo lookups instead of swallowing it", { todo: "WP3: today both lookups ignore `error`, so a failed query looks like 'not admin, not demo'" }, () => {
+test("F-07: the delete route reads the error from its role and demo lookups instead of swallowing it", () => {
   const route = read("app", "api", "delete-account", "route.ts");
   const getRole = route.slice(route.indexOf("async getRole"), route.indexOf("async isDemoAccount"));
   const isDemo = route.slice(route.indexOf("async isDemoAccount"), route.indexOf("async deleteAuthUser"));

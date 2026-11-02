@@ -218,4 +218,63 @@ run_file "$DB_DIR/migrations/005_account_lifecycle.sql"
 run_file "$DB_DIR/migrations/007_admin_overview_computed_plan.sql"
 expect_eq  "...and re-running 005 + 007 restores the audited version" "t" su "select pg_get_functiondef('public.admin_sync_profiles'::regproc) like '%log_admin_action%'"
 
+
+echo "== 15. WP3 migration 008: append-only audit log, reason, target_ref, before/after (WRITTEN IN WP3, NOT EXECUTED when it was added)"
+X=66666666-0000-0000-0000-000000000006; A3=77777777-0000-0000-0000-000000000007
+run_file "$DB_DIR/migrations/008_audit_hardening.sql"
+run_file "$DB_DIR/migrations/008_audit_hardening.sql"
+expect_eq "008: re-run leaves exactly the two guard triggers" "2" su "select count(*) from pg_trigger where tgrelid='public.admin_audit_log'::regclass and not tgisinternal"
+expect_eq "008: reason and target_ref columns exist" "2" su "select count(*) from information_schema.columns where table_schema='public' and table_name='admin_audit_log' and column_name in ('reason','target_ref')"
+expect_eq "008: backfill left no audit row without a reason" "0" su "select count(*) from public.admin_audit_log where reason is null"
+as $A authenticated "select public.admin_grant_premium('$U2', now()+interval '3 days','WP3 QA grant')" >/dev/null
+expect_eq "008: grant stores the reason in its own column" "WP3 QA grant" su "select reason from public.admin_audit_log where action='grant_premium' and target_user_id='$U2' order by created_at desc limit 1"
+expect_eq "008: grant records plan before and after" "free>premium" su "select (details->'before'->>'plan_status')||'>'||(details->'after'->>'plan_status') from public.admin_audit_log where action='grant_premium' and target_user_id='$U2' order by created_at desc limit 1"
+expect_eq "008: target_ref is the SHA-256 of the target id" "t" su "select target_ref = encode(sha256(convert_to('$U2','UTF8')),'hex') from public.admin_audit_log where action='grant_premium' and target_user_id='$U2' order by created_at desc limit 1"
+expect_eq "008: the acting admin is recorded" "t" su "select actor_id='$A' from public.admin_audit_log where action='grant_premium' and target_user_id='$U2' order by created_at desc limit 1"
+as $A authenticated "select public.admin_revoke_premium('$U2','WP3 QA revoke')" >/dev/null
+expect_eq "008: revoke records plan before and after" "premium>cancelled" su "select (details->'before'->>'plan_status')||'>'||(details->'after'->>'plan_status') from public.admin_audit_log where action='revoke_premium' and target_user_id='$U2' order by created_at desc limit 1"
+expect_eq "008: revoke logs exactly one ended entitlement" "1" su "select (details->>'entitlements_ended')::int from public.admin_audit_log where action='revoke_premium' and target_user_id='$U2' order by created_at desc limit 1"
+as $A authenticated "select public.admin_grant_premium('$U3', now()+interval '3 days','WP3 QA grant U3')" >/dev/null
+su "update public.entitlements set starts_at=now()-interval '2 hours', expires_at=now()-interval '1 hour' where user_id='$U3'" >/dev/null
+expect_eq "008: an expired grant reads as expired" "expired" as $U3 authenticated "select status from public.get_my_entitlement()"
+expect_err "008 (DB-12): revoking an already-expired grant is refused" "no Premium access" as $A authenticated "select public.admin_revoke_premium('$U3','WP3 QA revoke expired')"
+expect_eq "008 (DB-12): the expired grant was not relabelled cancelled" "expired" as $U3 authenticated "select status from public.get_my_entitlement()"
+as $A authenticated "select public.admin_set_account_status('$L',true,'WP3 QA deactivate')" >/dev/null
+expect_eq "008: deactivation records status before and after" "false>true" su "select (details->'before'->>'deactivated')||'>'||(details->'after'->>'deactivated') from public.admin_audit_log where action='deactivate_account' and target_user_id='$L' order by created_at desc limit 1"
+as $A authenticated "select public.admin_set_account_status('$L',false,'WP3 QA reactivate')" >/dev/null
+expect_eq "008: reactivation records status before and after" "true>false" su "select (details->'before'->>'deactivated')||'>'||(details->'after'->>'deactivated') from public.admin_audit_log where action='reactivate_account' and target_user_id='$L' order by created_at desc limit 1"
+as $A authenticated "select public.admin_sync_profiles()" >/dev/null
+expect_eq "008: profile sync records a reason" "t" su "select reason is not null from public.admin_audit_log where action='sync_profiles' order by created_at desc limit 1"
+expect_err "008: a new audit row without a reason is refused" "admin_audit_log_reason_present" su "insert into public.admin_audit_log(action) values ('x')"
+echo "   -- append-only: refused for everyone, including the table owner --"
+expect_err "008: UPDATE refused for the owner" "cannot be changed" su "update public.admin_audit_log set action='tampered'"
+expect_err "008: UPDATE of the reason refused" "cannot be changed" su "update public.admin_audit_log set reason='tampered text'"
+expect_err "008: DELETE refused for the owner" "cannot be changed" su "delete from public.admin_audit_log"
+expect_err "008: TRUNCATE refused for the owner" "cannot be changed" su "truncate public.admin_audit_log"
+expect_err "008: authenticated cannot UPDATE" "permission denied" as $A authenticated "update public.admin_audit_log set action='x'"
+expect_err "008: authenticated cannot DELETE" "permission denied" as $A authenticated "delete from public.admin_audit_log"
+expect_err "008: authenticated cannot INSERT" "permission denied" as $A authenticated "insert into public.admin_audit_log(action,reason) values ('x','abc')"
+expect_err "008: service_role cannot UPDATE" "permission denied" as "" service_role "update public.admin_audit_log set action='x'"
+expect_err "008: service_role cannot DELETE" "permission denied" as "" service_role "delete from public.admin_audit_log"
+expect_err "008: service_role cannot INSERT" "permission denied" as "" service_role "insert into public.admin_audit_log(action,reason) values ('x','abc')"
+expect_eq "008: service_role keeps SELECT" "t" su "select has_table_privilege('service_role','public.admin_audit_log','SELECT')"
+expect_err "008: anon cannot read the audit log" "permission denied" as "" anon "select count(*) from public.admin_audit_log"
+echo "   -- deleting accounts must still work: the FK unlink is the one allowed UPDATE --"
+su "insert into auth.users (id,email,raw_user_meta_data) values ('$X','x@test.local','{}'),('$A3','admin3@test.local','{}'); update public.profiles set role='admin' where id='$A3';" >/dev/null
+as $A3 authenticated "select public.admin_grant_premium('$X', null, 'WP3 QA unlink')" >/dev/null
+expect_ok "008: deleting the TARGET account still succeeds" su "delete from auth.users where id='$X'"
+expect_eq "008: the row keeps its reason and target_ref, target link is NULL" "t" su "select count(*)=1 from public.admin_audit_log where reason='WP3 QA unlink' and target_user_id is null and target_ref is not null"
+expect_ok "008: deleting the ACTING admin still succeeds" su "delete from auth.users where id='$A3'"
+expect_eq "008: the row keeps everything else, actor link is NULL" "t" su "select count(*)=1 from public.admin_audit_log where reason='WP3 QA unlink' and actor_id is null and action='grant_premium'"
+echo "   -- permissions and hygiene after 008 --"
+for fn in "admin_grant_premium('$U3',null,'test')" "admin_revoke_premium('$U3','test')" "admin_set_account_status('$U3',true,'test')" "admin_sync_profiles()"; do
+  expect_err "008: normal user still rejected: $fn" "Admins only" as $U2 authenticated "select public.$fn"
+  expect_err "008: DEMO admin still rejected: $fn" "Admins only" as $DA authenticated "select public.$fn"
+  expect_err "008: anon still rejected: $fn" "permission denied" as "" anon "select public.$fn"
+done
+expect_err "008: log_admin_action still not callable by a user" "permission denied" as $A authenticated "select public.log_admin_action('$A','x','$U3','{\"reason\":\"abc\"}'::jsonb)"
+expect_err "008: guard function is not callable by a user" "permission denied" as $A authenticated "select public.admin_audit_log_guard()"
+expect_eq "008: every SECURITY DEFINER function still pins search_path to empty" "0" su "select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef and not coalesce(array_to_string(p.proconfig,',') like '%search_path=\"\"%',false)"
+expect_eq "008: no public SECURITY DEFINER function is executable by anon" "0" su "select count(*) from pg_proc p join pg_namespace n on n.oid=p.pronamespace where n.nspname='public' and p.prosecdef and has_function_privilege('anon',p.oid,'execute')"
+
 echo; echo "RESULT: $PASS passed, $FAIL failed"; [ "$FAIL" -eq 0 ]

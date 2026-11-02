@@ -11,7 +11,10 @@ import { handleDeleteAccount } from "../../../lib/deleteAccountHandler";
  * reminder_configs, sent_emails and task_progress (all declared `on delete cascade`
  * in database/supabase_setup.sql and migrations/002), and the entitlements table (migration 006). Shared content is not touched.
  * Body: { "confirm": "DELETE" }. The body never names a user: the token decides whose account is deleted.
- * A minimal record (SHA-256 of the id, role, date; no email or name) is kept for at most 30 days (migration 005).
+ * A minimal record (SHA-256 of the id, role, date; no email or name) is kept for at most 30 days (migration 005),
+ * written only after the deletion succeeded.
+ * Refused (nothing deleted): not signed in, no DELETE confirmation, sign-in older than 10 minutes, admin, demo, deactivated by
+ * an administrator, or any lookup that fails (fail closed).
  */
 export async function POST(req: Request) {
   const url = process.env.NEXT_PUBLIC_SUPABASE_URL;
@@ -41,13 +44,26 @@ export async function POST(req: Request) {
       if (error || !data.user) return null;
       return { id: data.user.id, lastSignInAt: data.user.last_sign_in_at ?? null };
     },
+    // WP3 (F-07): lookups report failure instead of swallowing it. getRole returns null for "cannot tell" (query error or no
+    // profile row); the other two throw. The handler turns any of those into a refusal (503), never into a deletion.
     async getRole(userId) {
-      const { data } = await admin.from("profiles").select("role").eq("id", userId).maybeSingle();
+      const { data, error } = await admin.from("profiles").select("role").eq("id", userId).maybeSingle();
+      if (error) {
+        console.error("[delete-account] role lookup failed:", error.code ?? "error");
+        return null;
+      }
       return (data?.role as string | undefined) ?? null;
     },
     async isDemoAccount(userId) {
-      const { data } = await admin.from("profiles").select("is_demo").eq("id", userId).maybeSingle();
+      const { data, error } = await admin.from("profiles").select("is_demo").eq("id", userId).maybeSingle();
+      if (error) throw new Error(`demo lookup failed: ${error.code ?? "error"}`);
       return Boolean(data?.is_demo);
+    },
+    async isDeactivatedByAdmin(userId) {
+      const { data, error } = await admin.from("profiles").select("deactivated_at, deactivated_by_admin").eq("id", userId).maybeSingle();
+      if (error?.code === "42703") return false; // migration 005 not applied: no deactivation feature, so no such state
+      if (error) throw new Error(`deactivation lookup failed: ${error.code ?? "error"}`);
+      return Boolean(data?.deactivated_at) && Boolean(data?.deactivated_by_admin);
     },
     async deleteAuthUser(userId) {
       const { error } = await admin.auth.admin.deleteUser(userId);

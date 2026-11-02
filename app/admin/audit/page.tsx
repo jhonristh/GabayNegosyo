@@ -5,7 +5,10 @@ import AdminGuard from "../../../components/AdminGuard";
 import { useAuth } from "../../../lib/auth";
 import { fetchAuditLog, type AuditRow } from "../../../lib/adminUsers";
 
-/** Read-only audit trail of admin actions. Real admins only (enforced by the database function and RLS). */
+/**
+ * Read-only audit trail of admin actions. Real admins only (enforced by the database function and RLS).
+ * Migration 008 makes the table append-only and records the status before/after each change (details.before / details.after).
+ */
 const PAGE_SIZE = 25;
 
 const ACTION_LABEL: Record<string, string> = {
@@ -15,6 +18,20 @@ const ACTION_LABEL: Record<string, string> = {
   reactivate_account: "Reactivated account",
   sync_profiles: "Synchronized profiles",
 };
+
+const PLAN_WORD: Record<string, string> = { free: "Free", premium: "Premium", expired: "Free (Premium expired)", cancelled: "Free (Premium revoked)" };
+
+/** Turns a recorded before/after object into one readable phrase, or null when this row has none (rows from before migration 008). */
+function describeState(v: unknown): string | null {
+  if (!v || typeof v !== "object") return null;
+  const o = v as Record<string, unknown>;
+  if (typeof o.plan_status === "string") {
+    const until = typeof o.plan_expires_at === "string" ? ` until ${new Date(o.plan_expires_at).toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" })}` : "";
+    return `${PLAN_WORD[o.plan_status] ?? o.plan_status}${o.plan_status === "premium" ? until : ""}`;
+  }
+  if (typeof o.deactivated === "boolean") return o.deactivated ? (o.deactivated_by_admin ? "Deactivated by an admin" : "Deactivated") : "Active";
+  return null;
+}
 
 function AuditInner() {
   const { user } = useAuth();
@@ -56,7 +73,7 @@ function AuditInner() {
     <main className="screen admin-screen">
       <header className="intro">
         <h1>Audit log</h1>
-        <p>{preview ? "The admin preview has no real audit data." : "Every Premium and account-status change made by an admin, newest first."}</p>
+        <p>{preview ? "The admin preview has no real audit data." : "Every Premium and account-status change made by an admin, newest first. Entries cannot be edited or deleted."}</p>
       </header>
 
       {state === "loading" && <p aria-live="polite">Loading…</p>}
@@ -75,6 +92,9 @@ function AuditInner() {
           <p className="docs"><strong>By:</strong> {r.actorEmail ?? "removed account"}{r.targetEmail ? <> · <strong>For:</strong> {r.targetEmail}</> : null}</p>
           {typeof r.details.reason === "string" && <p className="docs"><strong>Reason:</strong> {r.details.reason}</p>}
           {typeof r.details.expires_at === "string" && <p className="docs"><strong>Expires:</strong> {new Date(r.details.expires_at).toLocaleDateString("en-PH", { year: "numeric", month: "long", day: "numeric" })}</p>}
+          {describeState(r.details.before) && describeState(r.details.after) && (
+            <p className="docs"><strong>Change:</strong> {describeState(r.details.before)} → {describeState(r.details.after)}</p>
+          )}
           <p className="verified">{new Date(r.createdAt).toLocaleString("en-PH")}</p>
         </article>
       ))}

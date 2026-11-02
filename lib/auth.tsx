@@ -16,7 +16,7 @@ import {
   type DemoRole,
 } from "./demoAccounts";
 import { demoSeedProfile } from "./demoSeed";
-import { demoEntitlement, entitlementFromRole, parseEntitlementRow } from "./entitlements";
+import { demoEntitlement, resolveClientEntitlement } from "./entitlements";
 import type { Role, User } from "./types";
 
 /**
@@ -68,11 +68,27 @@ const AuthContext = createContext<AuthContextValue | null>(null);
 
 async function loadUser(session: Session): Promise<User> {
   const supabase = getSupabase();
-  const { data: profile } = await supabase
+  // DB-02: if migration 005 is not applied, the deactivation columns do not exist and the whole query fails (42703).
+  // Retry once without them so a half-migrated site does not show everybody as Free. Any other error is logged and the
+  // person is treated as Free (fail closed): an unreadable profile never grants a role.
+  type ProfileRow = { id: string; email: string; name: string; role: string; created_at: string; deactivated_at?: string | null; is_demo?: boolean };
+  const first = await supabase
     .from("profiles")
     .select("id, email, name, role, created_at, deactivated_at, is_demo")
     .eq("id", session.user.id)
     .maybeSingle();
+  let profile = first.data as unknown as ProfileRow | null;
+  let profileError: { code?: string; message?: string } | null = first.error;
+  if (profileError?.code === "42703") {
+    const retry = await supabase
+      .from("profiles")
+      .select("id, email, name, role, created_at, is_demo")
+      .eq("id", session.user.id)
+      .maybeSingle();
+    profile = retry.data as unknown as ProfileRow | null;
+    profileError = retry.error;
+  }
+  if (profileError) console.error("[auth] could not read your profile; continuing as a Free account:", profileError.code ?? "error");
 
   const meta = session.user.user_metadata ?? {};
   const user: User = {
@@ -81,23 +97,25 @@ async function loadUser(session: Session): Promise<User> {
     name: profile?.name || meta.name || meta.full_name || (session.user.email ?? "").split("@")[0],
     role: (profile?.role as Role) ?? "free",
     createdAt: profile?.created_at ?? session.user.created_at,
-    deactivatedAt: (profile as { deactivated_at?: string | null } | null)?.deactivated_at ?? null,
-    isDemoRecord: Boolean((profile as { is_demo?: boolean } | null)?.is_demo),
+    deactivatedAt: profile?.deactivated_at ?? null,
+    isDemoRecord: Boolean(profile?.is_demo),
   };
 
-  // The plan is decided by the server (migration 006). If that function is not installed yet, fall back to the
-  // stored role so nobody loses access during rollout. Failure never grants more than the stored role would.
+  // The plan is decided by the server (migration 006). Fails closed (resolveClientEntitlement): only a valid server row,
+  // or the documented "function not installed yet" rollout case, can produce Premium. Any other failure shows Free.
+  let entRow: unknown = null;
+  let entError: unknown = null;
   try {
-    const { data: entRow, error: entError } = await supabase.rpc("get_my_entitlement");
-    const parsed = entError ? null : parseEntitlementRow(entRow);
-    if (parsed) {
-      user.entitlement = parsed.entitlement;
-      user.deactivatedAt = parsed.deactivatedAt ?? user.deactivatedAt ?? null;
-    }
-  } catch {
-    /* fall through to the role-based fallback below */
+    const res = await supabase.rpc("get_my_entitlement");
+    entRow = res.data;
+    entError = res.error;
+  } catch (err) {
+    entError = err ?? new Error("entitlement lookup failed");
   }
-  if (!user.entitlement) user.entitlement = entitlementFromRole(user.role);
+  const plan = resolveClientEntitlement(user.role, entRow, entError);
+  user.entitlement = plan.entitlement;
+  if (plan.verified && plan.deactivatedAt) user.deactivatedAt = plan.deactivatedAt;
+  if (!plan.verified) console.error("[auth] could not verify your plan; showing Free access until it can be checked.");
 
   try {
     // A deactivated account is blocked by the database for its own data, so there is nothing to load until it is reactivated.
@@ -326,6 +344,12 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     }
     const payload = await res.json().catch(() => ({}));
     if (!res.ok) return { ok: false, error: payload.error ?? "We could not delete your account. Nothing was deleted." };
+    // WP3: the profile picture is stored in this browser under the user's id; remove it with the account.
+    try {
+      window.localStorage.removeItem(`gn-avatar-${user.id}`);
+    } catch {
+      /* storage blocked: nothing to remove */
+    }
     await supabase.auth.signOut().catch(() => undefined);
     await apply(null);
     if (typeof navigator !== "undefined" && navigator.serviceWorker?.controller) {

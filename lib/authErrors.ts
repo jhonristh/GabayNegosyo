@@ -7,6 +7,7 @@ export function friendlyAuthError(raw: string | null | undefined): string {
   const msg = (raw ?? "").replace(/\+/g, " ").trim();
   const m = msg.toLowerCase();
   if (!msg) return "Google sign-in could not be completed. Please try again, or use email and password.";
+  if (m.includes("banned")) return "This account has been deactivated by an administrator, so it cannot log in. Please contact the site owner.";
   if (m.includes("provider is not enabled") || m.includes("unsupported provider"))
     return "Google sign-in is not switched on yet. Please sign up with your email and password for now.";
   if (m.includes("redirect") && (m.includes("not allowed") || m.includes("invalid") || m.includes("mismatch")))
@@ -37,6 +38,8 @@ export function takeOAuthCallbackError(): string | null {
 /** Plain-language messages for email/password sign-in and sign-up errors (never raw JSON). */
 export function friendlyEmailAuthError(raw: string | null | undefined): string {
   const m = (raw ?? "").toLowerCase();
+  // An administrator deactivated this account: the server also blocks its Supabase sign-in (WP3, DB-05).
+  if (m.includes("banned") || m.includes("user is blocked")) return "This account has been deactivated by an administrator, so it cannot log in. Please contact the site owner.";
   if (m.includes("invalid login credentials")) return "That email and password do not match. Check them and try again.";
   if (m.includes("email not confirmed")) return "Please confirm your email first. Open the link we sent you, then log in.";
   if (m.includes("already registered") || m.includes("already exists")) return "An account with this email already exists. Try logging in instead.";

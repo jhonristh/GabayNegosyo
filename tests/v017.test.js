@@ -164,15 +164,20 @@ test("delete: the typed word DELETE is enforced by the server, not just the dial
   assert.strictEqual((await handleDeleteAccount("Bearer good", ok.deps, { confirm: " DELETE " })).status, 200);
 });
 
-test("delete: a minimal record is written BEFORE deletion, and a logging failure never blocks the deletion", async () => {
+test("delete: the minimal record is written AFTER a real deletion (WP3), and a logging failure never undoes or blocks it", async () => {
   const { handleDeleteAccount } = await load("../lib/deleteAccountHandler.ts");
   const a = deleteDeps();
   await handleDeleteAccount("Bearer good", a.deps, { confirm: "DELETE" });
-  assert.deepStrictEqual(a.calls, [["record", "u1", "free"], ["delete", "u1"]]);
+  assert.deepStrictEqual(a.calls, [["delete", "u1"], ["record", "u1", "free"]]);
   const b = deleteDeps({ recordDeletion: async () => { throw new Error("table missing"); } });
   const r = await handleDeleteAccount("Bearer good", b.deps, { confirm: "DELETE" });
   assert.strictEqual(r.status, 200);
   assert.deepStrictEqual(b.calls, [["delete", "u1"]]);
+  // A failed deletion must not leave a record that claims it happened.
+  const c = deleteDeps({ deleteAuthUser: async (id) => (void 0, { error: "boom" }) });
+  const failed = await handleDeleteAccount("Bearer good", c.deps, { confirm: "DELETE" });
+  assert.strictEqual(failed.status, 500);
+  assert.deepStrictEqual(c.calls, []);
 });
 
 test("delete: unauthenticated, stale, admin and demo callers are still refused even with the right word", async () => {
@@ -351,7 +356,10 @@ test("admin pages are behind AdminGuard and the preview never calls Supabase", (
 
 test("admin client never sends a role or an admin flag; every action goes through a server function", () => {
   const lib = read("lib", "adminUsers.ts");
-  for (const rpc of ["admin_user_directory", "admin_grant_premium", "admin_revoke_premium", "admin_set_account_status", "admin_list_audit_log"]) assert.ok(lib.includes(`rpc("${rpc}"`), rpc);
+  for (const rpc of ["admin_user_directory", "admin_grant_premium", "admin_revoke_premium", "admin_list_audit_log"]) assert.ok(lib.includes(`rpc("${rpc}"`), rpc);
+  // WP3: deactivate / reactivate go through the server route, which runs admin_set_account_status as the caller and then blocks sign-in.
+  assert.ok(lib.includes('"/api/admin/account-status"') && !lib.includes('rpc("admin_set_account_status"'));
+  assert.ok(read("app", "api", "admin", "account-status", "route.ts").includes('rpc("admin_set_account_status"'));
   assert.ok(!/\.from\("profiles"\)\.(update|upsert|insert)|\.from\("entitlements"\)\.(insert|update|upsert|delete)/.test(lib + read("app", "admin", "users", "page.tsx")));
   assert.ok(!/p_role:\s*["'](admin|premium)["']/.test(lib));
 });

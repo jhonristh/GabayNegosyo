@@ -139,10 +139,11 @@ function UsersInner() {
     setBusy(true);
     setNotice(null);
     try {
+      let warning: string | undefined;
       if (panel.kind === "grant") await grantPremium(panel.id, expiresOn, reason);
       else if (panel.kind === "revoke") await revokePremium(panel.id, reason);
-      else await setAccountStatus(panel.id, panel.kind === "deactivate", reason);
-      setNotice({ kind: "ok", text: "Saved and added to the audit log." });
+      else warning = (await setAccountStatus(panel.id, panel.kind === "deactivate", reason)).warning;
+      setNotice(warning ? { kind: "error", text: `Saved and added to the audit log. Note: ${warning}` } : { kind: "ok", text: "Saved and added to the audit log." });
       setPanel(null);
       setRetry((n) => n + 1); // reload from the server so the list shows what was actually stored
     } catch (err) {

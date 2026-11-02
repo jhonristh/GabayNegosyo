@@ -4,6 +4,16 @@ Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V
 
 ## v0.17.1
 
+### Work Package 3 additions (unreleased; version label unchanged)
+
+Account lifecycle and Premium completion. Not verified in a browser, database or `next build`. See `docs/ACCOUNT_LIFECYCLE_QA.md`.
+
+- Delete-account route fails closed on any failed lookup, refuses admin-deactivated accounts, writes its record after success; picture removed on delete.
+- New `/api/admin/account-status` route blocks/restores Supabase sign-in for admin-deactivated accounts.
+- Browser plan check fails closed; "function missing" detection narrowed (F-08); profile load tolerates missing migration-005 columns.
+- Migration 008 (not applied): append-only audit log, reason and target_ref columns, before/after status, DB-12.
+- 36 new tests; the 3 `todo` tests are now real guards.
+
 Review fixes on v0.17.0. Client-facing content is unchanged. Migrations 005 and 006 were edited in place and remain safe to re-run if an earlier copy was applied.
 
 - Admin Premium/Free filter now uses the computed plan, so newly granted Premium accounts appear under Premium (they keep `role = 'free'`).

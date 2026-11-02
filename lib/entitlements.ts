@@ -123,10 +123,42 @@ export interface ServerAccess {
   verified: boolean;
 }
 
-function isMissingFunction(error: unknown): boolean {
+/**
+ * True only when the error says the NAMED function is not installed (migration 006 not applied):
+ * PostgREST's PGRST202 or Postgres' undefined_function (42883), or a message that names the function itself.
+ * A bare "does not exist" is NOT enough: "relation ... does not exist" is a different failure (a missing table) and must
+ * never be mistaken for "a harmless rollout gap" (finding F-08).
+ */
+export function isMissingFunction(error: unknown, functionName = "get_my_entitlement"): boolean {
   if (!error || typeof error !== "object") return false;
   const e = error as { code?: unknown; message?: unknown };
-  return e.code === "PGRST202" || (typeof e.message === "string" && /could not find the function|does not exist/i.test(e.message));
+  if (e.code === "PGRST202" || e.code === "42883") return true;
+  if (typeof e.message !== "string") return false;
+  const m = e.message.toLowerCase();
+  return m.includes("could not find the function") && m.includes(functionName.toLowerCase());
+}
+
+/**
+ * Browser-side plan decision, used by lib/auth.tsx after it calls public.get_my_entitlement().
+ * FAILS CLOSED: a plan is only ever taken from a valid server row. The single exception is the documented rollout case
+ * (the function is genuinely not installed), where the stored role is used so a half-migrated site does not lock people out.
+ * Any other failure (network, permission, unexpected row) yields Free, never the stored role.
+ * This is display logic only; the server routes and RLS enforce the real boundary.
+ */
+export function resolveClientEntitlement(
+  role: Role | undefined,
+  entitlementRow: unknown,
+  entitlementError: unknown
+): { entitlement: Entitlement; deactivatedAt: string | null; verified: boolean } {
+  if (!entitlementError) {
+    const parsed = parseEntitlementRow(entitlementRow);
+    if (parsed) return { entitlement: parsed.entitlement, deactivatedAt: parsed.deactivatedAt, verified: true };
+    return { entitlement: FREE_ENTITLEMENT, deactivatedAt: null, verified: false };
+  }
+  if (isMissingFunction(entitlementError)) {
+    return { entitlement: entitlementFromRole(role), deactivatedAt: null, verified: true };
+  }
+  return { entitlement: FREE_ENTITLEMENT, deactivatedAt: null, verified: false };
 }
 
 /**

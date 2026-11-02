@@ -68,9 +68,33 @@ export async function revokePremium(targetId: string, reason: string): Promise<v
   if (error) throw friendlyAdminError(error.message, error.code);
 }
 
-export async function setAccountStatus(targetId: string, deactivate: boolean, reason: string): Promise<void> {
-  const { error } = await getSupabase().rpc("admin_set_account_status", { p_target: targetId, p_deactivate: deactivate, p_reason: reason.trim() });
-  if (error) throw friendlyAdminError(error.message, error.code);
+/**
+ * Deactivate / reactivate someone else. Goes through the server route (WP3) so the account's Supabase sign-in is blocked
+ * or restored together with the audited database change. Returns an optional warning to show the admin.
+ */
+export async function setAccountStatus(targetId: string, deactivate: boolean, reason: string): Promise<{ warning?: string }> {
+  const { data } = await getSupabase().auth.getSession();
+  const token = data.session?.access_token;
+  if (!token) throw new AdminActionError("Your session has expired. Please log in again.");
+  let res: Response;
+  try {
+    res = await fetch("/api/admin/account-status", {
+      method: "POST",
+      headers: { Authorization: `Bearer ${token}`, "Content-Type": "application/json" },
+      body: JSON.stringify({ target: targetId, deactivate, reason: reason.trim() }),
+    });
+  } catch {
+    throw new AdminActionError("We could not reach the server. Nothing was changed.");
+  }
+  const payload = (await res.json().catch(() => ({}))) as { error?: string; code?: string; warning?: string };
+  if (!res.ok) {
+    if (res.status === 404 && !payload.code) throw new AdminActionError("Account management is not available on this site yet.");
+    if (payload.code === "not_configured" || payload.code === "ban_lift_failed" || payload.code === "lookup_failed") throw new AdminActionError(payload.error ?? "The change was not saved. Please try again.");
+    if (payload.code === "not_deactivated") throw new AdminActionError("This account is not deactivated.");
+    if (payload.code === "unauthenticated") throw new AdminActionError("Your session has expired. Please log in again.");
+    throw friendlyAdminError(payload.error, payload.code);
+  }
+  return payload.warning ? { warning: payload.warning } : {};
 }
 
 export async function fetchAuditLog(limit: number, offset: number): Promise<AuditRow[]> {

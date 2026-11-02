@@ -9,6 +9,8 @@ Migrations 001–004 are already applied. Add, in this order, one at a time:
 1. `database/migrations/005_account_lifecycle.sql`: deactivation, admin audit log, minimal deletion record, restrictive "active account" policies.
 2. `database/migrations/006_entitlements.sql`: entitlements table, server-side plan function, admin grant/revoke/directory/audit functions, and **removal of `upgrade_to_premium_demo()`**.
 
+3. `database/migrations/008_audit_hardening.sql` (WP3, **prepared, not yet applied**): append-only audit log with reasons and before/after status. Apply after 005 and 006; never re-run 003/005/006 afterwards (see the file header).
+
 Deploy the v0.17 app first (or at the same time). Until 005/006 are applied, the app still works: plan falls back to the stored role, the Users page falls back to its read-only list, and deactivation/Premium management show a clear "run the migration" message. Nothing is deleted or rewritten by either file.
 
 Verification queries and rollback notes are at the bottom of each file. Run the verification on a **test** account first.
