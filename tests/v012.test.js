@@ -6,7 +6,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const root = path.join(__dirname, "..");
-const load = (rel) => import(rel);
+const { pathToFileURL } = require("node:url");
+const load = (rel) => import(pathToFileURL(path.resolve(__dirname, rel)).href);
 const requirements = JSON.parse(fs.readFileSync(path.join(root, "data", "requirements.json"), "utf8"));
 const byId = (id) => requirements.find((r) => r.id === id);
 
@@ -26,10 +27,10 @@ const OCT_5 = new Date(2026, 9, 5);
 // ── BUG-005: no invented dates ─────────────────────────────────────────────
 test("every requirement declares a deadlineKind; only fixed_annual carries a calendar date", () => {
   for (const r of requirements) {
-    assert.ok(["fixed_annual", "one_time", "recurring_variable"].includes(r.deadlineKind), `${r.id} deadlineKind`);
+    assert.ok(["fixed_annual", "one_time", "recurring_variable", "fixed_dates", "monthly", "quarter_offset", "window", "event_offset", "monthly_day"].includes(r.deadlineKind), `${r.id} deadlineKind`);
     if (r.deadlineKind === "fixed_annual") {
       assert.ok(r.deadlineMonth >= 1 && r.deadlineMonth <= 12 && r.deadlineDay >= 1 && r.deadlineDay <= 31, `${r.id} month/day`);
-    } else {
+    } else if (r.deadlineKind !== "window") {
       assert.strictEqual(r.deadlineMonth, undefined, `${r.id} must not carry a month`);
       assert.strictEqual(r.deadlineDay, undefined, `${r.id} must not carry a day`);
     }
@@ -107,7 +108,7 @@ test("an already-registered business does not get one-time new-registration item
   for (const gone of ["bir-cor", "bir-registration-filing", "lgu-barangay-mayors-clearance", "bir-books-of-accounts", "bir-orus-registration", "bir-1906-authority-to-print"]) {
     assert.ok(!ids.includes(gone), `${gone} should not appear for an existing business`);
   }
-  for (const stays of ["bir-1701-self-employed", "bir-1701q-quarterly", "sss-contribution", "lgu-permit-renewal", "bir-1601c-monthly-compensation"]) {
+  for (const stays of ["bir-1701q-quarterly", "sss-contribution", "mayor-permit-renewal", "bir-1601c-monthly-compensation"]) {
     assert.ok(ids.includes(stays), `${stays} should stay for an existing business`);
   }
 });
@@ -115,7 +116,7 @@ test("an already-registered business does not get one-time new-registration item
 test("a new business still gets the registration steps", async () => {
   const { generateApplicableRequirements } = await load("../lib/ruleEngine.ts");
   const ids = generateApplicableRequirements(baseProfile, requirements).map((r) => r.id);
-  for (const id of ["bir-cor", "bir-registration-filing", "lgu-barangay-mayors-clearance", "bir-books-of-accounts", "bir-orus-registration", "bir-1906-authority-to-print"]) {
+  for (const id of ["dti-registration", "barangay-clearance", "mayor-permit", "bir-registration"]) {
     assert.ok(ids.includes(id), id);
   }
 });

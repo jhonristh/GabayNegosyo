@@ -1,0 +1,377 @@
+{
+  "checkedAt": "2026-11-02T16:03:13.986Z",
+  "results": [
+    {
+      "id": "F-DTI-01",
+      "url": "https://bnrs.dti.gov.ph/registration",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-DTI-02",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "Portal/form named only - no URL in PDF"
+    },
+    {
+      "id": "F-DTI-03",
+      "url": "https://bmbe.dti.gov.ph",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-DTI-04",
+      "url": "https://businesstips.ph/wp-content/uploads/2013/04/BMBE-Form-01.pdf",
+      "status": "EXCLUDED",
+      "note": "Third-party (non-official) - verify"
+    },
+    {
+      "id": "F-LGU-01",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-LGU-02",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-BIR-01",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-BIR-02",
+      "url": "https://orus.bir.gov.ph/home",
+      "status": "HTTP_403",
+      "code": 403
+    },
+    {
+      "id": "F-BIR-03",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-BIR-04",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "Portal/form named only - no URL in PDF"
+    },
+    {
+      "id": "F-BIR-05",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701%20Jan%202018%20final%20with%20rates.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-06",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701Q%20Jan%202018%20final%20rev2_copy.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-07",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "TRUNCATED in PDF - client must supply"
+    },
+    {
+      "id": "F-BIR-08",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-BIR-09",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2551Q%20Jan%202018%20ENCS%20final%20rev%203_copy.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-10",
+      "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/2550Q%20%20April%202024%20ENCS_Final.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-11",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1601C%20final%20Jan%202018%20with%20DPA.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-12",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2316%20Sep%202021%20ENCS_Final_corrected.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-13",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1706%20Jan%202018%20ENCS%20Final%20version.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-14",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1800_Jan%202018%20ENCS_rev_final.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-15",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/0619-E%20Jan%202018%20rev%20final.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-16",
+      "url": "https://efps.bir.gov.ph/efps-war/EFPSWeb_war/forms2018Version/1601EQ/1601eq_01.xhtml",
+      "status": "NETWORK_ERROR",
+      "code": ""
+    },
+    {
+      "id": "F-BIR-17",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-A%20Jan%202020%20ENCS%20Final%20version2.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-18",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-AN%20Jan%202018%20ENCS%20Final%20version_copy.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-19",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-C%20Jan%202018%20final%20version3.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-20",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-M%20Jan%202018%20ENCS%20v2%20final%20version.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-21",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-P%20Jan%202020%20ENCS%20final%20version2correct.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-22",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-T%20Aug.%202022%20ENCS%20Final.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-23",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-S%20Jan%202018%20rev2.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-SSS-01",
+      "url": "https://www.sss.gov.ph/employer-er/",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-SSS-02",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-SSS-03",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-SSS-04",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-SSS-05",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-SSS-06",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "Portal/form named only - no URL in PDF"
+    },
+    {
+      "id": "F-PH-01",
+      "url": "https://www.philhealth.gov.ph/partners/employers/registration.php",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-PH-02",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-PH-03",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-PH-04",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-PI-01",
+      "url": "https://www.scribd.com/document/585498371/PAG-IBIG-EMPLOYERS-DATA-FORM-FILL",
+      "status": "EXCLUDED",
+      "note": "Third-party (non-official) - verify"
+    },
+    {
+      "id": "F-PI-02",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "F-BIR-24",
+      "url": "https://web-services.bir.gov.ph/eappointment/files/checklist_of_documentary_requirements.pdf",
+      "status": "NETWORK_ERROR",
+      "code": ""
+    },
+    {
+      "id": "F-BIR-25",
+      "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/RR%206-2024%20%28final%29.pdf",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-BIR-26",
+      "url": "https://www.bir.gov.ph",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-SSS-07",
+      "url": "https://www.sss.gov.ph",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-PH-05",
+      "url": "https://www.philhealth.gov.ph",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "F-PI-03",
+      "url": "https://www.pagibigfund.gov.ph",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-01",
+      "url": "https://www.youtube.com/watch?v=FOnpl3ui3uI",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-02",
+      "url": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-03",
+      "url": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-04",
+      "url": "https://www.youtube.com/watch?v=4hg4Ghe_8fk",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-05",
+      "url": "https://www.youtube.com/watch?v=-tESIU9ikc",
+      "status": "EXCLUDED",
+      "note": "TRUNCATED in PDF - client must supply"
+    },
+    {
+      "id": "V-06",
+      "url": "https://www.youtube.com/watch?v=KysPCsJjbKI",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-07",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "V-08",
+      "url": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-09",
+      "url": "https://www.youtube.com/watch?v=8C0TBHccWbc",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-10",
+      "url": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-11",
+      "url": "https://www.youtube.com/watch?v=0MQLh_jxlak",
+      "status": "HTTP_OK",
+      "code": 200
+    },
+    {
+      "id": "V-12",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "V-13",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "V-14",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    },
+    {
+      "id": "V-15",
+      "url": "",
+      "status": "EXCLUDED",
+      "note": "NO URL in PDF"
+    }
+  ]
+}

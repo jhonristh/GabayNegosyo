@@ -1,0 +1,884 @@
+{
+  "meta": {
+    "version": 2,
+    "preparedOn": "2026-11-02",
+    "liveTested": false,
+    "videoAttribution": "Videos are from YouTube and belong to their creators."
+  },
+  "forms": [
+    {
+      "id": "F-DTI-01",
+      "agency": "DTI",
+      "name": "DTI Business Name Registration (BNRS)",
+      "usedFor": "Register business name",
+      "appliesTo": "All sole proprietors (with or without employees)",
+      "deadline": "Before operations; valid 5 years",
+      "url": "https://bnrs.dti.gov.ph/registration",
+      "alternateUrl": "",
+      "urlStatus": "Complete (as printed in PDF)",
+      "source": "DTI Requirements",
+      "notes": "Consultant: show the online-application link IN ADDITION to the requirements list (keep requirements as reference). Fees: P230 / P530 / P1,030 / P2,030 incl. P30 DST."
+    },
+    {
+      "id": "F-DTI-02",
+      "agency": "DTI",
+      "name": "DTI Business Name Renewal (BNRS > Renewal)",
+      "usedFor": "Renew business name",
+      "appliesTo": "Existing businesses",
+      "deadline": "Early: up to 180 days before expiry; Regular: within 90 days after expiry; Late: usually within 90 days after regular window (+50% surcharge)",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "Portal/form named only - no URL in PDF",
+      "source": "Renewal of business permits",
+      "notes": "PDF says 'Go to the BNRS website, click Renewal' - no dedicated renewal URL given."
+    },
+    {
+      "id": "F-DTI-03",
+      "agency": "DTI",
+      "name": "BMBE online registration portal",
+      "usedFor": "Register as Barangay Micro Business Enterprise",
+      "appliesTo": "Assets <= P3M excl. land; DTI-registered",
+      "deadline": "Valid 2 years; renewable every 2 years",
+      "url": "https://bmbe.dti.gov.ph",
+      "alternateUrl": "",
+      "urlStatus": "Normalized (https:// added)",
+      "source": "BMBE",
+      "notes": "PDF prints 'bmbe.dti.gov.ph' without scheme."
+    },
+    {
+      "id": "F-DTI-04",
+      "agency": "DTI",
+      "name": "BMBE Form 01 (3 copies, notarized)",
+      "usedFor": "BMBE registration form",
+      "appliesTo": "BMBE applicants",
+      "deadline": "With registration",
+      "url": "https://businesstips.ph/wp-content/uploads/2013/04/BMBE-Form-01.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Third-party (non-official) - verify",
+      "source": "BMBE (end of PDF)",
+      "notes": "Hosted on businesstips.ph (2013 upload), not a government domain."
+    },
+    {
+      "id": "F-LGU-01",
+      "agency": "Barangay",
+      "name": "Barangay Business Clearance application form",
+      "usedFor": "Barangay clearance (new/renewal)",
+      "appliesTo": "All businesses",
+      "deadline": "Renew on/before Jan 20 (PDF also says '1 year after issuance')",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "Barangay clearance",
+      "notes": "Form provided on-site at barangay hall. Fee estimate P200-P1,000+."
+    },
+    {
+      "id": "F-LGU-02",
+      "agency": "LGU",
+      "name": "Mayor's / Business Permit application & renewal form",
+      "usedFor": "Mayor's permit (new/renewal)",
+      "appliesTo": "All businesses",
+      "deadline": "Renew Jan 1-20 (PDF also says 'within first month or on anniversary date')",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "Mayor's Permit",
+      "notes": "Provided by city BPLO / Business One-Stop Shop. Per-city fee tables are in the PDF (Metro Manila cities)."
+    },
+    {
+      "id": "F-BIR-01",
+      "agency": "BIR",
+      "name": "BIR Form 1901 (manual registration)",
+      "usedFor": "Registration of self-employed/individual",
+      "appliesTo": "Sole proprietors (manual route)",
+      "deadline": "Upon registration",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "BIR Registration steps",
+      "notes": "Form number only; no URL."
+    },
+    {
+      "id": "F-BIR-02",
+      "agency": "BIR",
+      "name": "BIR ORUS - Online Registration and Update System",
+      "usedFor": "Online BIR registration; Authority to Print request",
+      "appliesTo": "New registrants",
+      "deadline": "Upon registration",
+      "url": "https://orus.bir.gov.ph/home",
+      "alternateUrl": "",
+      "urlStatus": "Complete (consultant docs)",
+      "source": "Consultant changelog (screenshot)",
+      "notes": "URL read from the consultant's screenshot comment; confirm by opening it. Online registration; pay P30 loose DST to generate/print the eCOR; invoices: BIR-printed (BPI) or Authority to Print (ATP). Digital ATP also requested via ORUS."
+    },
+    {
+      "id": "F-BIR-03",
+      "agency": "BIR",
+      "name": "BIR Form 2303 - Certificate of Registration",
+      "usedFor": "Output of BIR registration",
+      "appliesTo": "Registered taxpayers",
+      "deadline": "n/a (issued)",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "PhilHealth requirements / BIR",
+      "notes": "eCOR is generated and printed after ORUS registration and P30 loose DST payment (consultant)."
+    },
+    {
+      "id": "F-BIR-04",
+      "agency": "BIR",
+      "name": "eBIRForms offline package v7.9.6.1",
+      "usedFor": "Filing 1701 / 1701-Q / 1701-A / 1701-MS",
+      "appliesTo": "Income tax filers",
+      "deadline": "See form deadlines",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "Portal/form named only - no URL in PDF",
+      "source": "Detailed guide and steps",
+      "notes": "PDF says 'access eBIRForms on the BIR website' - no URL given. Public BIR circular RMC 37-2026 (web check 2026-11-02) enabled e-filing of 1701-MS through Offline eBIRForms 7.9.6."
+    },
+    {
+      "id": "F-BIR-05",
+      "agency": "BIR",
+      "name": "BIR Form 1701 - Annual Income Tax Return",
+      "usedFor": "Annual ITR (incl. mixed-income earners)",
+      "appliesTo": "Individuals incl. mixed income, estates, trusts",
+      "deadline": "On or before April 15 (statutory). One-time: TY2025 return extended to May 15, 2026 (RMC 30-2026, public web check)",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701%20Jan%202018%20final%20with%20rates.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "BIR Forms / Post-registration table",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-06",
+      "agency": "BIR",
+      "name": "BIR Form 1701-Q - Quarterly Income Tax Return",
+      "usedFor": "Quarterly ITR",
+      "appliesTo": "Individuals, estates, trusts",
+      "deadline": "Q1 May 15; Q2 Aug 15; Q3 Nov 15 (Forms section instead says '60 days after quarter end')",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1701Q%20Jan%202018%20final%20rev2_copy.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "BIR Forms / Post-registration table",
+      "notes": "Fixed dates adopted; they match 45 days after quarter end. The older '60 days' wording is dropped (see Flags)."
+    },
+    {
+      "id": "F-BIR-07",
+      "agency": "BIR",
+      "name": "BIR Form 1701-A - Annual ITR (purely business/professional)",
+      "usedFor": "Annual ITR",
+      "appliesTo": "Individuals purely from business/profession using 8% or graduated + OSD",
+      "deadline": "On or before April 15 (statutory); TY2025 one-time extension to May 15, 2026",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "TRUNCATED in PDF - client must supply",
+      "source": "BIR Forms",
+      "notes": "PDF prints only the tail '20v5%20with%20rates.pdf'. A public web search on 2026-11-02 did not surface the official bir-cdn.bir.gov.ph URL. Do not guess - ask the consultant for the exact link."
+    },
+    {
+      "id": "F-BIR-08",
+      "agency": "BIR",
+      "name": "BIR Form 1701-MS",
+      "usedFor": "Annual ITR for micro and small taxpayers",
+      "appliesTo": "Individuals classified micro/small",
+      "deadline": "On or before April 15 (statutory); TY2025 one-time extension to May 15, 2026",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "Post-registration table",
+      "notes": "Consultant lists 1701-MS among post-registration forms. Only a video link exists in the PDFs; no form URL. Ask consultant."
+    },
+    {
+      "id": "F-BIR-09",
+      "agency": "BIR",
+      "name": "BIR Form 2551Q - Quarterly Percentage Tax Return",
+      "usedFor": "Percentage tax (non-VAT)",
+      "appliesTo": "Non-VAT taxpayers under the graduated regime (gross < P3M). 8% option is in lieu of graduated tax AND 3% percentage tax.",
+      "deadline": "25th day after the close of each taxable quarter",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2551Q%20Jan%202018%20ENCS%20final%20rev%203_copy.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "Consultant changelog + BIR Forms",
+      "notes": "Same URL appears intact in the consultant changelog."
+    },
+    {
+      "id": "F-BIR-10",
+      "agency": "BIR",
+      "name": "BIR Form 2550Q - Quarterly VAT Return",
+      "usedFor": "VAT return",
+      "appliesTo": "Taxpayers whose gross annual sales/receipts exceed the P3M VAT threshold (must register as VAT taxpayer)",
+      "deadline": "25th day after quarter end",
+      "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/2550Q%20%20April%202024%20ENCS_Final.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Complete (consultant docs)",
+      "source": "Consultant changelog",
+      "notes": "Intact in consultant changelog (contains double %20%20)."
+    },
+    {
+      "id": "F-BIR-11",
+      "agency": "BIR",
+      "name": "BIR Form 1601-C - Monthly Withholding Tax on Compensation",
+      "usedFor": "Withholding tax remittance",
+      "appliesTo": "Businesses with employees",
+      "deadline": "10th of following month (15th for eFPS); Dec due Jan 15",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1601C%20final%20Jan%202018%20with%20DPA.pdf",
+      "alternateUrl": "https://efps.bir.gov.ph/efps-war/EFPSWeb_war/forms/1601C/1601c_v2.xhtml",
+      "urlStatus": "Complete (consultant docs)",
+      "source": "Consultant changelog + Employer section",
+      "notes": "Both URLs intact in consultant changelog. Primary = PDF form; alternate = eFPS web form."
+    },
+    {
+      "id": "F-BIR-12",
+      "agency": "BIR",
+      "name": "BIR Form 2316 - Certificate of Compensation Payment / Tax Withheld",
+      "usedFor": "Employee certificate",
+      "appliesTo": "Employers",
+      "deadline": "By January 31",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2316%20Sep%202021%20ENCS_Final_corrected.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "Employer section",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-13",
+      "agency": "BIR",
+      "name": "BIR Form 1706 - Capital Gains Tax (real property)",
+      "usedFor": "CGT on sale of capital-asset real property",
+      "appliesTo": "If sold property",
+      "deadline": "30 days from date of sale",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1706%20Jan%202018%20ENCS%20Final%20version.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "BIR Forms (additional forms)",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-14",
+      "agency": "BIR",
+      "name": "BIR Form 1800 - Donor's Tax",
+      "usedFor": "Donations exceeding P250,000",
+      "appliesTo": "If made donations > P250,000",
+      "deadline": "30 days from date of donation",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/1800_Jan%202018%20ENCS_rev_final.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "BIR Forms (additional forms)",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-15",
+      "agency": "BIR",
+      "name": "BIR Form 0619-E - Monthly Remittance (Expanded WT)",
+      "usedFor": "EWT monthly remittance",
+      "appliesTo": "Payors subject to EWT",
+      "deadline": "10th of following month",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/0619-E%20Jan%202018%20rev%20final.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Complete (as printed in PDF)",
+      "source": "Additional Information",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-16",
+      "agency": "BIR",
+      "name": "BIR Form 1601-EQ - Quarterly Remittance (Expanded WT)",
+      "usedFor": "EWT quarterly return",
+      "appliesTo": "Payors subject to EWT",
+      "deadline": "Last day of month after quarter end",
+      "url": "https://efps.bir.gov.ph/efps-war/EFPSWeb_war/forms2018Version/1601EQ/1601eq_01.xhtml",
+      "alternateUrl": "",
+      "urlStatus": "Complete (as printed in PDF)",
+      "source": "Additional Information",
+      "notes": "eFPS web form, not a PDF."
+    },
+    {
+      "id": "F-BIR-17",
+      "agency": "BIR",
+      "name": "BIR Form 2200-A - Excise (Alcohol)",
+      "usedFor": "Excise tax",
+      "appliesTo": "Alcohol manufacturers/importers",
+      "deadline": "Before removal from plant/bonded warehouse; quarterly sworn statement by 25th",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-A%20Jan%202020%20ENCS%20Final%20version2.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "Additional Information (Excise)",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-18",
+      "agency": "BIR",
+      "name": "BIR Form 2200-AN - Excise (Automobiles & Non-Essential Goods)",
+      "usedFor": "Excise tax",
+      "appliesTo": "Manufacturers/importers",
+      "deadline": "Before removal from place of production",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-AN%20Jan%202018%20ENCS%20Final%20version_copy.pdf",
+      "alternateUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-AN%20Jan%202018%20ENCS%20guidelines%20final----.pdf",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "Additional Information (Excise)",
+      "notes": "Alternate = detailed guidelines."
+    },
+    {
+      "id": "F-BIR-19",
+      "agency": "BIR",
+      "name": "BIR Form 2200-C - Excise (Cosmetic Procedures)",
+      "usedFor": "Excise tax",
+      "appliesTo": "Applicable taxpayers",
+      "deadline": "Within 10 days after month end",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-C%20Jan%202018%20final%20version3.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Complete (as printed in PDF)",
+      "source": "Additional Information (Excise)",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-20",
+      "agency": "BIR",
+      "name": "BIR Form 2200-M - Excise (Mineral Products)",
+      "usedFor": "Excise tax",
+      "appliesTo": "Mining claim owners etc.",
+      "deadline": "Metallic minerals: within 15 days after quarter end",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-M%20Jan%202018%20ENCS%20v2%20final%20version.pdf",
+      "alternateUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-M%20Jan%202018%20ENCS%20v2%20guidelines.pdf",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "Additional Information (Excise)",
+      "notes": "Alternate = guidelines."
+    },
+    {
+      "id": "F-BIR-21",
+      "agency": "BIR",
+      "name": "BIR Form 2200-P - Excise (Petroleum Products)",
+      "usedFor": "Excise tax",
+      "appliesTo": "Petroleum producers/blenders etc.",
+      "deadline": "Before removal from place of production",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-P%20Jan%202020%20ENCS%20final%20version2correct.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "Additional Information (Excise)",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-22",
+      "agency": "BIR",
+      "name": "BIR Form 2200-T - Excise (Tobacco / Vapor / Novel)",
+      "usedFor": "Excise tax",
+      "appliesTo": "Tobacco manufacturers etc.",
+      "deadline": "Before removal from place of production",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-T%20Aug.%202022%20ENCS%20Final.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Complete (as printed in PDF)",
+      "source": "Additional Information (Excise)",
+      "notes": ""
+    },
+    {
+      "id": "F-BIR-23",
+      "agency": "BIR",
+      "name": "BIR Form 2200-S - Excise (Sweetened Beverages)",
+      "usedFor": "Excise tax",
+      "appliesTo": "Sweetened beverage producers",
+      "deadline": "Before removal from place of production",
+      "url": "https://bir-cdn.bir.gov.ph/local/pdf/2200-S%20Jan%202018%20rev2.pdf",
+      "alternateUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-S%20%20Jan%202018%20Guide%20revised.pdf",
+      "urlStatus": "Complete (as printed in PDF)",
+      "source": "Additional Information (Excise)",
+      "notes": "Alternate = guide (contains a double %20%20)."
+    },
+    {
+      "id": "F-SSS-01",
+      "agency": "SSS",
+      "name": "SSS Employer portal page",
+      "usedFor": "Employer registration & services",
+      "appliesTo": "Sole proprietors WITH employees",
+      "deadline": "Before first employee starts",
+      "url": "https://www.sss.gov.ph/employer-er/",
+      "alternateUrl": "",
+      "urlStatus": "Complete (as printed in PDF)",
+      "source": "SSS Registration",
+      "notes": ""
+    },
+    {
+      "id": "F-SSS-02",
+      "agency": "SSS",
+      "name": "SSS Form R-1 - Employer Registration",
+      "usedFor": "Employer registration",
+      "appliesTo": "Employers",
+      "deadline": "Upon hiring",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "SSS Registration",
+      "notes": "Name only; no URL."
+    },
+    {
+      "id": "F-SSS-03",
+      "agency": "SSS",
+      "name": "SSS Form R-1A - Employment Report",
+      "usedFor": "Report employees",
+      "appliesTo": "Employers",
+      "deadline": "Upon hiring",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "SSS Registration",
+      "notes": "Name only; no URL."
+    },
+    {
+      "id": "F-SSS-04",
+      "agency": "SSS",
+      "name": "SSS Form L-501 - Specimen Signature Card",
+      "usedFor": "Employer registration attachment",
+      "appliesTo": "Employers",
+      "deadline": "With registration",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "SSS Registration",
+      "notes": "Name only; no URL."
+    },
+    {
+      "id": "F-SSS-05",
+      "agency": "SSS",
+      "name": "SSS Form E-1 / E-1V - Personal Record",
+      "usedFor": "Employees without SS number",
+      "appliesTo": "Employers",
+      "deadline": "As needed",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "SSS Registration",
+      "notes": "Name only; no URL."
+    },
+    {
+      "id": "F-SSS-06",
+      "agency": "SSS",
+      "name": "My.SSS employer account / Central Business Portal (CBP)",
+      "usedFor": "Online registration, PRN, contribution payment",
+      "appliesTo": "Employers",
+      "deadline": "Monthly remittance per SSS schedule",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "Portal/form named only - no URL in PDF",
+      "source": "Guide and steps",
+      "notes": "Portal names only; no URLs."
+    },
+    {
+      "id": "F-PH-01",
+      "agency": "PhilHealth",
+      "name": "PhilHealth employer registration page",
+      "usedFor": "Employer registration",
+      "appliesTo": "Employers",
+      "deadline": "Before/with first employee",
+      "url": "https://www.philhealth.gov.ph/partners/employers/registration.php",
+      "alternateUrl": "",
+      "urlStatus": "Complete (as printed in PDF)",
+      "source": "PhilHealth Registration",
+      "notes": ""
+    },
+    {
+      "id": "F-PH-02",
+      "agency": "PhilHealth",
+      "name": "PhilHealth ER1 - Employer Data Record",
+      "usedFor": "Employer registration",
+      "appliesTo": "Employers",
+      "deadline": "With registration",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "PhilHealth Registration",
+      "notes": "Name only; no URL."
+    },
+    {
+      "id": "F-PH-03",
+      "agency": "PhilHealth",
+      "name": "PhilHealth ER2 - Report of Employee-Members",
+      "usedFor": "Employee reporting",
+      "appliesTo": "Employers",
+      "deadline": "As employees are hired",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "PhilHealth Registration",
+      "notes": "Name only; no URL."
+    },
+    {
+      "id": "F-PH-04",
+      "agency": "PhilHealth",
+      "name": "PhilHealth PMRF - Member Registration Form",
+      "usedFor": "Employees without PIN",
+      "appliesTo": "Employers",
+      "deadline": "As needed",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "PhilHealth Registration",
+      "notes": "Name only; no URL."
+    },
+    {
+      "id": "F-PI-01",
+      "agency": "Pag-IBIG",
+      "name": "Pag-IBIG Employer's Data Form (EDF) HQP-PFF-002",
+      "usedFor": "Employer registration",
+      "appliesTo": "Employers",
+      "deadline": "With registration",
+      "url": "https://www.scribd.com/document/585498371/PAG-IBIG-EMPLOYERS-DATA-FORM-FILL",
+      "alternateUrl": "",
+      "urlStatus": "Third-party (non-official) - verify",
+      "source": "Pag-IBIG Registration",
+      "notes": "Scribd upload. Consultant's resource checklist: use Pag-IBIG's official site for the authoritative current form; keep Scribd only as the PDF's cited fallback. URL ends 'FILL' in the PDF."
+    },
+    {
+      "id": "F-PI-02",
+      "agency": "Pag-IBIG",
+      "name": "Pag-IBIG Membership Savings Remittance Form (MSRF)",
+      "usedFor": "Monthly contribution remittance",
+      "appliesTo": "Employers",
+      "deadline": "By first letter of employer name: A-D 10-14; E-L 15-19; M-Q 20-24; R-Z/numerals 25-end of following month",
+      "url": "",
+      "alternateUrl": "",
+      "urlStatus": "NO URL in PDF",
+      "source": "Penalties table vs Detailed steps",
+      "notes": "Revised PDF and resource checklist both say MSRF (an older section said MCRF). No URL."
+    },
+    {
+      "id": "F-BIR-24",
+      "agency": "BIR",
+      "name": "BIR Complete Documentary Requirements Checklist (PDF)",
+      "usedFor": "Reference for all BIR registration documents",
+      "appliesTo": "New BIR registrants",
+      "deadline": "n/a",
+      "url": "https://web-services.bir.gov.ph/eappointment/files/checklist_of_documentary_requirements.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Complete (consultant docs)",
+      "source": "Consultant changelog",
+      "notes": "Consultant: add this link under BIR Registration. Also note: if transacting via a representative, a Special Power of Attorney (SPA) naming the specific transactions is needed, plus govt IDs of both and one original (wet) specimen signature."
+    },
+    {
+      "id": "F-BIR-25",
+      "agency": "BIR",
+      "name": "BIR Revenue Regulations No. 6-2024 (PDF)",
+      "usedFor": "Penalty reference for micro and small taxpayers",
+      "appliesTo": "Micro (< P3M) and small (P3M to < P20M) taxpayers",
+      "deadline": "n/a",
+      "url": "https://bir-cdn.bir.gov.ph/BIR/pdf/RR%206-2024%20%28final%29.pdf",
+      "alternateUrl": "",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "source": "Revised PDF - BIR penalties",
+      "notes": "Printed '...RR%206-20' + '24%20%28final%29.pdf'. Cite beside the 10% / 6% penalty rules."
+    },
+    {
+      "id": "F-BIR-26",
+      "agency": "BIR",
+      "name": "BIR official website",
+      "usedFor": "General reference",
+      "appliesTo": "All",
+      "deadline": "n/a",
+      "url": "https://www.bir.gov.ph",
+      "alternateUrl": "",
+      "urlStatus": "From existing website data (not in consultant docs)",
+      "source": "Existing data/agencies.json",
+      "notes": "Not in consultant docs; already used by the site. Verify."
+    },
+    {
+      "id": "F-SSS-07",
+      "agency": "SSS",
+      "name": "SSS official website",
+      "usedFor": "General reference",
+      "appliesTo": "Employers",
+      "deadline": "n/a",
+      "url": "https://www.sss.gov.ph",
+      "alternateUrl": "",
+      "urlStatus": "From existing website data (not in consultant docs)",
+      "source": "Existing data/agencies.json",
+      "notes": "Not in consultant docs; already used by the site. Verify."
+    },
+    {
+      "id": "F-PH-05",
+      "agency": "PhilHealth",
+      "name": "PhilHealth official website",
+      "usedFor": "General reference",
+      "appliesTo": "Employers",
+      "deadline": "n/a",
+      "url": "https://www.philhealth.gov.ph",
+      "alternateUrl": "",
+      "urlStatus": "From existing website data (not in consultant docs)",
+      "source": "Existing data/agencies.json",
+      "notes": "Not in consultant docs; already used by the site. Verify."
+    },
+    {
+      "id": "F-PI-03",
+      "agency": "Pag-IBIG",
+      "name": "Pag-IBIG Fund official website",
+      "usedFor": "Authoritative current EDF and employer services",
+      "appliesTo": "Employers",
+      "deadline": "n/a",
+      "url": "https://www.pagibigfund.gov.ph",
+      "alternateUrl": "",
+      "urlStatus": "From existing website data (not in consultant docs)",
+      "source": "Existing data/agencies.json",
+      "notes": "Not in consultant docs; already used by the site. Verify."
+    }
+  ],
+  "videos": [
+    {
+      "id": "V-01",
+      "subject": "DTI business name registration",
+      "url": "https://www.youtube.com/watch?v=FOnpl3ui3uI",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "notes": "Printed as '...v=FOnpl3u' + line break + 'i3uI' (11 chars, valid ID length)."
+    },
+    {
+      "id": "V-02",
+      "subject": "Barangay clearance (registration)",
+      "url": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "notes": "Printed '8X2KZk' + 'Ch1qo'."
+    },
+    {
+      "id": "V-03",
+      "subject": "Mayor's permit (registration, References table)",
+      "url": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "notes": "IDENTICAL to V-02 in the PDF - probable copy error; client to confirm. Duplicate mayor/barangay video is withheld pending FL-10."
+    },
+    {
+      "id": "V-04",
+      "subject": "BMBE registration",
+      "url": "https://www.youtube.com/watch?v=4hg4Ghe_8fk",
+      "urlStatus": "Complete (as printed in PDF)",
+      "notes": ""
+    },
+    {
+      "id": "V-05",
+      "subject": "DTI business name renewal",
+      "url": "https://www.youtube.com/watch?v=-tESIU9ikc",
+      "urlStatus": "TRUNCATED in PDF - client must supply",
+      "notes": "ID has only 10 characters (YouTube IDs have 11) - last character lost in the PDF. Not guessed."
+    },
+    {
+      "id": "V-06",
+      "subject": "Mayor's permit renewal",
+      "url": "https://www.youtube.com/watch?v=KysPCsJjbKI",
+      "urlStatus": "Reconstructed (PDF line-wrap joined)",
+      "notes": "Printed 'KysPC' + 'sJjbKI'."
+    },
+    {
+      "id": "V-07",
+      "subject": "Barangay clearance renewal",
+      "url": "",
+      "urlStatus": "NO URL in PDF",
+      "notes": "Video cell is blank in the PDF."
+    },
+    {
+      "id": "V-08",
+      "subject": "BIR Form 1701",
+      "url": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s",
+      "urlStatus": "Complete (as printed in PDF)",
+      "notes": ""
+    },
+    {
+      "id": "V-09",
+      "subject": "BIR Form 1701-Q",
+      "url": "https://www.youtube.com/watch?v=8C0TBHccWbc",
+      "urlStatus": "Complete (as printed in PDF)",
+      "notes": ""
+    },
+    {
+      "id": "V-10",
+      "subject": "BIR Form 1701-A",
+      "url": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s",
+      "urlStatus": "Complete (as printed in PDF)",
+      "notes": ""
+    },
+    {
+      "id": "V-11",
+      "subject": "BIR Form 1701-MS",
+      "url": "https://www.youtube.com/watch?v=0MQLh_jxlak",
+      "urlStatus": "Complete (as printed in PDF)",
+      "notes": ""
+    },
+    {
+      "id": "V-12",
+      "subject": "SSS contribution & remittance",
+      "url": "",
+      "urlStatus": "NO URL in PDF",
+      "notes": "Video cell is blank in the PDF."
+    },
+    {
+      "id": "V-13",
+      "subject": "PhilHealth contribution & remittance",
+      "url": "",
+      "urlStatus": "NO URL in PDF",
+      "notes": "Video cell is blank in the PDF."
+    },
+    {
+      "id": "V-14",
+      "subject": "Pag-IBIG contribution & remittance",
+      "url": "",
+      "urlStatus": "NO URL in PDF",
+      "notes": "Video cell is blank in the PDF."
+    },
+    {
+      "id": "V-15",
+      "subject": "BIR registration (ORUS / 1901)",
+      "url": "",
+      "urlStatus": "NO URL in PDF",
+      "notes": "No video listed in the PDF."
+    }
+  ],
+  "flags": [
+    {
+      "id": "FL-01",
+      "topic": "1701-Q deadline",
+      "detail": "Fixed dates May 15 / Aug 15 / Nov 15; the older '60 days' wording dropped.",
+      "status": "ADOPTED",
+      "action": "Implement three fixed dates; Q4 is covered by the annual return."
+    },
+    {
+      "id": "FL-02",
+      "topic": "BIR late-filing penalty",
+      "detail": "Consultant's updated rule for micro (< P3M) and small (P3M to < P20M): 10% penalty on amount due; 50% for fraud/willful neglect; interest at 50% of regular rate = 6% p.a.; P500 per violation for failure to submit information, capped P12,500 per year; 50% compromise-penalty reduction for specified non-fraud violations. Reference: RR 6-2024.",
+      "status": "RESOLVED",
+      "action": "Use this as the BIR rule in the simulator. The old 25% + 12% rule is removed."
+    },
+    {
+      "id": "FL-03",
+      "topic": "SSS / PhilHealth / Pag-IBIG rates",
+      "detail": "Revised PDF unchanged: SSS 2%/month on unpaid; PhilHealth at least 3% compounded monthly; Pag-IBIG 0.1% per day.",
+      "status": "RESOLVED",
+      "action": "Drop the '2-3%' generalities."
+    },
+    {
+      "id": "FL-04",
+      "topic": "Barangay / Mayor's permit renewal timing",
+      "detail": "Consultant: valid until Dec 31; renew on/before Jan 20 (Mayor's permit: Jan 1-20). The revised PDF's 'with employees' column still says anniversary-based.",
+      "status": "RESOLVED (residual)",
+      "action": "Adopt Dec 31 / Jan 20 for both columns; ask consultant to align the right-hand column."
+    },
+    {
+      "id": "FL-05",
+      "topic": "8% vs VAT",
+      "detail": "Consultant: 8% is optional, only if gross <= P3M, in lieu of graduated tax and 3% percentage tax (RA 10963). Above P3M: register as VAT taxpayer (2550Q).",
+      "status": "RESOLVED",
+      "action": "Remove 8% options from VAT-registered paths."
+    },
+    {
+      "id": "FL-06",
+      "topic": "8% taxpayers and 1701-Q",
+      "detail": "Consultant lists 1701, 1701-Q, 1701-A, 1701-MS for all. Public BIR calendar sources (web check) show 8% filers file 1701-Q quarterly plus an annual return.",
+      "status": "ADOPTED - confirm",
+      "action": "8% filers: 1701-Q x3 + annual; no 2551Q. Graduated non-VAT: 1701-Q + 2551Q + annual."
+    },
+    {
+      "id": "FL-07",
+      "topic": "Pag-IBIG remittance form",
+      "detail": "MSRF in revised PDF and resource checklist.",
+      "status": "RESOLVED",
+      "action": "Use MSRF."
+    },
+    {
+      "id": "FL-08",
+      "topic": "1701-A link truncated",
+      "detail": "Only '20v5%20with%20rates.pdf' survives; public search did not surface the official URL.",
+      "status": "OPEN",
+      "action": "Consultant to supply the exact link."
+    },
+    {
+      "id": "FL-09",
+      "topic": "DTI renewal video truncated",
+      "detail": "10-char YouTube ID.",
+      "status": "OPEN",
+      "action": "Consultant to supply."
+    },
+    {
+      "id": "FL-10",
+      "topic": "Duplicate video",
+      "detail": "Barangay clearance and Mayor's permit share one video.",
+      "status": "OPEN",
+      "action": "Confirm or supply."
+    },
+    {
+      "id": "FL-11",
+      "topic": "Missing URLs",
+      "detail": "R-1, R-1A, L-501, E-1, ER1, ER2, PMRF, MSRF, 1901, 1701-MS form, 2303, eBIRForms, My.SSS, CBP, BNRS renewal have no URL in any document.",
+      "status": "OPEN",
+      "action": "Do not guess; show requirement text without a link."
+    },
+    {
+      "id": "FL-12",
+      "topic": "Third-party links",
+      "detail": "BMBE Form 01 (businesstips.ph) and Pag-IBIG EDF (Scribd).",
+      "status": "OPEN",
+      "action": "Prefer official hosts when supplied."
+    },
+    {
+      "id": "FL-13",
+      "topic": "Live link testing",
+      "detail": "No URL was live-tested.",
+      "status": "OPEN",
+      "action": "Run the link check in the final prompt."
+    },
+    {
+      "id": "FL-14",
+      "topic": "Disclaimer",
+      "detail": "Filipino sentence stays mandatory with every simulator result.",
+      "status": "RESOLVED",
+      "action": "Keep verbatim."
+    },
+    {
+      "id": "FL-15",
+      "topic": "Annual ITR deadline",
+      "detail": "Statutory: April 15. TY2025 return was extended once to May 15, 2026 (RMC 30-2026, public web check). The site's May 15 and the video thumbnail 'Deadline: May 15, 2026' reflect that one-time extension.",
+      "status": "RESOLVED (recommend)",
+      "action": "Use April 15. Optionally add a dated note for the 2026 extension."
+    },
+    {
+      "id": "FL-16",
+      "topic": "P250,000 deduction for mixed-income earners",
+      "detail": "Consultant: P250k is automatic under 8%. As far as I know the P250k deduction applies to purely business/professional income, not mixed-income earners (who pay 8% on business income without it).",
+      "status": "OPEN - confirm",
+      "action": "Do not apply P250k to Mixed Income Earners until the consultant confirms."
+    },
+    {
+      "id": "FL-17",
+      "topic": "Graduated tax table",
+      "detail": "Consultant will send the table.",
+      "status": "OPEN",
+      "action": "Keep it in a config/data file; do not hard-code from memory."
+    },
+    {
+      "id": "FL-18",
+      "topic": "Tier for fee tables and permit requirement lists",
+      "detail": "Consultant's tier table lists required documents as Premium; fees not classified.",
+      "status": "OPEN",
+      "action": "Default: fees and requirement lists follow Required documents (Premium). Confirm."
+    },
+    {
+      "id": "FL-19",
+      "topic": "Tutorials free + attribution",
+      "detail": "YouTube policy bars videos in a paid area. Tutorials are Free; show 'Videos are from YouTube and belong to their creators.' wherever videos appear. Use YouTube's own embed or a plain link; do not copy thumbnails.",
+      "status": "RESOLVED",
+      "action": "Move tutorials to Free."
+    },
+    {
+      "id": "FL-20",
+      "topic": "'Last verified' date",
+      "detail": "Original PDF wanted it on every item; consultant's tier table is silent.",
+      "status": "OPEN",
+      "action": "Recommend small 'last verified' text on every checklist item."
+    },
+    {
+      "id": "FL-21",
+      "topic": "1701-A vs 1701 for itemized",
+      "detail": "Older PDF lists 1701-A under graduated + itemized. Public BIR guidance describes 1701-A for 8% or graduated with OSD; itemized users generally file 1701.",
+      "status": "OPEN - confirm",
+      "action": "Ask consultant which form itemized filers use."
+    },
+    {
+      "id": "FL-22",
+      "topic": "Interest computation method",
+      "detail": "'6% per annum' given; method not specified.",
+      "status": "OPEN",
+      "action": "Assume daily pro-rata (days/365); show in breakdown; confirm."
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "status": "OPEN FL-17",
+  "taxBrackets": [],
+  "message": "Do not compute or display graduated income tax until consultant table is supplied."
+}

@@ -36,7 +36,8 @@
     "lastVerified": "2026-09-20",
     "complianceStage": "BIR Compliance",
     "contentSource": "gabay_guide",
-    "deadlineKind": "one_time"
+    "deadlineKind": "one_time",
+    "archived": true
   },
   {
     "id": "sss-employer-reg",
@@ -65,15 +66,14 @@
       "Receive your SSS Employer Number.",
       "Register each employee (R-1A) before their first contribution."
     ],
-    "deadlineDescription": "Before the first employee's first day of work",
+    "deadlineDescription": "One-time registration before/with first employee; no annual renewal",
     "penaltyRule": {
-      "type": "monthly_percentage",
-      "monthlyRate": 0.02,
-      "description": "2% penalty per month on unpaid/late contributions, plus possible legal action for non-remittance."
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
     },
-    "officialUrl": "https://www.sss.gov.ph/sss/appmanager/pages.jsp?page=eregistration",
+    "officialUrl": "https://www.sss.gov.ph/employer-er/",
     "tutorialId": "tut-sss-registration",
-    "lastVerified": "2026-08-01",
+    "lastVerified": "2026-09-20",
     "contentSource": "prototype_placeholder",
     "deadlineKind": "one_time"
   },
@@ -103,11 +103,11 @@
     "penaltyRule": {
       "type": "monthly_percentage",
       "monthlyRate": 0.02,
-      "description": "2% penalty per month on unpaid contributions."
+      "description": "SSS: 2% monthly simple penalty on unpaid contributions."
     },
     "officialUrl": "https://www.sss.gov.ph",
     "tutorialId": "tut-sss-contribution",
-    "lastVerified": "2026-08-01",
+    "lastVerified": "2026-09-20",
     "contentSource": "prototype_placeholder",
     "deadlineKind": "recurring_variable"
   },
@@ -137,15 +137,14 @@
       "Receive your PhilHealth Employer Number (PEN).",
       "Enroll each employee under your employer account."
     ],
-    "deadlineDescription": "Within 30 days of hiring your first employee",
+    "deadlineDescription": "One-time registration before/with first employee; no annual renewal",
     "penaltyRule": {
-      "type": "monthly_percentage",
-      "monthlyRate": 0.03,
-      "description": "3% penalty per month on unpaid contributions."
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
     },
-    "officialUrl": "https://www.philhealth.gov.ph",
+    "officialUrl": "https://www.philhealth.gov.ph/partners/employers/registration.php",
     "tutorialId": "tut-philhealth-registration",
-    "lastVerified": "2026-08-01",
+    "lastVerified": "2026-09-20",
     "contentSource": "prototype_placeholder",
     "deadlineKind": "one_time"
   },
@@ -175,15 +174,14 @@
       "Receive your Pag-IBIG Employer ID Number.",
       "Enroll employees and begin monthly remittance."
     ],
-    "deadlineDescription": "Before the first remittance is due",
+    "deadlineDescription": "One-time registration before/with first employee; no annual renewal",
     "penaltyRule": {
-      "type": "monthly_percentage",
-      "monthlyRate": 0.02,
-      "description": "2% penalty per month on unpaid contributions."
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
     },
     "officialUrl": "https://www.pagibigfund.gov.ph",
     "tutorialId": "tut-pagibig-registration",
-    "lastVerified": "2026-08-01",
+    "lastVerified": "2026-09-20",
     "contentSource": "prototype_placeholder",
     "deadlineKind": "one_time"
   },
@@ -252,11 +250,12 @@
       "monthlyRate": 0.02,
       "description": "The changelog lists a 25% surcharge on business tax due and 2% monthly interest on unpaid taxes, but enforcement and amounts must be confirmed against the applicable LGU revenue code."
     },
-    "officialUrl": "https://www.dilg.gov.ph",
+    "officialUrl": "",
     "tutorialId": "tut-lgu-renewal",
-    "lastVerified": "2026-08-01",
+    "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "fixed_annual"
+    "deadlineKind": "fixed_annual",
+    "archived": true
   },
   {
     "id": "lgu-barangay-mayors-clearance",
@@ -293,10 +292,11 @@
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
-    "officialUrl": "https://www.dilg.gov.ph",
+    "officialUrl": "",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "one_time"
+    "deadlineKind": "one_time",
+    "archived": true
   },
   {
     "id": "bir-registration-filing",
@@ -342,7 +342,8 @@
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "one_time"
+    "deadlineKind": "one_time",
+    "archived": true
   },
   {
     "id": "bir-books-of-accounts",
@@ -411,7 +412,8 @@
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "one_time"
+    "deadlineKind": "one_time",
+    "archived": true
   },
   {
     "id": "bir-orus-registration",
@@ -466,7 +468,8 @@
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "one_time"
+    "deadlineKind": "one_time",
+    "archived": true
   },
   {
     "id": "bir-1906-authority-to-print",
@@ -509,10 +512,11 @@
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
-    "officialUrl": "https://bir-cdn.bir.gov.ph/BIR/pdf/1906%20October%202025%20ENCS%20Final.pdf",
+    "officialUrl": "",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "one_time"
+    "deadlineKind": "one_time",
+    "archived": true
   },
   {
     "id": "bir-2000-dst",
@@ -564,10 +568,11 @@
       "type": "not_specified",
       "description": "Information not provided in the current content source. Specific DST rates per ATC and penalty rates for late filing are not itemized in the source."
     },
-    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2000-DST%20Jan%202018%20final.pdf",
+    "officialUrl": "",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "recurring_variable",
+    "archived": true
   },
   {
     "id": "bir-1700-compensation",
@@ -608,7 +613,8 @@
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "fixed_annual"
+    "deadlineKind": "fixed_annual",
+    "archived": true
   },
   {
     "id": "bir-1701-self-employed",
@@ -619,7 +625,6 @@
     "whoItAppliesTo": "Self-employed individuals and mixed-income earners.",
     "applicabilityRules": {
       "taxpayerType": [
-        "self_employment_or_profession",
         "mixed_income_earner"
       ]
     },
@@ -652,14 +657,14 @@
       "Maintain copies of returns and supporting documents."
     ],
     "complianceStage": "Individual Taxpayers",
-    "deadlineDescription": "Annually, on or before April 15.",
+    "deadlineDescription": "April 15 annually (statutory); TY2025 one-time extension was May 15, 2026",
     "deadlineMonth": 4,
     "deadlineDay": 15,
     "penaltyRule": {
       "type": "not_specified",
-      "description": "Information not provided in the current content source."
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
     },
-    "officialUrl": "https://www.bir.gov.ph",
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701%20Jan%202018%20final%20with%20rates.pdf",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
     "deadlineKind": "fixed_annual"
@@ -697,27 +702,47 @@
       "Maintain copies of quarterly returns."
     ],
     "complianceStage": "Individual Taxpayers",
-    "deadlineDescription": "Quarterly (specific calendar due dates per quarter are not itemized in the current content source; shown here as an approximate annual anchor).",
+    "deadlineDescription": "May 15, August 15, November 15 (Q1–Q3)",
     "penaltyRule": {
       "type": "not_specified",
-      "description": "Information not provided in the current content source."
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701Q%20Jan%202018%20final%20rev2_copy.pdf",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "fixed_dates",
+    "deadlineDates": [
+      {
+        "month": 5,
+        "day": 15
+      },
+      {
+        "month": 8,
+        "day": 15
+      },
+      {
+        "month": 11,
+        "day": 15
+      }
+    ]
   },
   {
     "id": "bir-1701a-8percent",
     "agencyId": "bir",
     "tutorialId": "tut-bir-1701a",
     "name": "Annual Income Tax Return: 8% Flat Rate / OSD (BIR Form 1701A)",
-    "description": "BIR Form 1701A is a simplified annual return for individuals using the 8% income tax rate or the Optional Standard Deduction (OSD), with no mixed income.",
+    "description": "Annual return for qualifying self-employed filers electing 8% or graduated with OSD. Itemized filers must confirm appropriate form with BIR (OPEN FL-21).",
     "whoItAppliesTo": "Self-employed individuals or purely-business taxpayers who qualify for the 8% flat rate or OSD option (not mixed-income earners).",
     "applicabilityRules": {
       "taxpayerType": [
-        "self_employment_or_profession",
-        "purely_business"
+        "self_employment_or_profession"
+      ],
+      "taxType": [
+        "8_percent",
+        "graduated"
+      ],
+      "deductionMethod": [
+        "osd"
       ]
     },
     "requiredDocuments": [
@@ -749,9 +774,9 @@
     "deadlineDay": 15,
     "penaltyRule": {
       "type": "not_specified",
-      "description": "Information not provided in the current content source."
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
     },
-    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701A%20Jan%202018%20v5%20with%20rates.pdf",
+    "officialUrl": "",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
     "deadlineKind": "fixed_annual"
@@ -800,7 +825,8 @@
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "recurring_variable",
+    "archived": true
   },
   {
     "id": "bir-1601fq-quarterly-final",
@@ -841,7 +867,8 @@
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "recurring_variable",
+    "archived": true
   },
   {
     "id": "bir-1601eq-quarterly-expanded",
@@ -893,12 +920,13 @@
     "deadlineDescription": "Quarterly (specific calendar due date not specified in the current content source).",
     "penaltyRule": {
       "type": "not_specified",
-      "description": "Information not provided in the current content source."
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
     },
-    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1601-EQ%20January%202019%20ENCS%20final.pdf",
+    "officialUrl": "https://efps.bir.gov.ph/efps-war/EFPSWeb_war/forms2018Version/1601EQ/1601eq_01.xhtml",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "recurring_variable",
+    "archived": true
   },
   {
     "id": "bir-0619e-monthly-expanded",
@@ -951,12 +979,14 @@
     "deadlineDescription": "Monthly (1st and 2nd month of each quarter), on or before the 10th of the following month.",
     "penaltyRule": {
       "type": "not_specified",
-      "description": "Information not provided in the current content source. Surcharge/interest/compromise penalty computation is referenced but rates are not itemized in the source."
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/0619-E%20Jan%202018%20rev%20final.pdf",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "monthly_day",
+    "archived": true,
+    "deadlineDayOfMonth": 10
   },
   {
     "id": "bir-2307-certificate",
@@ -1007,7 +1037,8 @@
     "officialUrl": "https://www.bir.gov.ph",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "recurring_variable",
+    "archived": true
   },
   {
     "id": "bir-1601c-monthly-compensation",
@@ -1043,10 +1074,10 @@
       "Maintain copies of payroll records and filed returns."
     ],
     "complianceStage": "Compensation Withholding",
-    "deadlineDescription": "Monthly (specific due date not specified in the current content source).",
+    "deadlineDescription": "10th of following month; 15th for eFPS; December due January 15",
     "penaltyRule": {
       "type": "not_specified",
-      "description": "Information not provided in the current content source."
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
     },
     "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1601C%20final%20Jan%202018%20with%20DPA.pdf",
     "lastVerified": "2026-09-20",
@@ -1091,10 +1122,11 @@
       "type": "not_specified",
       "description": "Information not provided in the current content source."
     },
-    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1604-C%20Jan%202018%20Final.pdf",
+    "officialUrl": "",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "recurring_variable",
+    "archived": true
   },
   {
     "id": "bir-2316-certificate",
@@ -1129,14 +1161,1060 @@
       "Maintain copies of issued certificates."
     ],
     "complianceStage": "Compensation Withholding",
-    "deadlineDescription": "Annually, issued to each employee (specific calendar due date not specified in the current content source).",
+    "deadlineDescription": "January 31 annually",
     "penaltyRule": {
       "type": "not_specified",
-      "description": "Information not provided in the current content source."
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
     },
-    "officialUrl": "https://www.bir.gov.ph",
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2316%20Sep%202021%20ENCS_Final_corrected.pdf",
     "lastVerified": "2026-09-20",
     "contentSource": "gabay_guide",
-    "deadlineKind": "recurring_variable"
+    "deadlineKind": "fixed_annual",
+    "deadlineMonth": 1,
+    "deadlineDay": 31
+  },
+  {
+    "id": "dti-registration",
+    "agencyId": "dti",
+    "name": "DTI Business Name Registration",
+    "description": "Register a sole proprietor’s business name using DTI BNRS. Valid for five years.",
+    "whoItAppliesTo": "New sole proprietors",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Valid government-issued ID",
+        "description": ""
+      },
+      {
+        "name": "Owner TIN, if applicable",
+        "description": ""
+      },
+      {
+        "name": "DTI Business Name Registration Application Form",
+        "description": ""
+      },
+      {
+        "name": "Authorization letter and representative ID, if applicable",
+        "description": ""
+      },
+      {
+        "name": "Additional documents for foreign nationals, if applicable",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Prepare the listed registration documents.",
+      "Open the DTI Business Name Registration System (BNRS).",
+      "Complete and review the online application.",
+      "Pay the fee according to territorial scope, plus ₱30 DST.",
+      "Keep the registration certificate."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Before operations",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
+    },
+    "officialUrl": "https://bnrs.dti.gov.ph/registration",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "tutorialId": "tut-dti-registration"
+  },
+  {
+    "id": "barangay-clearance",
+    "agencyId": "barangay",
+    "name": "Barangay Business Clearance",
+    "description": "Apply for local barangay business clearance before obtaining a business permit.",
+    "whoItAppliesTo": "New businesses",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Valid government-issued ID",
+        "description": ""
+      },
+      {
+        "name": "Proof of residency",
+        "description": ""
+      },
+      {
+        "name": "Community Tax Certificate (cedula)",
+        "description": ""
+      },
+      {
+        "name": "Application form from the barangay hall",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Visit your local barangay hall.",
+      "Request the applicable business clearance form.",
+      "Submit the listed documentary requirements.",
+      "Confirm the current fee with the barangay and obtain your clearance."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Before operations",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
+    },
+    "officialUrl": "",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "mayor-permit",
+    "agencyId": "lgu",
+    "name": "Mayor's / Business Permit",
+    "description": "Obtain the business permit from the relevant NCR city/municipality. Requirements and actual fees depend on the LGU.",
+    "whoItAppliesTo": "New businesses",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "BPLO application form",
+        "description": ""
+      },
+      {
+        "name": "DTI registration certificate",
+        "description": ""
+      },
+      {
+        "name": "Barangay clearance",
+        "description": ""
+      },
+      {
+        "name": "Notarized lease contract if renting; or TCT/Tax Declaration if owned",
+        "description": ""
+      },
+      {
+        "name": "Cedula",
+        "description": ""
+      },
+      {
+        "name": "Photos of premises including road, front and side views",
+        "description": ""
+      },
+      {
+        "name": "Zoning / locational clearance",
+        "description": ""
+      },
+      {
+        "name": "Fire Safety Inspection Certificate (BFP)",
+        "description": ""
+      },
+      {
+        "name": "Sanitary permit",
+        "description": ""
+      },
+      {
+        "name": "Certificate of occupancy",
+        "description": ""
+      },
+      {
+        "name": "Public liability insurance if applicable",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Before operations",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
+    },
+    "officialUrl": "",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "bir-registration",
+    "agencyId": "bir",
+    "name": "BIR Registration via ORUS and eCOR",
+    "description": "Register through BIR ORUS. No annual registration fee under EOPT; ₱30 loose documentary stamp tax applies for eCOR where applicable. Use BIR-printed invoices or secure ATP.",
+    "whoItAppliesTo": "New businesses",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Valid government ID with address, or additional address proof",
+        "description": ""
+      },
+      {
+        "name": "DTI certificate for a registered business name",
+        "description": ""
+      },
+      {
+        "name": "Invoice sample or BIR-printed invoices",
+        "description": ""
+      },
+      {
+        "name": "SPA and IDs of both parties plus wet specimen signature if represented",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Open BIR ORUS and complete registration.",
+      "Prepare the documents in the official BIR checklist.",
+      "Pay ₱30 loose DST where applicable and generate/print eCOR.",
+      "Use BIR-printed invoices or prepare a custom invoice layout.",
+      "For custom invoices, select an accredited printer and request Digital ATP in ORUS.",
+      "Download Digital ATP and provide it to the printer."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Before operations",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
+    },
+    "officialUrl": "https://orus.bir.gov.ph/home",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "dti-renewal",
+    "agencyId": "dti",
+    "name": "DTI Business Name Renewal",
+    "description": "Renew after the five-year name-registration validity. Early up to 180 days before expiry; regular within 90 days after; late window may incur surcharge.",
+    "whoItAppliesTo": "Operating businesses",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": false
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Based on actual five-year registration expiry; early/regular/late windows",
+    "deadlineKind": "recurring_variable",
+    "penaltyRule": {
+      "type": "percentage_only",
+      "surchargeRate": 0.5,
+      "description": "DTI late business-name renewal: 50% surcharge subject to the applicable late-renewal period."
+    },
+    "officialUrl": "",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "barangay-renewal",
+    "agencyId": "barangay",
+    "name": "Barangay Business Clearance Renewal",
+    "description": "Renew the barangay business clearance, subject to local confirmation.",
+    "whoItAppliesTo": "Operating businesses",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": false
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "January 1–20 annually; prior validity through December 31",
+    "deadlineKind": "window",
+    "deadlineMonth": 1,
+    "deadlineDay": 20,
+    "penaltyRule": {
+      "type": "percentage_surcharge_plus_capped_monthly",
+      "surchargeRate": 0.25,
+      "monthlyRate": 0.02,
+      "description": "LGU: 25% surcharge and up to 2% monthly interest on amount including surcharge, capped at 36 months; actual local ordinance controls."
+    },
+    "officialUrl": "",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "deadlineWindow": {
+      "startMonth": 1,
+      "startDay": 1,
+      "endMonth": 1,
+      "endDay": 20
+    }
+  },
+  {
+    "id": "mayor-permit-renewal",
+    "agencyId": "lgu",
+    "name": "Mayor's / Business Permit Renewal",
+    "description": "Renew the business permit in the relevant city. Fee estimates exclude local business tax and vary by LGU.",
+    "whoItAppliesTo": "Operating businesses",
+    "applicabilityRules": {
+      "isRegisteringNewBusiness": false
+    },
+    "requiredDocuments": [
+      {
+        "name": "Latest barangay clearance and proof of payment",
+        "description": ""
+      },
+      {
+        "name": "Renewal form and cedula",
+        "description": ""
+      },
+      {
+        "name": "Latest ITR / audited financial statements when applicable",
+        "description": ""
+      },
+      {
+        "name": "Applicable VAT or percentage-tax returns",
+        "description": ""
+      },
+      {
+        "name": "Notarized lease if renting",
+        "description": ""
+      },
+      {
+        "name": "Valid DTI/SEC/CDA registration",
+        "description": ""
+      },
+      {
+        "name": "Employee SSS, PhilHealth and Pag-IBIG details",
+        "description": ""
+      },
+      {
+        "name": "Affidavit of No Operations if applicable",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "January 1–20 annually",
+    "deadlineKind": "window",
+    "deadlineMonth": 1,
+    "deadlineDay": 20,
+    "penaltyRule": {
+      "type": "percentage_surcharge_plus_capped_monthly",
+      "surchargeRate": 0.25,
+      "monthlyRate": 0.02,
+      "description": "LGU: 25% surcharge and up to 2% monthly interest on amount including surcharge, capped at 36 months; actual local ordinance controls."
+    },
+    "officialUrl": "",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "deadlineWindow": {
+      "startMonth": 1,
+      "startDay": 1,
+      "endMonth": 1,
+      "endDay": 20
+    }
+  },
+  {
+    "id": "sss-employee-reg",
+    "agencyId": "sss",
+    "name": "SSS Employee Registration",
+    "description": "Register employees with SSS, including R-1A and E-1/E-1V when needed.",
+    "whoItAppliesTo": "Businesses with employees",
+    "applicabilityRules": {
+      "hasEmployees": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "SSS Employment Report (R-1A)",
+        "description": ""
+      },
+      {
+        "name": "SSS number for each employee",
+        "description": ""
+      },
+      {
+        "name": "SSS Personal Record (E-1/E-1V) if needed",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Upon first hire",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
+    },
+    "officialUrl": "https://www.sss.gov.ph/employer-er/",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "philhealth-employee-reg",
+    "agencyId": "philhealth",
+    "name": "PhilHealth Employee Registration",
+    "description": "Register employees and submit PhilHealth ER2; PMRF applies where an employee does not have a PIN.",
+    "whoItAppliesTo": "Businesses with employees",
+    "applicabilityRules": {
+      "hasEmployees": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Report of Employee-Members (ER2)",
+        "description": ""
+      },
+      {
+        "name": "Member PIN or PMRF",
+        "description": ""
+      },
+      {
+        "name": "Supporting identification documents",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Upon first hire",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
+    },
+    "officialUrl": "https://www.philhealth.gov.ph/partners/employers/registration.php",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "pagibig-employee-reg",
+    "agencyId": "pagibig",
+    "name": "Pag-IBIG Employee Registration",
+    "description": "Register workers and maintain Pag-IBIG membership records.",
+    "whoItAppliesTo": "Businesses with employees",
+    "applicabilityRules": {
+      "hasEmployees": true
+    },
+    "requiredDocuments": [
+      {
+        "name": "Employee membership information",
+        "description": ""
+      },
+      {
+        "name": "Employer ID and EDF where applicable",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Upon first hire",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No safe automatic estimate for this filing; confirm with the issuing agency."
+    },
+    "officialUrl": "https://www.pagibigfund.gov.ph",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "bir-1701ms",
+    "agencyId": "bir",
+    "name": "BIR Form 1701-MS — Annual Income Tax Return",
+    "description": "Annual income tax form for qualifying micro/small individuals. Appropriate return selection must be confirmed.",
+    "whoItAppliesTo": "Qualifying micro/small individuals; consult filer classification",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession",
+        "mixed_income_earner"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "April 15 annually",
+    "deadlineKind": "fixed_annual",
+    "deadlineMonth": 4,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
+    },
+    "officialUrl": "",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-2551q",
+    "agencyId": "bir",
+    "name": "BIR Form 2551Q — Quarterly Percentage Tax",
+    "description": "Quarterly percentage-tax return for qualifying non-VAT graduated filers below the VAT threshold. Not applicable to valid 8% filers.",
+    "whoItAppliesTo": "Non-VAT taxpayers under graduated rates",
+    "applicabilityRules": {
+      "taxType": [
+        "graduated"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "25th day after each taxable quarter",
+    "deadlineKind": "quarter_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2551Q%20Jan%202018%20ENCS%20final%20rev%203_copy.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "deadlineQuarterOffsetDays": 25
+  },
+  {
+    "id": "bir-2550q",
+    "agencyId": "bir",
+    "name": "BIR Form 2550Q — Quarterly VAT Return",
+    "description": "Quarterly VAT return for VAT-registered taxpayers. VAT registration must be verified; the consultant lists a ₱3 million threshold.",
+    "whoItAppliesTo": "VAT-registered businesses",
+    "applicabilityRules": {
+      "taxType": [
+        "vat_registered"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "25th day after each taxable quarter",
+    "deadlineKind": "quarter_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/BIR/pdf/2550Q%20%20April%202024%20ENCS_Final.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "deadlineQuarterOffsetDays": 25
+  },
+  {
+    "id": "bir-1706",
+    "agencyId": "bir",
+    "name": "BIR Form 1706 — Capital Gains Tax",
+    "description": "Event-specific filing ONLY if the taxpayer has disposed of qualifying real property. Not a routine microbusiness obligation.",
+    "whoItAppliesTo": "Qualifying sale of real-property capital asset",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "30 days after qualifying sale",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Consultant-approved rate may apply; confirm assessment with the issuing agency."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1706%20Jan%202018%20ENCS%20Final%20version.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-1800",
+    "agencyId": "bir",
+    "name": "BIR Form 1800 — Donor's Tax",
+    "description": "Event-specific filing ONLY for taxable donations; confirm threshold and exemptions with BIR.",
+    "whoItAppliesTo": "Qualifying donations",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "30 days after taxable donation",
+    "deadlineKind": "one_time",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Consultant-approved rate may apply; confirm assessment with the issuing agency."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1800_Jan%202018%20ENCS_rev_final.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "pagibig-contribution",
+    "agencyId": "pagibig",
+    "name": "Pag-IBIG Contributions and Remittance",
+    "description": "Monthly employer/employee Pag-IBIG contributions. MSRF is the cited remittance form.",
+    "whoItAppliesTo": "Employers",
+    "applicabilityRules": {
+      "hasEmployees": true
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Following month; A–D: 10–14, E–L: 15–19, M–Q: 20–24, R–Z/numerals: 25–month end",
+    "deadlineKind": "recurring_variable",
+    "penaltyRule": {
+      "type": "daily_percentage",
+      "dailyRate": 0.001,
+      "description": "Pag-IBIG: 0.1% per calendar day on amount due."
+    },
+    "officialUrl": "",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "philhealth-contribution",
+    "agencyId": "philhealth",
+    "name": "PhilHealth Contributions and Remittance",
+    "description": "Monthly PhilHealth employer and employee premium contributions.",
+    "whoItAppliesTo": "Employers",
+    "applicabilityRules": {
+      "hasEmployees": true
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Monthly; exact remittance deadline OPEN — confirm with PhilHealth",
+    "deadlineKind": "recurring_variable",
+    "penaltyRule": {
+      "type": "monthly_compound",
+      "monthlyRate": 0.03,
+      "description": "PhilHealth: at least 3% compounded monthly; verify applicable program."
+    },
+    "officialUrl": "",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide"
+  },
+  {
+    "id": "bir-1601eq-conditional",
+    "agencyId": "bir",
+    "name": "BIR 1601-EQ — Quarterly Expanded Withholding Tax",
+    "description": "Conditional on making payments subject to expanded withholding tax; not every business pays EWT.",
+    "whoItAppliesTo": "Businesses making EWT-subject payments",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Last day of month following taxable quarter",
+    "deadlineKind": "recurring_variable",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Consultant-approved rate may apply; confirm assessment with the issuing agency."
+    },
+    "officialUrl": "https://efps.bir.gov.ph/efps-war/EFPSWeb_war/forms2018Version/1601EQ/1601eq_01.xhtml",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bmbe",
+    "agencyId": "dti",
+    "name": "BMBE Registration (Optional)",
+    "description": "Optional BMBE registration for eligible businesses with assets not exceeding ₱3 million excluding land. Income-tax exemption is not an exemption from other taxes or late-filing penalties.",
+    "whoItAppliesTo": "Eligible microbusinesses",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BMBE Form 01 (3 copies)",
+        "description": ""
+      },
+      {
+        "name": "Proof of DTI registration",
+        "description": ""
+      },
+      {
+        "name": "Eligibility information",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Review the requirement with the responsible government agency.",
+      "Prepare the required documents listed in the official guidance.",
+      "Complete the official application or filing process."
+    ],
+    "complianceStage": "Consultant-approved compliance catalog",
+    "deadlineDescription": "Certificate valid for two years; renewal every two years",
+    "deadlineKind": "recurring_variable",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "Consultant-approved rate may apply; confirm assessment with the issuing agency."
+    },
+    "officialUrl": "https://bmbe.dti.gov.ph",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-1701-itemized-vat",
+    "agencyId": "bir",
+    "tutorialId": "tut-bir-1701",
+    "name": "BIR Form 1701 — Annual Income Tax Return for Itemized/VAT-Registered",
+    "description": "For self-employed taxpayers under itemized deductions or VAT-registered status, subject to BIR confirmation of the correct return type. Consultant decision OPEN FL-21.",
+    "whoItAppliesTo": "Self-employed individuals and mixed-income earners.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession"
+      ],
+      "taxType": [
+        "graduated",
+        "vat_registered"
+      ],
+      "deductionMethod": [
+        "itemized"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 2303",
+        "description": ""
+      },
+      {
+        "name": "General Journal / Ledger",
+        "description": ""
+      },
+      {
+        "name": "Official receipts / invoices",
+        "description": ""
+      },
+      {
+        "name": "Financial statements",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Ensure the taxpayer is registered with the BIR.",
+      "Maintain registered books of accounts.",
+      "Collect receipts, invoices, and income records.",
+      "Report total income earned for the year.",
+      "Choose Itemized Deduction or Optional Standard Deduction (OSD).",
+      "Compute taxable income and tax due.",
+      "Pay remaining tax due before April 15.",
+      "Maintain copies of returns and supporting documents."
+    ],
+    "complianceStage": "Individual Taxpayers",
+    "deadlineDescription": "April 15 annually (statutory); TY2025 one-time extension was May 15, 2026",
+    "deadlineMonth": 4,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701%20Jan%202018%20final%20with%20rates.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "gabay_guide",
+    "deadlineKind": "fixed_annual"
+  },
+  {
+    "id": "bir-1701-vat-osd",
+    "agencyId": "bir",
+    "tutorialId": "tut-bir-1701",
+    "name": "BIR Form 1701 — Annual Income Tax Return for VAT-Registered OSD Filer",
+    "description": "Annual form selection for VAT-registered filer requires confirmation with BIR; shown as guidance pending consultant review.",
+    "whoItAppliesTo": "Self-employed individuals and mixed-income earners.",
+    "applicabilityRules": {
+      "taxpayerType": [
+        "self_employment_or_profession"
+      ],
+      "taxType": [
+        "vat_registered"
+      ],
+      "deductionMethod": [
+        "osd"
+      ]
+    },
+    "requiredDocuments": [
+      {
+        "name": "BIR Form 2303",
+        "description": ""
+      },
+      {
+        "name": "General Journal / Ledger",
+        "description": ""
+      },
+      {
+        "name": "Official receipts / invoices",
+        "description": ""
+      },
+      {
+        "name": "Financial statements",
+        "description": ""
+      }
+    ],
+    "instructions": [
+      "Ensure the taxpayer is registered with the BIR.",
+      "Maintain registered books of accounts.",
+      "Collect receipts, invoices, and income records.",
+      "Report total income earned for the year.",
+      "Choose Itemized Deduction or Optional Standard Deduction (OSD).",
+      "Compute taxable income and tax due.",
+      "Pay remaining tax due before April 15.",
+      "Maintain copies of returns and supporting documents."
+    ],
+    "complianceStage": "Individual Taxpayers",
+    "deadlineDescription": "April 15 annually (statutory); TY2025 one-time extension was May 15, 2026",
+    "deadlineMonth": 4,
+    "deadlineDay": 15,
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "BIR micro/small taxpayer: generally 10% surcharge and 6% annual interest on unpaid tax (RR 6-2024); other conditions may apply. Use the BIR simulator."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/1701%20Jan%202018%20final%20with%20rates.pdf",
+    "lastVerified": "2026-09-20",
+    "contentSource": "gabay_guide",
+    "deadlineKind": "fixed_annual"
+  },
+  {
+    "id": "bir-excise-a",
+    "agencyId": "bir",
+    "name": "BIR Form 2200-A - Excise (Alcohol)",
+    "description": "Conditional excise-tax return for Alcohol manufacturers/importers. Applies only when manufacturing/importing covered excisable goods. The current wizard does not ask for this; this informational catalog item is withheld from automatic checklists.",
+    "whoItAppliesTo": "Alcohol manufacturers/importers",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Verify excise-tax applicability with BIR.",
+      "Review the official form and current filing instructions."
+    ],
+    "complianceStage": "Conditional / Excise Tax",
+    "deadlineDescription": "Before removal from plant/bonded warehouse; quarterly sworn statement by 25th",
+    "deadlineKind": "event_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No automatic calculation without verified event conditions."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-A%20Jan%202020%20ENCS%20Final%20version2.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-excise-an",
+    "agencyId": "bir",
+    "name": "BIR Form 2200-AN - Excise (Automobiles & Non-Essential Goods)",
+    "description": "Conditional excise-tax return for Manufacturers/importers. Applies only when manufacturing/importing covered excisable goods. The current wizard does not ask for this; this informational catalog item is withheld from automatic checklists.",
+    "whoItAppliesTo": "Manufacturers/importers",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Verify excise-tax applicability with BIR.",
+      "Review the official form and current filing instructions."
+    ],
+    "complianceStage": "Conditional / Excise Tax",
+    "deadlineDescription": "Before removal from place of production",
+    "deadlineKind": "event_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No automatic calculation without verified event conditions."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-AN%20Jan%202018%20ENCS%20Final%20version_copy.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-excise-c",
+    "agencyId": "bir",
+    "name": "BIR Form 2200-C - Excise (Cosmetic Procedures)",
+    "description": "Conditional excise-tax return for Applicable taxpayers. Applies only when manufacturing/importing covered excisable goods. The current wizard does not ask for this; this informational catalog item is withheld from automatic checklists.",
+    "whoItAppliesTo": "Applicable taxpayers",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Verify excise-tax applicability with BIR.",
+      "Review the official form and current filing instructions."
+    ],
+    "complianceStage": "Conditional / Excise Tax",
+    "deadlineDescription": "Within 10 days after month end",
+    "deadlineKind": "event_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No automatic calculation without verified event conditions."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-C%20Jan%202018%20final%20version3.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-excise-m",
+    "agencyId": "bir",
+    "name": "BIR Form 2200-M - Excise (Mineral Products)",
+    "description": "Conditional excise-tax return for Mining claim owners etc.. Applies only when manufacturing/importing covered excisable goods. The current wizard does not ask for this; this informational catalog item is withheld from automatic checklists.",
+    "whoItAppliesTo": "Mining claim owners etc.",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Verify excise-tax applicability with BIR.",
+      "Review the official form and current filing instructions."
+    ],
+    "complianceStage": "Conditional / Excise Tax",
+    "deadlineDescription": "Metallic minerals: within 15 days after quarter end",
+    "deadlineKind": "event_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No automatic calculation without verified event conditions."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-M%20Jan%202018%20ENCS%20v2%20final%20version.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-excise-p",
+    "agencyId": "bir",
+    "name": "BIR Form 2200-P - Excise (Petroleum Products)",
+    "description": "Conditional excise-tax return for Petroleum producers/blenders etc.. Applies only when manufacturing/importing covered excisable goods. The current wizard does not ask for this; this informational catalog item is withheld from automatic checklists.",
+    "whoItAppliesTo": "Petroleum producers/blenders etc.",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Verify excise-tax applicability with BIR.",
+      "Review the official form and current filing instructions."
+    ],
+    "complianceStage": "Conditional / Excise Tax",
+    "deadlineDescription": "Before removal from place of production",
+    "deadlineKind": "event_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No automatic calculation without verified event conditions."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-P%20Jan%202020%20ENCS%20final%20version2correct.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-excise-t",
+    "agencyId": "bir",
+    "name": "BIR Form 2200-T - Excise (Tobacco / Vapor / Novel)",
+    "description": "Conditional excise-tax return for Tobacco manufacturers etc.. Applies only when manufacturing/importing covered excisable goods. The current wizard does not ask for this; this informational catalog item is withheld from automatic checklists.",
+    "whoItAppliesTo": "Tobacco manufacturers etc.",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Verify excise-tax applicability with BIR.",
+      "Review the official form and current filing instructions."
+    ],
+    "complianceStage": "Conditional / Excise Tax",
+    "deadlineDescription": "Before removal from place of production",
+    "deadlineKind": "event_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No automatic calculation without verified event conditions."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-T%20Aug.%202022%20ENCS%20Final.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
+  },
+  {
+    "id": "bir-excise-s",
+    "agencyId": "bir",
+    "name": "BIR Form 2200-S - Excise (Sweetened Beverages)",
+    "description": "Conditional excise-tax return for Sweetened beverage producers. Applies only when manufacturing/importing covered excisable goods. The current wizard does not ask for this; this informational catalog item is withheld from automatic checklists.",
+    "whoItAppliesTo": "Sweetened beverage producers",
+    "applicabilityRules": {
+      "businessType": [
+        "other"
+      ]
+    },
+    "requiredDocuments": [],
+    "instructions": [
+      "Verify excise-tax applicability with BIR.",
+      "Review the official form and current filing instructions."
+    ],
+    "complianceStage": "Conditional / Excise Tax",
+    "deadlineDescription": "Before removal from place of production",
+    "deadlineKind": "event_offset",
+    "penaltyRule": {
+      "type": "not_specified",
+      "description": "No automatic calculation without verified event conditions."
+    },
+    "officialUrl": "https://bir-cdn.bir.gov.ph/local/pdf/2200-S%20Jan%202018%20rev2.pdf",
+    "lastVerified": "2026-11-02",
+    "contentSource": "gabay_guide",
+    "archived": true
   }
 ]

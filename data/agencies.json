@@ -27,6 +27,18 @@
     "id": "lgu",
     "name": "Local Government Unit (LGU)",
     "description": "Your city or municipality; issues and renews your business permit (Mayor's Permit).",
-    "officialUrl": "https://www.dilg.gov.ph"
+    "officialUrl": ""
+  },
+  {
+    "id": "dti",
+    "name": "Department of Trade and Industry (DTI)",
+    "description": "Business name registration and renewal for sole proprietors.",
+    "officialUrl": "https://bnrs.dti.gov.ph/registration"
+  },
+  {
+    "id": "barangay",
+    "name": "Barangay Office",
+    "description": "Local business clearance; confirm with your local barangay.",
+    "officialUrl": ""
   }
 ]

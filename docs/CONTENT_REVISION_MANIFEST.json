@@ -1,0 +1,15 @@
+{
+  "label": "GabayNegosyo post-WP4 consultant content revision (REVIEW ONLY)",
+  "createdOn": "2026-11-02",
+  "rootFileCount": 309,
+  "sourceFiles": [
+    "GabayNegosyo_Final_Content_Spec.md",
+    "GabayNegosyo_FINAL_Fix_Prompt.md",
+    "GabayNegosyo_Forms_Links_Database_v2.json",
+    "FinalGabayNegosyo_Forms_Links_Database_v2.xlsx",
+    "GNGROUP-1-FEASIB-CHA-1-With-Comments201fromConsu.pdf",
+    "GNChangesByConsultant.pdf"
+  ],
+  "tests": "7 new passes; old suite 279/299 (20 fail); build not verified",
+  "releaseStatus": "NOT READY TO DEPLOY"
+}

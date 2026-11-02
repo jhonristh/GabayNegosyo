@@ -1,0 +1,111 @@
+[
+  {
+    "id": "tut-bir-registration",
+    "title": "How to Register Your Business with the BIR",
+    "description": "Walkthrough of getting your Certificate of Registration (2303) as a new sole proprietor.",
+    "videoUrl": "https://www.youtube.com/results?search_query=BIR+business+registration+tutorial+2303",
+    "agencyId": "bir",
+    "relatedRequirementId": "bir-cor",
+    "category": "registration",
+    "isPlaceholder": true
+  },
+  {
+    "id": "tut-bir-1701",
+    "title": "Filing BIR Form 1701",
+    "description": "Video walkthrough of BIR Form 1701, the annual income tax return for self-employed and mixed-income earners.",
+    "videoUrl": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s",
+    "agencyId": "bir",
+    "relatedRequirementId": "bir-1701-self-employed",
+    "category": "filing",
+    "isPlaceholder": false
+  },
+  {
+    "id": "tut-bir-1701q",
+    "title": "Filing BIR Form 1701-Q (quarterly)",
+    "description": "Video walkthrough of BIR Form 1701Q, the quarterly income tax return for self-employed taxpayers.",
+    "videoUrl": "https://www.youtube.com/watch?v=8C0TBHccWbc",
+    "agencyId": "bir",
+    "relatedRequirementId": "bir-1701q-quarterly",
+    "category": "filing",
+    "isPlaceholder": false
+  },
+  {
+    "id": "tut-bir-1701a",
+    "title": "Filing BIR Form 1701-A",
+    "description": "Video walkthrough of BIR Form 1701A, the annual return for the 8% flat rate or the Optional Standard Deduction.",
+    "videoUrl": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s",
+    "agencyId": "bir",
+    "relatedRequirementId": "bir-1701a-8percent",
+    "category": "filing",
+    "isPlaceholder": false
+  },
+  {
+    "id": "tut-bir-1701ms",
+    "title": "Filing BIR Form 1701-MS (micro and small taxpayers)",
+    "description": "Video walkthrough of BIR Form 1701-MS for micro and small taxpayers.",
+    "videoUrl": "https://www.youtube.com/watch?v=0MQLh_jxlak",
+    "agencyId": "bir",
+    "category": "filing",
+    "isPlaceholder": false
+  },
+  {
+    "id": "tut-sss-registration",
+    "title": "Registering as an SSS Employer",
+    "description": "How to complete the R-1 employer registration through My.SSS.",
+    "videoUrl": "https://www.youtube.com/results?search_query=SSS+employer+registration+R1+tutorial",
+    "agencyId": "sss",
+    "relatedRequirementId": "sss-employer-reg",
+    "category": "registration",
+    "isPlaceholder": true
+  },
+  {
+    "id": "tut-sss-contribution",
+    "title": "Paying Monthly SSS Contributions Online",
+    "description": "How to compute and remit monthly employee/employer SSS contributions.",
+    "videoUrl": "https://www.youtube.com/results?search_query=SSS+contribution+payment+online+tutorial",
+    "agencyId": "sss",
+    "relatedRequirementId": "sss-contribution",
+    "category": "contribution",
+    "isPlaceholder": true
+  },
+  {
+    "id": "tut-philhealth-registration",
+    "title": "PhilHealth Employer Registration Walkthrough",
+    "description": "Completing the ER1 form and enrolling employees.",
+    "videoUrl": "https://www.youtube.com/results?search_query=philhealth+employer+registration+ER1+tutorial",
+    "agencyId": "philhealth",
+    "relatedRequirementId": "philhealth-employer-reg",
+    "category": "registration",
+    "isPlaceholder": true
+  },
+  {
+    "id": "tut-pagibig-registration",
+    "title": "Pag-IBIG Employer Registration via Virtual Pag-IBIG",
+    "description": "Registering your business and enrolling employees online.",
+    "videoUrl": "https://www.youtube.com/results?search_query=pagibig+employer+registration+virtual+pagibig",
+    "agencyId": "pagibig",
+    "relatedRequirementId": "pagibig-employer-reg",
+    "category": "registration",
+    "isPlaceholder": true
+  },
+  {
+    "id": "tut-lgu-permit-application",
+    "title": "Barangay clearance and Mayor's permit application",
+    "description": "Video walkthrough of the barangay clearance and Mayor's permit application steps.",
+    "videoUrl": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
+    "agencyId": "lgu",
+    "relatedRequirementId": "lgu-barangay-mayors-clearance",
+    "category": "application",
+    "isPlaceholder": false
+  },
+  {
+    "id": "tut-lgu-renewal",
+    "title": "Renewing your Mayor's permit",
+    "description": "Video walkthrough of the annual Mayor's permit renewal. Requirements and fees vary by LGU; check your city or municipality.",
+    "videoUrl": "https://www.youtube.com/watch?v=KysPCsJjbKI",
+    "agencyId": "lgu",
+    "relatedRequirementId": "lgu-permit-renewal",
+    "category": "renewal",
+    "isPlaceholder": false
+  }
+]

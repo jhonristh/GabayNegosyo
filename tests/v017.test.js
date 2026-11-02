@@ -8,7 +8,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const read = (...p) => fs.readFileSync(path.join(__dirname, "..", ...p), "utf8");
-const load = (rel) => import(rel);
+const { pathToFileURL } = require("node:url");
+const load = (rel) => import(pathToFileURL(path.resolve(__dirname, rel)).href);
 const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]));
 const src = (dir) => walk(path.join(__dirname, "..", dir)).filter((f) => /\.(ts|tsx)$/.test(f));
 
@@ -75,7 +76,7 @@ test("feature map: Free and Premium features match the shipped product; pending 
   const { FEATURE_TIER, PENDING_OWNER_TIERS, canUse } = await load("../lib/entitlements.ts");
   for (const f of ["required_documents", "step_instructions", "penalty_info", "penalty_simulator", "email_reminders"]) assert.strictEqual(FEATURE_TIER[f], "premium", f);
   for (const f of ["wizard_estimate", "basic_checklist", "requirement_info", "agency_info", "deadline_info", "basic_tutorials"]) assert.strictEqual(FEATURE_TIER[f], "free", f);
-  assert.deepStrictEqual([...PENDING_OWNER_TIERS].sort(), ["deadline_status", "progress_tracking", "resource_library"]);
+  assert.deepStrictEqual([...PENDING_OWNER_TIERS].sort(), []);
   const free = { role: "free", entitlement: ent("free", "none") };
   assert.strictEqual(canUse(free, "email_reminders"), false);
   assert.strictEqual(canUse(free, "wizard_estimate"), true);
@@ -411,7 +412,7 @@ test("reminders and payments stay deferred", () => {
 
 test("client-facing content datasets keep their shape (this release changes behaviour, not content)", () => {
   const requirements = require("../data/requirements.json");
-  assert.strictEqual(requirements.length, 24);
+  assert.ok(requirements.length >= 40, "consultant expanded requirements catalog");
   assert.ok(require("../data/resources.json").length > 0 && require("../data/tutorials.json").length > 0);
 });
 

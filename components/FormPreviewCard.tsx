@@ -14,7 +14,7 @@ export default function FormPreviewCard({ resource }: { resource: ResourceItem }
     <div className="v06-document-art" aria-hidden="true"><span>{resource.agencyId.toUpperCase()} · FORM</span><strong>{resource.title.match(/(?:Form\s+)([\w-]+)/i)?.[1] ?? "FORM"}</strong><i /><i /><i /></div>
     <div className="v06-media-content"><p className="v06-eyebrow">{resource.agencyId.toUpperCase()} · FORM</p><h3>{resource.title}</h3><p>{resource.description}</p><div className="v06-card-actions">
       {pdf && <button type="button" className="secondary-btn" onClick={() => setOpen(true)}>Preview form</button>}
-      <a className="tutorial-link" href={resource.url} target="_blank" rel="noopener noreferrer">{pdf ? "Open official PDF ↗" : "Open source ↗"}</a>
+      {resource.url ? <a className="tutorial-link" href={resource.url} target="_blank" rel="noopener noreferrer">{pdf ? "Open official PDF ↗" : "Open source ↗"}</a> : <span className="hint">Official link awaiting consultant confirmation</span>}
     </div><p className="verified">Source checked: {resource.lastVerified}</p></div>
     {pdf && <dialog ref={dialog} className="v06-preview-dialog" onClose={() => setOpen(false)} aria-label={`Preview ${resource.title}`}>
       <div className="v06-dialog-header"><div><p className="v06-eyebrow">{resource.agencyId.toUpperCase()} · OFFICIAL PDF</p><h2>{resource.title}</h2></div><button type="button" className="v06-close" onClick={() => dialog.current?.close()} aria-label="Close preview">×</button></div>

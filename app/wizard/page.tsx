@@ -1,6 +1,6 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
@@ -9,9 +9,7 @@ import { NCR_LOCALITIES, getLocality, localityIdOf, formatLocation } from "../..
 import { getBarangays } from "../../lib/barangays";
 import { wizardStepProblem } from "../../lib/validation";
 import { ErrorState } from "../../components/StateBlocks";
-import { TAXPAYER_TYPES } from "../../lib/taxpayer";
-import { eightPercentUnavailable, estimateIncomeTax, SALES_LIMIT_FOR_EIGHT_PERCENT } from "../../lib/tax";
-import { peso } from "../../lib/money";
+import { estimateEightPercentTaxDue } from "../../lib/penalty";
 import type { BusinessProfile, TaxpayerType } from "../../lib/types";
 
 /**
@@ -33,10 +31,15 @@ const STEPS = [
   "Lease",
   "Employees",
   "Projected Sales",
-  "Tax Option",
+  "Tax Type & Deductions",
   "Business Name",
   "Review",
   "Generate My Compliance Roadmap",
+];
+
+const TAXPAYER_TYPES: { value: TaxpayerType; label: string }[] = [
+  { value: "self_employment_or_profession", label: "Self-Employed or Professional" },
+  { value: "mixed_income_earner", label: "Mixed Income Earner" },
 ];
 
 
@@ -70,16 +73,12 @@ function WizardInner() {
   const [employeeCount, setEmployeeCount] = useState(existing?.employeeCount ?? 0);
   const [projectedGrossSales, setProjectedGrossSales] = useState<number | "">(existing ? existing.projectedGrossSales : "");
   const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
-  const [taxType, setTaxType] = useState<"8_percent" | "graduated">(existing?.taxType === "graduated" ? "graduated" : "8_percent");
+  const [taxType, setTaxType] = useState<"8_percent" | "graduated">(existing?.taxType === "graduated" || existing?.taxType === "vat_registered" ? "graduated" : "8_percent");
+  useEffect(() => { if (Number(projectedGrossSales)>=3000000 && taxType!=="graduated") setTaxType("graduated"); }, [projectedGrossSales,taxType]);
   const [deductionMethod, setDeductionMethod] = useState<"osd" | "itemized">(existing?.deductionMethod === "itemized" ? "itemized" : "osd");
   const [leaseApplicability, setLeaseApplicability] = useState<"" | "yes" | "no" | "na">(existing ? (existing.leaseApplicability ?? (existing.hasLease ? "yes" : "no")) : "");
   const [saveError, setSaveError] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
-
-  // Spec §2.5: at ₱3,000,000 and above 8% is unavailable and graduated applies automatically.
-  const salesAboveLimit = projectedGrossSales !== "" && eightPercentUnavailable(Number(projectedGrossSales));
-  const effectiveTaxType: "8_percent" | "graduated" = salesAboveLimit ? "graduated" : taxType;
-  const itemized = effectiveTaxType === "graduated" && deductionMethod === "itemized";
 
   const localityInfo = getLocality(locality);
   const barangayOptions = useMemo(() => getBarangays(locality), [locality]);
@@ -107,15 +106,16 @@ function WizardInner() {
       hasEmployees,
       employeeCount,
       projectedGrossSales,
-      businessName,
-      taxOption: effectiveTaxType,
-      deductionMethod,
       projectedExpenses,
+      taxOption: taxType,
+      deductionMethod,
+      businessName,
     });
   }
   const problem = stepProblem();
 
   function generateRoadmap() {
+    const effectiveTaxType = Number(projectedGrossSales) >= 3000000 ? "vat_registered" : taxType;
     const profile: BusinessProfile = {
       id: user ? `biz-${user.id}` : "biz-guest",
       userId: user ? user.id : "guest",
@@ -128,8 +128,8 @@ function WizardInner() {
       hasEmployees: Boolean(hasEmployees),
       employeeCount: hasEmployees ? employeeCount : 0,
       projectedGrossSales: Number(projectedGrossSales) || 0,
-      projectedExpenses: itemized ? (Number(projectedExpenses) || 0) : 0,
-      deductionMethod: effectiveTaxType === "graduated" ? deductionMethod : undefined,
+      projectedExpenses: taxType === "graduated" && deductionMethod === "itemized" ? (Number(projectedExpenses) || 0) : 0,
+      deductionMethod: taxType === "graduated" ? deductionMethod : undefined,
       leaseApplicability: leaseApplicability === "" ? undefined : leaseApplicability,
       businessName: businessName.trim(),
       location: formatLocation(barangay, locality),
@@ -362,11 +362,6 @@ function WizardInner() {
               onChange={(e) => setProjectedGrossSales(e.target.value === "" ? "" : Number(e.target.value))}
               placeholder="e.g. 2000000"
             />
-            {salesAboveLimit && (
-              <p className="hint" role="status">
-                Sales of {peso(SALES_LIMIT_FOR_EIGHT_PERCENT)} or more: the 8% option is not available. The graduated tax table applies automatically, and your business must register as a VAT taxpayer.
-              </p>
-            )}
           </section>
 
         </>
@@ -374,37 +369,27 @@ function WizardInner() {
 
       {step === 6 && (
         <section className="question">
-          <label className="question-label">Tax option</label>
-          <p className="hint">The 8% option is optional. It is for qualified self-employed individuals and professionals with annual gross sales or receipts below ₱3,000,000, and it is in place of the graduated income tax and the 3% percentage tax. Confirm your eligibility with the BIR or a tax professional.</p>
-          {salesAboveLimit && (
-            <p className="hint" role="status">Your projected sales are ₱3,000,000 or more, so the 8% option is turned off. Graduated tax applies automatically and VAT registration is required.</p>
-          )}
+          <label className="question-label">Tax Type</label>
+          <p className="hint">The 8% option is available only to qualified taxpayers and is generally for annual gross sales/receipts not exceeding ₱3,000,000. Confirm eligibility with the BIR or a tax professional. At ₱3,000,000 or more, this prototype disables 8% and flags VAT registration for review with BIR.</p>
+          {Number(projectedGrossSales) >= 3000000 && <p role="status" className="hint">Projected sales at or above ₱3,000,000: 8% is unavailable in this prototype; graduated taxation and VAT registration are flagged for verification.</p>}
           <div className="option-grid">
-            <button type="button" disabled={salesAboveLimit} aria-pressed={effectiveTaxType === "8_percent"} className={`option-btn ${effectiveTaxType === "8_percent" ? "selected" : ""}`} onClick={() => setTaxType("8_percent")}>8%</button>
-            <button type="button" aria-pressed={effectiveTaxType === "graduated"} className={`option-btn ${effectiveTaxType === "graduated" ? "selected" : ""}`} onClick={() => setTaxType("graduated")}>Graduated</button>
+            <button type="button" aria-pressed={taxType === "8_percent"} className={`option-btn ${taxType === "8_percent" ? "selected" : ""}`} disabled={Number(projectedGrossSales) >= 3000000} onClick={() => setTaxType("8_percent")}>8% Option</button>
+            <button type="button" aria-pressed={taxType === "graduated" || Number(projectedGrossSales) >= 3000000} className={`option-btn ${taxType === "graduated" ? "selected" : ""}`} onClick={() => setTaxType("graduated")}>Graduated Tax</button>
           </div>
-          {effectiveTaxType === "8_percent" && taxpayerType !== "mixed_income_earner" && (
-            <p className="hint">The ₱250,000 is deducted automatically, so no expenses question is needed.</p>
-          )}
-          {effectiveTaxType === "8_percent" && taxpayerType === "mixed_income_earner" && (
-            <p className="hint">For Mixed Income Earners the ₱250,000 deduction is not applied in this estimate while it is being confirmed with our tax consultant.</p>
-          )}
-          {effectiveTaxType === "graduated" && (
-            <>
-              <label className="question-label" style={{ marginTop: 16 }}>Deduction method</label>
-              <div className="option-grid">
-                <button type="button" aria-pressed={deductionMethod === "osd"} className={`option-btn ${deductionMethod === "osd" ? "selected" : ""}`} onClick={() => setDeductionMethod("osd")}>OSD (40% optional standard deduction)</button>
-                <button type="button" aria-pressed={deductionMethod === "itemized"} className={`option-btn ${deductionMethod === "itemized" ? "selected" : ""}`} onClick={() => setDeductionMethod("itemized")}>Itemized</button>
-              </div>
-              {itemized && (
-                <section className="question">
-                  <label className="question-label" htmlFor="expenses">Projected annual expenses (₱)</label>
-                  <input id="expenses" type="number" min={0} className="text-input" value={projectedExpenses} onChange={(e) => setProjectedExpenses(e.target.value === "" ? "" : Number(e.target.value))} placeholder="e.g. 250000" />
-                </section>
-              )}
-            </>
-          )}
-          <p className="hint">This estimate is for guidance only, not an official tax computation.</p>
+          {(taxType === "graduated" || Number(projectedGrossSales) >= 3000000) && <>
+            <label className="question-label" style={{marginTop:16}}>Deduction method</label>
+            <div className="option-grid">
+              <button type="button" aria-pressed={deductionMethod === "osd"} className={`option-btn ${deductionMethod === "osd" ? "selected" : ""}`} onClick={() => setDeductionMethod("osd")}>Optional Standard Deduction (OSD)</button>
+              <button type="button" aria-pressed={deductionMethod === "itemized"} className={`option-btn ${deductionMethod === "itemized" ? "selected" : ""}`} onClick={() => setDeductionMethod("itemized")}>Itemized Deductions</button>
+            </div>
+            {deductionMethod === "itemized" && <section className="question">
+              <label className="question-label" htmlFor="expenses">Projected annual expenses (₱)</label>
+              <input id="expenses" type="number" min={0} className="text-input" value={projectedExpenses} onChange={(e) => setProjectedExpenses(e.target.value === "" ? "" : Number(e.target.value))} placeholder="e.g. 250000" />
+              <p className="hint">Expenses are relevant to the itemized deduction method. This estimate is for guidance only, not an official tax computation.</p>
+            </section>}
+          </>}
+          {taxType === "8_percent" && Number(projectedGrossSales) < 3000000 && <p className="hint">Illustrative 8% income-tax due: ₱{(estimateEightPercentTaxDue(Number(projectedGrossSales)||0,taxpayerType==="mixed_income_earner")??0).toLocaleString("en-PH",{maximumFractionDigits:2})}. {taxpayerType==="mixed_income_earner" ? "No ₱250,000 deduction applied pending accountant confirmation (FL-16)." : "₱250,000 deduction included for qualified self-employed filers."} This is not an official assessment.</p>}
+          {Number(projectedGrossSales) >= 3000000 && <p className="hint">Graduated tax estimate is pending consultant-provided tax table (FL-17). No estimate is calculated.</p>}
         </section>
       )}
 
@@ -436,14 +421,9 @@ function WizardInner() {
             <dd>{hasEmployees ? `Yes (${employeeCount})` : "No"}</dd>
             <dt>Projected annual gross sales</dt>
             <dd>₱{Number(projectedGrossSales || 0).toLocaleString()}</dd>
-            <dt>Tax option</dt>
-            <dd>{effectiveTaxType === "8_percent" ? "8%" : `Graduated — ${deductionMethod === "osd" ? "OSD" : "Itemized"}`}{salesAboveLimit ? " (set automatically: sales are ₱3,000,000 or more; VAT registration applies)" : ""}</dd>
-            {itemized && <><dt>Projected annual expenses</dt><dd>₱{Number(projectedExpenses || 0).toLocaleString()}</dd></>}
-            <dt>Estimated income tax</dt>
-            <dd>{(() => {
-              const est = estimateIncomeTax({ taxpayerType, taxOption: effectiveTaxType, deductionMethod, grossSales: Number(projectedGrossSales) || 0, expenses: Number(projectedExpenses) || 0 });
-              return est.amount === null ? "Pending the consultant's graduated tax table" : peso(est.amount);
-            })()}</dd>
+            <dt>Tax Type</dt>
+            <dd>{Number(projectedGrossSales) >= 3000000 ? "Graduated / VAT registration to verify" : taxType === "8_percent" ? "8% Option" : `Graduated Tax — ${deductionMethod === "osd" ? "OSD" : "Itemized Deductions"}`}</dd>
+            {(taxType === "graduated" || Number(projectedGrossSales) >= 3000000) && <><dt>Projected annual expenses</dt><dd>₱{Number(projectedExpenses || 0).toLocaleString()}</dd></>}
             <dt>Business name</dt>
             <dd>{businessName || "—"}</dd>
           </dl>

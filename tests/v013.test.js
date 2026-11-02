@@ -5,7 +5,8 @@ const fs = require("node:fs");
 const path = require("node:path");
 
 const read = (...p) => fs.readFileSync(path.join(__dirname, "..", ...p), "utf8");
-const load = (rel) => import(rel);
+const { pathToFileURL } = require("node:url");
+const load = (rel) => import(pathToFileURL(path.resolve(__dirname, rel)).href);
 
 // ── NCR ────────────────────────────────────────────────────────────────
 test("NCR dataset has the 16 cities and Pateros, with unique ids", async () => {

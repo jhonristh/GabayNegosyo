@@ -9,7 +9,7 @@ import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
 import { hasPremiumAccess } from "../../lib/entitlements";
-import { sendEmail, buildReminderEmail } from "../../lib/email";
+
 import { useToast } from "../../components/ToastProvider";
 import type { ReminderConfig } from "../../lib/types";
 
@@ -22,7 +22,7 @@ function DeadlinesInner() {
   const agencies = useMemo(() => db.getAgencies(), []);
   const [, rerender] = useState(0);
   const { notify } = useToast();
-  const [sending, setSending] = useState(false);
+
 
   if (!user) return null;
   const profile = db.getBusinessProfile(user.id);
@@ -67,26 +67,6 @@ function DeadlinesInner() {
     rerender((n) => n + 1);
   }
 
-  async function sendTestReminder(requirementName: string, dueLabel: string, days: number) {
-    if (!isPremium || !user || sending) return;
-    setSending(true);
-    try {
-      const { subject, body } = buildReminderEmail(requirementName, dueLabel, days);
-      const result = await sendEmail(user.email, subject, body);
-      if (result.mode === "sent") {
-        notify("Test reminder sent to your account email.");
-      } else if (result.mode === "demo") {
-        notify("Demo account: the test reminder was logged only. Nothing was emailed.", "error");
-      } else {
-        notify("No email was sent. Email delivery is not switched on for this site yet.", "error");
-      }
-    } catch (err) {
-      notify(err instanceof Error ? err.message : "We couldn't send the test reminder. Try again in a moment.", "error");
-    } finally {
-      setSending(false);
-      rerender((n) => n + 1);
-    }
-  }
 
   return (
     <main className="screen">
@@ -113,7 +93,7 @@ function DeadlinesInner() {
                 <h3>{req.name}</h3>
                 <p className="deadline">{dueDate ? `Due: ${dueLabel}` : `No fixed date: ${req.deadlineDescription}`}</p>
               </div>
-              <StatusBadge status={status} />
+              {isPremium && <StatusBadge status={status} />}
             </div>
 
             <div className="reminder-config">
@@ -123,7 +103,7 @@ function DeadlinesInner() {
               {canRemind && (
                 <p className="hint">
                   {REMINDERS_LIVE
-                    ? "You will get one summary email at 8:00 AM Philippine time on the day you choose, listing every requirement due then. Each email has a link to stop them."
+                    ? "Premium reminders are prepared and sent manually by the GabayNegosyo team, subject to your preferences."
                     : "Your choice is saved. Automatic daily summaries are not switched on yet. \"Send test reminder\" emails you a sample."}
                 </p>
               )}
@@ -145,14 +125,7 @@ function DeadlinesInner() {
                 <button type="button" disabled={!canRemind} className="secondary-btn" onClick={() => toggleReminder(req.id, config)}>
                   {config.enabled ? "Reminder: On" : "Reminder: Off"}
                 </button>
-                <button
-                  type="button"
-                  disabled={!canRemind || sending}
-                  className="secondary-btn"
-                  onClick={() => sendTestReminder(req.name, dueLabel, config.daysBefore)}
-                >
-                  {sending ? "Sending…" : "Send test reminder"}
-                </button>
+
               </div>
             </div>
           </article>

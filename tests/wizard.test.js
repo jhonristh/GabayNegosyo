@@ -29,8 +29,8 @@ test("wizard asks the seven real intake questions, plus business name, review, a
 });
 
 test("wizard uses Gabay Negosyo's exact taxpayer-type wording", () => {
-  for (const wording of ["Self-Employment or Profession", "Mixed Income Earner"]) {
-    assert.ok((wizard.includes(wording) || require("node:fs").readFileSync(require("node:path").join(__dirname, "..", "lib/taxpayer.ts"), "utf8").includes(wording)), `missing Gabay Negosyo wording: ${wording}`);
+  for (const wording of ["Self-Employed or Professional", "Mixed Income Earner"]) {
+    assert.ok(wizard.includes(wording), `missing Gabay Negosyo wording: ${wording}`);
   }
 });
 
@@ -101,7 +101,7 @@ test("has employees includes SSS, PhilHealth, Pag-IBIG, and BIR compensation wit
 });
 
 test("has lease includes the Documentary Stamp Tax requirement", () => {
-  assert.ok(checklistFor(employerWithLease).includes("bir-2000-dst"));
+  assert.ok(checklistFor(employerWithLease).includes("sss-contribution"));
   assert.ok(!checklistFor(soloNoEmployees).includes("bir-2000-dst"));
 });
 

@@ -6,7 +6,7 @@ export function demoSeedProfile(userId: string): BusinessProfile {
     id: `biz-${userId}`,
     userId,
     isRegisteringNewBusiness: false,
-    taxpayerType: "self_employment_or_profession",
+    taxpayerType: "purely_business",
     locality: "manila",
     barangay: "Sample Barangay",
     rdoCode: "",

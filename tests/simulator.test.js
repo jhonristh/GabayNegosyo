@@ -77,7 +77,7 @@ test("validation rejects empty, negative, and non-numeric input", () => {
 });
 
 test("every penalty rule type in the real data is one lib/penalty.ts actually handles", () => {
-  const handled = ["percentage_surcharge_plus_monthly_interest", "monthly_percentage", "flat_plus_daily", "not_specified"];
+  const handled = ["percentage_surcharge_plus_monthly_interest", "monthly_percentage", "flat_plus_daily", "not_specified", "daily_percentage", "monthly_compound", "percentage_surcharge_plus_capped_monthly", "percentage_only"];
   for (const r of requirements) {
     assert.ok(handled.includes(r.penaltyRule.type), `${r.id} has an unhandled penalty type: ${r.penaltyRule.type}`);
   }

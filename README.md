@@ -13,24 +13,26 @@ GabayNegosyo is a Progressive Web App that puts BIR, SSS, PhilHealth, Pag-IBIG a
 - **Business guide:** `/registration` and `/renewal` walk through registering, renewing and staying compliant, with BIR form previews (`/bir-forms`), a penalty simulator (`/penalties`), filing tutorial videos and a graduated tax-table reference.
 - **Learning Hub and Resource library:** tutorials, official forms, document checklists and links, searchable and filterable by agency and type. DTI and BMBE resources appear in the library only.
 - **Plans:** Free and Premium (see below). Premium upgrade is a demo: no payment provider is connected.
-- **Reminders:** a daily email digest for Premium users, sent through Vercel Cron (off by default).
+- **Reminders:** manual Premium reminder workflow only; no automatic emails in Version 1.
 - **Admin area:** content editors for agencies, requirements, resources and tutorials, plus user and account-sync views. Content edits are saved **per browser only** (see [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md)).
 - **PWA:** installable, offline shell, Night Shift (dark) theme.
 
-### Free vs. Premium
+### Free vs. Premium — consultant-approved, Nov 2, 2026
 
-| | Free | Premium |
+| Capability | Free | Premium |
 |---|---|---|
-| Wizard, business profile, checklist (names, agency, deadline) | ✅ | ✅ |
-| Mark requirements complete, resource library, Learning Hub list | ✅ | ✅ |
-| Why an item is on your checklist, official source | ✅ | ✅ |
-| Documents, steps, forms, tutorial and penalty detail per requirement | ❌ | ✅ |
-| Penalty simulator | ❌ | ✅ |
-| Email reminders | ❌ | ✅ |
+| Wizard, basic tax-option estimate, personalized checklist (requirement/agency/deadline) | Yes | Yes |
+| Verified YouTube tutorials, with attribution | Yes | Yes |
+| Deadline **status** (overdue / due soon / due today) and completion/progress | No | Yes |
+| Resource library, supporting documents, detailed steps | No | Yes |
+| Penalty details, official penalty reference links, penalty simulator | No | Yes |
+| Manual reminder service | No | Yes |
+
+The client-facing fee reference is available with Premium while the fee-tier decision FL-18 remains OPEN. Payment integration and automated emails are out of scope for Version 1. Do not treat UI gating as a database authorization boundary: server-side validation and RLS are release blockers until independently verified.
 
 ## Tech stack
 
-Next.js (App Router, Turbopack), React 18, TypeScript, Supabase (Auth, Postgres with Row Level Security), Vercel (hosting, Cron, Analytics), Nodemailer (Gmail) or Resend for email. Compliance rules live in `data/*.json` and `lib/ruleEngine.ts`, not in UI components.
+Next.js (App Router, Turbopack), React 18, TypeScript, Supabase (Auth, Postgres with Row Level Security), Vercel (hosting, Analytics); automated email/cron delivery remains disabled for Version 1. Compliance rules live in `data/*.json` and `lib/ruleEngine.ts`, not in UI components.
 
 ## Quick start
 

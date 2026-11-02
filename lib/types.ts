@@ -9,10 +9,14 @@ export type TaxType = "8_percent" | "graduated" | "vat_registered" | "not_sure";
 export type BusinessStatus = "planning" | "newly_registered" | "operating";
 
 /**
- * Taxpayer Type — consultant-final wizard (spec §2): only two options. Removed: purely_compensation, purely_business (see lib/taxpayer.ts for the legacy mapping). These are the actual BIR taxpayer categories
- * Gabay Negosyo's intake flow is built around.
+ * Taxpayer Type — includes historical values solely for persisted-profile compatibility.
+ * The consultant-approved intake wizard exposes only self-employment and mixed income.
  */
-export type TaxpayerType = "self_employment_or_profession" | "mixed_income_earner";
+export type TaxpayerType =
+  | "purely_compensation"
+  | "self_employment_or_profession"
+  | "purely_business"
+  | "mixed_income_earner";
 
 export interface User {
   id: string;
@@ -80,6 +84,10 @@ export interface RequiredDocument {
 export type PenaltyRuleType =
   | "percentage_surcharge_plus_monthly_interest"
   | "monthly_percentage"
+  | "daily_percentage"
+  | "monthly_compound"
+  | "percentage_surcharge_plus_capped_monthly"
+  | "percentage_only"
   | "flat_plus_daily"
   | "not_specified"; // penalty rate/formula not given in the current content source — do not compute an estimate
 
@@ -96,6 +104,7 @@ export interface ApplicabilityRule {
   businessType?: BusinessType[];
   businessStructure?: BusinessStructure[];
   taxType?: TaxType[];
+  deductionMethod?: ("osd" | "itemized")[];
   taxpayerType?: TaxpayerType[];
   hasEmployees?: boolean;
   minEmployeeCount?: number;
@@ -114,7 +123,7 @@ export type ContentSource =
   | "gabay_wizard" // Gabay Negosyo registration wizard content
   | "prototype_placeholder"; // earlier MVP demo content, not yet reviewed
 
-export type DeadlineKind = "fixed_annual" | "one_time" | "recurring_variable";
+export type DeadlineKind = "fixed_annual" | "fixed_dates" | "monthly_day" | "quarter_offset" | "window" | "event_offset" | "one_time" | "recurring_variable";
 
 export interface Requirement {
   id: string;
@@ -135,6 +144,12 @@ export interface Requirement {
    *                        gives no single calendar date
    */
   deadlineKind: DeadlineKind;
+  /** Optional verified schedule fields; absence means no synthetic calendar date. */
+  deadlineDates?: {month:number;day:number}[];
+  deadlineDayOfMonth?: number;
+  deadlineQuarterOffsetDays?: number;
+  deadlineWindow?: {startMonth:number;startDay:number;endMonth:number;endDay:number};
+  deadlineEventOffsetDays?: number;
   deadlineMonth?: number; // 1-12, fixed_annual only
   deadlineDay?: number; // fixed_annual only
   penaltyRule: PenaltyRule;

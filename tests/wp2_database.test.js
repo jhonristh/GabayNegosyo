@@ -16,7 +16,8 @@ const path = require("node:path");
 const ROOT = path.join(__dirname, "..");
 const read = (...p) => fs.readFileSync(path.join(ROOT, ...p), "utf8");
 const noComments = (sql) => sql.replace(/--.*$/gm, "");
-const load = (rel) => import(rel);
+const { pathToFileURL } = require("node:url");
+const load = (rel) => import(pathToFileURL(path.resolve(__dirname, rel)).href);
 const walk = (d) => fs.readdirSync(d, { withFileTypes: true }).flatMap((e) => (e.isDirectory() ? walk(path.join(d, e.name)) : [path.join(d, e.name)]));
 const srcFiles = (...dirs) => dirs.flatMap((d) => walk(path.join(ROOT, d))).filter((f) => /\.(ts|tsx)$/.test(f));
 

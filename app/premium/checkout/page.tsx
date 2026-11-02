@@ -15,9 +15,9 @@ import { hasPremiumAccess, planLabel } from "../../../lib/entitlements";
  */
 const INCLUDED = [
   "Required documents and step-by-step guidance for every requirement",
-  "Full requirement details, forms, and tutorials (when a verified video is available)",
+  "Progress tracking, deadline status and Premium resource library",
   "Penalty simulator",
-  "Email reminders for fixed deadlines (7, 3, or 1 day before)",
+  "Manual Premium reminder management (no automated email delivery)",
 ];
 
 function CheckoutInner() {

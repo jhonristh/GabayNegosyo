@@ -20,7 +20,7 @@ export default function PremiumGate({ children }: { children: ReactNode }) {
     <div className="premium-lock">
       <p className="premium-lock-title">Available with Premium</p>
       <p className="premium-lock-body">
-        Upgrade to unlock full requirement details, tutorials, the penalty simulator, and email
+        Upgrade to unlock documents, progress tracking, deadline status, the resource library, the penalty simulator, and manual
         reminders.
       </p>
       <Link href="/premium/checkout" className="primary-btn premium-lock-btn">

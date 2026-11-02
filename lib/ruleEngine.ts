@@ -19,8 +19,9 @@ const matchers: Matcher[] = [
     !rule.businessType || rule.businessType.includes(profile.businessType),
   (rule, profile) =>
     !rule.businessStructure || rule.businessStructure.includes(profile.businessStructure),
-  (rule, profile) => !rule.taxType || rule.taxType.includes(profile.taxType),
+  (rule, profile) => !rule.taxType || rule.taxType.includes(profile.projectedGrossSales >= 3000000 ? "vat_registered" : profile.taxType),
   (rule, profile) => !rule.taxpayerType || rule.taxpayerType.includes(profile.taxpayerType),
+  (rule, profile) => !rule.deductionMethod || rule.deductionMethod.includes(profile.deductionMethod ?? "osd"),
   (rule, profile) =>
     rule.hasEmployees === undefined || rule.hasEmployees === profile.hasEmployees,
   (rule, profile) =>
@@ -136,6 +137,36 @@ export function resolveObligation(
 ): ResolvedObligation {
   const completedAt = progress?.completedAt;
 
+  if (requirement.deadlineKind === "fixed_dates" && requirement.deadlineDates?.length) {
+    const dates = requirement.deadlineDates.flatMap(({month,day}) => [
+      new Date(today.getFullYear(),month-1,day),new Date(today.getFullYear()+1,month-1,day)
+    ]).sort((a,b)=>a.getTime()-b.getTime());
+    const upcoming = dates.find(d=>d>=startOfDay(today));
+    const past=dates.filter(d=>d<startOfDay(today)); const lastPast=past[past.length-1];
+    const due = lastPast && profileCreatedAt && lastPast>=startOfDay(new Date(profileCreatedAt)) && !progress?.completedAt ? lastPast : (upcoming ?? dates[0]);
+    const dueKey=toDateKey(due);
+    return {dueDate:due,status:progress?.completedAt && progress?.dueDate?.startsWith(dueKey) ? "completed" : computeStatus(due,undefined,today),cycle:dueKey,dueKey};
+  }
+  if (requirement.deadlineKind === "monthly_day" && requirement.deadlineDayOfMonth) {
+    let due=new Date(today.getFullYear(),today.getMonth(),requirement.deadlineDayOfMonth);
+    if(due<startOfDay(today) && (!profileCreatedAt || due<startOfDay(new Date(profileCreatedAt)))) due=new Date(today.getFullYear(),today.getMonth()+1,requirement.deadlineDayOfMonth);
+    const dueKey=toDateKey(due);
+    return {dueDate:due,status:progress?.completedAt && progress?.dueDate?.startsWith(dueKey)?"completed":computeStatus(due,undefined,today),cycle:dueKey,dueKey};
+  }
+  if (requirement.deadlineKind === "quarter_offset" && requirement.deadlineQuarterOffsetDays != null) {
+    const offsets=[new Date(today.getFullYear(),3,0),new Date(today.getFullYear(),6,0),new Date(today.getFullYear(),9,0),new Date(today.getFullYear()+1,0,0),new Date(today.getFullYear()+1,3,0)];
+    const dates=offsets.map(d=>new Date(d.getFullYear(),d.getMonth(),d.getDate()+(requirement.deadlineQuarterOffsetDays ?? 0)));
+    const due=dates.find(d=>d>=startOfDay(today))??dates[dates.length-1];
+    const dueKey=toDateKey(due);
+    return {dueDate:due,status:progress?.completedAt && progress?.dueDate?.startsWith(dueKey)?"completed":computeStatus(due,undefined,today),cycle:dueKey,dueKey};
+  }
+  if (requirement.deadlineKind === "window" && requirement.deadlineWindow) {
+    const w=requirement.deadlineWindow;let due=new Date(today.getFullYear(),w.endMonth-1,w.endDay);
+    if(due<startOfDay(today) && (!profileCreatedAt||due<startOfDay(new Date(profileCreatedAt)))) due=new Date(today.getFullYear()+1,w.endMonth-1,w.endDay);
+    const dueKey=toDateKey(due);
+    return {dueDate:due,status:progress?.completedAt && progress?.dueDate?.startsWith(dueKey)?"completed":computeStatus(due,undefined,today),cycle:dueKey,dueKey};
+  }
+  // Event-offset dates require a real event date that the wizard does not collect. Never invent it.
   if (requirement.deadlineKind !== "fixed_annual" || !requirement.deadlineMonth || !requirement.deadlineDay) {
     return { dueDate: null, status: completedAt ? "completed" : "no_deadline", cycle: "once", dueKey: null };
   }
@@ -180,7 +211,9 @@ export function formatDueLabel(d: Date | null): string {
 }
 
 const TAXPAYER_LABELS: Record<string, string> = {
+  purely_compensation: "Purely Compensation",
   self_employment_or_profession: "Self-Employment or Profession",
+  purely_business: "Purely Business",
   mixed_income_earner: "Mixed Income Earner",
 };
 

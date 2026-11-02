@@ -63,7 +63,7 @@ export type Feature =
  *
  * Owner-confirmation pending: the v0.17 brief lists deadline_status, progress_tracking and resource_library as
  * Premium. In the shipped product they are visible to Free users (see README "Free vs. Premium"). They are left
- * Free here so no client-facing behaviour changes without sign-off; see PENDING_OWNER_TIERS.
+ * Consultant-approved table supersedes the historical baseline; database RLS validation remains required.
  */
 export const FEATURE_TIER: Record<Feature, "free" | "premium"> = {
   wizard_estimate: "free",
@@ -72,9 +72,9 @@ export const FEATURE_TIER: Record<Feature, "free" | "premium"> = {
   agency_info: "free",
   deadline_info: "free",
   basic_tutorials: "free",
-  deadline_status: "free",
-  progress_tracking: "free",
-  resource_library: "free",
+  deadline_status: "premium",
+  progress_tracking: "premium",
+  resource_library: "premium",
   required_documents: "premium",
   step_instructions: "premium",
   penalty_info: "premium",
@@ -82,7 +82,7 @@ export const FEATURE_TIER: Record<Feature, "free" | "premium"> = {
   email_reminders: "premium",
 };
 
-export const PENDING_OWNER_TIERS: Feature[] = ["deadline_status", "progress_tracking", "resource_library"];
+export const PENDING_OWNER_TIERS: Feature[] = []; // Consultant-approved tiers in Final Content Spec §1
 
 interface AccessSubject {
   role?: Role;

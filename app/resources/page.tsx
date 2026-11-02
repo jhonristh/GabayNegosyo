@@ -66,7 +66,7 @@ export default function ResourcesPage() {
 
         {results.length === 0 && <p className="v06-unavailable">No resources match these filters. Try another search or agency.</p>}
         <div className="v06-media-grid">{results.map((r) => r.resourceType === "form" ? <FormPreviewCard key={r.id} resource={r} /> :
-          <article key={r.id} className="v06-media-card"><div className="v06-resource-art" aria-hidden="true">{r.resourceType.replace(/_/g, " ")}</div><div className="v06-media-content"><p className="v06-eyebrow">{r.agencyId.toUpperCase()} · {r.resourceType.replace(/_/g, " ")}</p><h3>{r.title}</h3><p>{r.description}</p><a href={r.url} target="_blank" rel="noopener noreferrer" className="tutorial-link">Open source ↗</a><p className="verified">Source checked: {r.lastVerified}</p></div></article>
+          <article key={r.id} className="v06-media-card"><div className="v06-resource-art" aria-hidden="true">{r.resourceType.replace(/_/g, " ")}</div><div className="v06-media-content"><p className="v06-eyebrow">{r.agencyId.toUpperCase()} · {r.resourceType.replace(/_/g, " ")}</p><h3>{r.title}</h3><p>{r.description}</p>{r.url ? <a href={r.url} target="_blank" rel="noopener noreferrer" className="tutorial-link">Open source ↗</a> : <span className="hint">Link pending consultant verification</span>}<p className="verified">Source checked: {r.lastVerified}</p></div></article>
         )}</div>
       </main>
       </FeatureGate>

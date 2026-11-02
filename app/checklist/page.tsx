@@ -58,6 +58,7 @@ function ChecklistInner() {
     );
   }
 
+  const premium = hasPremiumAccess(user);
   const applicable = generateApplicableRequirements(profile, requirements);
   const progress = db.getProgress();
 
@@ -69,7 +70,7 @@ function ChecklistInner() {
     return { req, dueDate, dueKey, status: status as RequirementStatus, cycle };
   });
 
-  if (statusFilter !== "all") items = items.filter((i) => i.status === statusFilter);
+  if (premium && statusFilter !== "all") items = items.filter((i) => i.status === statusFilter);
   if (agencyFilter !== "all") items = items.filter((i) => i.req.agencyId === agencyFilter);
   if (query.trim()) {
     const q = query.trim().toLowerCase();
@@ -92,11 +93,11 @@ function ChecklistInner() {
 
   // Hierarchy: open items first (To do), completed items below in their own section.
   // Each section is then grouped by compliance stage.
-  const openItems = items.filter((i) => i.status !== "completed");
-  const doneItems = items.filter((i) => i.status === "completed");
+  const openItems = premium ? items.filter((i) => i.status !== "completed") : items;
+  const doneItems = premium ? items.filter((i) => i.status === "completed") : [];
 
   function toggle(requirementId: string, dueKey: string | null, isCompleted: boolean) {
-    if (!user) return;
+    if (!user || !premium) return;
     if (isCompleted) {
       db.markIncomplete(requirementId);
       notify("Moved back to your to-do list.");
@@ -119,7 +120,7 @@ function ChecklistInner() {
         <h3>{stage}</h3>
         {stageItems.map(({ req, status, dueDate, dueKey, cycle }) => {
           const isCompleted = status === "completed";
-          const stepTotal = hasPremiumAccess(user) ? req.instructions.length : 0; // steps are a Premium feature
+          const stepTotal = premium ? req.instructions.length : 0; // steps are a Premium feature
           const stepsDone = db.getDoneTasks(req.id, cycle).filter((i) => i < stepTotal).length;
           return (
             <article key={req.id} className={`checklist-card ${isCompleted ? "is-completed" : "is-open"}`}>
@@ -132,6 +133,7 @@ function ChecklistInner() {
                   <p className="deadline">
                     {dueDate ? `Due ${formatDueLabel(dueDate)}` : `No fixed date: ${req.deadlineDescription}`}
                   </p>
+                  <p className="verified">Content last reviewed: {req.lastVerified}</p>
                   {req.contentSource === "prototype_placeholder" && (
                     <p className="hint">Placeholder content, not yet reviewed. Confirm with the agency.</p>
                   )}
@@ -141,11 +143,11 @@ function ChecklistInner() {
                     </p>
                   )}
                 </div>
-                <StatusBadge status={status} />
+                {premium && <StatusBadge status={status} />}
               </div>
-              <button type="button" className="secondary-btn" onClick={() => toggle(req.id, dueKey, isCompleted)}>
+              {premium && <button type="button" className="secondary-btn" onClick={() => toggle(req.id, dueKey, isCompleted)}>
                 {isCompleted ? "Mark as not completed" : "Mark as completed"}
-              </button>
+              </button>}
             </article>
           );
         })}
@@ -160,13 +162,13 @@ function ChecklistInner() {
         <p className="v06-eyebrow">STEP 1 OF 5 · WHAT DO I NEED?</p>
         <h1>Your checklist</h1>
         <p>
-          Based on your answers, these are the requirements that apply to you. {counts.completed} of {counts.all} completed.
+          Based on your answers, these are the requirements that apply to you. {premium ? `${counts.completed} of ${counts.all} completed.` : "Progress tracking and deadline status are available with Premium."}
         </p>
       </header>
 
-      <div className="guide-note"><strong>About these dates</strong><p>A date is shown only when the source gives a fixed annual deadline. One-time, monthly, quarterly, and event-based obligations are labelled “No fixed date” with their timing rule instead of a made-up date. Confirm actual filing dates with the agency. Need to change your answers? <Link href="/wizard">Update your business profile</Link>.</p></div>
+      <div className="guide-note"><strong>About these dates</strong><p>Verified annual, quarterly, monthly and window dates are used where enough information is available. Conditional dates without an event date remain described in words; confirm all filing dates with the agency. Need to change your answers? <Link href="/wizard">Update your business profile</Link>.</p></div>
 
-      <ChecklistProgress completed={counts.completed} total={counts.all} overdue={counts.overdue} onShow={setStatusFilter} />
+      {premium && <ChecklistProgress completed={counts.completed} total={counts.all} overdue={counts.overdue} onShow={setStatusFilter} />}
 
       <input
         type="search"
@@ -177,7 +179,7 @@ function ChecklistInner() {
         aria-label="Search checklist"
       />
 
-      <div className="filter-row">
+      {premium && <div className="filter-row">
         {STATUS_FILTERS.map((f) => (
           <button
             key={f.value}
@@ -188,7 +190,7 @@ function ChecklistInner() {
             {f.label} ({counts[f.value]})
           </button>
         ))}
-      </div>
+      </div>}
 
       <div className="filter-row">
         <button type="button" className={`filter-chip ${agencyFilter === "all" ? "selected" : ""}`} onClick={() => setAgencyFilter("all")}>
@@ -221,7 +223,7 @@ function ChecklistInner() {
 
       {openItems.length > 0 && (
         <section className="checklist-section checklist-open" aria-labelledby="checklist-open-h">
-          <h2 id="checklist-open-h">To do <span className="checklist-count">({openItems.length})</span></h2>
+          <h2 id="checklist-open-h">{premium ? "To do" : "Requirements"} <span className="checklist-count">({openItems.length})</span></h2>
           {renderStageGroups(openItems)}
         </section>
       )}

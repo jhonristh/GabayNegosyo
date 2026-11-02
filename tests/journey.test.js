@@ -19,11 +19,11 @@ test("each stage page exists and renders the journey CTA/stepper", () => {
   }
 });
 
-test("penalty rates match the approved values: 10% micro, 6% micro interest, 12% general interest", () => {
+test("penalty rates match the approved values: consultant 10% surcharge and 6% interest", () => {
   const src = read("lib", "penalty.ts");
   assert.match(src, /microSurcharge:\s*0\.1\b/);
   assert.match(src, /microInterest:\s*0\.06\b/);
-  assert.match(src, /generalInterest:\s*0\.12\b/);
+  assert.match(src, /generalInterest:\s*0\.06\b/);
 });
 
 test("the calculator reads rates from constants, never literals", () => {
@@ -37,9 +37,9 @@ test("BIR estimator arithmetic (replicates lib/penalty.ts)", () => {
   const micro = est(100000, 73, 0.1, 0.06);
   assert.strictEqual(micro.s, 10000);
   assert.strictEqual(Math.round(micro.i), 1200);
-  const general = est(100000, 365, 0.25, 0.12);
-  assert.strictEqual(general.s, 25000);
-  assert.strictEqual(general.i, 12000);
+  const general = est(100000, 365, 0.1, 0.06);
+  assert.strictEqual(general.s, 10000);
+  assert.strictEqual(general.i, 6000);
 });
 
 test("BIR conditions are checkbox-driven and sourced", () => {
@@ -51,7 +51,7 @@ test("BIR conditions are checkbox-driven and sourced", () => {
 
 test("filing videos only use YouTube links; placeholder remains for an empty list", () => {
   const videos = require("../data/filingVideos.json");
-  const clientIds = ["FOnpl3ui3uI", "8X2KZkCh1qo", "-tESI-U9ikc", "KysPCsJjbKI", "fid9IcKTKnY", "8C0TBHccWbc", "JxFprd6jMLw", "0MQLh_jxlak"];
+  const clientIds = ["FOnpl3ui3uI", "8X2KZkCh1qo", "KysPCsJjbKI", "fid9IcKTKnY", "8C0TBHccWbc", "JxFprd6jMLw", "0MQLh_jxlak"];
   assert.deepStrictEqual(videos.map((v) => v.videoUrl.match(/v=([\w-]{11})/)[1]).sort(), [...clientIds].sort());
   assert.ok(read("components", "FilingTutorialVideos.tsx").includes("coming soon"));
 });

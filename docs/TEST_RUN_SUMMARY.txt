@@ -1,0 +1,8 @@
+node --experimental-strip-types --test tests/*.test.js
+# tests 309
+# pass 309
+# fail 0
+# cancelled 0
+# skipped 0
+# todo 0
+Node v22.16.0; local test-only, not a production build.

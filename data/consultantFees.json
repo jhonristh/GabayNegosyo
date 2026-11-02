@@ -1,0 +1,251 @@
+{
+  "source": "GNGROUP-1-FEASIB-CHA-1-With-Comments201fromConsu.pdf pages 8–13, transcribed from consultant estimates; not independently verified by LGUs",
+  "updatedForContentReview": "2026-11-02",
+  "dti": [
+    {
+      "scope": "Barangay",
+      "registrationPHP": "200",
+      "dstPHP": "30",
+      "totalPHP": "230"
+    },
+    {
+      "scope": "City/Municipality",
+      "registrationPHP": "500",
+      "dstPHP": "30",
+      "totalPHP": "530"
+    },
+    {
+      "scope": "Regional",
+      "registrationPHP": "1,000",
+      "dstPHP": "30",
+      "totalPHP": "1,030"
+    },
+    {
+      "scope": "National",
+      "registrationPHP": "2,000",
+      "dstPHP": "30",
+      "totalPHP": "2,030"
+    }
+  ],
+  "barangay": [
+    {
+      "city": "Caloocan",
+      "estimatePHP": "200-500"
+    },
+    {
+      "city": "Las Piñas",
+      "estimatePHP": "500 (200 for sari-sari store)"
+    },
+    {
+      "city": "Makati",
+      "estimatePHP": "200-500"
+    },
+    {
+      "city": "Malabon",
+      "estimatePHP": "200"
+    },
+    {
+      "city": "Mandaluyong",
+      "estimatePHP": "200-300"
+    },
+    {
+      "city": "Manila",
+      "estimatePHP": "200"
+    },
+    {
+      "city": "Marikina",
+      "estimatePHP": "100-200"
+    },
+    {
+      "city": "Muntinlupa",
+      "estimatePHP": "200"
+    },
+    {
+      "city": "Navotas",
+      "estimatePHP": "200"
+    },
+    {
+      "city": "Parañaque",
+      "estimatePHP": "200-500"
+    },
+    {
+      "city": "Pasay",
+      "estimatePHP": "500"
+    },
+    {
+      "city": "Pasig",
+      "estimatePHP": "200-500"
+    },
+    {
+      "city": "Quezon City",
+      "estimatePHP": "300-1,000"
+    },
+    {
+      "city": "San Juan",
+      "estimatePHP": "200"
+    },
+    {
+      "city": "Taguig",
+      "estimatePHP": "200-500"
+    },
+    {
+      "city": "Valenzuela",
+      "estimatePHP": "200"
+    }
+  ],
+  "mayorsPermit": [
+    {
+      "city": "Caloocan",
+      "mayorsPermit": "500-10,000",
+      "zoning": "100",
+      "sanitary": "500-10,000",
+      "health": "100",
+      "fireSafety": "2-4 per sqm"
+    },
+    {
+      "city": "Las Piñas",
+      "mayorsPermit": "200-15,000",
+      "zoning": "200",
+      "sanitary": "300-12,000",
+      "health": "50",
+      "fireSafety": "100"
+    },
+    {
+      "city": "Makati",
+      "mayorsPermit": "200-12,000",
+      "zoning": "200",
+      "sanitary": "500-2,000",
+      "health": "50",
+      "fireSafety": "500"
+    },
+    {
+      "city": "Malabon",
+      "mayorsPermit": "110-11,000",
+      "zoning": "345",
+      "sanitary": "110-2,500",
+      "health": "50",
+      "fireSafety": "15% of all other fees or 500"
+    },
+    {
+      "city": "Mandaluyong",
+      "mayorsPermit": "200-7,000",
+      "zoning": "104.18",
+      "sanitary": "110-880",
+      "health": "50",
+      "fireSafety": "15% of all other fees or 500"
+    },
+    {
+      "city": "Manila",
+      "mayorsPermit": "200-10,000",
+      "zoning": "200",
+      "sanitary": "120-1,600",
+      "health": "100",
+      "fireSafety": "500"
+    },
+    {
+      "city": "Marikina",
+      "mayorsPermit": "100-7,000",
+      "zoning": "500",
+      "sanitary": "150-600",
+      "health": "50",
+      "fireSafety": "500"
+    },
+    {
+      "city": "Muntinlupa",
+      "mayorsPermit": "100-5,000",
+      "zoning": "175",
+      "sanitary": "500-3,000",
+      "health": "50",
+      "fireSafety": "500"
+    },
+    {
+      "city": "Navotas",
+      "mayorsPermit": "200-10,000",
+      "zoning": "100-500",
+      "sanitary": "100-2,000",
+      "health": "50-100",
+      "fireSafety": "500-1,500"
+    },
+    {
+      "city": "Parañaque",
+      "mayorsPermit": "1,650-7,920",
+      "zoning": "500-1,800",
+      "sanitary": "300-850",
+      "health": "50-100",
+      "fireSafety": "500-2,000"
+    },
+    {
+      "city": "Pasay",
+      "mayorsPermit": "200-5,000",
+      "zoning": "800",
+      "sanitary": "600",
+      "health": "50-100",
+      "fireSafety": "1,110"
+    },
+    {
+      "city": "Pasig",
+      "mayorsPermit": "200-10,000",
+      "zoning": "100-500",
+      "sanitary": "500-1,000",
+      "health": "50-100",
+      "fireSafety": "500-1,500"
+    },
+    {
+      "city": "Quezon City",
+      "mayorsPermit": "2,000-15,000",
+      "zoning": "500",
+      "sanitary": "90-1,500",
+      "health": "50",
+      "fireSafety": "10% of all other fees or 500"
+    },
+    {
+      "city": "San Juan",
+      "mayorsPermit": "200-10,000",
+      "zoning": "100-500",
+      "sanitary": "100-2,000",
+      "health": "50-100",
+      "fireSafety": "500-1,500"
+    },
+    {
+      "city": "Taguig",
+      "mayorsPermit": "200-10,000",
+      "zoning": "100-500",
+      "sanitary": "100-2,000",
+      "health": "50-100",
+      "fireSafety": "500-1,500"
+    },
+    {
+      "city": "Valenzuela",
+      "mayorsPermit": "200-10,000",
+      "zoning": "100-500",
+      "sanitary": "100-2,000",
+      "health": "50-100",
+      "fireSafety": "500-1,500"
+    }
+  ],
+  "bir": [
+    {
+      "description": "Registration fee",
+      "estimatePHP": "0"
+    },
+    {
+      "description": "DST",
+      "estimatePHP": "30"
+    },
+    {
+      "description": "Books of accounts",
+      "estimatePHP": "200–300"
+    },
+    {
+      "description": "BIR Printed Invoices (50 pages/booklet)",
+      "estimatePHP": "50"
+    },
+    {
+      "description": "Own invoices per booklet",
+      "estimatePHP": "200–400"
+    }
+  ],
+  "mayorNote": "The estimated amounts listed above distinguish the Mayor's Permit fee from the Local Business Tax (LBT), as these are separate charges imposed by the local government unit (LGU). The Mayor's Permit fee is a regulatory charge for the issuance of a permit to operate, while the Local Business Tax is generally based on the business's gross sales or receipts for existing businesses, or capitalization for newly established businesses, subject to the applicable local revenue code. Other fees, such as zoning clearance, sanitary permit, health certificate, and Fire Safety Inspection Certificate (FSIC) fee, may also apply. The actual amounts vary depending on the city or municipality, the nature and size of the business, and the applicable local ordinances, which may be updated or amended over time.",
+  "barangayNote": "The amounts presented in the table are approximate estimates for a small sari-sari store and are intended for budgeting and comparison purposes only. The estimates are based on available local government ordinances and published fee schedules, which show that business clearance and permit fees may differ depending on the city or barangay and the type and size of the business. For example, Pasay City's Revised Revenue Code provides a specific barangay business-clearance fee for sari-sari stores, while Manila City Ordinance No. 8754 provides that barangay clearance fees are governed by the applicable barangay ordinance. Therefore, the amounts shown should not be considered fixed or official rates for all cities. The actual fees may vary and should be confirmed with the concerned local government unit (LGU) before application.",
+  "birNote": "No registration fee is required under the Ease of Paying Taxes (EOPT) Act. The cost of the books of accounts may vary depending on the type and number of books required. BIR-Printed Invoices (BPI) may be used by new business registrants during their first year of operation or until the invoices are fully consumed, whichever comes first. Beginning in the second year, taxpayers are generally required to secure an Authority to Print (ATP) for their own principal invoices, unless they qualify for the applicable exception allowing continued use of BIR-printed invoices. The cost of privately printed invoices depends on the rates charged by BIR-accredited printers."
+}

@@ -25,10 +25,10 @@ export default function PenaltiesPage() {
             <tbody>
               <tr><th scope="row">Micro business penalty (surcharge)</th><td>{pct(BIR_PENALTY_RATES.microSurcharge)}</td></tr>
               <tr><th scope="row">Interest, micro-business calculation (per year)</th><td>{pct(BIR_PENALTY_RATES.microInterest)}</td></tr>
-              <tr><th scope="row">General interest (per year)</th><td>{pct(BIR_PENALTY_RATES.generalInterest)}</td></tr>
+              <tr><th scope="row">Small taxpayer interest (per year)</th><td>{pct(BIR_PENALTY_RATES.generalInterest)}</td></tr>
             </tbody>
           </table>
-          <p className="hint">For non-micro taxpayers Gabay Negosyo’s reference also lists a {pct(BIR_PENALTY_RATES.generalSurcharge)} surcharge. Interest accrues daily on the unpaid tax. A compromise penalty may also apply and is not computed here.</p>
+          <p className="hint">For covered micro and small taxpayers, the reference is RR 6-2024. Interest accrues daily on the unpaid tax. A compromise penalty may also apply and is not computed here.</p>
         </section>
 
         <PremiumGate>

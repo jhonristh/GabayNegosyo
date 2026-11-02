@@ -1,0 +1,8 @@
+[
+  { "over": 0, "notOver": 250000, "rate": 0, "plus": 0, "excessOver": null },
+  { "over": 250000, "notOver": 400000, "rate": 0.15, "plus": 0, "excessOver": 250000 },
+  { "over": 400000, "notOver": 800000, "rate": 0.20, "plus": 22500, "excessOver": 400000 },
+  { "over": 800000, "notOver": 2000000, "rate": 0.25, "plus": 102500, "excessOver": 800000 },
+  { "over": 2000000, "notOver": 8000000, "rate": 0.30, "plus": 402500, "excessOver": 2000000 },
+  { "over": 8000000, "notOver": null, "rate": 0.35, "plus": 2202500, "excessOver": 8000000 }
+]

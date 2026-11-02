@@ -56,6 +56,7 @@ function RequirementDetailInner() {
   const progress = db.getProgress();
   const { dueDate, dueKey, cycle, status: resolved } = resolveObligation(requirement, progress[requirement.id], new Date(), profile?.createdAt);
   const status: RequirementStatus = resolved;
+  const premium = hasPremiumAccess(user);
   const isCompleted = status === "completed";
   const reasons = profile ? explainApplicability(requirement, profile) : [];
 
@@ -111,14 +112,14 @@ function RequirementDetailInner() {
         </p>
         <h1>{requirement.name}</h1>
         <div className="req-detail-meta">
-          <StatusBadge status={status} />
+          {premium && <StatusBadge status={status} />}
           <span className="deadline">{dueDate ? `Due: ${formatDueLabel(dueDate)}` : `No fixed date: ${requirement.deadlineDescription}`}</span>
         </div>
       </header>
 
-      <button type="button" className={`primary-btn ${isCompleted ? "secondary-btn" : ""}`} onClick={toggleComplete}>
+      {premium && <button type="button" className={`primary-btn ${isCompleted ? "secondary-btn" : ""}`} onClick={toggleComplete}>
         {isCompleted ? "Mark as not completed" : "Mark as Completed"}
-      </button>
+      </button>}
 
       {/* Free: what it is, why it applies to you, and where the rule comes from. */}
       <section className="req-detail-section">
@@ -144,15 +145,15 @@ function RequirementDetailInner() {
       <section className="req-detail-section">
         <h2>Official Resource</h2>
         <p className="source-tag">This links to the official government source, not GabayNegosyo content.</p>
-        <a href={requirement.officialUrl} target="_blank" rel="noreferrer" className="tutorial-link">
-          Open Official Source
-        </a>
+        {premium && requirement.officialUrl ? <a href={requirement.officialUrl} target="_blank" rel="noreferrer" className="tutorial-link">Open Official Source</a> : <p className="hint">{premium ? "An official source URL has not been supplied or verified." : "Official source details are available with Premium."}</p>}
         <p className="verified">
           Content source: {sourceLabel}
           <br />
           Last verified: {requirement.lastVerified}
         </p>
       </section>
+
+      {tutorial && !tutorial.isPlaceholder && <section className="req-detail-section"><h2>Free tutorial</h2><TutorialCard tutorial={tutorial} /></section>}
 
       {/* Premium: working detail — documents, steps, forms, tutorial, penalty. */}
       <PremiumGate>
@@ -189,7 +190,6 @@ function RequirementDetailInner() {
         </section>
 
         {relatedForms.length > 0 && <section className="req-detail-section"><h2>Related forms</h2><div className="v06-media-grid">{relatedForms.map((form) => <FormPreviewCard key={form.id} resource={form} />)}</div></section>}
-        {tutorial && <section className="req-detail-section"><h2>Tutorial</h2><TutorialCard tutorial={tutorial} /></section>}
 
         <section className="req-detail-section">
           <h2>Potential Penalty</h2>

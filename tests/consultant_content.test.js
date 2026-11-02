@@ -1,0 +1,11 @@
+const test=require("node:test");const assert=require("node:assert/strict");const fs=require("node:fs");const path=require("node:path");
+const root=path.resolve(__dirname,"..");const read=f=>JSON.parse(fs.readFileSync(path.join(root,"data",f),"utf8"));
+const requirements=read("requirements.json"),agencies=read("agencies.json"),links=read("finalLinksDatabase.json"),fees=read("consultantFees.json");
+const ids=new Set(agencies.map(a=>a.id));const urlset=new Set([...links.forms.map(x=>x.url),...links.forms.map(x=>x.alternateUrl),...links.videos.map(x=>x.url)]);
+test("all active requirements cite known agencies and consultant-only links",()=>{for(const r of requirements.filter(x=>!x.archived)){assert.ok(ids.has(r.agencyId),r.id);assert.ok(!r.officialUrl || urlset.has(r.officialUrl),r.id);}});
+test("critical registration and renewal coverage",()=>{for(const id of ["dti-registration","barangay-clearance","mayor-permit","bir-registration","dti-renewal","barangay-renewal","mayor-permit-renewal","bir-1701q-quarterly","bir-2551q","bir-2550q"]){assert.ok(requirements.some(r=>r.id===id&&!r.archived),id);}});
+test("unverified videos never expose YouTube search URLs",()=>{for(const r of read("tutorials.json")){assert.ok(!r.videoUrl.includes("youtube.com/results"));if(r.videoUrl)assert.match(r.videoUrl,/https:\/\/www.youtube.com\/watch\?v=/);}});
+test("NCR fee table includes 16 cities and matches PDF spot checks",()=>{assert.equal(fees.mayorsPermit.length,16);assert.equal(fees.barangay.length,16);assert.equal(fees.bir.find(x=>x.description==="Registration fee").estimatePHP,"0");assert.equal(fees.dti[3].totalPHP,"2,030");});
+test("8% and graduated 2551Q requirements are mutually exclusive",()=>{assert.deepEqual(requirements.find(r=>r.id==="bir-2551q").applicabilityRules.taxType,["graduated"]);});
+test("annual and quarterly deadlines from consultant spec",()=>{const r=requirements.find(r=>r.id==="bir-1701q-quarterly");assert.deepEqual(r.deadlineDates,[{month:5,day:15},{month:8,day:15},{month:11,day:15}]);});
+test("all links must be consultant-supplied; do not publish truncated links",()=>{for(const f of links.forms){if(/TRUNCATED/.test(f.urlStatus))assert.ok(!f.url);}});

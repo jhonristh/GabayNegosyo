@@ -56,6 +56,27 @@ export function estimatePenalty(rule: PenaltyRule, input: PenaltyEstimateInput):
       breakdown.push(`${((rule.monthlyRate ?? 0) * 100).toFixed(0)}%/month × ${monthsLate} month(s): ₱${penalty.toLocaleString()}`);
       return { estimatedPenalty: Math.round(penalty), breakdown };
     }
+    case "daily_percentage": {
+      const penalty = amount * (rule.dailyRate ?? 0) * daysLate;
+      breakdown.push(`Daily interest: ${((rule.dailyRate ?? 0)*100).toFixed(2)}% × ${daysLate} day(s) = ₱${penalty.toFixed(2)}`);
+      return { estimatedPenalty: Math.round(penalty * 100)/100, breakdown };
+    }
+    case "monthly_compound": {
+      const penalty = amount * (Math.pow(1+(rule.monthlyRate ?? 0),monthsLate)-1);
+      breakdown.push(`Monthly compound: principal × ((1 + ${((rule.monthlyRate ?? 0)*100).toFixed(1)}%)^${monthsLate} - 1) = ₱${penalty.toFixed(2)}`);
+      return { estimatedPenalty: Math.round(penalty*100)/100, breakdown };
+    }
+    case "percentage_surcharge_plus_capped_monthly": {
+      const surcharge=amount*(rule.surchargeRate ?? 0);
+      const interest=(amount+surcharge)*(rule.monthlyRate ?? 0)*Math.min(monthsLate,36);
+      breakdown.push(`Surcharge ₱${surcharge.toFixed(2)}; interest on unpaid amount including surcharge, capped at 36 months: ₱${interest.toFixed(2)}`);
+      return {estimatedPenalty:Math.round((surcharge+interest)*100)/100,breakdown};
+    }
+    case "percentage_only": {
+      const amountDue=amount*(rule.surchargeRate ?? 0);
+      breakdown.push(`Surcharge ${((rule.surchargeRate ?? 0)*100).toFixed(0)}%: ₱${amountDue.toFixed(2)}`);
+      return {estimatedPenalty: Math.round(amountDue*100)/100,breakdown};
+    }
     case "flat_plus_daily": {
       const flat = rule.flatAmount ?? 0;
       const daily = (rule.dailyRate ?? 0) * daysLate;
@@ -82,17 +103,16 @@ export const MANDATORY_DISCLAIMER =
  * both read these constants, so the displayed rates can never drift from the math.
  *
  * - Micro business: 10% surcharge, 6% per annum interest (halved).
- * - General taxpayer: 12% per annum interest. The 25% surcharge for the general
- *   case comes from Gabay Negosyo's the penalties reference (NIRC Sec. 248) and is unchanged.
+ * - This prototype calculates the covered micro/small category at 10% and 6%.
  */
 export const BIR_PENALTY_RATES = {
   microSurcharge: 0.1,
   microInterest: 0.06,
-  generalSurcharge: 0.25,
-  generalInterest: 0.12,
+  generalSurcharge: 0.1,
+  generalInterest: 0.06,
 } as const;
 
-export type BirTaxpayerTier = "micro" | "general";
+export type BirTaxpayerTier = "micro" | "small";
 
 export interface BirPenaltyResult {
   tier: BirTaxpayerTier;
@@ -117,8 +137,8 @@ const peso = (n: number) => `₱${n.toLocaleString("en-PH", { minimumFractionDig
 export function estimateBirPenalty(input: { taxDue: number; daysLate: number; tier: BirTaxpayerTier }): BirPenaltyResult | null {
   const { taxDue, daysLate, tier } = input;
   if (validatePenaltyInput({ amount: taxDue, daysLate })) return null;
-  const surchargeRate = tier === "micro" ? BIR_PENALTY_RATES.microSurcharge : BIR_PENALTY_RATES.generalSurcharge;
-  const interestRate = tier === "micro" ? BIR_PENALTY_RATES.microInterest : BIR_PENALTY_RATES.generalInterest;
+  const surchargeRate = (tier === "micro" || tier === "small") ? BIR_PENALTY_RATES.microSurcharge : BIR_PENALTY_RATES.generalSurcharge;
+  const interestRate = (tier === "micro" || tier === "small") ? BIR_PENALTY_RATES.microInterest : BIR_PENALTY_RATES.generalInterest;
   const late = daysLate > 0;
   const surcharge = late ? taxDue * surchargeRate : 0;
   const interest = late ? (taxDue * interestRate * daysLate) / 365 : 0;
@@ -135,4 +155,10 @@ export function estimateBirPenalty(input: { taxDue: number; daysLate: number; ti
     : ["0 days late: no surcharge or interest has accrued yet."];
   if (late && taxDue === 0) breakdown.push("No tax is due, so surcharge and interest are ₱0. Only a compromise penalty may apply; it is not computed here.");
   return { tier, taxDue, daysLate, surchargeRate, interestRate, surcharge, interest, totalPenalty, totalAmount: taxDue + totalPenalty, breakdown };
+}
+
+/** Consultant-approved 8% tax-due estimation (FL-16: mixed-income excludes ₱250k deduction pending confirmation). */
+export function estimateEightPercentTaxDue(grossSales:number, mixedIncome=false):number|null {
+  if (!isValidAmount(grossSales) || grossSales>=3000000) return null;
+  return Math.max(0,(grossSales-(mixedIncome?0:250000))*0.08);
 }

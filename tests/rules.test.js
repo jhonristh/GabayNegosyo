@@ -66,7 +66,7 @@ test("taxpayer type selects a matching income tax return (Gabay Negosyo-sourced 
   assert.ok(eightPercentForm, "bir-1701a-8percent should exist in the real content");
   assert.ok(quarterlyForm, "bir-1701q-quarterly should exist in the real content");
 
-  assert.ok(taxpayerTypeApplies(eightPercentForm, "purely_business"), "1701A should apply to a purely-business taxpayer");
+  assert.ok(taxpayerTypeApplies(eightPercentForm, "self_employment_or_profession"), "1701A applies to self-employed taxpayers");
   assert.ok(!taxpayerTypeApplies(eightPercentForm, "purely_compensation"), "1701A should not apply to a purely-compensation taxpayer");
   assert.ok(taxpayerTypeApplies(quarterlyForm, "self_employment_or_profession"), "1701Q should apply to a self-employed taxpayer");
 });
@@ -123,7 +123,7 @@ test("every requirement's penalty rule is a recognized type, and not_specified i
   // "not_specified" is a deliberate, honest state :
   // the internal reference workbook did not give penalty rates for almost every
   // BIR requirement, so this field says so instead of inventing a number.
-  const valid = ["percentage_surcharge_plus_monthly_interest", "monthly_percentage", "flat_plus_daily", "not_specified"];
+  const valid = ["percentage_surcharge_plus_monthly_interest", "monthly_percentage", "flat_plus_daily", "not_specified", "daily_percentage", "monthly_compound", "percentage_surcharge_plus_capped_monthly", "percentage_only"];
   for (const r of requirements) {
     assert.ok(valid.includes(r.penaltyRule.type), `${r.id} bad penalty type`);
     assert.ok(r.penaltyRule.description.length > 0, `${r.id} penalty missing description`);

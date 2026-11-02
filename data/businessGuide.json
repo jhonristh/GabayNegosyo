@@ -87,7 +87,7 @@
       "Final clear sample of your own invoices, or a BIR-printed invoice (BPI)",
       "DTI certificate, if you have a registered business name"
     ],
-    "officialUrl": "https://www.bir.gov.ph/"
+    "officialUrl": "https://www.bir.gov.ph"
   },
   {
     "id": "sss-new",
@@ -113,7 +113,7 @@
       "For employees: SS number, or SSS Personal Record (E-1/E-1V) if none yet",
       "Valid ID/supporting documents of employees, when required"
     ],
-    "officialUrl": "https://www.sss.gov.ph/"
+    "officialUrl": "https://www.sss.gov.ph"
   },
   {
     "id": "philhealth-new",
@@ -136,7 +136,7 @@
       "For employees: PhilHealth Identification Number (PIN), or PhilHealth Member Registration Form (PMRF) if none yet",
       "Report of Employee-Members (ER2)"
     ],
-    "officialUrl": "https://www.philhealth.gov.ph/"
+    "officialUrl": "https://www.philhealth.gov.ph"
   },
   {
     "id": "pagibig-new",
@@ -159,7 +159,7 @@
       "For employees: Pag-IBIG Membership ID (MID) number, or Member's Data Form (MDF) for new members",
       "Employee personal and employment information"
     ],
-    "officialUrl": "https://www.pagibigfund.gov.ph/"
+    "officialUrl": "https://www.pagibigfund.gov.ph"
   },
   {
     "id": "dti-renew",
@@ -233,7 +233,7 @@
       "Certificate of Registration",
       "Applicable BIR tax return"
     ],
-    "officialUrl": "https://www.bir.gov.ph/bir-forms"
+    "officialUrl": ""
   },
   {
     "id": "sss-remit",
@@ -249,7 +249,7 @@
     "documents": [
       "Payroll and contribution schedule"
     ],
-    "officialUrl": "https://www.sss.gov.ph/"
+    "officialUrl": "https://www.sss.gov.ph"
   },
   {
     "id": "philhealth-remit",
@@ -265,7 +265,7 @@
     "documents": [
       "Payroll and remittance records"
     ],
-    "officialUrl": "https://www.philhealth.gov.ph/"
+    "officialUrl": "https://www.philhealth.gov.ph"
   },
   {
     "id": "pagibig-remit",
@@ -282,6 +282,6 @@
       "Payroll records",
       "MSRF when required"
     ],
-    "officialUrl": "https://www.pagibigfund.gov.ph/"
+    "officialUrl": "https://www.pagibigfund.gov.ph"
   }
 ]

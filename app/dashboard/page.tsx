@@ -13,6 +13,7 @@ import { db } from "../../lib/db";
 import { localityLabel } from "../../lib/ncr";
 import { businessStageLabel, employeeLabel, taxArrangementLabel } from "../../lib/profileSummary";
 import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
+import { hasPremiumAccess } from "../../lib/entitlements";
 import type { BusinessProfile, RequirementStatus } from "../../lib/types";
 
 function DashboardInner() {
@@ -59,6 +60,7 @@ function DashboardInner() {
     );
   }
 
+  const premium = hasPremiumAccess(user);
   const applicable = generateApplicableRequirements(profile, requirements);
   const progress = db.getProgress();
 
@@ -116,7 +118,7 @@ function DashboardInner() {
         </p>
       </header>
 
-      <div className="v05-dash-hero">
+      {premium && <div className="v05-dash-hero">
         <section className="dashboard-progress">
           <p className="v05-kicker">YOUR PROGRESS</p>
           <strong className="v05-progress-number">{percent}<small>%</small></strong>
@@ -131,8 +133,8 @@ function DashboardInner() {
             <Link href={`/requirements/${next.req.id}`}>View requirement <span aria-hidden="true">↗</span></Link>
           </> : <><h2>All caught up.</h2><p>There are no pending items in your checklist.</p><Link href="/checklist">View checklist ↗</Link></>}
         </section>
-      </div>
-      {(overdue.length > 0 || dueToday.length > 0 || dueSoon.length > 0) && (
+      </div>}
+      {premium && (overdue.length > 0 || dueToday.length > 0 || dueSoon.length > 0) && (
         <section className="dashboard-alert-group">
           {overdue.length > 0 && (
             <div className="alert alert-overdue">
@@ -152,7 +154,7 @@ function DashboardInner() {
         </section>
       )}
 
-      <div className="kit-ledger-row">
+      {premium && <div className="kit-ledger-row">
         <AgencyProgress rows={agencyRows} />
         <section className="kit-panel kit-status" aria-labelledby="kit-status-title">
           <h2 id="kit-status-title">Where things stand</h2>
@@ -166,7 +168,7 @@ function DashboardInner() {
           </ul>
           <p className="hint">Verify dates with the issuing agency before relying on them.</p>
         </section>
-      </div>
+      </div>}
 
       <section className="quick-actions" aria-label="Quick actions">
         <Link href="/checklist" className="quick-action-btn">
@@ -174,6 +176,9 @@ function DashboardInner() {
         </Link>
         <Link href="/deadlines" className="quick-action-btn">
           View deadlines
+        </Link>
+        <Link href="/fees" className="quick-action-btn">
+          Estimated permit fees (Premium)
         </Link>
         <Link href="/resources" className="quick-action-btn">
           Resource library
@@ -192,15 +197,15 @@ function DashboardInner() {
         </div>
         {pending.length === 0 && <p className="hint">Nothing pending. Great work.</p>}
         {pending.slice(0, 5).map(({ req, status, dueDate }) => (
-          <RequirementCard key={req.id} requirement={req} status={status} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : "No fixed date"} agencyName={agencyName(req.agencyId)} />
+          <RequirementCard key={req.id} requirement={req} status={premium ? status : "upcoming"} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : "No fixed date"} agencyName={agencyName(req.agencyId)} />
         ))}
       </section>
 
-      {completed.length > 0 && (
+      {premium && completed.length > 0 && (
         <section className="dashboard-section">
           <h2>Completed</h2>
           {completed.map(({ req, status, dueDate }) => (
-            <RequirementCard key={req.id} requirement={req} status={status} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : "No fixed date"} agencyName={agencyName(req.agencyId)} />
+            <RequirementCard key={req.id} requirement={req} status={premium ? status : "upcoming"} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : "No fixed date"} agencyName={agencyName(req.agencyId)} />
           ))}
         </section>
       )}

@@ -9,8 +9,10 @@
 
 const test = require("node:test");
 const assert = require("node:assert");
+const path = require("node:path");
 
-const load = (rel) => import(rel);
+const { pathToFileURL } = require("node:url");
+const load = (rel) => import(pathToFileURL(path.resolve(__dirname, rel)).href);
 
 const req = (month, day) => ({ deadlineMonth: month, deadlineDay: day });
 
