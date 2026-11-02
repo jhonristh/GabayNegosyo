@@ -1,0 +1,186 @@
+# Local rehearsal log — PostgreSQL 16.15, Supabase STUB (not Supabase). 2026-11-01
+== 1. Fresh install, in the documented order
+  PASS  applied 00_supabase_stub.sql
+  PASS  applied supabase_setup.sql
+  PASS  applied 001_sent_emails_sent_at_index.sql
+  PASS  applied 002_task_progress.sql
+  PASS  applied 003_sync_profiles.sql
+  PASS  applied 004_reminder_digest.sql
+  PASS  applied 005_account_lifecycle.sql
+== 2. Fixtures (signup trigger creates every profile)
+  PASS  signup trigger: new user gets role free
+  PASS  signup trigger: name copied from metadata
+  PASS  signup trigger: user with NULL email still gets a profile (email '')
+  PASS  profile sync: email change in Auth reaches profiles
+== 3. Pre-006 state: reproduce the self-upgrade hole (RECONSTRUCTED stand-in for upgrade_to_premium_demo)
+  PASS  BEFORE 006 a normal user can self-promote through that function (the F-00 hole, if it exists in production)
+  PASS  applied 006_entitlements.sql
+  PASS  AFTER 006 upgrade_to_premium_demo no longer exists
+== 4. Re-run safety (005, 006, 002, 004, 001 are meant to be idempotent)
+  PASS  applied 001_sent_emails_sent_at_index.sql
+  PASS  applied 002_task_progress.sql
+  PASS  applied 004_reminder_digest.sql
+  PASS  applied 005_account_lifecycle.sql
+  PASS  applied 006_entitlements.sql
+== 5. Row isolation between users (RLS)
+  PASS  U1 sees only own rows in business_profiles
+  PASS  U1 sees only own rows in checklist_progress
+  PASS  U1 sees only own rows in task_progress
+  PASS  U1 sees only own rows in reminder_configs
+  PASS  U1 sees only own rows in sent_emails
+  PASS  U1 cannot insert a business profile for U2
+  PASS  U1 cannot update U2's progress (0 rows touched)
+  PASS  U1 cannot delete U2's task progress (0 rows)
+  PASS  U1 sees only own profile row
+  PASS  anon cannot read profiles
+  PASS  anon cannot read business_profiles
+== 6. Privilege escalation attempts by a normal signed-in user
+  PASS  user cannot change own role
+  PASS  user cannot clear is_demo / flags
+  PASS  user cannot write deactivated_* columns
+  PASS  user cannot write reminders_unsubscribed_at
+  PASS  user CAN change own name
+  PASS  user cannot insert into entitlements
+  PASS  user cannot insert into admin_audit_log
+  PASS  user cannot read account_deletion_log
+  PASS  user cannot read reminder_deliveries
+  PASS  user cannot call entitlement_for directly
+  PASS  user cannot call log_admin_action directly
+  PASS  anon cannot call get_my_entitlement
+  PASS  anon cannot call is_admin
+  PASS  user cannot call handle_new_user
+== 7. Admin-only functions reject non-admins, demo admins and anon
+  PASS  normal user rejected: admin_premium_roster()
+  PASS  DEMO admin rejected: admin_premium_roster()
+  PASS  anon rejected: admin_premium_roster()
+  PASS  normal user rejected: admin_user_directory(10,0,null,null)
+  PASS  DEMO admin rejected: admin_user_directory(10,0,null,null)
+  PASS  anon rejected: admin_user_directory(10,0,null,null)
+  PASS  normal user rejected: admin_list_audit_log(10,0)
+  PASS  DEMO admin rejected: admin_list_audit_log(10,0)
+  PASS  anon rejected: admin_list_audit_log(10,0)
+  PASS  normal user rejected: admin_account_overview()
+  PASS  DEMO admin rejected: admin_account_overview()
+  PASS  anon rejected: admin_account_overview()
+  PASS  normal user rejected: admin_sync_profiles()
+  PASS  DEMO admin rejected: admin_sync_profiles()
+  PASS  anon rejected: admin_sync_profiles()
+  PASS  normal user rejected: purge_expired_deletion_log()
+  PASS  DEMO admin rejected: purge_expired_deletion_log()
+  PASS  anon rejected: purge_expired_deletion_log()
+  PASS  normal user rejected: admin_grant_premium('22222222-0000-0000-0000-000000000002',null,'test')
+  PASS  DEMO admin rejected: admin_grant_premium('22222222-0000-0000-0000-000000000002',null,'test')
+  PASS  anon rejected: admin_grant_premium('22222222-0000-0000-0000-000000000002',null,'test')
+  PASS  normal user rejected: admin_revoke_premium('22222222-0000-0000-0000-000000000002','test')
+  PASS  DEMO admin rejected: admin_revoke_premium('22222222-0000-0000-0000-000000000002','test')
+  PASS  anon rejected: admin_revoke_premium('22222222-0000-0000-0000-000000000002','test')
+  PASS  normal user rejected: admin_set_account_status('22222222-0000-0000-0000-000000000002',true,'test')
+  PASS  DEMO admin rejected: admin_set_account_status('22222222-0000-0000-0000-000000000002',true,'test')
+  PASS  anon rejected: admin_set_account_status('22222222-0000-0000-0000-000000000002',true,'test')
+  PASS  user cannot read audit log table
+  PASS  user sees 0 audit rows even via SELECT grant (RLS)
+  PASS  user sees 0 entitlement rows of others
+== 8. Premium entitlement lifecycle
+  PASS  free user: plan is free
+  PASS  grant needs a reason
+  PASS  grant expiry must be future
+  PASS  cannot grant to a demo account
+  PASS  cannot grant to an admin
+  PASS  unknown account
+  PASS  after grant: premium
+  PASS  after grant: role column stays free (so role-based code would miss it)
+  PASS  directory 'premium' filter includes the granted user
+  PASS  directory 'free' filter excludes the granted user
+  PASS  roster includes the granted user
+  PASS  roster excludes demo, admin and legacy-free accounts
+  PASS  audit log recorded the grant
+   (F-13 check) admin_account_overview counts by role, so it under-counts the granted user:
+  PASS  F-13 CONFIRMED: dashboard overview premium_count counts role only (legacy+demo = 2)...
+  PASS  F-13 CONFIRMED: ...while the computed plan directory finds 3 Premium accounts (adds the admin-granted user)
+  PASS  applied 007_admin_overview_computed_plan.sql
+  PASS  007: overview premium_count now equals the computed-plan directory (3)
+  PASS  007: free + premium + admin = total accounts
+  PASS  007: still admins only (normal user)
+  PASS  007: still admins only (demo admin)
+  PASS  007: anon still blocked
+  PASS  applied 007_admin_overview_computed_plan.sql
+  PASS  after expiry: status expired
+  PASS  expired user is not in the roster
+  PASS  EXPIRED + stale role='premium' must NOT regain Premium (legacy fallback closed)
+  PASS  re-grant works after expiry
+  PASS  revoke ends the active grant AND stamps the old expired one (reports 2)
+  PASS  after revoke: cancelled
+  PASS  revoking again is refused
+  PASS  cannot revoke an admin
+== 9. Legacy role='premium' account
+  PASS  legacy premium keeps access before review
+  PASS  grant moves legacy role to free
+  PASS  legacy account then honours expiry
+  PASS  real admin counts as premium via admin_role
+  PASS  DEMO admin does NOT get admin_role premium
+== 10. Deactivation and reactivation
+  PASS  deactivated user: business_profiles invisible
+  PASS  deactivated user: task_progress invisible
+  PASS  deactivated user: cannot write progress
+  PASS  deactivated user: cannot rename
+  PASS  deactivated user: name unchanged
+  PASS  deactivated user can still read own profile (reactivation screen)
+  PASS  get_my_entitlement reports deactivation
+  PASS  self reactivation restores data access
+  PASS  admin-deactivated user cannot self-reactivate
+  PASS  admin-deactivated user has no data access
+  PASS  admin deactivation needs a reason
+  PASS  admin cannot deactivate self
+  PASS  admin cannot deactivate another admin
+  PASS  admin cannot deactivate a demo account
+  PASS  admin account cannot self-deactivate
+  PASS  demo account cannot self-deactivate
+  PASS  admin can lift it
+== 11. Admin deactivation survives deletion of the acting admin
+  PASS  deactivated_by cleared when that admin is deleted
+  PASS  deactivated_by_admin flag is kept
+  PASS  user still cannot self-reactivate
+  PASS  audit rows from deleted admin are kept with actor NULL
+== 12. Account deletion cleanup (cascade)
+  PASS  no profiles rows remain for deleted user
+  PASS  no business_profiles rows remain for deleted user
+  PASS  no checklist_progress rows remain for deleted user
+  PASS  no task_progress rows remain for deleted user
+  PASS  no reminder_configs rows remain for deleted user
+  PASS  no sent_emails rows remain for deleted user
+  PASS  no reminder_deliveries rows remain for deleted user
+  PASS  no entitlements rows remain for deleted user
+  PASS  audit log keeps rows about the deleted user (target NULL)
+  PASS  other users untouched by the delete
+== 13. Definer-function hygiene (catalog checks)
+  PASS  every SECURITY DEFINER function pins search_path to empty
+  PASS  no public SECURITY DEFINER function is executable by anon
+   Functions executable by 'authenticated' (each must check its own caller):
+   - admin_account_overview
+   - admin_grant_premium
+   - admin_list_audit_log
+   - admin_premium_roster
+   - admin_revoke_premium
+   - admin_set_account_status
+   - admin_sync_profiles
+   - admin_user_directory
+   - deactivate_my_account
+   - get_my_entitlement
+   - is_account_active
+   - is_admin
+   - purge_expired_deletion_log
+   - reactivate_my_account
+  PASS  RLS is enabled on every table in public
+  PASS  anon has no privilege on any public table
+== 14. Known weak spots, demonstrated (informational; these PASS when the weakness is present)
+  PASS  DB-09: a user can insert a forged sent_emails log row with any recipient/subject
+  PASS  DB-09: ...and a real admin can see that forged row in the admin log
+  PASS  service role (no JWT user) may run the purge
+  PASS  applied 003_sync_profiles.sql
+  PASS  DB-10: re-running 003 AFTER 007 reverts admin_account_overview to role-based counts
+  PASS  DB-10: re-running 003 AFTER 005 silently replaces admin_sync_profiles with the un-audited version
+  PASS  applied 005_account_lifecycle.sql
+  PASS  applied 007_admin_overview_computed_plan.sql
+  PASS  ...and re-running 005 + 007 restores the audited version
+
+RESULT: 153 passed, 0 failed
