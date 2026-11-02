@@ -533,3 +533,17 @@ html[data-theme="night"] { --surface-soft: #243026; }
 @media (hover: none) {
   .req-card:hover, .primary-btn:hover { transform: none; }
 }
+
+/* WP7: keyboard jump target and small-screen navigation safeguards. */
+.gn-skip-link { position: fixed; top: -100px; left: 12px; z-index: 9999; padding: 12px 16px; border-radius: 8px; background: #064e3b; color: #fff; font-weight: 700; }
+.gn-skip-link:focus-visible { top: 12px; outline: 3px solid #ffda72; outline-offset: 2px; }
+#main-content:focus { outline: none; }
+@media (max-width: 359px) {
+  .navbar-mobile { gap: 0; padding-left: 2px; padding-right: 2px; }
+  .mobile-link { font-size: .59rem; padding-left: 0; padding-right: 0; }
+  .mobile-link .kit-icon { padding-left: 6px; padding-right: 6px; }
+}
+/* Wide tables scroll inside their own region instead of forcing the viewport wider. */
+@media (max-width: 859px) {
+  .kit-table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }
+}

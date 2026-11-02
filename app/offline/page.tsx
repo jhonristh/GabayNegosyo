@@ -15,9 +15,8 @@ export default function OfflinePage() {
       <p className="eyebrow-free">No connection</p>
       <h1>You&apos;re offline right now.</h1>
       <p className="hero-sub">
-        This page needs a network connection we can&apos;t reach. Pages you&apos;ve already
-        visited on this device may still open from where you left off; reconnect and try again
-        for anything else.
+        This page needs a network connection we can&apos;t reach. For your privacy, account pages are not saved for offline viewing. Reconnect
+        and try again; changes will only be saved after the server confirms them.
       </p>
       <div className="hero-actions">
         <a href="/" className="primary-btn">

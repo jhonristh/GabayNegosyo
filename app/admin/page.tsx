@@ -53,15 +53,15 @@ function AdminInner() {
       </header>
 
       <section className="v07-admin-links" aria-label="Admin sections">
-        {[ ["Users", "/admin/users", "Review Free, Premium, and Admin accounts"], ["Requirements", "/admin/requirements", "Inspect stages and content status"], ["Agencies", "/admin/agencies", "Manage agency references"], ["Resources", "/admin/resources", "Review source links and forms"], ["Tutorials", "/admin/tutorials", "Review learning material"] ].map(([title,href,description]) => <Link key={href} href={href}><strong>{title} →</strong><span>{description}</span></Link>)}
+        {[ ["Manual reminders", "/admin/manual-reminders", "Prepare and record Premium reminders"], ["Users", "/admin/users", "Review Free, Premium, and Admin accounts"], ["Requirements", "/admin/requirements", "Inspect stages and content status"], ["Agencies", "/admin/agencies", "Manage agency references"], ["Resources", "/admin/resources", "Review source links and forms"], ["Tutorials", "/admin/tutorials", "Review learning material"] ].map(([title,href,description]) => <Link key={href} href={href}><strong>{title} →</strong><span>{description}</span></Link>)}
       </section>
       <AdminHelp
         title="Start here"
         steps={[
           "Work through the Content review queue first. Each row links to the editor for that item.",
           "Open Agencies, Requirements, Resources, or Tutorials to correct content. Each editor has its own steps.",
-          "Open Users to look up accounts and plans. That page is read-only.",
-          "Check Recent emails to confirm reminder and test emails were logged. Use the email setup guide in docs/REMINDERS_SETUP.md before turning on daily reminders.",
+          "Open Users to manage accounts and Premium grants, then Manual reminders to prepare opted-in deadline messages.",
+          "Manual reminders are copied and recorded by admins. Do not enable automated email or cron jobs.",
         ]}
       >
         Review what needs attention, then fix it in the editor linked from each row.

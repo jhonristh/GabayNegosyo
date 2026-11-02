@@ -257,9 +257,9 @@ function UsersInner() {
                     <div className="filter-row" role="group" aria-label={`Manage ${u.email}`}>
                       {!u.isDemo && <button type="button" className="secondary-btn" onClick={() => openPanel(u.id, "grant")}>Grant Premium</button>}
                       {(u.planStatus === "premium") && !u.isDemo && <button type="button" className="secondary-btn" onClick={() => openPanel(u.id, "revoke")}>Revoke Premium</button>}
-                      {u.deactivatedAt
+                      {!u.isDemo && (u.deactivatedAt
                         ? <button type="button" className="secondary-btn" onClick={() => openPanel(u.id, "reactivate")}>Reactivate</button>
-                        : <button type="button" className="secondary-btn" onClick={() => openPanel(u.id, "deactivate")}>Deactivate</button>}
+                        : <button type="button" className="secondary-btn" onClick={() => openPanel(u.id, "deactivate")}>Deactivate</button>)}
                     </div>
                   )}
 

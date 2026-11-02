@@ -20,7 +20,7 @@
 //   - supports a "purge" message so the app can clear runtime caches on
 //     logout (see components/ServiceWorkerRegistration.tsx).
 
-const CACHE_VERSION = "gn-v5"; // v5: never intercept localhost/dev (a cache-first /_next/static entry served stale CSS forever); v4: only ok, full responses are cached
+const CACHE_VERSION = "gn-v6"; // v5: never intercept localhost/dev (a cache-first /_next/static entry served stale CSS forever); v4: only ok, full responses are cached
 const PRECACHE = `${CACHE_VERSION}-precache`;
 const RUNTIME = `${CACHE_VERSION}-runtime`;
 
@@ -102,14 +102,12 @@ self.addEventListener("fetch", (event) => {
     return;
   }
 
+  // Never persist HTML navigations. Authenticated pages can contain account data
+  // even without an Authorization header (session cookies / server rendering).
+  // A failed navigation serves only the public, pre-cached offline page.
   if (request.mode === "navigate") {
     event.respondWith(
-      fetch(request)
-        .then((response) => {
-          putInRuntimeCache(request, response);
-          return response;
-        })
-        .catch(() => caches.match(request).then((cached) => cached || caches.match("/offline")))
+      fetch(request).catch(async () => (await caches.match("/offline")) || Response.error())
     );
     return;
   }

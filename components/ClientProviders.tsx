@@ -23,9 +23,10 @@ function Frame({ children }: { children: ReactNode }) {
     <div className={`kit-shell kit-shell--${shell}`} data-shell={shell}>
       <DemoBanner />
       <OfflineBanner />
+      <a className="gn-skip-link" href="#main-content">Skip to main content</a>
       <Navbar />
       <div className="kit-shell-body">
-        <div className="page-content">{children}</div>
+        <main id="main-content" className="page-content" tabIndex={-1}>{children}</main>
         <Footer />
       </div>
     </div>
