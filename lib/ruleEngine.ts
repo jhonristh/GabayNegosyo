@@ -180,9 +180,7 @@ export function formatDueLabel(d: Date | null): string {
 }
 
 const TAXPAYER_LABELS: Record<string, string> = {
-  purely_compensation: "Purely Compensation",
   self_employment_or_profession: "Self-Employment or Profession",
-  purely_business: "Purely Business",
   mixed_income_earner: "Mixed Income Earner",
 };
 

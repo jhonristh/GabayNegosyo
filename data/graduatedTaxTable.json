@@ -1,0 +1,5 @@
+{
+  "status": "OPEN_FL-17",
+  "note": "TODO (OPEN FL-17): the consultant will send the graduated income tax table. Do not fill this in from memory. Until `brackets` is filled and `status` is changed to \"CONSULTANT_PROVIDED\", the app shows 'pending consultant table' instead of a graduated-tax amount.",
+  "brackets": []
+}

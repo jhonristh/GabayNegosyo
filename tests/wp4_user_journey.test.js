@@ -303,8 +303,10 @@ async function loadRealDb() {
   let src = read("lib/db.ts")
     .replace(/from "\.\.\/data\/(\w+)\.json";/g, (_, n) => `from ${data(n + ".json")} with { type: "json" };`)
     .replace('from "./supabase";', 'from "./supabase.ts";')
-    .replace('from "./demoAccounts";', 'from "./demoAccounts.ts";');
+    .replace('from "./demoAccounts";', 'from "./demoAccounts.ts";')
+    .replace('from "./taxpayer";', 'from "./taxpayer.ts";');
   fs.writeFileSync(path.join(dir, "db.ts"), src);
+  fs.writeFileSync(path.join(dir, "taxpayer.ts"), read("lib/taxpayer.ts").replace('import type { TaxpayerType } from "./types";', "type TaxpayerType = string;"));
   fs.writeFileSync(path.join(dir, "demoAccounts.ts"), read("lib/demoAccounts.ts"));
   fs.writeFileSync(path.join(dir, "supabase.ts"), "export function getSupabase() { return globalThis.__fakeSupabase; }\n");
   dbModule = await import(path.join(dir, "db.ts"));
@@ -477,7 +479,7 @@ test("wizard shows why Continue is unavailable, refuses to pretend a failed save
   assert.match(w, /wizardStepProblem/);
   assert.match(w, /id="wizard-step-problem"/);
   assert.match(w, /if \(!db\.saveBusinessProfile\(profile\)\)/);
-  assert.match(w, /deductionMethod: taxType === "graduated"/);
+  assert.match(w, /deductionMethod: effectiveTaxType === "graduated"/);
   assert.match(w, /user\?\.dataLoadFailed/);
 });
 

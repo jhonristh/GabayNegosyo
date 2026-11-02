@@ -9,14 +9,10 @@ export type TaxType = "8_percent" | "graduated" | "vat_registered" | "not_sure";
 export type BusinessStatus = "planning" | "newly_registered" | "operating";
 
 /**
- * Taxpayer Type — the four options from the registration wizard. These are the actual BIR taxpayer categories
+ * Taxpayer Type — consultant-final wizard (spec §2): only two options. Removed: purely_compensation, purely_business (see lib/taxpayer.ts for the legacy mapping). These are the actual BIR taxpayer categories
  * Gabay Negosyo's intake flow is built around.
  */
-export type TaxpayerType =
-  | "purely_compensation"
-  | "self_employment_or_profession"
-  | "purely_business"
-  | "mixed_income_earner";
+export type TaxpayerType = "self_employment_or_profession" | "mixed_income_earner";
 
 export interface User {
   id: string;

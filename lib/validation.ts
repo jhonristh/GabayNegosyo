@@ -48,12 +48,16 @@ export interface WizardAnswers {
   employeeCount: number;
   projectedGrossSales: number | "";
   businessName: string;
+  /** Tax option step (spec §2.4). Optional so older callers keep working. */
+  taxOption?: "8_percent" | "graduated";
+  deductionMethod?: "osd" | "itemized";
+  projectedExpenses?: number | "";
 }
 
 /**
  * Why a wizard step cannot continue yet, in plain language, or null when it can.
  * Step numbers follow the STEPS list in app/wizard/page.tsx. Steps with a default answer
- * (taxpayer type, tax type) and the review steps never block.
+ * (taxpayer type) and the review steps never block; the tax option step blocks only an empty itemized-expenses field.
  */
 export function wizardStepProblem(step: number, a: WizardAnswers): string | null {
   switch (step) {
@@ -72,6 +76,13 @@ export function wizardStepProblem(step: number, a: WizardAnswers): string | null
     case 5:
       if (a.projectedGrossSales === "" || Number.isNaN(a.projectedGrossSales)) return "Enter your projected annual gross sales or receipts. Enter 0 if you do not expect any yet.";
       if (a.projectedGrossSales < 0) return "Gross sales cannot be negative.";
+      return null;
+    case 6:
+      // Expenses are asked only for Graduated + Itemized (spec §2.4); nothing else blocks this step.
+      if (a.taxOption === "graduated" && a.deductionMethod === "itemized") {
+        if (a.projectedExpenses === "" || a.projectedExpenses === undefined || Number.isNaN(a.projectedExpenses)) return "Enter your projected annual expenses for the itemized method. Enter 0 if you have none yet.";
+        if (a.projectedExpenses < 0) return "Expenses cannot be negative.";
+      }
       return null;
     case 7:
       return a.businessName.trim() ? null : "Enter a business name. It is only used to label your dashboard.";

@@ -3,6 +3,7 @@ import requirementsSeed from "../data/requirements.json";
 import resourcesSeed from "../data/resources.json";
 import tutorialsSeed from "../data/tutorials.json";
 import { getSupabase } from "./supabase";
+import { normalizeTaxpayerType } from "./taxpayer";
 import { DEMO_CONTENT_KEY, DEMO_DATA_KEY, isDemoUserId } from "./demoAccounts";
 import type {
   Agency,
@@ -165,6 +166,11 @@ function saveDemoData() {
   } catch {
     /* storage blocked: the demo simply will not persist across reloads */
   }
+}
+
+/** Saved profiles may still hold a removed taxpayer type; read them as the current equivalent without rewriting storage. */
+function withCurrentTaxpayerType(p: BusinessProfile | null): BusinessProfile | null {
+  return p ? { ...p, taxpayerType: normalizeTaxpayerType(p.taxpayerType) } : p;
 }
 
 export const db = {
@@ -366,7 +372,7 @@ export const db = {
 
   // ---- Business profile (one per user) ----
   getBusinessProfile(userId: string): BusinessProfile | null {
-    return userId === currentUserId ? userData.businessProfile : null;
+    return userId === currentUserId ? withCurrentTaxpayerType(userData.businessProfile) : null;
   },
   /** Returns false when nothing was saved (no loaded session, or the profile belongs to someone else). Callers must tell the person. */
   saveBusinessProfile(profile: BusinessProfile): boolean {
@@ -501,7 +507,7 @@ export const db = {
     if (typeof window === "undefined") return null;
     try {
       const raw = window.sessionStorage.getItem(GUEST_KEY);
-      return raw ? (JSON.parse(raw) as BusinessProfile) : null;
+      return raw ? withCurrentTaxpayerType(JSON.parse(raw) as BusinessProfile) : null;
     } catch {
       return null;
     }

@@ -12,16 +12,22 @@ const canImportTs = Boolean(process.features && process.features.typescript);
 const opts = { skip: canImportTs ? false : "needs Node with TypeScript type stripping (22.18+)" };
 const load = (p) => import(pathToFileURL(path.join(__dirname, "..", p)).href);
 
-test("tax table brackets are contiguous and 'plus' amounts match the tax at each boundary", () => {
-  const table = json("data/taxTable.json");
-  assert.strictEqual(table[0].over, 0);
-  assert.strictEqual(table[table.length - 1].notOver, null, "top bracket is open-ended");
-  for (let i = 1; i < table.length; i++) {
-    const prev = table[i - 1];
-    const cur = table[i];
-    assert.strictEqual(cur.over, prev.notOver, `bracket ${i} starts where bracket ${i - 1} ends`);
-    const taxAtBoundary = prev.plus + prev.rate * (cur.over - prev.over);
-    assert.strictEqual(Math.round(cur.plus), Math.round(taxAtBoundary), `plus amount for bracket ${i} matches the tax carried from the bracket below`);
+test("graduated tax table is a consultant-supplied placeholder (OPEN FL-17): never typed from memory", () => {
+  const table = json("data/graduatedTaxTable.json");
+  assert.ok(Array.isArray(table.brackets));
+  if (table.status !== "CONSULTANT_PROVIDED") {
+    assert.strictEqual(table.brackets.length, 0, "no rates may be present until the consultant supplies the table");
+    assert.match(table.note, /FL-17/);
+    return;
+  }
+  // Once provided: contiguous brackets whose 'plus' amounts match the tax carried from the bracket below.
+  assert.strictEqual(table.brackets[0].over, 0);
+  assert.strictEqual(table.brackets[table.brackets.length - 1].notOver, null, "top bracket is open-ended");
+  for (let i = 1; i < table.brackets.length; i++) {
+    const prev = table.brackets[i - 1];
+    const cur = table.brackets[i];
+    assert.strictEqual(cur.over, prev.notOver);
+    assert.strictEqual(Math.round(cur.plus), Math.round(prev.plus + prev.rate * (cur.over - prev.over)));
   }
 });
 
@@ -35,7 +41,7 @@ test("tax table component formats pesos deterministically", opts, async () => {
 test("registration page shows the tax tables reference", () => {
   const page = read("app/registration/page.tsx");
   assert.ok(page.includes("TaxTableReference"), "registration renders the tax table reference");
-  assert.ok(read("components/TaxTableReference.tsx").includes("taxTable.json"), "the reference reads data/taxTable.json");
+  assert.ok(read("components/TaxTableReference.tsx").includes("graduatedTaxTable.json"), "the reference reads data/graduatedTaxTable.json");
 });
 
 test("every requirement tutorialId resolves to a tutorial, and verified tutorials carry a YouTube video id", () => {
