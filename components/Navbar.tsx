@@ -29,6 +29,7 @@ const USER_LINKS: NavItem[] = [
   { href: "/resources", label: "Resources", icon: "resources", mobile: false },
   { href: "/tutorials", label: "Tutorials", icon: "tutorials", mobile: false },
   { href: "/deadlines", label: "Deadlines", icon: "deadlines", mobile: false },
+  { href: "/tax-calculator", label: "Tax Calculator", icon: "penalties", mobile: false },
   { href: "/account", label: "Account", icon: "account" },
 ];
 

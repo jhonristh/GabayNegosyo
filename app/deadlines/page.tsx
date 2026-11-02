@@ -72,10 +72,11 @@ function DeadlinesInner() {
     <main className="screen">
       <header className="intro">
         <h1>Deadlines</h1>
-        <p>Track every upcoming requirement and configure reminders.</p>
+        <p>Browse all scheduled compliance dates. Reminder preferences are optional and separate.</p>
       </header>
 
-      <DeadlineCalendar entries={dated.filter(i => i.status !== "completed").map(i => ({ id: i.req.id, name: i.req.name, date: i.dueDate as Date, status: i.status }))} />
+      <p className="hint">The calendar shows scheduled due dates for each month, whether or not reminders are enabled. Use the arrows to browse other months. Deadlines without a confirmed calendar date are listed below instead of being invented.</p>
+      <DeadlineCalendar schedule={applicable} entries={dated.map(i => ({ id: i.req.id, name: i.req.name, date: i.dueDate as Date, status: i.status }))} showStatus={isPremium} />
 
       {dated.length === 0 && <p className="hint">None of your requirements has a fixed annual date in the current content source. See “No fixed date” below.</p>}
 
@@ -104,7 +105,7 @@ function DeadlinesInner() {
                 <p className="hint">
                   {REMINDERS_LIVE
                     ? "Premium reminders are prepared and sent manually by the GabayNegosyo team, subject to your preferences."
-                    : "Your choice is saved. Automatic daily summaries are not switched on yet. \"Send test reminder\" emails you a sample."}
+                    : "Your reminder preference is saved. Reminders are handled manually by the GabayNegosyo team; enabling this does not send an automatic email."}
                 </p>
               )}
               <div className="option-row">

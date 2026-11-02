@@ -1864,12 +1864,14 @@
     "id": "bmbe",
     "agencyId": "dti",
     "name": "BMBE Registration (Optional)",
-    "description": "Optional BMBE registration for eligible businesses with assets not exceeding ₱3 million excluding land. Income-tax exemption is not an exemption from other taxes or late-filing penalties.",
+    "description": "Optional BMBE application for potentially eligible microbusinesses (business assets not exceeding ₱3 million, excluding land). Selecting this option does not establish eligibility, confer a certificate, or automatically grant an income-tax exemption. Confirm actual registration and applicable exemptions with DTI/BIR.",
     "whoItAppliesTo": "Eligible microbusinesses",
     "applicabilityRules": {
-      "businessType": [
-        "other"
-      ]
+      "bmbeIntent": [
+        "interested",
+        "registered"
+      ],
+      "bmbeMaxAssetsExcludingLand": 3000000
     },
     "requiredDocuments": [
       {
@@ -1886,9 +1888,9 @@
       }
     ],
     "instructions": [
-      "Review the requirement with the responsible government agency.",
-      "Prepare the required documents listed in the official guidance.",
-      "Complete the official application or filing process."
+      "Confirm whether business assets excluding land are within the stated ₱3 million threshold and review other BMBE eligibility conditions.",
+      "Check official BMBE registration guidance and the application at the DTI BMBE portal.",
+      "Apply and retain the certificate if approved; confirm any tax-exemption treatment separately with BIR."
     ],
     "complianceStage": "Consultant-approved compliance catalog",
     "deadlineDescription": "Certificate valid for two years; renewal every two years",
@@ -1900,7 +1902,7 @@
     "officialUrl": "https://bmbe.dti.gov.ph",
     "lastVerified": "2026-11-02",
     "contentSource": "gabay_guide",
-    "archived": true
+    "archived": false
   },
   {
     "id": "bir-1701-itemized-vat",

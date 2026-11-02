@@ -33,6 +33,7 @@ const STEPS = [
   "Projected Sales",
   "Tax Type & Deductions",
   "Business Name",
+  "Optional BMBE",
   "Review",
   "Generate My Compliance Roadmap",
 ];
@@ -79,6 +80,8 @@ function WizardInner() {
   const [leaseApplicability, setLeaseApplicability] = useState<"" | "yes" | "no" | "na">(existing ? (existing.leaseApplicability ?? (existing.hasLease ? "yes" : "no")) : "");
   const [saveError, setSaveError] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
+  const [bmbeIntent, setBmbeIntent] = useState<"interested" | "registered" | "not_interested" | "unsure">(existing?.bmbeIntent ?? "unsure");
+  const [bmbeAssets, setBmbeAssets] = useState<number | "">(existing?.bmbeAssetsExcludingLand ?? "");
 
   const localityInfo = getLocality(locality);
   const barangayOptions = useMemo(() => getBarangays(locality), [locality]);
@@ -130,6 +133,8 @@ function WizardInner() {
       projectedGrossSales: Number(projectedGrossSales) || 0,
       projectedExpenses: taxType === "graduated" && deductionMethod === "itemized" ? (Number(projectedExpenses) || 0) : 0,
       deductionMethod: taxType === "graduated" ? deductionMethod : undefined,
+      bmbeIntent,
+      bmbeAssetsExcludingLand: bmbeAssets === "" ? undefined : Number(bmbeAssets),
       leaseApplicability: leaseApplicability === "" ? undefined : leaseApplicability,
       businessName: businessName.trim(),
       location: formatLocation(barangay, locality),
@@ -404,6 +409,26 @@ function WizardInner() {
       )}
 
       {step === 8 && (
+        <section className="question">
+          <h2>Optional: Barangay Micro Business Enterprise (BMBE)</h2>
+          <p className="hint">A BMBE registration may be available to eligible microbusinesses with assets of up to ₱3,000,000 excluding land. Registration is optional and subject to DTI approval. It does not automatically exempt you from other taxes or filings.</p>
+          <label className="question-label" htmlFor="bmbe-intent">Are you interested in BMBE registration, or already registered?</label>
+          <select id="bmbe-intent" className="text-input" value={bmbeIntent} onChange={(e) => setBmbeIntent(e.target.value as typeof bmbeIntent)}>
+            <option value="unsure">Not sure / decide later</option>
+            <option value="interested">I want to check my eligibility</option>
+            <option value="registered">I already have BMBE registration</option>
+            <option value="not_interested">Not interested</option>
+          </select>
+          {(bmbeIntent === "interested" || bmbeIntent === "registered") && <>
+            <label className="question-label" htmlFor="bmbe-assets">Estimated business assets excluding land (₱, optional)</label>
+            <input id="bmbe-assets" className="text-input" type="number" min={0} value={bmbeAssets} onChange={(e) => setBmbeAssets(e.target.value === "" ? "" : Number(e.target.value))} placeholder="Leave blank if unknown" />
+            {bmbeAssets !== "" && Number(bmbeAssets) > 3000000 && <p role="status" className="hint">The declared assets exceed the ₱3 million threshold in the provided guidance. Confirm eligibility with DTI before applying.</p>}
+          </>}
+          <p className="hint">No automatic BMBE income-tax exemption will be applied to your tax estimate. See <a href="https://bmbe.dti.gov.ph" target="_blank" rel="noopener noreferrer">DTI's BMBE portal</a>.</p>
+        </section>
+      )}
+
+      {step === 9 && (
         <section className="review-summary">
           <h2>Review your answers</h2>
           <dl>
@@ -424,13 +449,14 @@ function WizardInner() {
             <dt>Tax Type</dt>
             <dd>{Number(projectedGrossSales) >= 3000000 ? "Graduated / VAT registration to verify" : taxType === "8_percent" ? "8% Option" : `Graduated Tax — ${deductionMethod === "osd" ? "OSD" : "Itemized Deductions"}`}</dd>
             {(taxType === "graduated" || Number(projectedGrossSales) >= 3000000) && <><dt>Projected annual expenses</dt><dd>₱{Number(projectedExpenses || 0).toLocaleString()}</dd></>}
+            <dt>BMBE interest / registration</dt><dd>{bmbeIntent.replace(/_/g, " ")}{bmbeAssets !== "" ? ` — estimated assets excluding land ₱${Number(bmbeAssets).toLocaleString("en-PH")}` : ""}</dd>
             <dt>Business name</dt>
             <dd>{businessName || "—"}</dd>
           </dl>
         </section>
       )}
 
-      {step === 9 && (
+      {step === 10 && (
         <section className="review-summary">
           <h2>Ready to generate your roadmap</h2>
           <p>

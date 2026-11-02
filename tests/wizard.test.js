@@ -19,13 +19,13 @@ const barangayRdo = require("../data/barangayRdo.json");
 
 const wizard = fs.readFileSync(path.join(__dirname, "..", "app", "wizard", "page.tsx"), "utf8");
 
-test("wizard asks the seven real intake questions, plus business name, review, and result steps", () => {
+test("wizard asks intake questions, BMBE, review, and result steps", () => {
   const match = wizard.match(/const STEPS = \[(.*?)\];/s);
   assert.ok(match, "STEPS array not found");
   const steps = match[1].split(",").map((s) => s.trim()).filter((s) => s.length > 0);
-  // 9 steps: New Business?, Taxpayer Type, Business Location, Lease,
-  // Employees, Projected Sales, Tax Type & Deductions, Business Name, Review, Generate.
-  assert.strictEqual(steps.length, 10, `expected 10 wizard steps, got ${steps.length}`);
+  // The client-requested optional BMBE step now precedes Review.
+  assert.strictEqual(steps.length, 11, `expected 11 wizard steps, got ${steps.length}`);
+  assert.ok(steps.some(s => s.includes("Optional BMBE")));
 });
 
 test("wizard uses Gabay Negosyo's exact taxpayer-type wording", () => {

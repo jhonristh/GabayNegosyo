@@ -27,6 +27,8 @@ const matchers: Matcher[] = [
   (rule, profile) =>
     rule.minEmployeeCount === undefined || profile.employeeCount >= rule.minEmployeeCount,
   (rule, profile) => rule.hasLease === undefined || rule.hasLease === profile.hasLease,
+  (rule, profile) => !rule.bmbeIntent || (Boolean(profile.bmbeIntent) && rule.bmbeIntent.includes(profile.bmbeIntent as "interested" | "registered")),
+  (rule, profile) => rule.bmbeMaxAssetsExcludingLand === undefined || profile.bmbeAssetsExcludingLand === undefined || profile.bmbeAssetsExcludingLand <= rule.bmbeMaxAssetsExcludingLand,
   (rule, profile) =>
     rule.isRegisteringNewBusiness === undefined ||
     rule.isRegisteringNewBusiness === profile.isRegisteringNewBusiness,

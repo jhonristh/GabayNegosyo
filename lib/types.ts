@@ -52,6 +52,9 @@ export interface BusinessProfile {
   projectedExpenses: number; // annual, PHP
   /** WP4: remembered so "Review or update answers" starts from what the person chose. Optional: older profiles do not have it. */
   deductionMethod?: "osd" | "itemized";
+  /** BMBE is optional and is not proof of registration or tax exemption. */
+  bmbeIntent?: "interested" | "registered" | "not_interested" | "unsure";
+  bmbeAssetsExcludingLand?: number;
   /** WP4: the lease answer as given (hasLease alone cannot tell "No" from "Not applicable"). Optional for older profiles. */
   leaseApplicability?: "yes" | "no" | "na";
   // ── Prototype UX additions (not part of the source questionnaire,
@@ -109,6 +112,8 @@ export interface ApplicabilityRule {
   hasEmployees?: boolean;
   minEmployeeCount?: number;
   hasLease?: boolean;
+  bmbeIntent?: ("interested" | "registered")[];
+  bmbeMaxAssetsExcludingLand?: number;
   isRegisteringNewBusiness?: boolean;
   status?: BusinessStatus[];
 }
