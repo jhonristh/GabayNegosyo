@@ -8,8 +8,8 @@ import { friendlyAuthError } from "../../lib/authErrors";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { trackConversion } from "../../lib/webAnalytics";
+import { MIN_PASSWORD_LENGTH, validateSignup, type SignupErrors } from "../../lib/validation";
 
-const MIN_PASSWORD_LENGTH = 8;
 const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_LOGIN === "true";
 
 export default function SignupPage() {
@@ -22,14 +22,24 @@ export default function SignupPage() {
   const [submitting, setSubmitting] = useState(false);
   const [checkEmailFor, setCheckEmailFor] = useState<string | null>(null);
   const [googlePending, setGooglePending] = useState(false);
-
-  const canSubmit = name.trim() && email.trim() && password.length >= MIN_PASSWORD_LENGTH && !submitting;
+  const [fieldErrors, setFieldErrors] = useState<SignupErrors>({});
 
   async function handleSubmit() {
-    if (!canSubmit) return;
+    if (submitting) return;
     setError(null);
+    // WP4: say exactly what is wrong instead of leaving the button silently disabled.
+    const problems = validateSignup({ name, email, password });
+    setFieldErrors(problems);
+    if (problems.name || problems.email || problems.password) return;
     setSubmitting(true);
-    const result = await signup(name.trim(), email.trim(), password);
+    let result: Awaited<ReturnType<typeof signup>>;
+    try {
+      result = await signup(name.trim(), email.trim(), password);
+    } catch {
+      setSubmitting(false);
+      setError("We could not reach the sign-in service. Check your internet connection and try again.");
+      return;
+    }
     setSubmitting(false);
 
     if (!result.ok) {
@@ -41,8 +51,10 @@ export default function SignupPage() {
       setCheckEmailFor(email.trim());
       return;
     }
-    // A guest who already answered the wizard goes straight to their saved checklist.
-    router.push(db.getGuestProfile() ? "/checklist" : "/wizard");
+    // A guest who already answered the wizard goes straight to their saved checklist. By now the sign-in has already
+    // moved the guest answers into the account (db.adoptGuestProfile), so ask the account, not the guest store.
+    const hasSavedProfile = Boolean(result.user && db.getBusinessProfile(result.user.id));
+    router.push(hasSavedProfile ? "/checklist" : "/wizard");
   }
 
   async function handleGoogle() {
@@ -92,7 +104,10 @@ export default function SignupPage() {
           value={name}
           onChange={(e) => setName(e.target.value)}
           placeholder="Juana Dela Cruz"
+          aria-invalid={Boolean(fieldErrors.name)}
+          aria-describedby={fieldErrors.name ? "name-error" : undefined}
         />
+        {fieldErrors.name && <p id="name-error" role="alert" className="hint" style={{ color: "var(--red-text)" }}>{fieldErrors.name}</p>}
       </section>
 
       <section className="question">
@@ -107,7 +122,10 @@ export default function SignupPage() {
           value={email}
           onChange={(e) => setEmail(e.target.value)}
           placeholder="you@email.com"
+          aria-invalid={Boolean(fieldErrors.email)}
+          aria-describedby={fieldErrors.email ? "email-error" : undefined}
         />
+        {fieldErrors.email && <p id="email-error" role="alert" className="hint" style={{ color: "var(--red-text)" }}>{fieldErrors.email}</p>}
       </section>
 
       <section className="question">
@@ -116,6 +134,7 @@ export default function SignupPage() {
         </label>
         <PasswordField id="password" autoComplete="new-password" value={password} onChange={setPassword} />
         <p className="hint">At least {MIN_PASSWORD_LENGTH} characters.</p>
+        {fieldErrors.password && <p id="password-error" role="alert" className="hint" style={{ color: "var(--red-text)" }}>{fieldErrors.password}</p>}
       </section>
 
       {error && (
@@ -124,7 +143,7 @@ export default function SignupPage() {
         </p>
       )}
 
-      <button type="button" className="primary-btn" disabled={!canSubmit} onClick={handleSubmit}>
+      <button type="button" className="primary-btn" disabled={submitting} aria-busy={submitting} onClick={handleSubmit}>
         {submitting ? "Creating account…" : "Create account & start wizard"}
       </button>
 

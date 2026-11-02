@@ -64,3 +64,11 @@ Nothing here blocks running the app. Everything here blocks calling it productio
 - **Admin-deactivated sessions:** decide whether to add a server route that bans the user in Supabase Auth (see INTEGRATION_AND_QA_v0.17.md section 2).
 - **Manual reminders:** the `manual_reminder_log` table and admin screen are recommended, not built.
 
+## Work Package 4 follow-ups (core user journey)
+
+- **Tax arrangement has no effect on the checklist.** No requirement has a tax-type rule, so 8% vs graduated changes nothing. Decide the rules (with sources) or label the question as informational.
+- **Taxpayer types offered.** The wizard offers 2 of 4; `bir-1700-compensation` is unreachable. Confirm that is intended.
+- **Free users cannot tick steps** (steps are Premium). Confirm the final Free/Premium matrix for steps, documents and forms.
+- **"Mark as completed" does not tick the steps.** Decide whether it should.
+- **Business-type question:** none exists; add only with verified rules.
+- Run the browser script in `docs/USER_JOURNEY_QA.md` section 8 and record the results.

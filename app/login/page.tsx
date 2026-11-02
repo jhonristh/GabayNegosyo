@@ -8,6 +8,7 @@ import { friendlyAuthError, takeOAuthCallbackError } from "../../lib/authErrors"
 import { db } from "../../lib/db";
 import { useAuth } from "../../lib/auth";
 import { DEMO_ACCOUNTS, DEMO_ENABLED, type DemoRole } from "../../lib/demoAccounts";
+import { safeNextPath, validateLogin } from "../../lib/validation";
 
 const GOOGLE_ENABLED = process.env.NEXT_PUBLIC_ENABLE_GOOGLE_LOGIN === "true";
 
@@ -17,14 +18,23 @@ export default function LoginPage() {
   const [email, setEmail] = useState("");
   const [password, setPassword] = useState("");
   const [error, setError] = useState<string | null>(null);
+  const [fieldErrors, setFieldErrors] = useState<Partial<Record<"email" | "password", string>>>({});
   const [submitting, setSubmitting] = useState(false);
   const [googlePending, setGooglePending] = useState(false);
 
   // Already signed in (or just finished signing in) → go to the right home screen.
   useEffect(() => {
     if (!loading && user) {
+      // WP4: a person who was sent here from a private page returns to it (same-site paths only).
+      const next = safeNextPath(new URLSearchParams(window.location.search).get("next"));
+      if (next) {
+        router.replace(next);
+        return;
+      }
       // New accounts (e.g. first Google sign-in) have no business profile yet → start the wizard.
-      router.replace(user.role === "admin" ? "/admin" : db.getBusinessProfile(user.id) ? "/dashboard" : "/wizard");
+      // If their saved data could not be loaded, do not send them through the wizard: the dashboard offers a retry.
+      const hasProfile = Boolean(db.getBusinessProfile(user.id)) || Boolean(user.dataLoadFailed);
+      router.replace(user.role === "admin" ? "/admin" : hasProfile ? "/dashboard" : "/wizard");
     }
   }, [user, loading, router]);
 
@@ -35,10 +45,20 @@ export default function LoginPage() {
   }, []);
 
   async function handleSubmit() {
-    if (submitting || !email.trim() || !password) return;
+    if (submitting) return;
     setError(null);
+    const problems = validateLogin(email, password);
+    setFieldErrors(problems);
+    if (problems.email || problems.password) return;
     setSubmitting(true);
-    const result = await login(email.trim(), password);
+    let result: Awaited<ReturnType<typeof login>>;
+    try {
+      result = await login(email.trim(), password);
+    } catch {
+      setSubmitting(false);
+      setError("We could not reach the sign-in service. Check your internet connection and try again.");
+      return;
+    }
     setSubmitting(false);
     if (!result.ok) {
       setError(result.error ?? "Could not log in. Please try again.");
@@ -103,12 +123,16 @@ export default function LoginPage() {
               value={email}
               onChange={(e) => setEmail(e.target.value)}
               placeholder="you@email.com"
+              aria-invalid={Boolean(fieldErrors.email)}
+              aria-describedby={fieldErrors.email ? "login-email-error" : undefined}
             />
+            {fieldErrors.email && <p id="login-email-error" role="alert" className="auth-error">{fieldErrors.email}</p>}
           </div>
 
           <div className="auth-field">
             <label className="question-label" htmlFor="password">Password</label>
             <PasswordField id="password" autoComplete="current-password" value={password} onChange={setPassword} />
+            {fieldErrors.password && <p id="login-password-error" role="alert" className="auth-error">{fieldErrors.password}</p>}
             <p className="hint"><Link href="/reset-password">Forgot password?</Link></p>
           </div>
 
@@ -116,7 +140,7 @@ export default function LoginPage() {
             <p role="alert" className="auth-error">{error}</p>
           )}
 
-          <button type="submit" className="primary-btn" disabled={!email.trim() || !password || submitting}>
+          <button type="submit" className="primary-btn" disabled={submitting} aria-busy={submitting}>
             {submitting ? "Logging in…" : "Log in"}
           </button>
         </form>

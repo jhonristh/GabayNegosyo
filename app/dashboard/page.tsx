@@ -11,6 +11,7 @@ import RequirementCard from "../../components/RequirementCard";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { localityLabel } from "../../lib/ncr";
+import { businessStageLabel, employeeLabel, taxArrangementLabel } from "../../lib/profileSummary";
 import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
 import type { BusinessProfile, RequirementStatus } from "../../lib/types";
 
@@ -106,7 +107,13 @@ function DashboardInner() {
           <span className="business-name">{profile.businessName}</span>
           <span className="chip">{profile.taxpayerType.replace(/_/g, " ")}</span>
           <span className="chip">{[profile.barangay, localityLabel(profile)].filter(Boolean).join(", ")}{profile.rdoCode ? ` · ${profile.rdoCode}` : ""}</span>
+          <span className="chip">{businessStageLabel(profile)}</span>
+          <span className="chip">{employeeLabel(profile)}</span>
+          {taxArrangementLabel(profile) && <span className="chip">{taxArrangementLabel(profile)}</span>}
         </div>
+        <p className="hint">
+          Based on your answers. <Link href="/wizard">Review or update them</Link> and your checklist updates to match.
+        </p>
       </header>
 
       <div className="v05-dash-hero">
@@ -203,7 +210,7 @@ function DashboardInner() {
 
 export default function DashboardPage() {
   return (
-    <AuthGuard>
+    <AuthGuard requireData>
       <DashboardInner />
     </AuthGuard>
   );

@@ -368,12 +368,13 @@ export const db = {
   getBusinessProfile(userId: string): BusinessProfile | null {
     return userId === currentUserId ? userData.businessProfile : null;
   },
-  saveBusinessProfile(profile: BusinessProfile) {
-    if (!currentUserId || profile.userId !== currentUserId) return; // never write another user's row
+  /** Returns false when nothing was saved (no loaded session, or the profile belongs to someone else). Callers must tell the person. */
+  saveBusinessProfile(profile: BusinessProfile): boolean {
+    if (!currentUserId || profile.userId !== currentUserId) return false; // never write another user's row
     userData.businessProfile = profile;
     if (inDemo()) {
       saveDemoData();
-      return;
+      return true;
     }
     persist(
       "saveBusinessProfile",
@@ -381,6 +382,7 @@ export const db = {
         .from("business_profiles")
         .upsert({ user_id: profile.userId, data: profile, updated_at: new Date().toISOString() }, { onConflict: "user_id" })
     );
+    return true;
   },
 
   // ---- Checklist progress ----

@@ -4,6 +4,18 @@ Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V
 
 ## v0.17.1
 
+### Work Package 4 additions (unreleased; version label unchanged)
+
+Core user journey (sign-up to checklist completion). Not verified in a browser, real database or `next build`. See `docs/USER_JOURNEY_QA.md`.
+
+- A failed load of saved data now shows a retry message (dashboard, checklist, deadlines, requirement detail, wizard) instead of an empty account; the wizard no longer reports a save that did not happen (`db.saveBusinessProfile` returns true/false).
+- Sign-up no longer sends a guest-turned-member back into the wizard; it asks the account for the saved profile.
+- Sign-up, log-in and the wizard say what is wrong instead of leaving a button silently disabled (`lib/validation.ts`).
+- Unknown requirement ids show a message; marking progress shows a confirmation; checklist cards flag placeholder content.
+- The wizard remembers the deduction method and the "Not applicable" lease answer (optional fields in the existing JSON profile; no migration). Dashboard shows stage, employees and tax arrangement.
+- Signed-out visitors return to the page they wanted after logging in (same-site paths only).
+- 31 new tests; 299 of 299 pass. No data file, SQL or dependency changed.
+
 ### Work Package 3 additions (unreleased; version label unchanged)
 
 Account lifecycle and Premium completion. Not verified in a browser, database or `next build`. See `docs/ACCOUNT_LIFECYCLE_QA.md`.

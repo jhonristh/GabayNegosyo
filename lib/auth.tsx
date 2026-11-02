@@ -62,6 +62,8 @@ interface AuthContextValue {
   deactivateAccount: () => Promise<{ ok: boolean; error?: string }>;
   /** Lifts a self-imposed deactivation for the signed-in person (they must already be logged in). */
   reactivateAccount: () => Promise<{ ok: boolean; error?: string }>;
+  /** WP4: tries again to load the signed-in person's saved data after a failure. Resolves true when it worked. */
+  reloadData: () => Promise<boolean>;
 }
 
 const AuthContext = createContext<AuthContextValue | null>(null);
@@ -122,6 +124,9 @@ async function loadUser(session: Session): Promise<User> {
     if (!user.deactivatedAt) await db.hydrate(user.id);
   } catch (err) {
     console.error("[auth] could not load your saved data:", err);
+    // WP4: remember the failure so pages can show "could not load, try again" instead of an empty checklist
+    // (and the wizard cannot silently save nothing). Nothing is invented: the cache stays empty.
+    user.dataLoadFailed = true;
   }
   return user;
 }
@@ -389,8 +394,21 @@ export function AuthProvider({ children }: { children: ReactNode }) {
     return { ok: true };
   }
 
+  async function reloadData(): Promise<boolean> {
+    if (!user || user.isDemo) return true;
+    try {
+      const { data } = await getSupabase().auth.getSession();
+      if (!data.session) return false;
+      const reloaded = await apply(data.session);
+      return Boolean(reloaded && !reloaded.dataLoadFailed);
+    } catch (err) {
+      console.error("[auth] reload failed:", err);
+      return false;
+    }
+  }
+
   return (
-    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, resetPassword, updatePassword, startDemo, resetDemo, deleteAccount, deactivateAccount, reactivateAccount }}>
+    <AuthContext.Provider value={{ user, loading, login, signup, loginWithGoogle, logout, resetPassword, updatePassword, startDemo, resetDemo, deleteAccount, deactivateAccount, reactivateAccount, reloadData }}>
       {children}
     </AuthContext.Provider>
   );

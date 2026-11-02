@@ -10,6 +10,7 @@ import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
 import { hasPremiumAccess } from "../../lib/entitlements";
+import { useToast } from "../../components/ToastProvider";
 import type { RequirementStatus } from "../../lib/types";
 
 /**
@@ -32,6 +33,7 @@ const STATUS_FILTERS: { value: "all" | RequirementStatus; label: string }[] = [
 
 function ChecklistInner() {
   const { user } = useAuth();
+  const { notify } = useToast();
   const requirements = useMemo(() => db.getRequirements(), []);
   const agencies = useMemo(() => db.getAgencies(), []);
   const [statusFilter, setStatusFilter] = useState<"all" | RequirementStatus>("all");
@@ -97,8 +99,10 @@ function ChecklistInner() {
     if (!user) return;
     if (isCompleted) {
       db.markIncomplete(requirementId);
+      notify("Moved back to your to-do list.");
     } else {
       db.markComplete(requirementId, `biz-${user.id}`, dueKey);
+      notify("Marked as completed.");
     }
     rerender((n) => n + 1);
   }
@@ -128,6 +132,9 @@ function ChecklistInner() {
                   <p className="deadline">
                     {dueDate ? `Due ${formatDueLabel(dueDate)}` : `No fixed date: ${req.deadlineDescription}`}
                   </p>
+                  {req.contentSource === "prototype_placeholder" && (
+                    <p className="hint">Placeholder content, not yet reviewed. Confirm with the agency.</p>
+                  )}
                   {stepTotal > 0 && (
                     <p className="task-count">
                       {stepsDone} of {stepTotal} steps done
@@ -234,7 +241,7 @@ function ChecklistInner() {
 
 export default function ChecklistPage() {
   return (
-    <AuthGuard>
+    <AuthGuard requireData>
       <ChecklistInner />
     </AuthGuard>
   );

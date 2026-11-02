@@ -83,6 +83,7 @@ tests/          Node test suite
 |---|---|
 | [docs/SETUP.md](docs/SETUP.md) | Supabase, auth redirects, Google sign-in, admin, account sync, deploy to Vercel, troubleshooting |
 | [docs/INTEGRATION_AND_QA_v0.17.md](docs/INTEGRATION_AND_QA_v0.17.md) | Migration review, safe rollout order, verification SQL, QA checklist, release blockers |
+| [docs/USER_JOURNEY_QA.md](docs/USER_JOURNEY_QA.md) | Sign-up to checklist completion: results, fixes, owner decisions, browser test script |
 | [docs/ACCOUNT_AND_ACCESS.md](docs/ACCOUNT_AND_ACCESS.md) | Account lifecycle, Premium entitlements, admin controls, migrations 005 and 006 |
 | [docs/REMINDERS_SETUP.md](docs/REMINDERS_SETUP.md) | Daily reminder digest: migration, email provider, staged rollout |
 | [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md) | Scope, admin workflow, media previews, current limits |

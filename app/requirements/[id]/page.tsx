@@ -1,13 +1,15 @@
 "use client";
 
-import { useEffect, useMemo, useState } from "react";
-import { useParams, useRouter } from "next/navigation";
+import { useMemo, useState } from "react";
+import { useParams } from "next/navigation";
 import Link from "next/link";
 import AuthGuard from "../../../components/AuthGuard";
 import TutorialCard from "../../../components/TutorialCard";
 import FormPreviewCard from "../../../components/FormPreviewCard";
 import PremiumGate from "../../../components/PremiumGate";
 import StatusBadge from "../../../components/StatusBadge";
+import { LoadingState } from "../../../components/StateBlocks";
+import { useToast } from "../../../components/ToastProvider";
 import { useAuth } from "../../../lib/auth";
 import { db } from "../../../lib/db";
 import { trackConversion } from "../../../lib/webAnalytics";
@@ -18,21 +20,34 @@ import type { RequirementStatus } from "../../../lib/types";
 function RequirementDetailInner() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
-  const router = useRouter();
+  const { notify } = useToast();
   const requirement = useMemo(() => db.getRequirements().find((r) => r.id === id), [id]);
   const agency = useMemo(() => (requirement ? db.getAgencies().find((a) => a.id === requirement.agencyId) : null), [requirement]);
   const tutorial = useMemo(() => (requirement?.tutorialId ? db.getTutorials().find((t) => t.id === requirement.tutorialId) : null), [requirement]);
   const relatedForms = useMemo(() => db.getResources().filter((r) => r.resourceType === "form" && r.relatedRequirementId === id), [id]);
   const [, forceRerender] = useState(0);
 
-  useEffect(() => {
-    if (!requirement) router.replace("/dashboard");
-  }, [requirement, router]);
-
-  if (!requirement || !agency || !user) {
+  // WP4: an unknown or removed requirement says so (it used to bounce silently to the dashboard).
+  if (!requirement || !agency) {
     return (
       <main className="screen">
-        <p>Loading…</p>
+        <div className="empty-state">
+          <h2>We could not find that requirement</h2>
+          <p>The link may be out of date, or the requirement may have been removed. Your checklist lists every requirement that applies to you.</p>
+          <Link href="/checklist" className="primary-btn">
+            Go to my checklist
+          </Link>
+          <p className="hint">
+            <Link href="/dashboard">Back to dashboard</Link>
+          </p>
+        </div>
+      </main>
+    );
+  }
+  if (!user) {
+    return (
+      <main className="screen">
+        <LoadingState />
       </main>
     );
   }
@@ -52,9 +67,11 @@ function RequirementDetailInner() {
     if (!user) return;
     if (isCompleted) {
       db.markIncomplete(requirement!.id);
+      notify("Moved back to your to-do list.");
     } else {
       db.markComplete(requirement!.id, `biz-${user.id}`, dueKey);
       trackConversion("requirement_completed");
+      notify("Marked as completed.");
     }
     forceRerender((n) => n + 1);
   }
@@ -68,8 +85,10 @@ function RequirementDetailInner() {
     if (checked && nowDone === steps.length && !isCompleted) {
       db.markComplete(requirement!.id, `biz-${user.id}`, dueKey);
       trackConversion("requirement_completed");
+      notify("All steps done. Requirement marked as completed.");
     } else if (!checked && isCompleted) {
       db.markIncomplete(requirement!.id);
+      notify("Requirement moved back to your to-do list.");
     }
     forceRerender((n) => n + 1);
   }
@@ -186,7 +205,7 @@ function RequirementDetailInner() {
 
 export default function RequirementDetailPage() {
   return (
-    <AuthGuard>
+    <AuthGuard requireData>
       <RequirementDetailInner />
     </AuthGuard>
   );

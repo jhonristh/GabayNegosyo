@@ -164,7 +164,7 @@ function DeadlinesInner() {
 
 export default function DeadlinesPage() {
   return (
-    <AuthGuard>
+    <AuthGuard requireData>
       <DeadlinesInner />
     </AuthGuard>
   );

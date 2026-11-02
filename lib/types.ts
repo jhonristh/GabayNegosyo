@@ -32,6 +32,8 @@ export interface User {
   isDemoRecord?: boolean;
   /** ISO timestamp while the account is deactivated; absent or null when active. */
   deactivatedAt?: string | null;
+  /** True when the signed-in person's saved data (profile, progress) could not be loaded, e.g. a network failure. Pages show a retry state instead of an empty one. */
+  dataLoadFailed?: boolean;
 }
 
 export interface BusinessProfile {
@@ -48,6 +50,10 @@ export interface BusinessProfile {
   hasEmployees: boolean;
   projectedGrossSales: number; // annual, PHP
   projectedExpenses: number; // annual, PHP
+  /** WP4: remembered so "Review or update answers" starts from what the person chose. Optional: older profiles do not have it. */
+  deductionMethod?: "osd" | "itemized";
+  /** WP4: the lease answer as given (hasLease alone cannot tell "No" from "Not applicable"). Optional for older profiles. */
+  leaseApplicability?: "yes" | "no" | "na";
   // ── Prototype UX additions (not part of the source questionnaire,
   //    kept for personalization / legacy screens; see CHANGELOG.md) ──
   businessName: string;

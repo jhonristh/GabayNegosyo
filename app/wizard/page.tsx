@@ -7,6 +7,8 @@ import { db } from "../../lib/db";
 import { trackConversion } from "../../lib/webAnalytics";
 import { NCR_LOCALITIES, getLocality, localityIdOf, formatLocation } from "../../lib/ncr";
 import { getBarangays } from "../../lib/barangays";
+import { wizardStepProblem } from "../../lib/validation";
+import { ErrorState } from "../../components/StateBlocks";
 import type { BusinessProfile, TaxpayerType } from "../../lib/types";
 
 /**
@@ -71,8 +73,9 @@ function WizardInner() {
   const [projectedGrossSales, setProjectedGrossSales] = useState<number | "">(existing ? existing.projectedGrossSales : "");
   const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
   const [taxType, setTaxType] = useState<"8_percent" | "graduated">(existing?.taxType === "graduated" ? "graduated" : "8_percent");
-  const [deductionMethod, setDeductionMethod] = useState<"osd" | "itemized">("osd");
-  const [leaseApplicability, setLeaseApplicability] = useState<"" | "yes" | "no" | "na">(existing ? (existing.hasLease ? "yes" : "no") : "");
+  const [deductionMethod, setDeductionMethod] = useState<"osd" | "itemized">(existing?.deductionMethod === "itemized" ? "itemized" : "osd");
+  const [leaseApplicability, setLeaseApplicability] = useState<"" | "yes" | "no" | "na">(existing ? (existing.leaseApplicability ?? (existing.hasLease ? "yes" : "no")) : "");
+  const [saveError, setSaveError] = useState<string | null>(null);
   const [businessName, setBusinessName] = useState(existing?.businessName ?? "");
 
   const localityInfo = getLocality(locality);
@@ -91,16 +94,20 @@ function WizardInner() {
     setStep((s) => Math.max(s - 1, 0));
   }
 
-  function canProceed(): boolean {
-    if (step === 0) return isRegisteringNewBusiness !== null;
-    if (step === 2) return Boolean(localityInfo) && barangay.trim().length > 0;
-    if (step === 3) return leaseApplicability !== "";
-    if (step === 4) return hasEmployees !== null && (hasEmployees === false || (Number.isInteger(employeeCount) && employeeCount >= 1));
-    if (step === 5) return projectedGrossSales !== "" && projectedGrossSales >= 0;
-    if (step === 6) return taxType === "8_percent" || (deductionMethod === "osd" || deductionMethod === "itemized");
-    if (step === 7) return businessName.trim().length > 0;
-    return true;
+  /** Plain-language reason the current step cannot continue yet, or null (lib/validation.ts). */
+  function stepProblem(): string | null {
+    return wizardStepProblem(step, {
+      isRegisteringNewBusiness,
+      localityKnown: Boolean(localityInfo),
+      barangay,
+      leaseApplicability,
+      hasEmployees,
+      employeeCount,
+      projectedGrossSales,
+      businessName,
+    });
   }
+  const problem = stepProblem();
 
   function generateRoadmap() {
     const profile: BusinessProfile = {
@@ -116,6 +123,8 @@ function WizardInner() {
       employeeCount: hasEmployees ? employeeCount : 0,
       projectedGrossSales: Number(projectedGrossSales) || 0,
       projectedExpenses: taxType === "graduated" ? (Number(projectedExpenses) || 0) : 0,
+      deductionMethod: taxType === "graduated" ? deductionMethod : undefined,
+      leaseApplicability: leaseApplicability === "" ? undefined : leaseApplicability,
       businessName: businessName.trim(),
       location: formatLocation(barangay, locality),
       status: isRegisteringNewBusiness ? "planning" : "operating",
@@ -126,11 +135,17 @@ function WizardInner() {
       taxType,
       createdAt: existing?.createdAt ?? new Date().toISOString(),
     };
-    trackConversion("wizard_completed");
     if (user) {
-      db.saveBusinessProfile(profile);
+      // WP4: never move on as if it saved when nothing was saved (for example, the person's data failed to load).
+      if (!db.saveBusinessProfile(profile)) {
+        setSaveError("We could not save your answers because your account data is not loaded. Check your internet connection, reload the page and try again. Your answers on this screen are still here.");
+        return;
+      }
+      setSaveError(null);
+      trackConversion("wizard_completed");
       router.push("/checklist");
     } else {
+      trackConversion("wizard_completed");
       db.saveGuestProfile(profile);
       router.push("/preview");
     }
@@ -417,6 +432,17 @@ function WizardInner() {
         </section>
       )}
 
+      {step < STEPS.length - 1 && problem && (
+        <p id="wizard-step-problem" role="status" className="hint wizard-problem">
+          {problem}
+        </p>
+      )}
+      {saveError && (
+        <p role="alert" className="hint" style={{ color: "var(--red-text)" }}>
+          {saveError}
+        </p>
+      )}
+
       <div className="wizard-actions">
         {step > 0 && (
           <button type="button" className="secondary-btn" onClick={back}>
@@ -424,7 +450,7 @@ function WizardInner() {
           </button>
         )}
         {step < STEPS.length - 1 && (
-          <button type="button" className="primary-btn" disabled={!canProceed()} onClick={next}>
+          <button type="button" className="primary-btn" disabled={Boolean(problem)} aria-describedby={problem ? "wizard-step-problem" : undefined} onClick={next}>
             Continue
           </button>
         )}
@@ -439,13 +465,27 @@ function WizardInner() {
 }
 
 export default function WizardPage() {
-  const { loading } = useAuth();
+  const { user, loading, reloadData } = useAuth();
   // Wait for the session check so a signed-in person's saved answers are loaded
   // before the form reads them (useState initial values are read once).
   if (loading) {
     return (
       <main className="screen">
         <p>Loading…</p>
+      </main>
+    );
+  }
+  // WP4: the wizard is open to guests, but a signed-in person whose saved data failed to load must not answer
+  // questions that cannot be saved (and might overwrite the profile they already have).
+  if (user?.dataLoadFailed) {
+    return (
+      <main className="screen">
+        <ErrorState
+          message="We could not load your saved information, so we cannot safely change your business profile right now. Check your internet connection and try again. Nothing has been lost or changed."
+          onRetry={() => {
+            void reloadData();
+          }}
+        />
       </main>
     );
   }
