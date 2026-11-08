@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import AuthGuard from "../../components/AuthGuard";
+import EmptyStateIllustration from "../../components/EmptyStateIllustration";
 import ChecklistProgress from "../../components/ChecklistProgress";
 import StatusBadge from "../../components/StatusBadge";
 import JourneyStepper, { JourneyNext } from "../../components/JourneyStepper";
@@ -48,7 +49,7 @@ function ChecklistInner() {
     return (
       <main className="screen">
         <div className="empty-state">
-          <h2>No checklist yet</h2>
+          <EmptyStateIllustration variant="no-profile" /><h2>No checklist yet</h2>
           <p>Answer a few quick questions so we can build your personalized checklist.</p>
           <Link href="/wizard" className="primary-btn">
             Start the wizard
@@ -145,9 +146,10 @@ function ChecklistInner() {
                 </div>
                 {premium && <StatusBadge status={status} />}
               </div>
-              {premium && <button type="button" className="secondary-btn" onClick={() => toggle(req.id, dueKey, isCompleted)}>
+              <div className="ew-checklist-actions"><Link href={`/requirements/${req.id}`} className="ew-detail-link">View details <span aria-hidden="true">→</span></Link>
+              {premium && <button type="button" className="secondary-btn" aria-label={`${isCompleted ? "Mark incomplete" : "Mark complete"}: ${req.name}`} onClick={() => toggle(req.id, dueKey, isCompleted)}>
                 {isCompleted ? "Mark as not completed" : "Mark as completed"}
-              </button>}
+              </button>}</div>
             </article>
           );
         })}
@@ -184,6 +186,7 @@ function ChecklistInner() {
           <button
             key={f.value}
             type="button"
+            aria-pressed={statusFilter === f.value}
             className={`filter-chip ${statusFilter === f.value ? "selected" : ""}`}
             onClick={() => setStatusFilter(f.value)}
           >
@@ -193,11 +196,11 @@ function ChecklistInner() {
       </div>}
 
       <div className="filter-row">
-        <button type="button" className={`filter-chip ${agencyFilter === "all" ? "selected" : ""}`} onClick={() => setAgencyFilter("all")}>
+        <button type="button" aria-pressed={agencyFilter === "all"} className={`filter-chip ${agencyFilter === "all" ? "selected" : ""}`} onClick={() => setAgencyFilter("all")}>
           All agencies
         </button>
         {agencies.map((a) => (
-          <button key={a.id} type="button" className={`filter-chip ${agencyFilter === a.id ? "selected" : ""}`} onClick={() => setAgencyFilter(a.id)}>
+          <button key={a.id} type="button" aria-pressed={agencyFilter === a.id} className={`filter-chip ${agencyFilter === a.id ? "selected" : ""}`} onClick={() => setAgencyFilter(a.id)}>
             {a.id.toUpperCase()}
           </button>
         ))}
@@ -205,7 +208,7 @@ function ChecklistInner() {
 
       {items.length === 0 && (
         <div className="empty-state">
-          <h2>No matches</h2>
+          <EmptyStateIllustration variant="no-results" /><h2>No matches</h2>
           <p>Try a different status, agency, or search term.</p>
           <button
             type="button"

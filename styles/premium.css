@@ -1,0 +1,98 @@
+/* GabayNegosyo Premium Refinement — visual-only enhancement layer.
+   Keeps the client's Emerald Growth colors, original logo and functional flows.
+   Loaded after all historical style layers to centralize the final treatment. */
+:root {
+  --premium-canvas: #f7faf6;
+  --premium-line: rgba(9,47,34,.12);
+  --premium-line-strong: rgba(9,47,34,.21);
+  --premium-shadow: 0 3px 9px rgba(9,47,34,.025), 0 18px 48px rgba(9,47,34,.065);
+  --premium-shadow-lift: 0 10px 25px rgba(9,47,34,.055),0 28px 68px rgba(9,47,34,.10);
+  --premium-ease: cubic-bezier(.22,1,.36,1);
+}
+html:not([data-theme="night"]) body {
+  background: radial-gradient(ellipse 58% 23% at 88% 7%, rgba(21,128,61,.065), transparent 85%), var(--premium-canvas);
+}
+body { font-feature-settings: "cv11", "ss01"; }
+:where(h1,h2,h3) { text-wrap: balance; }
+:where(p,li) { overflow-wrap: break-word; }
+::selection { background: #d8efde; color: #092f22; }
+/* Global controls: contemporary but quiet; no gradients or ornamental glows. */
+.primary-btn, .secondary-btn { border-radius: 12px; transition: transform .24s var(--premium-ease),background-color .22s ease,box-shadow .24s ease,border-color .24s ease; }
+.primary-btn { box-shadow: 0 4px 12px rgba(9,47,34,.10), 0 9px 23px rgba(9,47,34,.10); }
+@media (hover: hover) { .primary-btn:hover { transform: translateY(-2px); box-shadow: 0 7px 15px rgba(9,47,34,.12),0 14px 28px rgba(9,47,34,.14); } .secondary-btn:hover { transform: translateY(-1px); } }
+:where(.text-input,select,textarea) { transition: border-color .18s ease, box-shadow .18s ease; }
+/* Public shell */
+.kit-shell--public .navbar-public { max-width: 1240px; margin: 12px auto 0; padding: 12px 22px; border: 1px solid var(--premium-line); border-radius: 16px; background: rgba(255,255,255,.88); box-shadow: 0 8px 32px rgba(9,47,34,.045); }
+.navbar-public .brand { letter-spacing: -.035em; }
+.navbar-public nav { align-items:center; }
+.navbar-public nav a:not(.primary-btn) { font-size: .88rem; font-weight: 600; }
+/* Layout and typography */
+.gn-home { max-width: 1240px; padding-top: 12px; }
+.gn-hero { gap: clamp(28px,4.5vw,70px); padding: clamp(46px,7vw,94px) 0 clamp(50px,6vw,84px); }
+.gn-hero-copy h1 { max-width: 680px; font-size: clamp(2.8rem,5.15vw,5.1rem); line-height: 1.035; letter-spacing: -.06em; margin-bottom: 24px; }
+.gn-hero-copy h1 em { color: #145d2d; }
+.gn-hero .hero-sub { max-width: 510px; font-size: clamp(1rem,1.3vw,1.15rem); line-height: 1.72; }
+.gn-kicker { font-size: .7rem; letter-spacing: .17em; font-weight: 700; }
+.gn-hero-copy .gn-kicker { display: inline-flex; align-items:center; gap: 10px; padding: 9px 13px; background: #e9f2e9; border: 1px solid #d3e3d6; border-radius: 100px; margin-bottom: 23px; }
+.gn-hero-copy .gn-kicker::before { content: ""; width: 7px; height: 7px; border-radius: 50%; background: #15803d; box-shadow: 0 0 0 3px rgba(21,128,61,.11); }
+.gn-hero .hero-actions { margin-top: 32px; }
+.gn-hero .hero-actions a { min-height: 54px; padding: 14px 24px; }
+.gn-hero .v05-hero-note { max-width: 460px; line-height: 1.6; }
+.gn-hero-art { min-height: 500px; }
+.gn-roadmap { width: min(86%,420px); top: 7%; border: 1px solid var(--premium-line); border-radius: 24px; padding: 28px; box-shadow: var(--premium-shadow-lift); }
+.gn-roadmap-head { letter-spacing: .12em; }
+.gn-roadmap h2 { font-size: 1.7rem; line-height: 1.15; margin: 18px 0 18px; }
+.gn-roadmap li { padding: 14px 0; }
+.gn-roadmap li b { font-weight: 600; }
+.gn-roadmap li small { line-height: 1.5; }
+.gn-roadmap > p { padding-top: 10px; border-top: 1px solid var(--premium-line); line-height: 1.5; }
+/* Three customer benefits */
+.gn-pillars { gap: 18px; margin: 10px 0 24px; }
+.gn-pillars article { position:relative; border: 1px solid var(--premium-line); border-radius: 20px; padding: 30px; box-shadow: var(--premium-shadow); transition: transform .25s var(--premium-ease),box-shadow .25s var(--premium-ease); }
+.gn-pillars article::before { content:""; position:absolute; top:0; left:29px; height:3px; width:40px; border-radius:0 0 4px 4px; background:#145d2d; }
+.gn-pillars h3 { font-size:1.35rem; margin: 12px 0 10px; }
+.gn-pillars p { font-size:.94rem; line-height:1.7; }
+@media (hover:hover) { .gn-pillars article:hover, .gn-home .v05-step-grid article:hover { transform:translateY(-4px); box-shadow:var(--premium-shadow-lift); } }
+/* Editorial sections */
+.gn-section { padding: clamp(54px,7vw,96px) 0; }
+.gn-home .v05-section-heading { max-width: 760px; margin-bottom: 32px; }
+.gn-home .v05-section-heading h2, .gn-home .v05-feature-band h2 { font-size: clamp(2rem,3.2vw,3.15rem); line-height:1.12; letter-spacing:-.047em; }
+.gn-home .v05-section-heading > p:not(.gn-kicker) { line-height:1.75; }
+.gn-home .v05-step-grid { gap: 18px; }
+.gn-home .v05-step-grid article { border: 1px solid var(--premium-line); border-radius:20px; padding:30px; box-shadow:var(--premium-shadow); transition: transform .25s var(--premium-ease),box-shadow .25s ease; }
+.gn-home .v05-step-grid article span { display: inline-block; font-size:.72rem; letter-spacing:.12em; font-weight:700; margin-bottom:14px; }
+.gn-feature-band { position:relative; overflow:hidden; padding: clamp(36px,5vw,68px); border-radius:28px; background:#092f22; box-shadow: 0 20px 46px rgba(9,47,34,.11); }
+.gn-feature-band::after { content:""; position:absolute; width:340px; height:340px; right:-195px; top:-160px; border:1px solid rgba(255,255,255,.11); border-radius:50%; box-shadow:0 0 0 55px rgba(255,255,255,.025),0 0 0 110px rgba(255,255,255,.02); pointer-events:none; }
+.gn-feature-band > * { position:relative; z-index:1; }
+.gn-feature-band p:not(.gn-kicker) { line-height:1.7; }
+.gn-feature-band .v05-feature-links a { padding:17px 0; }
+.gn-trust-grid { gap:18px; }
+.gn-trust-grid article { border:1px solid var(--premium-line); border-radius:20px; padding:28px; box-shadow:var(--premium-shadow); }
+.gn-trust-grid strong { font-size:clamp(2rem,3vw,2.85rem); }
+.gn-trust-grid span { max-width:260px; line-height:1.6; }
+.gn-trust-note { line-height:1.7; margin-top:24px; }
+.gn-home .v07-plan-grid { gap:18px; }
+.gn-home .v07-plan-grid article { border-radius:22px; border:1px solid var(--premium-line); padding:clamp(24px,3vw,38px); box-shadow:var(--premium-shadow); }
+.gn-home .v07-plan-grid article.featured { border:1px solid #77aa81; box-shadow: 0 0 0 1px rgba(20,93,45,.08),var(--premium-shadow); }
+.gn-final { margin-top: 35px; border: 1px solid var(--premium-line); border-radius: 28px; padding: clamp(45px,6vw,76px) 22px; background: #eaf3ec; }
+.gn-final h2 { max-width:750px; margin-left:auto; margin-right:auto; letter-spacing:-.045em; }
+.gn-final > p:last-child { line-height:1.65; }
+/* Shared internal products: consistency over novelty */
+html:not([data-theme="night"]) :where(.solid-card,.req-card,.kit-panel,.dashboard-card,.auth-card) { border-radius:18px; }
+html:not([data-theme="night"]) .solid-card { border-color:var(--premium-line-strong); box-shadow:0 2px 12px rgba(9,47,34,.035); }
+html:not([data-theme="night"]) :where(.kit-side-nav a,.navbar-mobile a) { transition: background-color .18s ease,color .18s ease; }
+html:not([data-theme="night"]) .kit-side-nav a.on { border-radius:10px; }
+.site-footer { margin-top:72px; }
+/* Night Shift: never leave white cards or dark lettering stuck in the night theme. */
+html[data-theme="night"] .gn-hero-copy .gn-kicker { background:rgba(190,242,100,.08); border-color:rgba(190,242,100,.25); }
+html[data-theme="night"] .gn-hero-copy h1 em { color:var(--gn-lime); }
+html[data-theme="night"] .gn-roadmap,html[data-theme="night"] .gn-pillars article,html[data-theme="night"] .gn-trust-grid article,html[data-theme="night"] .gn-home .v05-step-grid article,html[data-theme="night"] .gn-final { background:var(--kit-panel); border-color:var(--kit-line); box-shadow:none; }
+html[data-theme="night"] .gn-feature-band { background:#092f22; }
+html[data-theme="night"] .gn-home .v07-plan-grid article { border-color:var(--kit-line); }
+html[data-theme="night"] .gn-home .v07-plan-grid article.featured { border-color:var(--gn-lime); }
+/* Adaptive rules deliberately follow existing 760/859px navigation thresholds. */
+@media (max-width: 859px) { .gn-hero { padding:35px 0 45px; } .gn-hero-copy h1 { font-size:clamp(2.45rem,6vw,3.55rem); } .gn-roadmap { padding:22px; } .gn-pillars article,.gn-home .v05-step-grid article { padding:24px; } .kit-shell--public .navbar-public { margin:8px 12px 0; } }
+@media (min-width:760px) and (max-width:859px) { .gn-hero-art { min-height:440px; } }
+@media (max-width:759px) { .gn-home { padding-top:8px; } .gn-hero { padding:24px 0 35px; } .gn-hero-copy h1 { font-size:clamp(2.25rem,8.3vw,3.3rem); } .gn-hero-art { min-height:0; } .gn-roadmap { width:100%; padding:22px; } .gn-section { padding:44px 0; } .gn-pillars { gap:12px; } .gn-pillars article::before { left:23px; } .gn-feature-band { border-radius:22px; } .gn-final { border-radius:22px; } .site-footer { margin-top:45px; } }
+@media (max-width:520px) { .kit-shell--public .navbar-public { padding:9px 10px; border-radius:13px; } .gn-home .gn-hero .hero-actions a { min-height:50px; } .gn-trust-grid article { padding:20px; } .gn-hero-copy .gn-kicker { font-size:.61rem; letter-spacing:.10em; } }
+@media (prefers-reduced-motion:reduce) { *,*::before,*::after { scroll-behavior:auto !important; animation-duration:.01ms !important; animation-iteration-count:1 !important; transition-duration:.01ms !important; } }

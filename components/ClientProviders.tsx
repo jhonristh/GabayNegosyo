@@ -8,6 +8,7 @@ import { ToastProvider } from "./ToastProvider";
 import DbErrorToasts from "./DbErrorToasts";
 import DemoBanner from "./DemoBanner";
 import OfflineBanner from "./OfflineBanner";
+import { usePathname } from "next/navigation";
 import type { ReactNode } from "react";
 
 /**
@@ -18,6 +19,7 @@ import type { ReactNode } from "react";
  */
 function Frame({ children }: { children: ReactNode }) {
   const { user } = useAuth();
+  const pathname = usePathname();
   const shell = !user ? "public" : user.role === "admin" ? "command" : "ledger";
   return (
     <div className={`kit-shell kit-shell--${shell}`} data-shell={shell}>
@@ -26,7 +28,7 @@ function Frame({ children }: { children: ReactNode }) {
       <a className="gn-skip-link" href="#main-content">Skip to main content</a>
       <Navbar />
       <div className="kit-shell-body">
-        <main id="main-content" className="page-content" tabIndex={-1}>{children}</main>
+        <div id="main-content" className="page-content" tabIndex={-1}><div className="ew-route-enter" key={pathname}>{children}</div></div>
         <Footer />
       </div>
     </div>

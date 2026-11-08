@@ -5,6 +5,9 @@ import "../styles/kits.css";
 // Emerald Growth (v0.14 redesign): tokens + shell + homepage. Loaded last; light theme only —
 // Night Shift keeps its own variables because html[data-theme="night"] out-specifies :root.
 import "../styles/emerald.css";
+// Premium refinement layer: presentation-only, applied last.
+import "../styles/premium.css";
+import "../styles/workspace.css";
 // K2: self-hosted via @fontsource (npm-bundled WOFF2 files, no runtime
 // fetch to fonts.googleapis.com / fonts.gstatic.com at build or request
 // time — more robust than next/font/google, which still makes a live

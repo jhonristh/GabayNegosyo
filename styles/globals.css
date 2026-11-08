@@ -36,7 +36,7 @@
      tabular numerals" per D2, not a third face. */
 
   /* Accessible text-on-tint pairs — same hues used in badges, tags, icon chips */
-  --teal-text: #0e7a6c;
+  --teal-text: #0d7467;
   --amber-text: #7a5316;
   --red-text: #a5522a; /* clay, reserved for "overdue" urgency per brand spec */
   --blue-text: #2f4f74;

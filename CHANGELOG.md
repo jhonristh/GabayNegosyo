@@ -4,6 +4,15 @@ Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V
 
 ## v0.17.1
 
+### Entrepreneur's Workspace — 2026-11-09
+
+- Refined the landing page, dashboard and checklist with a cream-and-emerald visual system, audience and feature sections, and a temporary interactive sample workspace.
+- Added a storefront illustration driven by existing completion counts, loading/empty/offline artwork, detail disclosure and brief reduced-motion-aware transitions.
+- Improved checklist action labels and filter pressed states; retained existing Premium gates and business logic.
+- Added workspace color contrast pairs; restored the public environment template missing from the supplied archive.
+- No Supabase, API, SQL, rule-engine or requirement-data changes.
+
+
 ### Work Package 4 additions (unreleased; version label unchanged)
 
 Core user journey (sign-up to checklist completion). Not verified in a browser, real database or `next build`. See `docs/USER_JOURNEY_QA.md`.

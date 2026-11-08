@@ -2,6 +2,8 @@
 
 **Your guide to business compliance.**
 
+This ZIP includes the **Entrepreneur's Workspace** visual refinement: an interactive landing preview, cream-and-emerald styling, progress-based storefront artwork, refined dashboard/checklist, and reduced-motion support. See `docs/DESIGN.md` for changes and `docs/TESTING.md` for validation limits. Extract, run `npm ci`, copy `.env.example` to `.env.local`, configure your own values, then run `npm run dev`. The ZIP contains source code rather than installed dependencies or a deployed site.
+
 GabayNegosyo is a Progressive Web App that puts BIR, SSS, PhilHealth, Pag-IBIG and LGU (business permit) requirements for Philippine micro-entrepreneurs into one personalized checklist. It is built for online sellers, freelancers and small business owners, with Metro Manila (NCR) as the current coverage area.
 
 > GabayNegosyo is an independent informational platform. It is **not** a government agency, does not file documents, and does not replace official services. It began as a feasibility study and academic project. Always verify current forms, deadlines, fees and penalties with the issuing agency before acting.

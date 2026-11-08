@@ -127,8 +127,8 @@ function RequirementDetailInner() {
         <p>{requirement.description}</p>
       </section>
 
-      <section className="req-detail-section">
-        <h2>Who needs this?</h2>
+      <details className="req-detail-section ew-disclosure" open>
+        <summary>Who needs this?</summary><div className="ew-disclosure-body">
         <p>{requirement.whoItAppliesTo}</p>
         {reasons.length > 0 && (
           <>
@@ -140,7 +140,7 @@ function RequirementDetailInner() {
             </ul>
           </>
         )}
-      </section>
+      </div></details>
 
       <section className="req-detail-section">
         <h2>Official Resource</h2>

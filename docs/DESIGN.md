@@ -97,3 +97,23 @@ Real data versus prototype content: checklist % and "Up next" come from the rule
 - The dashboard "Completed" list and "Quick actions" keep v0.5 styling. Pages not redesigned (wizard, guide, resources, tutorials, deadlines, requirement detail) inherit the shell and Night Shift colours only.
 - Not reviewed: Learning Hub layout against the reference, and admin pages in Night Shift.
 - React hydration error #418 was seen on the landing page in an early stubbed environment; later builds fixed one cause (dynamic env reads, see ARCHITECTURE.md). Verify against a real deployment.
+
+
+## Entrepreneur's Workspace refinement — November 9, 2026
+
+The final presentation layer is `styles/workspace.css`, imported after the existing premium layer. It introduces warm cream (#f8f7f2), forest text (#183d30), soft green (#edf2e9), and restrained gold (#896119). Existing self-hosted Inter and Space Grotesk fonts and the client's logo remain in place. Night Shift has separate surface and text tokens.
+
+### Implemented
+- Replaced the landing hero artwork with an interactive sample workspace. Three example checkboxes update a sample progress bar and storefront. Sample state is temporary and never writes to user progress.
+- Added sections for online sellers, freelancers, and small-business owners and distinct feature cards linking to existing checklist, deadlines, and tutorials routes.
+- Added a lightweight native SVG storefront illustration. Real dashboard and checklist illustrations derive their stage from existing completion counts: foundation at zero, windows after initial progress, awning at 50%, and sign/plant at 100%. These are visual milestones, not legal or government approval.
+- Refined dashboard hierarchy, checklist row actions, completed item treatment, shared buttons, mobile layouts, and dark-theme styling.
+- Preserved existing stage grouping and status/agency/search filters; added pressed-state accessibility attributes and contextual completion button labels.
+- Added a native keyboard-accessible disclosure for requirement applicability, open by default.
+- Added a dashboard loading skeleton and illustrated no-profile, no-results, completed, and offline states.
+- Added short route-entry, disclosure, progress and checkmark animations. Reduced-motion preference disables transitions and animations globally. Content never waits for animation or an observer to become visible.
+- Corrected the public Premium copy to describe the existing manual reminder workflow.
+- Restored the missing `.env.example` with empty credentials and disabled reminder/demo defaults.
+
+### Verification and limits
+See `docs/TESTING.md` for this delivery's validation. Authentication, database writes, payment, reminders and government requirements were not changed. Browser-based responsive, focus and reduced-motion checks still need to be run in the target environment. UI refinement does not certify production readiness.

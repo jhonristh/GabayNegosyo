@@ -1,3 +1,4 @@
+import EmptyStateIllustration from "../../components/EmptyStateIllustration";
 export const metadata = {
   title: "You're offline",
   robots: { index: false },
@@ -12,7 +13,7 @@ export const metadata = {
 export default function OfflinePage() {
   return (
     <main className="screen">
-      <p className="eyebrow-free">No connection</p>
+      <EmptyStateIllustration variant="offline" /><p className="eyebrow-free">No connection</p>
       <h1>You&apos;re offline right now.</h1>
       <p className="hero-sub">
         This page needs a network connection we can&apos;t reach. For your privacy, account pages are not saved for offline viewing. Reconnect

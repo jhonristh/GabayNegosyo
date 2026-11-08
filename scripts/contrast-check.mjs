@@ -33,7 +33,7 @@ function blend(fg, bg, alpha) {
 }
 
 const white = [255, 255, 255];
-const sand = [247, 250, 246];
+const sand = [248, 247, 242]; // Effective workspace canvas, styles/workspace.css
 const ink = [16, 37, 29];
 const green = [20, 93, 45];
 const greenDeep = [9, 47, 34];
@@ -54,12 +54,18 @@ const navOnFg = [15, 74, 38];
 const navOnBg = [228, 241, 225];
 
 const pairs = [
+  { name: "Workspace: body text on cream", fg: [24,61,48], bg: [248,247,242], minimum: 4.5 },
+  { name: "Workspace: muted text on soft green", fg: [82,102,91], bg: [237,242,233], minimum: 4.5 },
+  { name: "Workspace: gold label on cream", fg: [137,97,25], bg: [248,247,242], minimum: 4.5 },
+  { name: "Workspace night: body text on surface", fg: [236,243,233], bg: [23,43,34], minimum: 4.5 },
+  { name: "Workspace night: muted text on soft green", fg: [183,201,188], bg: [32,56,43], minimum: 4.5 },
+  { name: "Workspace night: gold on canvas", fg: [231,199,128], bg: [16,30,25], minimum: 4.5 },
   { name: "White text on --gn-green (primary button)", fg: white, bg: green, minimum: 4.5 },
   { name: "White text on --gn-green-deep (button hover/press)", fg: white, bg: greenDeep, minimum: 4.5 },
   { name: "--ink on --gn-sand (body text)", fg: ink, bg: sand, minimum: 4.5 },
   { name: "--ink-muted on --gn-sand", fg: inkMuted, bg: sand, minimum: 4.5 },
   { name: "--ink-faint on --gn-sand", fg: inkFaint, bg: sand, minimum: 4.5 },
-  { name: "--teal-text on white (badge)", fg: [14, 122, 108], bg: white, minimum: 4.5 },
+  { name: "--teal-text on white (badge)", fg: [13, 116, 103], bg: white, minimum: 4.5 },
   { name: "--amber-text on white (badge)", fg: [122, 83, 22], bg: white, minimum: 4.5 },
   { name: "--red-text (clay) on white (badge)", fg: [165, 82, 42], bg: white, minimum: 4.5 },
   { name: "--gn-clay-deep on white (due-today badge)", fg: [165, 82, 42], bg: white, minimum: 4.5 },

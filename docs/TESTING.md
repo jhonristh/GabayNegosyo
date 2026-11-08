@@ -34,3 +34,16 @@ These have never been run in the build environments used so far, and should be t
 11. Test reminder sends only when a provider is configured, and says so honestly otherwise.
 12. 360px landing and credits pages, no horizontal scroll; keyboard through nav and dialogs; reduced motion; Night Shift on every main page.
 13. Production build: `check-env` fails without `NEXT_PUBLIC_SITE_URL` and `NEXT_PUBLIC_CONTACT_EMAIL`.
+
+
+## Entrepreneur's Workspace delivery — November 9, 2026
+
+- TypeScript check: passed.
+- Existing test suite: 325 passed, zero failed.
+- Explicit color-pair contrast checks: 46 passed, including the new workspace tokens and cream canvas. This is a color-pair check, not a full accessibility audit.
+- Next.js optimized build: passed; 44 static pages generated. Production site URL/contact environment values were not supplied, so the existing environment validator warned. No credentials were used.
+- Byte comparison: existing lib/, data/, database/ and app/api/ files match the supplied archive.
+- Browser preview connection was unavailable; desktop/mobile rendering, keyboard focus, live interactions and OS reduced-motion behavior were not browser-verified.
+- Live Supabase authentication, persistence and email delivery were not tested.
+
+Before deployment, configure your own environment and check the landing example checkboxes, Free/Premium dashboard, checklist filters and completion/undo, requirement disclosure, onboarding, and night theme at 360px, 768px, and 1440px. Check Tab/Space/Enter navigation and reduced-motion preferences. Demo mode remains opt-in through NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS.

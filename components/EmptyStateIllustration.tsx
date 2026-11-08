@@ -1,3 +1,4 @@
+import BusinessJourney from "./BusinessJourney";
 /**
  * Beautification pass §4, corrected: the original draft used --gn-blue and
  * --gn-violet at reduced opacity for decorative line art. --gn-blue no
@@ -7,7 +8,7 @@
  * functional teal ("completed") hue instead — same simple geometric line
  * art, 2px stroke, no new dependency.
  */
-export type EmptyStateVariant = "no-profile" | "no-results" | "all-caught-up";
+export type EmptyStateVariant = "no-profile" | "no-results" | "all-caught-up" | "offline";
 
 const STROKE_PROPS = {
   fill: "none",
@@ -31,21 +32,8 @@ export default function EmptyStateIllustration({ variant }: { variant: EmptyStat
     );
   }
 
-  if (variant === "all-caught-up") {
-    return (
-      <span className="empty-illustration" aria-hidden="true">
-        <svg viewBox="0 0 96 96">
-          <path
-            d="M48 12 74 22v22c0 20-11 32-26 40-15-8-26-20-26-40V22Z"
-            stroke="var(--gn-green)"
-            strokeOpacity="0.45"
-            {...STROKE_PROPS}
-          />
-          <path d="M36 47 45 56 62 38" stroke="var(--gn-teal)" strokeOpacity="0.85" {...STROKE_PROPS} />
-        </svg>
-      </span>
-    );
-  }
+  if (variant === "all-caught-up") return <BusinessJourney completed={1} total={1} compact />;
+  if (variant === "offline") return <span className="empty-illustration" aria-hidden="true"><svg viewBox="0 0 96 96" {...STROKE_PROPS} stroke="var(--gn-green)"><rect x="23" y="12" width="50" height="72" rx="8"/><path d="M40 74H56M15 20L81 80M33 41Q48 29 63 41M40 49Q48 43 56 49"/></svg></span>;
 
   // no-results
   return (

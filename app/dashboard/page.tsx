@@ -4,6 +4,9 @@ import { useEffect, useMemo, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import AuthGuard from "../../components/AuthGuard";
+import BusinessJourney from "../../components/BusinessJourney";
+import WorkspaceSkeleton from "../../components/WorkspaceSkeleton";
+import EmptyStateIllustration from "../../components/EmptyStateIllustration";
 import ProgressBar from "../../components/ProgressBar";
 import AgencyProgress, { buildAgencyProgress } from "../../components/AgencyProgress";
 import StatusBadge from "../../components/StatusBadge";
@@ -41,7 +44,7 @@ function DashboardInner() {
   if (profile === undefined) {
     return (
       <main className="screen">
-        <p>Loading your dashboard…</p>
+        <WorkspaceSkeleton />
       </main>
     );
   }
@@ -50,7 +53,7 @@ function DashboardInner() {
     return (
       <main className="screen">
         <div className="empty-state">
-          <h2>Let's set up your business profile</h2>
+          <EmptyStateIllustration variant="no-profile" /><h2>Let's set up your business profile</h2>
           <p>Answer a few quick questions so we can build your personalized checklist.</p>
           <Link href="/wizard" className="primary-btn">
             Start the wizard
@@ -120,7 +123,7 @@ function DashboardInner() {
 
       {premium && <div className="v05-dash-hero">
         <section className="dashboard-progress">
-          <p className="v05-kicker">YOUR PROGRESS</p>
+          <BusinessJourney completed={completed.length} total={items.length} compact /><p className="v05-kicker">YOUR PROGRESS</p>
           <strong className="v05-progress-number">{percent}<small>%</small></strong>
           <ProgressBar percent={percent} />
           <p className="hint">{completed.length} of {items.length} requirements completed · {pending.length} pending</p>
@@ -131,7 +134,7 @@ function DashboardInner() {
             <h2>{next.req.name}</h2>
             <p>{agencyName(next.req.agencyId)} · {next.dueDate ? dueLabel(next.dueDate) : next.req.deadlineDescription}</p>
             <Link href={`/requirements/${next.req.id}`}>View requirement <span aria-hidden="true">↗</span></Link>
-          </> : <><h2>All caught up.</h2><p>There are no pending items in your checklist.</p><Link href="/checklist">View checklist ↗</Link></>}
+          </> : <><EmptyStateIllustration variant="all-caught-up" /><h2>All caught up.</h2><p>There are no pending items in your checklist.</p><Link href="/checklist">View checklist ↗</Link></>}
         </section>
       </div>}
       {premium && (overdue.length > 0 || dueToday.length > 0 || dueSoon.length > 0) && (
