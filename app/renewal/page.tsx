@@ -1,5 +1,7 @@
 "use client";
 
+import { useState } from "react";
+import RenewalWorkspace from "../../components/RenewalWorkspace";
 import Link from "next/link";
 import AuthGuard from "../../components/AuthGuard";
 import FilingTutorialVideos from "../../components/FilingTutorialVideos";
@@ -16,13 +18,14 @@ const SECTIONS = [
 
 function RenewalContent() {
   const { user } = useAuth();
+  const [focused, setFocused] = useState(false);
   const profile = user ? db.getBusinessProfile(user.id) : null;
   const premium = hasPremiumAccess(user);
   const visible = guide.filter((i) => i.audience !== "employees" || profile?.hasEmployees !== false);
 
   return (
-    <main className="screen business-guide">
-      <JourneyHeader
+    <main className={`screen business-guide renewal-page ${focused ? "renewal-page--focused" : ""}`}>
+      {!focused && <><JourneyHeader
         current="renewal"
         title="Renewal & Post-Registration"
         intro="Keep your business compliant after registration: renew on time, file regularly, and keep your records current."
@@ -33,7 +36,9 @@ function RenewalContent() {
         <p>Local due dates, monthly remittances, and event-based filings need individual confirmation. Check the issuing agency before filing or paying. See your <Link href="/deadlines">deadlines</Link> for the dates on your checklist.</p>
       </div>
 
-      {SECTIONS.map(({ stage, title }) => {
+      </>}
+      <RenewalWorkspace onFocusChange={setFocused} />
+      {!focused && <>{SECTIONS.map(({ stage, title }) => {
         const items = visible.filter((i) => i.stage === stage);
         return items.length ? (
           <section className="guide-stage" key={stage}>
@@ -64,11 +69,11 @@ function RenewalContent() {
 
       <FilingTutorialVideos />
 
-      <JourneyNext current="renewal" />
+      <JourneyNext current="renewal" /></>}
     </main>
   );
 }
 
 export default function RenewalPage() {
-  return <AuthGuard><RenewalContent /></AuthGuard>;
+  return <AuthGuard requireData><RenewalContent /></AuthGuard>;
 }

@@ -1,6 +1,7 @@
 "use client";
 
 import { AuthProvider, useAuth } from "../lib/auth";
+import { InterfaceSoundsProvider } from "./InterfaceSounds";
 import Navbar from "./Navbar";
 import Footer from "./Footer";
 import ServiceWorkerRegistration from "./ServiceWorkerRegistration";
@@ -38,11 +39,11 @@ function Frame({ children }: { children: ReactNode }) {
 export default function ClientProviders({ children }: { children: ReactNode }) {
   return (
     <AuthProvider>
-      <ToastProvider>
+      <InterfaceSoundsProvider><ToastProvider>
         <ServiceWorkerRegistration />
         <DbErrorToasts />
         <Frame>{children}</Frame>
-      </ToastProvider>
+      </ToastProvider></InterfaceSoundsProvider>
     </AuthProvider>
   );
 }

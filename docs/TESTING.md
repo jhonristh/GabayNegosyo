@@ -47,3 +47,23 @@ These have never been run in the build environments used so far, and should be t
 - Live Supabase authentication, persistence and email delivery were not tested.
 
 Before deployment, configure your own environment and check the landing example checkboxes, Free/Premium dashboard, checklist filters and completion/undo, requirement disclosure, onboarding, and night theme at 360px, 768px, and 1440px. Check Tab/Space/Enter navigation and reduced-motion preferences. Demo mode remains opt-in through NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS.
+
+
+## v0.18.0 — Growth arrow and Renewal Focus View
+
+Validation completed November 9, 2026:
+- TypeScript: passed.
+- Automated suite: 331 passed (325 existing + 6 new renewal behavior tests).
+- Explicit text/background contrast pairs: all 46 passed; not a full accessibility audit.
+- Next.js optimized build: passed. Existing warnings remain for missing deployment URL/contact configuration and React 18 deprecation. Configure your own environment before deployment.
+- Original arrow PNG/WebP, compliance data, SQL, API, authentication, data-access, entitlement and eligibility-engine files were compared byte-for-byte with the prior ZIP and remain unchanged.
+- Browser preview could not connect to the local server. No claim is made of verified desktop/mobile appearance, keyboard interaction, actual audio playback, or real Supabase writes.
+
+Manual acceptance checks:
+1. Landing: confirm the original green arrow remains visible around the preview at 360, 768 and 1440 pixels; pause/resume the decorative motion. With reduced motion enabled, no floating/highlight/entrance animation should run.
+2. Shop: click or press Space/Enter on the storefront. Its window lights up and a short message appears; real checklist counts do not change. Toggle it off again.
+3. Sound: confirm initial off state, enable via footer or renewal toolbar, complete/undo a step and finish a requirement; verify quiet cues, remembered preference, immediate silence after disabling, and harmless behavior with blocked storage/unsupported audio.
+4. Renewal: use an operating-business Premium demo profile, start a renewal, navigate without checking a step, exit and resume. Navigation must not mark completion. Check/undo in either single-step or expanded view and verify the same task progress on the requirement detail page. Revisit to verify cycle-specific continuation.
+5. Check mobile step-menu opening, focus movement, all-step overview, document/source panels, outline labels and the empty-profile/no-applicable-items states. Free users must continue to see the Premium access boundary.
+6. Test actual saving with a configured Supabase project. The existing database API updates local state optimistically and reports background failures; the renewal view adds a persistent failed-sync warning. Do not treat its confirmation sound as evidence of server persistence. Known offline real-account changes are disabled.
+7. Confirm source catalog overlap between local-permit entries with the content owner; no automatic merging or new government requirements were introduced by this release.

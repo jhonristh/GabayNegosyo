@@ -1,5 +1,5 @@
 import Link from "next/link";
-import WorkspacePreview from "../components/WorkspacePreview";
+import GrowthHero from "../components/GrowthHero";
 import requirements from "../data/requirements.json";
 import credits from "../data/credits.json";
 
@@ -41,7 +41,7 @@ export default function LandingPage() {
         <div className="hero-actions"><Link href="/wizard" className="primary-btn">Create my checklist <span aria-hidden="true">↗</span></Link><a href="#how-it-works" className="secondary-btn">Explore the roadmap</a></div>
         <p className="v05-hero-note">Made for online sellers, freelancers, and small business owners across Metro Manila (NCR).</p>
       </div>
-      <div className="gn-hero-art ew-hero-art" role="group" aria-label="Illustrative product preview"><WorkspacePreview /></div>
+      <div className="gn-hero-art ew-hero-art" role="group" aria-label="Illustrative product preview"><GrowthHero /></div>
     </section>
 
     <section className="gn-pillars" aria-label="What GabayNegosyo helps you do">

@@ -1,3 +1,4 @@
+import { SoundToggle } from "./InterfaceSounds";
 import Link from "next/link";
 import Image from "next/image";
 import { siteConfig } from "../lib/siteConfig";
@@ -37,6 +38,7 @@ export default function Footer() {
           </nav>
         </div>
 
+        <SoundToggle />
         <p className="site-footer-disclaimer">
           GabayNegosyo is an independent informational platform, not a government agency, and is not affiliated with or an official portal of any government agency. It does not file documents, submit official transactions, or produce official computations.
         </p>

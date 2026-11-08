@@ -2,6 +2,18 @@
 
 Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V0.3_STATUS.md`, `V0.10_FIXES.md`, `V0.12_CHANGES.md`, `V0.13_CHANGES.md`, `QA_REPORT.md` and `OWNER_REVIEW_v0.16.4.md`. "Not verified" means the environment used could not check it (no browser, no live Supabase, no email send, often no `next build`).
 
+## v0.18.0
+
+### Growth arrow, living shop and renewal focus — 2026-11-09
+
+- Restored the original PNG/WebP green growth arrow around the interactive preview, with reveal/highlight animation, a pause control and reduced-motion support.
+- Preserved the completion-driven storefront; added a keyboard-accessible light-up shop Easter egg that never changes task progress.
+- Added a personalized renewal overview and Premium focus workspace using existing applicability rules, instructions, documents and cycle-keyed task progress. Includes first-unfinished-step continuation, previous/next, completion/undo, all-step review, mobile step navigation and source/outline labels.
+- Retained the original renewal and post-registration guides. Renewal now requires loaded account data; known offline changes are blocked for real accounts and failed saves stay visible.
+- Added default-off, remembered interface sounds, generated locally with Web Audio. No autoplay, background music, audio download or new dependency.
+- Added one-time landing section entrances and short focus-step transitions. Added dashboard renewal shortcut.
+- Six behavior tests cover renewal selection, stale indexes, continuation, empty steps, completion/undo and outline detection.
+
 ## v0.17.1
 
 ### Entrepreneur's Workspace — 2026-11-09

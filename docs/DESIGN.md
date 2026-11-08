@@ -117,3 +117,16 @@ The final presentation layer is `styles/workspace.css`, imported after the exist
 
 ### Verification and limits
 See `docs/TESTING.md` for this delivery's validation. Authentication, database writes, payment, reminders and government requirements were not changed. Browser-based responsive, focus and reduced-motion checks still need to be run in the target environment. UI refinement does not certify production readiness.
+
+
+## Growth and renewal focus — v0.18.0
+
+`styles/renewal-focus.css` follows the workspace layer. `GrowthHero` restores the exact supplied PNG/WebP arrow assets; no artwork was regenerated. The preview floats gently above it, with a masked highlight and a pause button. Reduced motion removes decorative animation. Below-hero section entrances run once without hiding content before JavaScript.
+
+`BusinessJourney` retains its completion-driven stages. Its SVG is now an accessible button: clicking lights the window and shows a small encouragement. This Easter egg changes decorative component state only.
+
+`RenewalWorkspace` supplements the original guides. Overview items come from existing applicable requirements whose name/stage indicates renewal. All detailed instructions come directly from `Requirement.instructions`; document lists apply to the whole requirement. Generic instructions are explicitly labeled outline guidance. No government content, deadlines or eligibility rules were added. The source catalog contains potentially overlapping local-permit entries; this release preserves their identities and progress instead of silently merging them.
+
+The focus view preserves Premium gating, supports all-step or single-step reading, and resumes at the first unchecked instruction. Previous/Next and leaving focus do not complete anything. Checking the last instruction marks the requirement complete in the current cycle; undo reopens it. Desktop uses a two-column navigator; mobile has an expandable step menu. Keyboard focus moves to the active instruction. Stored task indexes outside the current instruction range are ignored.
+
+`InterfaceSoundsProvider` defaults off and remembers a browser preference. Local Web Audio sine tones play only after an intentional completion/undo/shop action. Unsupported audio and blocked storage fail harmlessly. Disabling sounds stops active tones. Footer and focus toolbar share one preference. Audio is never evidence of successful persistence.

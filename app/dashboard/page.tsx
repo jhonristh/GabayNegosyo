@@ -174,6 +174,7 @@ function DashboardInner() {
       </div>}
 
       <section className="quick-actions" aria-label="Quick actions">
+        <Link href="/renewal" className="quick-action-btn">Renewal workspace</Link>
         <Link href="/checklist" className="quick-action-btn">
           Full checklist
         </Link>

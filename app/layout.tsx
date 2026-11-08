@@ -8,6 +8,7 @@ import "../styles/emerald.css";
 // Premium refinement layer: presentation-only, applied last.
 import "../styles/premium.css";
 import "../styles/workspace.css";
+import "../styles/renewal-focus.css";
 // K2: self-hosted via @fontsource (npm-bundled WOFF2 files, no runtime
 // fetch to fonts.googleapis.com / fonts.gstatic.com at build or request
 // time — more robust than next/font/google, which still makes a live

@@ -1,5 +1,6 @@
 "use client";
 
+import { useInterfaceSounds } from "../../../components/InterfaceSounds";
 import { useMemo, useState } from "react";
 import { useParams } from "next/navigation";
 import Link from "next/link";
@@ -21,6 +22,7 @@ function RequirementDetailInner() {
   const { id } = useParams<{ id: string }>();
   const { user } = useAuth();
   const { notify } = useToast();
+  const { play } = useInterfaceSounds();
   const requirement = useMemo(() => db.getRequirements().find((r) => r.id === id), [id]);
   const agency = useMemo(() => (requirement ? db.getAgencies().find((a) => a.id === requirement.agencyId) : null), [requirement]);
   const tutorial = useMemo(() => (requirement?.tutorialId ? db.getTutorials().find((t) => t.id === requirement.tutorialId) : null), [requirement]);
@@ -74,6 +76,7 @@ function RequirementDetailInner() {
       trackConversion("requirement_completed");
       notify("Marked as completed.");
     }
+    play(isCompleted ? "undo" : "complete");
     forceRerender((n) => n + 1);
   }
 
@@ -91,6 +94,7 @@ function RequirementDetailInner() {
       db.markIncomplete(requirement!.id);
       notify("Requirement moved back to your to-do list.");
     }
+    play(!checked ? "undo" : nowDone === steps.length ? "finish" : "complete");
     forceRerender((n) => n + 1);
   }
 

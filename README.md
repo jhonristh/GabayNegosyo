@@ -8,6 +8,16 @@ GabayNegosyo is a Progressive Web App that puts BIR, SSS, PhilHealth, Pag-IBIG a
 
 > GabayNegosyo is an independent informational platform. It is **not** a government agency, does not file documents, and does not replace official services. It began as a feasibility study and academic project. Always verify current forms, deadlines, fees and penalties with the issuing agency before acting.
 
+## New in v0.18.0
+
+The green arrow is restored and the growing shop stays. Try the shop illustration with a click or Enter/Space to turn on its little window light. This does not change your real progress.
+
+- Open **Renewal & Post-Registration** (or the dashboard's **Renewal workspace** shortcut). With a business profile, the overview lists matching renewal requirements. Premium users can choose **Start renewal**, **Continue renewal**, or **Review renewal**.
+- In focus view, select a step, check it when done, undo it, or expand all instructions. Next/Previous only navigate. Completion uses existing checklist records and cycles; it does not submit an application or establish agency approval.
+- Switch **Interface sounds** on in the footer or focus toolbar. The preference is remembered in this browser; it starts off. Sounds are brief confirmation cues, not confirmation that a server write succeeded.
+- Use **Pause decorative motion** under the landing preview, or your device's reduced-motion setting.
+- For a browser-only test, set `NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS=true` in your local environment and choose the Premium demo from Log in. Keep it disabled on your public deployment unless you intentionally want demos available.
+
 ## What it does
 
 - **Registration wizard** (guest-friendly): a short questionnaire (new or existing business, taxpayer type, city and barangay, lease, employees, projected sales, tax type) that feeds the rule engine.

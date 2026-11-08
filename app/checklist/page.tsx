@@ -3,6 +3,7 @@
 import { useMemo, useState } from "react";
 import Link from "next/link";
 import AuthGuard from "../../components/AuthGuard";
+import { useInterfaceSounds } from "../../components/InterfaceSounds";
 import EmptyStateIllustration from "../../components/EmptyStateIllustration";
 import ChecklistProgress from "../../components/ChecklistProgress";
 import StatusBadge from "../../components/StatusBadge";
@@ -35,6 +36,7 @@ const STATUS_FILTERS: { value: "all" | RequirementStatus; label: string }[] = [
 function ChecklistInner() {
   const { user } = useAuth();
   const { notify } = useToast();
+  const { play } = useInterfaceSounds();
   const requirements = useMemo(() => db.getRequirements(), []);
   const agencies = useMemo(() => db.getAgencies(), []);
   const [statusFilter, setStatusFilter] = useState<"all" | RequirementStatus>("all");
@@ -101,9 +103,11 @@ function ChecklistInner() {
     if (!user || !premium) return;
     if (isCompleted) {
       db.markIncomplete(requirementId);
+      play("undo");
       notify("Moved back to your to-do list.");
     } else {
       db.markComplete(requirementId, `biz-${user.id}`, dueKey);
+      play("complete");
       notify("Marked as completed.");
     }
     rerender((n) => n + 1);
