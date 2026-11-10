@@ -2,6 +2,7 @@ import Link from "next/link";
 import GrowthHero from "../components/GrowthHero";
 import requirements from "../data/requirements.json";
 import credits from "../data/credits.json";
+import { siteConfig } from "../lib/siteConfig";
 
 
 export const metadata = {
@@ -73,7 +74,13 @@ export default function LandingPage() {
       <p className="gn-trust-note">GabayNegosyo is an informational guide, not a government portal. It does not file forms or submit official transactions. <Link href="/disclaimer">Read the disclaimer ↗</Link></p>
     </section>
 
-    <section id="plans" className="v07-plans v05-section gn-section"><div className="v05-section-heading"><p className="gn-kicker">CHOOSE YOUR PATH</p><h2>Start free. Get more guidance when you need it.</h2><p>Both plans start with the same business registration questions.</p></div><div className="v07-plan-grid"><article><span className="gn-kicker">FREE</span><h3>Know what applies</h3><ul><li>Registration wizard</li><li>Personalized basic checklist</li><li>Requirement name, agency, and deadline</li><li>Free YouTube tutorials (attributed to creators)</li></ul><Link href="/signup" className="secondary-btn">Start free ↗</Link></article><article className="featured"><span className="gn-kicker">PREMIUM · DEMO ACCESS</span><h3>Understand the next steps</h3><ul><li>Everything in Free</li><li>Required documents and detailed guidance</li><li>Progress tracking, deadline status and resource library</li><li>Penalty simulator and manual reminder service</li></ul><Link href="/signup" className="primary-btn">Explore Premium ↗</Link><p>No payment is processed in this prototype.</p></article></div></section>
+    <section id="plans" className="v07-plans v05-section gn-section">
+      <div className="v05-section-heading"><p className="gn-kicker">CHOOSE YOUR PATH</p><h2>Start free. Get more guidance when you need it.</h2><p>Both plans start with the same business registration questions.</p></div>
+      <div className="v07-plan-grid">
+        <article><span className="gn-kicker">FREE</span><h3>Know what applies</h3><p className="gn-plan-price">₱0</p><p>No subscription required</p><ul><li>Registration wizard</li><li>Personalized basic checklist</li><li>Requirement name, agency, and deadline</li><li>Free YouTube tutorials (attributed to creators)</li></ul><Link href="/signup" className="secondary-btn">Start free ↗</Link></article>
+        <article className="featured"><span className="gn-kicker">PREMIUM</span><h3>Understand the next steps</h3><p className="gn-plan-price">{siteConfig.premiumPriceLabel}</p><p>Monthly subscription</p><ul><li>Everything in Free</li><li>Required documents and detailed guidance</li><li>Progress tracking, deadline status and resource library</li><li>Penalty simulator and manual reminder service</li></ul><Link href="/premium/checkout" className="primary-btn">View Premium ↗</Link><p>No payment is processed on this website yet. Contact the team about Premium access.</p></article>
+      </div>
+    </section>
 
     {creditsConfirmed && <section id="credits" className="v07-credits v05-section gn-section" aria-labelledby="credits-title"><p className="gn-kicker">PROJECT CREDITS</p><h2 id="credits-title">The research and the website</h2><p>GabayNegosyo is based on a feasibility study by a team of {credits.researchers.length} researchers, with the website built by one web developer.</p><h3 className="credits-heading">Research team ({credits.researchers.length})</h3><ul className="credits-grid">{credits.researchers.map((r, i) => <li className="credit-person" key={i}><strong>{r.name}</strong><span>{r.contribution}</span></li>)}</ul><h3 className="credits-heading">Web developer (1)</h3><ul className="credits-grid credits-grid--single"><li className="credit-person"><strong>{credits.developer.name}</strong><span>{credits.developer.contribution}</span></li></ul><div><Link href="/disclaimer">Read the disclaimer ↗</Link><Link href="/privacy">Privacy &amp; data ↗</Link></div></section>}
 

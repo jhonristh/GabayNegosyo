@@ -3,6 +3,7 @@
 import Link from "next/link";
 import { useAuth } from "../lib/auth";
 import { hasPremiumAccess } from "../lib/entitlements";
+import { siteConfig } from "../lib/siteConfig";
 import type { ReactNode } from "react";
 
 /**
@@ -19,6 +20,7 @@ export default function PremiumGate({ children }: { children: ReactNode }) {
   return (
     <div className="premium-lock">
       <p className="premium-lock-title">Available with Premium</p>
+      <p className="gn-plan-price">{siteConfig.premiumPriceLabel}</p>
       <p className="premium-lock-body">
         Upgrade to unlock documents, progress tracking, deadline status, the resource library, the penalty simulator, and manual
         reminders.

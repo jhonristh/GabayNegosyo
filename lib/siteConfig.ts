@@ -2,10 +2,8 @@
  * SITE CONFIG (L15)
  * ──────────────────
  * Single source of truth for the personal/production values this project
- * cannot invent: domain, contact address, legal entity, team name, and an
- * optional Premium price label. Everything here is typed with an explicit
- * `null` default rather than a fabricated placeholder value baked into
- * code, so a missing value is a visible gap, not a silent lie.
+ * cannot invent: domain, contact address, legal entity and team name.
+ * Premium pricing below is the client-approved ₱199 monthly subscription.
  *
  * `scripts/check-env.mjs` reads the same env vars and fails production
  * builds (VERCEL_ENV=production) when the required ones are missing or
@@ -35,8 +33,8 @@ export interface SiteConfig {
   contactEmail: string | null;
   legalEntityName: string | null;
   teamName: string | null;
-  /** e.g. "₱99–₱199/month". Null means: don't show a price, say upgrading is simulated. */
-  premiumPriceLabel: string | null;
+  /** Client-approved monthly subscription price, advertised consistently. */
+  premiumPriceLabel: string;
 }
 
 const PLACEHOLDER_SITE_URL = "https://gabaynegosyo.example";
@@ -47,5 +45,5 @@ export const siteConfig: SiteConfig = {
   contactEmail: clean(process.env.NEXT_PUBLIC_CONTACT_EMAIL),
   legalEntityName: clean(process.env.NEXT_PUBLIC_LEGAL_ENTITY_NAME),
   teamName: clean(process.env.NEXT_PUBLIC_TEAM_NAME),
-  premiumPriceLabel: clean(process.env.NEXT_PUBLIC_PREMIUM_PRICE_LABEL),
+  premiumPriceLabel: "₱199/month",
 };

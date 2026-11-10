@@ -1265,7 +1265,8 @@
     },
     "officialUrl": "",
     "lastVerified": "2026-11-02",
-    "contentSource": "gabay_guide"
+    "contentSource": "gabay_guide",
+    "tutorialId": "tut-lgu-permit-application"
   },
   {
     "id": "mayor-permit",
@@ -1336,7 +1337,8 @@
     },
     "officialUrl": "",
     "lastVerified": "2026-11-02",
-    "contentSource": "gabay_guide"
+    "contentSource": "gabay_guide",
+    "tutorialId": "tut-lgu-permit-application"
   },
   {
     "id": "bir-registration",
@@ -1382,7 +1384,8 @@
     },
     "officialUrl": "https://orus.bir.gov.ph/home",
     "lastVerified": "2026-11-02",
-    "contentSource": "gabay_guide"
+    "contentSource": "gabay_guide",
+    "tutorialId": "tut-bir-registration"
   },
   {
     "id": "dti-renewal",
@@ -1445,7 +1448,8 @@
       "startDay": 1,
       "endMonth": 1,
       "endDay": 20
-    }
+    },
+    "tutorialId": "tut-barangay-renewal"
   },
   {
     "id": "mayor-permit-renewal",
@@ -1514,7 +1518,8 @@
       "startDay": 1,
       "endMonth": 1,
       "endDay": 20
-    }
+    },
+    "tutorialId": "tut-lgu-renewal"
   },
   {
     "id": "sss-employee-reg",
@@ -1802,7 +1807,8 @@
     },
     "officialUrl": "",
     "lastVerified": "2026-11-02",
-    "contentSource": "gabay_guide"
+    "contentSource": "gabay_guide",
+    "tutorialId": "tut-pagibig-contribution"
   },
   {
     "id": "philhealth-contribution",
@@ -1829,7 +1835,8 @@
     },
     "officialUrl": "",
     "lastVerified": "2026-11-02",
-    "contentSource": "gabay_guide"
+    "contentSource": "gabay_guide",
+    "tutorialId": "tut-philhealth-contribution"
   },
   {
     "id": "bir-1601eq-conditional",
@@ -1902,7 +1909,8 @@
     "officialUrl": "https://bmbe.dti.gov.ph",
     "lastVerified": "2026-11-02",
     "contentSource": "gabay_guide",
-    "archived": false
+    "archived": false,
+    "tutorialId": "tut-bmbe-registration"
   },
   {
     "id": "bir-1701-itemized-vat",

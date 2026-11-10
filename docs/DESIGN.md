@@ -1,5 +1,19 @@
 # Design system
 
+Current release: v1.0.0. Earlier version labels below record the origin of each design change.
+
+## Premium pricing — v1.0.0
+
+Client-approved price: ₱199/month. Landing plan cards, Account, Premium information and paid-feature gates use siteConfig.premiumPriceLabel. Existing heading font, theme colors and a responsive price size provide consistent emphasis. The monthly period is always visible. No annual price, discount, trial, cancellation promise or automatic billing is advertised.
+
+## Shared media — v0.18.2 (supersedes v0.18.1 external-video cards)
+
+TutorialCard is now the single YouTube showcase for the Learning Hub, Renewal and requirement detail. The official youtube-nocookie.com player supplies its own preview, title and controls; it loads lazily, does not autoplay and preserves source start times. Attribution sits below each player. A collapsed help panel provides an external fallback for creator restrictions. A 16:9 media region with a 200px minimum height supports phones. No downloaded/copied thumbnails or overlays over the YouTube controls.
+
+Both the BIR Forms route and Resources use FormPreviewCard, identical document artwork, content, action positions, spacing, sample-only PDF notices and dark-theme tokens. BIR cards additionally show relevant deadlines and a requirement-detail link.
+
+The updated workbook has 15 video rows: one shared barangay/mayor video, one truncated DTI renewal ID, and 13 unique full IDs. Supplied links are not described as independently verified.
+
 ## Final refinement — v0.18.1
 
 The final imported layer is styles/final-refinement.css. Original cream/emerald colors, Inter/Space Grotesk, logo, growth arrow and storefront stay in place.

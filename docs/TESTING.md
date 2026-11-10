@@ -1,5 +1,19 @@
 # Testing and verification
 
+Current release: v1.0.0. Earlier sections retain their original verification context.
+
+## v1.0.0 pricing
+
+All 334 tests and the production build pass. Price copy uses the central approved ₱199/month label. No payment provider or billing workflow is added. Browser/mobile rendering and live account behavior remain unverified.
+
+## v0.18.2 shared media and updated workbook
+
+Checks: 334 automated tests (including strict YouTube URL parsing, timestamp preservation, malformed ID/host rejection and all 13 published source videos); TypeScript production build; defined contrast pairs. Review the actual local command results for this delivery.
+
+Browser access to this local server remains unavailable. Actual YouTube playback, creator embedding permissions, loading failures, mobile appearance, keyboard navigation and live Supabase writes require a browser/device pass. The implementation does not force YouTube redirects, but YouTube may restrict individual videos. DTI renewal V-05 is still only 10 characters and remains unpublished.
+
+Acceptance: confirm 13 videos across six agency filters; compare the same video in Tutorials/Renewal/requirement detail; verify BIR 1701 starts at 43 seconds; verify no autoplay; inspect 360/768/1440px layouts; open and close a sample PDF on both BIR Forms and Resources; tick/untick a special transaction and confirm only its form is added/removed.
+
 ## v0.18.1 consultant/client revision
 
 Local validation: all 331 tests passed; TypeScript production build passed (44 prerendered pages); 46 contrast pairs passed. Threshold regression covers ₱2,999,999, ₱3,000,000 and ₱3,000,001. The intended behavior change is eligibility cutoff above, rather than at, ₱3 million.

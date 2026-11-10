@@ -1,52 +1,57 @@
 [
   {
     "id": "tut-bir-registration",
-    "title": "How to Register Your Business with the BIR",
-    "description": "Walkthrough of getting your Certificate of Registration (2303) as a new sole proprietor.",
-    "videoUrl": "",
+    "title": "BIR registration (ORUS / 1901)",
+    "description": "Video walkthrough: BIR registration (ORUS / 1901).",
+    "videoUrl": "https://www.youtube.com/watch?v=zyjl55sUXHY",
     "agencyId": "bir",
-    "relatedRequirementId": "bir-cor",
+    "relatedRequirementId": "bir-registration",
     "category": "registration",
-    "isPlaceholder": true
+    "isPlaceholder": false,
+    "archived": false
   },
   {
     "id": "tut-bir-1701",
-    "title": "Filing BIR Form 1701",
-    "description": "Video walkthrough of BIR Form 1701, the annual income tax return for self-employed and mixed-income earners.",
+    "title": "BIR Form 1701",
+    "description": "Video walkthrough: BIR Form 1701.",
     "videoUrl": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s",
     "agencyId": "bir",
     "relatedRequirementId": "bir-1701-self-employed",
     "category": "filing",
-    "isPlaceholder": false
+    "isPlaceholder": false,
+    "archived": false
   },
   {
     "id": "tut-bir-1701q",
-    "title": "Filing BIR Form 1701-Q (quarterly)",
-    "description": "Video walkthrough of BIR Form 1701Q, the quarterly income tax return for self-employed taxpayers.",
+    "title": "BIR Form 1701-Q",
+    "description": "Video walkthrough: BIR Form 1701-Q.",
     "videoUrl": "https://www.youtube.com/watch?v=8C0TBHccWbc",
     "agencyId": "bir",
     "relatedRequirementId": "bir-1701q-quarterly",
     "category": "filing",
-    "isPlaceholder": false
+    "isPlaceholder": false,
+    "archived": false
   },
   {
     "id": "tut-bir-1701a",
-    "title": "Filing BIR Form 1701-A",
-    "description": "Video walkthrough of BIR Form 1701A, the annual return for the 8% flat rate or the Optional Standard Deduction.",
+    "title": "BIR Form 1701-A",
+    "description": "Video walkthrough: BIR Form 1701-A.",
     "videoUrl": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s",
     "agencyId": "bir",
     "relatedRequirementId": "bir-1701a-8percent",
     "category": "filing",
-    "isPlaceholder": false
+    "isPlaceholder": false,
+    "archived": false
   },
   {
     "id": "tut-bir-1701ms",
-    "title": "Filing BIR Form 1701-MS (micro and small taxpayers)",
-    "description": "Video walkthrough of BIR Form 1701-MS for micro and small taxpayers.",
+    "title": "BIR Form 1701-MS",
+    "description": "Video walkthrough: BIR Form 1701-MS.",
     "videoUrl": "https://www.youtube.com/watch?v=0MQLh_jxlak",
     "agencyId": "bir",
     "category": "filing",
-    "isPlaceholder": false
+    "isPlaceholder": false,
+    "archived": false
   },
   {
     "id": "tut-sss-registration",
@@ -56,17 +61,19 @@
     "agencyId": "sss",
     "relatedRequirementId": "sss-employer-reg",
     "category": "registration",
-    "isPlaceholder": true
+    "isPlaceholder": true,
+    "archived": true
   },
   {
     "id": "tut-sss-contribution",
-    "title": "Paying Monthly SSS Contributions Online",
-    "description": "How to compute and remit monthly employee/employer SSS contributions.",
-    "videoUrl": "",
+    "title": "SSS contribution & remittance",
+    "description": "Video walkthrough: SSS contribution & remittance.",
+    "videoUrl": "https://www.youtube.com/watch?v=uYiafRwgD2w",
     "agencyId": "sss",
     "relatedRequirementId": "sss-contribution",
     "category": "contribution",
-    "isPlaceholder": true
+    "isPlaceholder": false,
+    "archived": false
   },
   {
     "id": "tut-philhealth-registration",
@@ -76,7 +83,8 @@
     "agencyId": "philhealth",
     "relatedRequirementId": "philhealth-employer-reg",
     "category": "registration",
-    "isPlaceholder": true
+    "isPlaceholder": true,
+    "archived": true
   },
   {
     "id": "tut-pagibig-registration",
@@ -86,36 +94,84 @@
     "agencyId": "pagibig",
     "relatedRequirementId": "pagibig-employer-reg",
     "category": "registration",
-    "isPlaceholder": true
+    "isPlaceholder": true,
+    "archived": true
   },
   {
     "id": "tut-lgu-permit-application",
-    "title": "Barangay clearance and Mayor's permit application",
-    "description": "Video walkthrough of the barangay clearance and Mayor's permit application steps.",
+    "title": "Barangay clearance (registration)",
+    "description": "Video walkthrough: Barangay clearance (registration).",
     "videoUrl": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
     "agencyId": "lgu",
-    "relatedRequirementId": "lgu-barangay-mayors-clearance",
+    "relatedRequirementId": "barangay-clearance",
     "category": "application",
-    "isPlaceholder": false
+    "isPlaceholder": false,
+    "archived": false
   },
   {
     "id": "tut-lgu-renewal",
-    "title": "Renewing your Mayor's permit",
-    "description": "Video walkthrough of the annual Mayor's permit renewal. Requirements and fees vary by LGU; check your city or municipality.",
+    "title": "Mayor's permit renewal",
+    "description": "Video walkthrough: Mayor's permit renewal.",
     "videoUrl": "https://www.youtube.com/watch?v=KysPCsJjbKI",
     "agencyId": "lgu",
-    "relatedRequirementId": "lgu-permit-renewal",
+    "relatedRequirementId": "mayor-permit-renewal",
     "category": "renewal",
-    "isPlaceholder": false
+    "isPlaceholder": false,
+    "archived": false
   },
   {
     "id": "tut-dti-registration",
-    "title": "DTI Business Name Registration (consultant reference)",
-    "description": "Tutorial from the supplied final links database.",
+    "title": "DTI business name registration",
+    "description": "Video walkthrough: DTI business name registration.",
     "videoUrl": "https://www.youtube.com/watch?v=FOnpl3ui3uI",
     "agencyId": "dti",
     "relatedRequirementId": "dti-registration",
     "category": "registration",
-    "isPlaceholder": false
+    "isPlaceholder": false,
+    "archived": false
+  },
+  {
+    "id": "tut-bmbe-registration",
+    "title": "BMBE registration",
+    "description": "Video walkthrough: BMBE registration.",
+    "videoUrl": "https://www.youtube.com/watch?v=4hg4Ghe_8fk",
+    "agencyId": "dti",
+    "category": "registration",
+    "isPlaceholder": false,
+    "archived": false,
+    "relatedRequirementId": "bmbe"
+  },
+  {
+    "id": "tut-barangay-renewal",
+    "title": "Barangay clearance renewal",
+    "description": "Video walkthrough: Barangay clearance renewal.",
+    "videoUrl": "https://www.youtube.com/watch?v=VKe6Y55hjts",
+    "agencyId": "lgu",
+    "category": "renewal",
+    "isPlaceholder": false,
+    "archived": false,
+    "relatedRequirementId": "barangay-renewal"
+  },
+  {
+    "id": "tut-philhealth-contribution",
+    "title": "PhilHealth contribution & remittance",
+    "description": "Video walkthrough: PhilHealth contribution & remittance.",
+    "videoUrl": "https://www.youtube.com/watch?v=6rJ3OaO3Jos",
+    "agencyId": "philhealth",
+    "category": "contribution",
+    "isPlaceholder": false,
+    "archived": false,
+    "relatedRequirementId": "philhealth-contribution"
+  },
+  {
+    "id": "tut-pagibig-contribution",
+    "title": "Pag-IBIG contribution & remittance",
+    "description": "Video walkthrough: Pag-IBIG contribution & remittance.",
+    "videoUrl": "https://www.youtube.com/watch?v=EmPhqavV2gU",
+    "agencyId": "pagibig",
+    "category": "contribution",
+    "isPlaceholder": false,
+    "archived": false,
+    "relatedRequirementId": "pagibig-contribution"
   }
 ]

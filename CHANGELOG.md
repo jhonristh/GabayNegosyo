@@ -2,6 +2,30 @@
 
 Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V0.3_STATUS.md`, `V0.10_FIXES.md`, `V0.12_CHANGES.md`, `V0.13_CHANGES.md`, `QA_REPORT.md` and `OWNER_REVIEW_v0.16.4.md`. "Not verified" means the environment used could not check it (no browser, no live Supabase, no email send, often no `next build`).
 
+## v1.0.0
+
+Release naming consolidated to v1.0.0 across package metadata, the current documentation, archive and archive root folder. Includes all changes through v0.18.3. Previous entries below remain historical. Functionality and previously documented verification limits are unchanged.
+
+## v0.18.3
+
+### Client-approved Premium price — 2026-11-10
+
+- Advertise ₱199/month as the monthly Premium subscription on landing, account, plan gates, Premium information and Terms.
+- Use one approved price in siteConfig; remove the obsolete optional environment price override.
+- Keep payment availability accurate: this website does not collect payment or establish automatic recurring billing. Premium access remains administrator-managed.
+- Clarify that YouTube tutorials remain Free and reminders are manual.
+
+## v0.18.2
+
+### Updated workbook and shared media cards — 2026-11-10
+
+- Imported updated workbook video cells V-07 and V-12–V-15 that were missing from the old JSON catalog. Published 13 unique complete video links; combined duplicate V-02/V-03 and withheld the truncated 10-character DTI renewal ID V-05.
+- Added BMBE and DTI to the tutorial catalog/filter. Archived obsolete employer-registration placeholders without relabeling contribution videos as registration.
+- Tutorials, renewal and requirement details share TutorialCard and the official privacy-enhanced YouTube iframe. No autoplay or copied thumbnails. Source timestamps are preserved; external navigation is only a fallback.
+- BIR Forms uses the same FormPreviewCard and document grid as Resources, including conditional forms and the expanded catalog. Blank URLs render no empty links; sample-only notices remain in previews.
+- Added strict YouTube host/ID parsing and three regression tests; updated old assertions for expanded catalog and shared components.
+- Live video availability, creator embed permissions, browser/device rendering and Supabase behavior remain unverified.
+
 ## v0.18.1
 
 ### Final consultant/client revision — 2026-11-10 (Asia/Manila)

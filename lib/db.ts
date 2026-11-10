@@ -191,7 +191,7 @@ export const db = {
   },
   getTutorials(): Tutorial[] {
     const s = readStore();
-    return mergeWithOverrides(tutorialsSeed as Tutorial[], s.adminOverrides.tutorials, s.adminOverrides.createdTutorials).filter(t => IN_SCOPE_AGENCIES.has(t.agencyId));
+    return mergeWithOverrides(tutorialsSeed as Tutorial[], s.adminOverrides.tutorials, s.adminOverrides.createdTutorials).filter(t => RESOURCE_AGENCIES.has(t.agencyId));
   },
 
   // ---- Admin CRUD ----

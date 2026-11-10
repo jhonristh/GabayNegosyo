@@ -35,6 +35,8 @@ function CheckoutInner() {
       <header className="intro">
         <p className="v05-kicker">PREMIUM</p>
         <h1>About Premium</h1>
+        <p className="gn-plan-price">{price}</p>
+        <p>Monthly Premium subscription</p>
         <p>Review what is included and how access is turned on for this account.</p>
       </header>
 
@@ -42,7 +44,7 @@ function CheckoutInner() {
         <strong id="pay-status-h">Payments are not connected yet</strong>
         <p>
           This version does not take payment and does not collect card or e-wallet details.{" "}
-          {price ? <>Price: <strong>{price}</strong>.</> : "No price is shown until payments are connected."}{" "}
+          The advertised subscription price is <strong>{price}</strong>.{" "}
           For now, Premium is turned on for an account by an administrator. Nothing is charged.
         </p>
       </section>

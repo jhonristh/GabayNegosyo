@@ -1,6 +1,6 @@
 # GabayNegosyo
 
-Current revision: **v0.18.1** — final consultant/client copy updates, consistent “above ₱3 million” boundary, sample-form notices, neutral renewal video links, and selective fluted-glass presentation. See CHANGELOG.md, docs/DESIGN.md and docs/TESTING.md for exact changes and verification limits.
+Current release: **v1.0.0** — client-approved Premium pricing at ₱199/month across the website. Includes updated workbook videos, shared YouTube players and document cards. Online billing remains unconnected; access is managed by administrators.
 
 **Your guide to business compliance.**
 
@@ -10,7 +10,7 @@ GabayNegosyo is a Progressive Web App that puts BIR, SSS, PhilHealth, Pag-IBIG a
 
 > GabayNegosyo is an independent informational platform. It is **not** a government agency, does not file documents, and does not replace official services. It began as a feasibility study and academic project. Always verify current forms, deadlines, fees and penalties with the issuing agency before acting.
 
-## New in v0.18.0
+## Included in v1.0.0
 
 The green arrow is restored and the growing shop stays. Try the shop illustration with a click or Enter/Space to turn on its little window light. This does not change your real progress.
 

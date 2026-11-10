@@ -84,8 +84,9 @@ test("PDF preview is limited to official BIR-hosted PDFs", opts, async () => {
 
 test("BIR forms page offers previews for its forms", () => {
   const page = read("app/bir-forms/page.tsx");
-  assert.ok(page.includes("PdfPreviewButton"), "BIR forms page renders preview buttons");
-  const count = (page.match(/<PdfPreviewButton/g) || []).length;
+  assert.ok(page.includes("FormPreviewCard"), "BIR forms reuses Resources cards");
+  assert.ok(read("components/FormPreviewCard.tsx").includes("Preview form"), "shared card retains PDF previews");
+  const count = (page.match(/<FormPreviewCard/g) || []).length;
   assert.ok(count >= 3, `expected preview buttons for conditions, requirements and the forms list (found ${count})`);
 });
 

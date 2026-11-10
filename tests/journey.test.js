@@ -51,9 +51,9 @@ test("BIR conditions are checkbox-driven and sourced", () => {
 
 test("filing videos only use YouTube links; placeholder remains for an empty list", () => {
   const videos = require("../data/filingVideos.json");
-  const clientIds = ["FOnpl3ui3uI", "8X2KZkCh1qo", "KysPCsJjbKI", "fid9IcKTKnY", "8C0TBHccWbc", "JxFprd6jMLw", "0MQLh_jxlak"];
+  const clientIds = ["FOnpl3ui3uI", "8X2KZkCh1qo", "KysPCsJjbKI", "fid9IcKTKnY", "8C0TBHccWbc", "JxFprd6jMLw", "0MQLh_jxlak", "4hg4Ghe_8fk", "VKe6Y55hjts", "uYiafRwgD2w", "6rJ3OaO3Jos", "EmPhqavV2gU", "zyjl55sUXHY"];
   assert.deepStrictEqual(videos.map((v) => v.videoUrl.match(/v=([\w-]{11})/)[1]).sort(), [...clientIds].sort());
-  assert.ok(read("components", "FilingTutorialVideos.tsx").includes("coming soon"));
+  assert.ok(read("components", "FilingTutorialVideos.tsx").includes("No tutorial videos are available."));
 });
 
 test("legacy routes redirect into the journey", () => {

@@ -6,8 +6,8 @@ import AuthGuard from "../../components/AuthGuard";
 import { db } from "../../lib/db";
 
 export default function TutorialsPage() {
-  const tutorials = useMemo(() => db.getTutorials(), []);
-  const agencies = useMemo(() => db.getAgencies(), []);
+  const tutorials = useMemo(() => db.getTutorials().filter(t => !t.isPlaceholder), []);
+  const agencies = useMemo(() => db.getResourceAgencies(), []);
   const [agencyFilter, setAgencyFilter] = useState<string>("all");
 
   const filtered = agencyFilter === "all" ? tutorials : tutorials.filter((t) => t.agencyId === agencyFilter);
@@ -22,9 +22,9 @@ export default function TutorialsPage() {
       <main className="screen v06-library">
         <header className="intro">
           <h1>Learning hub</h1>
-          <p>Curated video walkthroughs for key requirements. Where a verified video is not available yet, the card says so.</p>
+          <p>Watch the supplied registration, renewal and filing walkthroughs directly here.</p>
           <p className="hint">
-            {tutorials.filter((t) => !t.isPlaceholder).length} video(s) available · {tutorials.filter((t) => t.isPlaceholder).length} awaiting a verified video. The videos are hosted on YouTube and belong to their creators (CTTO: credit to the owner).
+            {tutorials.length} supplied video(s). The videos are hosted on YouTube and belong to their creators (CTTO: credit to the owner).
           </p>
         </header>
 

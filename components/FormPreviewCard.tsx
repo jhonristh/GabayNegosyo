@@ -2,8 +2,9 @@
 
 import { useEffect, useRef, useState } from "react";
 import type { ResourceItem } from "../lib/types";
+import Link from "next/link";
 
-export default function FormPreviewCard({ resource }: { resource: ResourceItem }) {
+export default function FormPreviewCard({ resource, deadline, requirementHref }: { resource: ResourceItem; deadline?: string; requirementHref?: string }) {
   const [open, setOpen] = useState(false);
   const dialog = useRef<HTMLDialogElement>(null);
   const pdf = /^https:\/\/(bir-cdn\.bir\.gov\.ph)\//.test(resource.url) && /\.pdf(?:$|[?#])/i.test(resource.url);
@@ -15,7 +16,7 @@ export default function FormPreviewCard({ resource }: { resource: ResourceItem }
     <div className="v06-media-content"><p className="v06-eyebrow">{resource.agencyId.toUpperCase()} · FORM</p><h3>{resource.title}</h3><p>{resource.description}</p><div className="v06-card-actions">
       {pdf && <button type="button" className="secondary-btn" onClick={() => setOpen(true)}>Preview form</button>}
       {resource.url ? <a className="tutorial-link" href={resource.url} target="_blank" rel="noopener noreferrer">{pdf ? "Open official PDF ↗" : "Open source ↗"}</a> : <span className="hint">Official link awaiting consultant confirmation</span>}
-    </div><p className="verified">Source checked: {resource.lastVerified}</p></div>
+    </div>{deadline && <p className="deadline">{deadline}</p>}{requirementHref && <Link className="tutorial-link" href={requirementHref}>View requirement details</Link>}{resource.lastVerified && <p className="verified">Source checked: {resource.lastVerified}</p>}</div>
     {pdf && <dialog ref={dialog} className="v06-preview-dialog" onClose={() => setOpen(false)} aria-label={`Preview ${resource.title}`}>
       <div className="v06-dialog-header"><div><p className="v06-eyebrow">{resource.agencyId.toUpperCase()} · OFFICIAL PDF</p><h2>{resource.title}</h2></div><button type="button" className="v06-close" onClick={() => dialog.current?.close()} aria-label="Close preview">×</button></div>
       <p className="form-reference-note" role="note">The form provided is a sample form of the prescribed BIR form for reference purposes only. Actual filing must be completed through the applicable BIR electronic filing system, such as eBIRForms or eFPS.</p>

@@ -1,44 +1,80 @@
 [
   {
-    "id": "dti-registration",
-    "title": "Registering your DTI business name",
-    "category": "Business Registration",
-    "videoUrl": "https://www.youtube.com/watch?v=FOnpl3ui3uI"
+    "id": "tut-bir-registration",
+    "title": "BIR registration (ORUS / 1901)",
+    "category": "registration",
+    "videoUrl": "https://www.youtube.com/watch?v=zyjl55sUXHY"
   },
   {
-    "id": "barangay-and-permit",
-    "title": "Barangay clearance and Mayor's permit application",
-    "category": "Business Registration",
-    "videoUrl": "https://www.youtube.com/watch?v=8X2KZkCh1qo"
-  },
-  {
-    "id": "mayor-permit-renewal",
-    "title": "Renewing your Mayor's permit",
-    "category": "Renewal",
-    "videoUrl": "https://www.youtube.com/watch?v=KysPCsJjbKI"
-  },
-  {
-    "id": "bir-1701",
-    "title": "Filing BIR Form 1701",
-    "category": "BIR filing",
+    "id": "tut-bir-1701",
+    "title": "BIR Form 1701",
+    "category": "filing",
     "videoUrl": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s"
   },
   {
-    "id": "bir-1701q",
-    "title": "Filing BIR Form 1701-Q (quarterly)",
-    "category": "BIR filing",
+    "id": "tut-bir-1701q",
+    "title": "BIR Form 1701-Q",
+    "category": "filing",
     "videoUrl": "https://www.youtube.com/watch?v=8C0TBHccWbc"
   },
   {
-    "id": "bir-1701a",
-    "title": "Filing BIR Form 1701-A",
-    "category": "BIR filing",
+    "id": "tut-bir-1701a",
+    "title": "BIR Form 1701-A",
+    "category": "filing",
     "videoUrl": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s"
   },
   {
-    "id": "bir-1701ms",
-    "title": "Filing BIR Form 1701-MS (micro and small taxpayers)",
-    "category": "BIR filing",
+    "id": "tut-bir-1701ms",
+    "title": "BIR Form 1701-MS",
+    "category": "filing",
     "videoUrl": "https://www.youtube.com/watch?v=0MQLh_jxlak"
+  },
+  {
+    "id": "tut-sss-contribution",
+    "title": "SSS contribution & remittance",
+    "category": "contribution",
+    "videoUrl": "https://www.youtube.com/watch?v=uYiafRwgD2w"
+  },
+  {
+    "id": "tut-lgu-permit-application",
+    "title": "Barangay clearance (registration)",
+    "category": "application",
+    "videoUrl": "https://www.youtube.com/watch?v=8X2KZkCh1qo"
+  },
+  {
+    "id": "tut-lgu-renewal",
+    "title": "Mayor's permit renewal",
+    "category": "renewal",
+    "videoUrl": "https://www.youtube.com/watch?v=KysPCsJjbKI"
+  },
+  {
+    "id": "tut-dti-registration",
+    "title": "DTI business name registration",
+    "category": "registration",
+    "videoUrl": "https://www.youtube.com/watch?v=FOnpl3ui3uI"
+  },
+  {
+    "id": "tut-bmbe-registration",
+    "title": "BMBE registration",
+    "category": "registration",
+    "videoUrl": "https://www.youtube.com/watch?v=4hg4Ghe_8fk"
+  },
+  {
+    "id": "tut-barangay-renewal",
+    "title": "Barangay clearance renewal",
+    "category": "renewal",
+    "videoUrl": "https://www.youtube.com/watch?v=VKe6Y55hjts"
+  },
+  {
+    "id": "tut-philhealth-contribution",
+    "title": "PhilHealth contribution & remittance",
+    "category": "contribution",
+    "videoUrl": "https://www.youtube.com/watch?v=6rJ3OaO3Jos"
+  },
+  {
+    "id": "tut-pagibig-contribution",
+    "title": "Pag-IBIG contribution & remittance",
+    "category": "contribution",
+    "videoUrl": "https://www.youtube.com/watch?v=EmPhqavV2gU"
   }
 ]

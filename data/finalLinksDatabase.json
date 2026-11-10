@@ -623,106 +623,136 @@
       "id": "V-01",
       "subject": "DTI business name registration",
       "url": "https://www.youtube.com/watch?v=FOnpl3ui3uI",
-      "urlStatus": "Reconstructed (PDF line-wrap joined)",
-      "notes": "Printed as '...v=FOnpl3u' + line break + 'i3uI' (11 chars, valid ID length)."
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "Printed as '...v=FOnpl3u' + line break + 'i3uI' (11 chars, valid ID length).",
+      "workbookUrl": "https://www.youtube.com/watch?v=FOnpl3ui3uI",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-01"
     },
     {
       "id": "V-02",
       "subject": "Barangay clearance (registration)",
       "url": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
-      "urlStatus": "Reconstructed (PDF line-wrap joined)",
-      "notes": "Printed '8X2KZk' + 'Ch1qo'."
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "Printed '8X2KZk' + 'Ch1qo'.",
+      "workbookUrl": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-02"
     },
     {
       "id": "V-03",
       "subject": "Mayor's permit (registration, References table)",
       "url": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
-      "urlStatus": "Reconstructed (PDF line-wrap joined)",
-      "notes": "IDENTICAL to V-02 in the PDF - probable copy error; client to confirm. Duplicate mayor/barangay video is withheld pending FL-10."
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "IDENTICAL to V-02 in the PDF - probable copy error; client to confirm. Duplicate mayor/barangay video is withheld pending FL-10.",
+      "workbookUrl": "https://www.youtube.com/watch?v=8X2KZkCh1qo",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-03"
     },
     {
       "id": "V-04",
       "subject": "BMBE registration",
       "url": "https://www.youtube.com/watch?v=4hg4Ghe_8fk",
-      "urlStatus": "Complete (as printed in PDF)",
-      "notes": ""
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "",
+      "workbookUrl": "https://www.youtube.com/watch?v=4hg4Ghe_8fk",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-04"
     },
     {
       "id": "V-05",
       "subject": "DTI business name renewal",
       "url": "https://www.youtube.com/watch?v=-tESIU9ikc",
-      "urlStatus": "TRUNCATED in PDF - client must supply",
-      "notes": "ID has only 10 characters (YouTube IDs have 11) - last character lost in the PDF. Not guessed."
+      "urlStatus": "TRUNCATED - complete video ID required",
+      "notes": "ID has only 10 characters (YouTube IDs have 11) - last character lost in the PDF. Not guessed.",
+      "workbookUrl": "https://www.youtube.com/watch?v=-tESIU9ikc",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-05"
     },
     {
       "id": "V-06",
       "subject": "Mayor's permit renewal",
       "url": "https://www.youtube.com/watch?v=KysPCsJjbKI",
-      "urlStatus": "Reconstructed (PDF line-wrap joined)",
-      "notes": "Printed 'KysPC' + 'sJjbKI'."
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "Printed 'KysPC' + 'sJjbKI'.",
+      "workbookUrl": "https://www.youtube.com/watch?v=KysPCsJjbKI",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-06"
     },
     {
       "id": "V-07",
       "subject": "Barangay clearance renewal",
-      "url": "",
-      "urlStatus": "NO URL in PDF",
-      "notes": "Video cell is blank in the PDF."
+      "url": "https://youtu.be/VKe6Y55hjts?si=kxeaykJzSWfMvorb",
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "Video cell is blank in the PDF.",
+      "workbookUrl": "https://youtu.be/VKe6Y55hjts?si=kxeaykJzSWfMvorb",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-07"
     },
     {
       "id": "V-08",
       "subject": "BIR Form 1701",
       "url": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s",
-      "urlStatus": "Complete (as printed in PDF)",
-      "notes": ""
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "",
+      "workbookUrl": "https://www.youtube.com/watch?v=fid9IcKTKnY&t=43s",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-08"
     },
     {
       "id": "V-09",
       "subject": "BIR Form 1701-Q",
       "url": "https://www.youtube.com/watch?v=8C0TBHccWbc",
-      "urlStatus": "Complete (as printed in PDF)",
-      "notes": ""
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "",
+      "workbookUrl": "https://www.youtube.com/watch?v=8C0TBHccWbc",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-09"
     },
     {
       "id": "V-10",
       "subject": "BIR Form 1701-A",
       "url": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s",
-      "urlStatus": "Complete (as printed in PDF)",
-      "notes": ""
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "",
+      "workbookUrl": "https://www.youtube.com/watch?v=JxFprd6jMLw&t=11s",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-10"
     },
     {
       "id": "V-11",
       "subject": "BIR Form 1701-MS",
       "url": "https://www.youtube.com/watch?v=0MQLh_jxlak",
-      "urlStatus": "Complete (as printed in PDF)",
-      "notes": ""
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "",
+      "workbookUrl": "https://www.youtube.com/watch?v=0MQLh_jxlak",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-11"
     },
     {
       "id": "V-12",
       "subject": "SSS contribution & remittance",
-      "url": "",
-      "urlStatus": "NO URL in PDF",
-      "notes": "Video cell is blank in the PDF."
+      "url": "https://youtu.be/uYiafRwgD2w?si=eMAGqV8akZmR0P-y",
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "Video cell is blank in the PDF.",
+      "workbookUrl": "https://youtu.be/uYiafRwgD2w?si=eMAGqV8akZmR0P-y",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-12"
     },
     {
       "id": "V-13",
       "subject": "PhilHealth contribution & remittance",
-      "url": "",
-      "urlStatus": "NO URL in PDF",
-      "notes": "Video cell is blank in the PDF."
+      "url": "https://youtu.be/6rJ3OaO3Jos?si=CkvpTkcrySallbjW",
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "Video cell is blank in the PDF.",
+      "workbookUrl": "https://youtu.be/6rJ3OaO3Jos?si=CkvpTkcrySallbjW",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-13"
     },
     {
       "id": "V-14",
       "subject": "Pag-IBIG contribution & remittance",
-      "url": "",
-      "urlStatus": "NO URL in PDF",
-      "notes": "Video cell is blank in the PDF."
+      "url": "https://youtu.be/EmPhqavV2gU?si=sTTsfX2xeuz-tfIll",
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "Video cell is blank in the PDF.",
+      "workbookUrl": "https://youtu.be/EmPhqavV2gU?si=sTTsfX2xeuz-tfIll",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-14"
     },
     {
       "id": "V-15",
       "subject": "BIR registration (ORUS / 1901)",
-      "url": "",
-      "urlStatus": "NO URL in PDF",
-      "notes": "No video listed in the PDF."
+      "url": "https://youtu.be/zyjl55sUXHY?si=fZOrHCrt14352DWL",
+      "urlStatus": "Supplied in updated workbook; live playback unverified",
+      "notes": "No video listed in the PDF.",
+      "workbookUrl": "https://youtu.be/zyjl55sUXHY?si=fZOrHCrt14352DWL",
+      "workbookSource": "FinalGabayNegosyo_Forms_Links_Database_v2(1).xlsx / Video Tutorials / V-15"
     }
   ],
   "flags": [

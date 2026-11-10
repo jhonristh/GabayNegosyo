@@ -1,4 +1,14 @@
 /* Selective editorial refinement; business content remains on opaque surfaces. */
+.gn-plan-price { font-family: var(--font-display); font-size: clamp(1.8rem,4vw,2.6rem); font-weight: 600; line-height: 1.2; letter-spacing: -.04em; margin-block: 16px; color: var(--ew-ink); }
+.featured .gn-plan-price { color: inherit; }
+.premium-lock .gn-plan-price { font-size: 1.7rem; }
+.gn-youtube-player { width: 100%; aspect-ratio: 16/9; min-height: 200px; background: var(--ew-soft); overflow: hidden; }
+.gn-youtube-player iframe { display: block; width: 100%; height: 100%; min-height: 200px; border: 0; }
+.gn-video-unavailable { display: grid; place-items: center; min-height: 200px; padding: 24px; color: var(--ew-ink); }
+.gn-player-help { margin-top: 16px; color: var(--ew-muted); font-size: .82rem; }
+.gn-player-help summary { cursor: pointer; padding-block: 8px; }
+.gn-tutorial-card .v06-media-content { flex: 1; }
+.gn-form-library > .v06-media-grid { margin-top: 24px; }
 :root { --gn-refine-ease: cubic-bezier(.16,1,.3,1); }
 .gn-home h1,.screen h1 { text-wrap: balance; letter-spacing: -.04em; }
 .gn-home h2,.screen h2 { text-wrap: balance; }

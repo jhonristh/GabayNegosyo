@@ -62,8 +62,8 @@ export default function TermsPage() {
           title: "Premium",
           children: (
             <p>
-              Upgrading to Premium in this version of the app is simulated: no payment is taken, and
-              no real subscription is created.
+              The advertised Premium plan is a monthly subscription. Online payments are not connected
+              in this version: no payment is taken and no automatic subscription is created here.
               {siteConfig.premiumPriceLabel ? ` Premium pricing: ${siteConfig.premiumPriceLabel}.` : ""}
             </p>
           ),
