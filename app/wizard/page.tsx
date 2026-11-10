@@ -75,7 +75,7 @@ function WizardInner() {
   const [projectedGrossSales, setProjectedGrossSales] = useState<number | "">(existing ? existing.projectedGrossSales : "");
   const [projectedExpenses, setProjectedExpenses] = useState<number | "">(existing ? existing.projectedExpenses : "");
   const [taxType, setTaxType] = useState<"8_percent" | "graduated">(existing?.taxType === "graduated" || existing?.taxType === "vat_registered" ? "graduated" : "8_percent");
-  useEffect(() => { if (Number(projectedGrossSales)>=3000000 && taxType!=="graduated") setTaxType("graduated"); }, [projectedGrossSales,taxType]);
+  useEffect(() => { if (Number(projectedGrossSales)>3000000 && taxType!=="graduated") setTaxType("graduated"); }, [projectedGrossSales,taxType]);
   const [deductionMethod, setDeductionMethod] = useState<"osd" | "itemized">(existing?.deductionMethod === "itemized" ? "itemized" : "osd");
   const [leaseApplicability, setLeaseApplicability] = useState<"" | "yes" | "no" | "na">(existing ? (existing.leaseApplicability ?? (existing.hasLease ? "yes" : "no")) : "");
   const [saveError, setSaveError] = useState<string | null>(null);
@@ -118,7 +118,7 @@ function WizardInner() {
   const problem = stepProblem();
 
   function generateRoadmap() {
-    const effectiveTaxType = Number(projectedGrossSales) >= 3000000 ? "vat_registered" : taxType;
+    const effectiveTaxType = Number(projectedGrossSales) > 3000000 ? "vat_registered" : taxType;
     const profile: BusinessProfile = {
       id: user ? `biz-${user.id}` : "biz-guest",
       userId: user ? user.id : "guest",
@@ -171,6 +171,8 @@ function WizardInner() {
         </p>
       </header>
 
+      <div className="gn-onboarding-progress" role="progressbar" aria-label="Business profile questions" aria-valuemin={0} aria-valuemax={STEPS.length - 1} aria-valuenow={step} aria-valuetext={`Step ${step + 1} of ${STEPS.length}: ${STEPS[step]}`}><span style={{width: `${step / (STEPS.length - 1) * 100}%`}} /></div>
+      <p className="gn-onboarding-hint">One step at a time. You can go back to review your answers.</p>
       <Stepper step={step} />
 
       {step === 0 && (
@@ -375,13 +377,13 @@ function WizardInner() {
       {step === 6 && (
         <section className="question">
           <label className="question-label">Tax Type</label>
-          <p className="hint">The 8% option is available only to qualified taxpayers and is generally for annual gross sales/receipts not exceeding ₱3,000,000. Confirm eligibility with the BIR or a tax professional. At ₱3,000,000 or more, this prototype disables 8% and flags VAT registration for review with BIR.</p>
-          {Number(projectedGrossSales) >= 3000000 && <p role="status" className="hint">Projected sales at or above ₱3,000,000: 8% is unavailable in this prototype; graduated taxation and VAT registration are flagged for verification.</p>}
+          <p className="hint">The 8% option is available only to qualified taxpayers and is generally for annual gross sales/receipts not exceeding ₱3,000,000. Confirm eligibility with the BIR or a tax professional. Above ₱3,000,000, this prototype disables 8% and flags VAT registration for review with BIR.</p>
+          {Number(projectedGrossSales) > 3000000 && <p role="status" className="hint">Projected sales above ₱3,000,000: 8% is unavailable in this prototype; graduated taxation and VAT registration are flagged for verification.</p>}
           <div className="option-grid">
-            <button type="button" aria-pressed={taxType === "8_percent"} className={`option-btn ${taxType === "8_percent" ? "selected" : ""}`} disabled={Number(projectedGrossSales) >= 3000000} onClick={() => setTaxType("8_percent")}>8% Option</button>
-            <button type="button" aria-pressed={taxType === "graduated" || Number(projectedGrossSales) >= 3000000} className={`option-btn ${taxType === "graduated" ? "selected" : ""}`} onClick={() => setTaxType("graduated")}>Graduated Tax</button>
+            <button type="button" aria-pressed={taxType === "8_percent"} className={`option-btn ${taxType === "8_percent" ? "selected" : ""}`} disabled={Number(projectedGrossSales) > 3000000} onClick={() => setTaxType("8_percent")}>8% Option</button>
+            <button type="button" aria-pressed={taxType === "graduated" || Number(projectedGrossSales) > 3000000} className={`option-btn ${taxType === "graduated" ? "selected" : ""}`} onClick={() => setTaxType("graduated")}>Graduated Tax</button>
           </div>
-          {(taxType === "graduated" || Number(projectedGrossSales) >= 3000000) && <>
+          {(taxType === "graduated" || Number(projectedGrossSales) > 3000000) && <>
             <label className="question-label" style={{marginTop:16}}>Deduction method</label>
             <div className="option-grid">
               <button type="button" aria-pressed={deductionMethod === "osd"} className={`option-btn ${deductionMethod === "osd" ? "selected" : ""}`} onClick={() => setDeductionMethod("osd")}>Optional Standard Deduction (OSD)</button>
@@ -393,8 +395,8 @@ function WizardInner() {
               <p className="hint">Expenses are relevant to the itemized deduction method. This estimate is for guidance only, not an official tax computation.</p>
             </section>}
           </>}
-          {taxType === "8_percent" && Number(projectedGrossSales) < 3000000 && <p className="hint">Illustrative 8% income-tax due: ₱{(estimateEightPercentTaxDue(Number(projectedGrossSales)||0,taxpayerType==="mixed_income_earner")??0).toLocaleString("en-PH",{maximumFractionDigits:2})}. {taxpayerType==="mixed_income_earner" ? "No ₱250,000 deduction applied pending accountant confirmation (FL-16)." : "₱250,000 deduction included for qualified self-employed filers."} This is not an official assessment.</p>}
-          {Number(projectedGrossSales) >= 3000000 && <p className="hint">Graduated tax estimate is pending consultant-provided tax table (FL-17). No estimate is calculated.</p>}
+          {taxType === "8_percent" && Number(projectedGrossSales) <= 3000000 && <p className="hint">Illustrative 8% income-tax due: ₱{(estimateEightPercentTaxDue(Number(projectedGrossSales)||0,taxpayerType==="mixed_income_earner")??0).toLocaleString("en-PH",{maximumFractionDigits:2})}. {taxpayerType==="mixed_income_earner" ? "No ₱250,000 deduction applied pending accountant confirmation (FL-16)." : "₱250,000 deduction included for qualified self-employed filers."} This is not an official assessment.</p>}
+          {Number(projectedGrossSales) > 3000000 && <p className="hint">Graduated tax estimate is pending consultant-provided tax table (FL-17). No estimate is calculated.</p>}
         </section>
       )}
 
@@ -447,8 +449,8 @@ function WizardInner() {
             <dt>Projected annual gross sales</dt>
             <dd>₱{Number(projectedGrossSales || 0).toLocaleString()}</dd>
             <dt>Tax Type</dt>
-            <dd>{Number(projectedGrossSales) >= 3000000 ? "Graduated / VAT registration to verify" : taxType === "8_percent" ? "8% Option" : `Graduated Tax — ${deductionMethod === "osd" ? "OSD" : "Itemized Deductions"}`}</dd>
-            {(taxType === "graduated" || Number(projectedGrossSales) >= 3000000) && <><dt>Projected annual expenses</dt><dd>₱{Number(projectedExpenses || 0).toLocaleString()}</dd></>}
+            <dd>{Number(projectedGrossSales) > 3000000 ? "Graduated / VAT registration to verify" : taxType === "8_percent" ? "8% Option" : `Graduated Tax — ${deductionMethod === "osd" ? "OSD" : "Itemized Deductions"}`}</dd>
+            {(taxType === "graduated" || Number(projectedGrossSales) > 3000000) && <><dt>Projected annual expenses</dt><dd>₱{Number(projectedExpenses || 0).toLocaleString()}</dd></>}
             <dt>BMBE interest / registration</dt><dd>{bmbeIntent.replace(/_/g, " ")}{bmbeAssets !== "" ? ` — estimated assets excluding land ₱${Number(bmbeAssets).toLocaleString("en-PH")}` : ""}</dd>
             <dt>Business name</dt>
             <dd>{businessName || "—"}</dd>

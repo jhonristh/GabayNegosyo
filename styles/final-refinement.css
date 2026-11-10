@@ -1,0 +1,42 @@
+/* Selective editorial refinement; business content remains on opaque surfaces. */
+:root { --gn-refine-ease: cubic-bezier(.16,1,.3,1); }
+.gn-home h1,.screen h1 { text-wrap: balance; letter-spacing: -.04em; }
+.gn-home h2,.screen h2 { text-wrap: balance; }
+.gn-home p,.guide-card p { text-wrap: pretty; }
+.gn-home .gn-hero { padding-block: clamp(40px,7vw,100px); }
+.gn-growth-hero::before {
+  content: ""; position: absolute; pointer-events: none; z-index: -1;
+  inset: 12% 0 15% 10%; border-radius: 32px; border: 1px solid var(--ew-line);
+  background: repeating-linear-gradient(90deg, #ffffff38 0 3px, #ffffff08 3px 10px, #183d300c 10px 12px);
+  -webkit-backdrop-filter: blur(9px); backdrop-filter: blur(9px);
+}
+html[data-theme="night"] .gn-growth-hero::before { background: repeating-linear-gradient(90deg,#ffffff10 0 3px,#ffffff03 3px 10px,#00000018 10px 12px); }
+.kit-sidebar { background: var(--ew-canvas); }
+.kit-side-foot { position: relative; isolation: isolate; }
+.kit-side-foot::before { content: ""; position: absolute; inset: 0; z-index: -1; pointer-events: none; opacity: .45; background: repeating-linear-gradient(90deg,transparent 0 7px,var(--ew-line) 7px 8px,transparent 8px 12px); }
+.gn-home .gn-pillars article,.checklist-card,.rf-renewal-card,.v06-media-card { transition: border-color 180ms ease,box-shadow 240ms var(--gn-refine-ease); }
+.gn-home .gn-pillars article:hover,.rf-renewal-card:hover { border-color: var(--ew-muted); box-shadow: var(--ew-shadow); }
+.primary-btn,.secondary-btn,.option-btn,.filter-chip { transition: transform 180ms var(--gn-refine-ease),background-color 180ms ease,border-color 180ms ease; }
+.option-btn:active,.filter-chip:active { transform: scale(.985); }
+.wizard .question { background: var(--ew-surface); border: 1px solid var(--ew-line); border-radius: 16px; padding: clamp(22px,4vw,40px); animation: gn-question-enter 260ms var(--gn-refine-ease); }
+.gn-onboarding-progress { height: 8px; border-radius: 99px; background: var(--ew-line); overflow: hidden; margin-block: 24px 12px; }
+.gn-onboarding-progress span { display: block; height: 100%; border-radius: inherit; background: var(--gn-green); transition: width 380ms var(--gn-refine-ease); }
+.gn-onboarding-hint { color: var(--ew-muted); font-size: .85rem; margin-bottom: 24px; }
+.wizard .option-btn { min-height: 56px; text-align: left; }
+.wizard .option-btn.selected { box-shadow: inset 0 0 0 1px var(--gn-green); }
+.v05-dashboard .metric-card { box-shadow: none; border: 1px solid var(--ew-line); }
+.filter-row { gap: 10px; }
+.filter-row .text-input { min-width: 0; }
+.gn-filter-summary { display: flex; justify-content: space-between; gap: 16px; align-items: center; margin-block: 12px 24px; }
+.gn-filter-summary p { margin: 0; }
+.gn-video-link { display: flex; flex-direction: column; justify-content: center; align-items: center; gap: 16px; min-height: 180px; width: 100%; color: var(--ew-ink); background: var(--ew-soft); text-decoration: none; font-size: .85rem; }
+.gn-video-play { display: grid; place-items: center; width: 48px; height: 48px; border-radius: 50%; border: 1px solid var(--ew-line); background: var(--ew-surface); transition: transform 180ms var(--gn-refine-ease); }
+.gn-video-link:hover .gn-video-play { transform: scale(1.08); }
+.form-reference-note { margin: 16px 24px; padding: 16px; border-left: 3px solid var(--gn-green); background: var(--ew-soft); color: var(--ew-ink); font-size: .875rem; line-height: 1.7; }
+/* One entrance rather than perpetual decorative movement. */
+.gn-growth-preview { animation: none; }
+.gn-arrow-shine { animation-iteration-count: 1; }
+@keyframes gn-question-enter { from { opacity: .75; transform: translateY(6px); } to { opacity: 1; transform: none; } }
+@media(max-width:600px) { .filter-row { flex-wrap: wrap; } .filter-row select { flex: 1 1 140px; } .gn-growth-hero::before { border-radius: 20px; inset-inline: 5%; } }
+@media(prefers-reduced-transparency:reduce) { .gn-growth-hero::before { background: var(--ew-soft); backdrop-filter: none; -webkit-backdrop-filter: none; } .kit-side-foot::before { display: none; } }
+@media(prefers-reduced-motion:reduce) { .gn-growth-hero::before { backdrop-filter: none; -webkit-backdrop-filter: none; } .wizard .question,.gn-arrow-shine { animation: none; } .gn-onboarding-progress span,.gn-video-play,.option-btn,.filter-chip { transition: none; } }

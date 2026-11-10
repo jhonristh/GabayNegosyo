@@ -1,5 +1,21 @@
 # Design system
 
+## Final refinement — v0.18.1
+
+The final imported layer is styles/final-refinement.css. Original cream/emerald colors, Inter/Space Grotesk, logo, growth arrow and storefront stay in place.
+
+Selected references (design interpretation, not copied code or assets):
+- Apple (apple.com) and Framer (framer.com): short transform/opacity entrances, gentle pressed states and progress transitions. Continuous preview floating is removed; reduced motion is supported.
+- Linear (linear.app) and Notion (notion.com): quiet borders, opaque task surfaces and restrained dashboard styling.
+- Duolingo (duolingo.com): visible question progress and reassuring navigation copy, without streaks or points.
+- Airbnb (airbnb.com): visible result counts and clear-filter actions.
+- Pentagram (pentagram.com), Aesop (aesop.com), Stripe (stripe.com): balanced headings, breathing room and existing product-preview hierarchy. Existing typefaces remain.
+- MUJI: considered for restraint; current homepage redirected to a maintenance notice, so no live UI behavior was inferred.
+
+Fluted texture is decorative: a CSS pseudo-element behind the hero and a faint sidebar-footer texture. The hero uses a 9px backdrop blur with an opaque reduced-transparency fallback. Text/cards use solid surfaces. No WebGL, animation dependency, imported brand asset or scroll locking is added.
+
+Final motion is native CSS/Web Animations. Unsupported backdrop filters retain the decorative texture and border. Mobile stacking, night tokens and reduced motion/transparency rules are included; browser verification remains outstanding.
+
 The single reference for how GabayNegosyo looks and why. For rules about what contributors may change, see [AGENTS.md](../AGENTS.md).
 
 ## 1. Principles

@@ -1,5 +1,13 @@
 # Testing and verification
 
+## v0.18.1 consultant/client revision
+
+Local validation: all 331 tests passed; TypeScript production build passed (44 prerendered pages); 46 contrast pairs passed. Threshold regression covers ₱2,999,999, ₱3,000,000 and ₱3,000,001. The intended behavior change is eligibility cutoff above, rather than at, ₱3 million.
+
+The cloud browser could not reach the local preview (ERR_CONNECTION_REFUSED). No browser screenshot, mobile rendering, keyboard flow, real audio, third-party video availability or live Supabase verification is claimed.
+
+Acceptance: compare both employee branches of barangay instructions; inspect the registration DST description and both PDF dialogs; enter ₱3 million and ₱3 million + 1 in wizard/calculator; inspect neutral external YouTube cards; review light/night and reduced motion at 360/768/1440px; check onboarding progress and filter resets with keyboard.
+
 ## Gates
 
 Run these before shipping:

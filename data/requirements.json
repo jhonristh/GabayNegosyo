@@ -282,7 +282,7 @@
       }
     ],
     "instructions": [
-      "Secure Barangay Clearance from the Barangay Office covering the business address.",
+      "Apply at the barangay where the business is located, or through the LGU's Business One-Stop Shop (BOSS), if available.",
       "Apply for the Mayor's Permit at the City / Municipal Hall.",
       "Confirm business location and address (Lease Contract or Land Title)."
     ],
@@ -1342,7 +1342,7 @@
     "id": "bir-registration",
     "agencyId": "bir",
     "name": "BIR Registration via ORUS and eCOR",
-    "description": "Register through BIR ORUS. No annual registration fee under EOPT; ₱30 loose documentary stamp tax applies for eCOR where applicable. Use BIR-printed invoices or secure ATP.",
+    "description": "Register through BIR ORUS. No annual registration fee under EOPT; ₱30 DST may apply to eCOR issuance. Payment of DST is also required for written lease contracts. Use BIR-printed invoices or secure an ATP.",
     "whoItAppliesTo": "New businesses",
     "applicabilityRules": {
       "isRegisteringNewBusiness": true

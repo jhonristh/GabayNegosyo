@@ -1,5 +1,7 @@
 # GabayNegosyo
 
+Current revision: **v0.18.1** — final consultant/client copy updates, consistent “above ₱3 million” boundary, sample-form notices, neutral renewal video links, and selective fluted-glass presentation. See CHANGELOG.md, docs/DESIGN.md and docs/TESTING.md for exact changes and verification limits.
+
 **Your guide to business compliance.**
 
 This ZIP includes the **Entrepreneur's Workspace** visual refinement: an interactive landing preview, cream-and-emerald styling, progress-based storefront artwork, refined dashboard/checklist, and reduced-motion support. See `docs/DESIGN.md` for changes and `docs/TESTING.md` for validation limits. Extract, run `npm ci`, copy `.env.example` to `.env.local`, configure your own values, then run `npm run dev`. The ZIP contains source code rather than installed dependencies or a deployed site.

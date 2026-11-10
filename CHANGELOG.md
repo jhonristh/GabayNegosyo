@@ -2,6 +2,17 @@
 
 Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V0.3_STATUS.md`, `V0.10_FIXES.md`, `V0.12_CHANGES.md`, `V0.13_CHANGES.md`, `QA_REPORT.md` and `OWNER_REVIEW_v0.16.4.md`. "Not verified" means the environment used could not check it (no browser, no live Supabase, no email send, often no `next build`).
 
+## v0.18.1
+
+### Final consultant/client revision — 2026-11-10 (Asia/Manila)
+
+- Added the BOSS option to barangay clearance instructions and the requested DST wording to BIR registration.
+- Added sample-only/electronic-filing notices on the BIR Forms page and both PDF preview dialogs.
+- Changed the sales cutoff consistently to above ₱3,000,000 in wizard, calculator, estimator and applicability rules. Exactly ₱3,000,000 retains the illustrative 8% option, subject to eligibility.
+- Renewal filing videos now use original neutral cards and external YouTube links with creator attribution; no third-party thumbnails or embedded player loads.
+- Added selective fluted glass, quiet entrance/interaction motion, onboarding progress, editorial spacing and filter reset/result counts while retaining the established colors, fonts and artwork.
+- Local TypeScript/build, 331 tests and 46 contrast pairs pass. Browser preview could not reach the local server; visual/device and live Supabase testing remain unverified.
+
 ## v0.18.0
 
 ### Growth arrow, living shop and renewal focus — 2026-11-09

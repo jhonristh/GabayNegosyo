@@ -9,6 +9,7 @@ import "../styles/emerald.css";
 import "../styles/premium.css";
 import "../styles/workspace.css";
 import "../styles/renewal-focus.css";
+import "../styles/final-refinement.css";
 // K2: self-hosted via @fontsource (npm-bundled WOFF2 files, no runtime
 // fetch to fonts.googleapis.com / fonts.gstatic.com at build or request
 // time — more robust than next/font/google, which still makes a live

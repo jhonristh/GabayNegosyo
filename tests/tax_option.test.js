@@ -34,13 +34,14 @@ test('FL-16: mixed-income estimate excludes 250,000 deduction pending consultant
   assert.equal(f(0,true),0);
 });
 
-test('at or above 3,000,000 the 8% estimator is unavailable and wizard flags VAT',async()=>{
+test('above 3,000,000 the 8% estimator is unavailable; exactly 3,000,000 remains available',async()=>{
   const {estimateEightPercentTaxDue:f}=await load('lib/penalty.ts');
-  assert.equal(f(3000000),null);
+  assert.equal(f(2999999),219999.92);
+  assert.equal(f(3000000),220000);
   assert.equal(f(3000001),null);
   const wizard=source('app/wizard/page.tsx');
-  assert.match(wizard,/disabled=\{Number\(projectedGrossSales\) >= 3000000\}/);
-  assert.match(wizard,/effectiveTaxType = Number\(projectedGrossSales\) >= 3000000 \? "vat_registered"/);
+  assert.match(wizard,/disabled=\{Number\(projectedGrossSales\) > 3000000\}/);
+  assert.match(wizard,/effectiveTaxType = Number\(projectedGrossSales\) > 3000000 \? "vat_registered"/);
 });
 
 test('FL-17: no invented graduated rate table is used for the wizard preview',()=>{

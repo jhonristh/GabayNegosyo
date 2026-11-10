@@ -51,6 +51,7 @@ function BirFormsContent() {
         intro="Tell us about your situation. We show the BIR forms that apply, then you can tick any special transactions."
       />
 
+      <p className="guide-note" role="note">The form provided is a sample form of the prescribed BIR form for reference purposes only. Actual filing must be completed through the applicable BIR electronic filing system, such as eBIRForms or eFPS.</p>
       <section className="bir-conditions" aria-labelledby="cond-label">
         <h2 id="cond-label">Did any of these happen?</h2>
         <p className="hint">Tick everything that applies. Each one adds a separate BIR form to your list below.</p>

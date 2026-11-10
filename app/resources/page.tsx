@@ -62,7 +62,7 @@ export default function ResourcesPage() {
           </select>
         </div>
 
-        <p className="hint">{results.length} result(s)</p>
+        <div className="gn-filter-summary" aria-live="polite"><p className="hint">{results.length} result(s)</p>{(query || agencyFilter !== "all" || typeFilter !== "all") && <button className="text-btn" type="button" onClick={() => {setQuery(""); setAgencyFilter("all"); setTypeFilter("all");}}>Clear filters</button>}</div>
 
         {results.length === 0 && <p className="v06-unavailable">No resources match these filters. Try another search or agency.</p>}
         <div className="v06-media-grid">{results.map((r) => r.resourceType === "form" ? <FormPreviewCard key={r.id} resource={r} /> :

@@ -210,6 +210,7 @@ function ChecklistInner() {
         ))}
       </div>
 
+      <div className="gn-filter-summary" aria-live="polite"><p className="hint">{items.length} of {applicable.length} requirements</p>{(query || agencyFilter !== "all" || (premium && statusFilter !== "all")) && <button className="text-btn" type="button" onClick={() => {setQuery(""); setAgencyFilter("all"); setStatusFilter("all");}}>Clear filters</button>}</div>
       {items.length === 0 && (
         <div className="empty-state">
           <EmptyStateIllustration variant="no-results" /><h2>No matches</h2>

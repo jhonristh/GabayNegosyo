@@ -19,7 +19,7 @@ const matchers: Matcher[] = [
     !rule.businessType || rule.businessType.includes(profile.businessType),
   (rule, profile) =>
     !rule.businessStructure || rule.businessStructure.includes(profile.businessStructure),
-  (rule, profile) => !rule.taxType || rule.taxType.includes(profile.projectedGrossSales >= 3000000 ? "vat_registered" : profile.taxType),
+  (rule, profile) => !rule.taxType || rule.taxType.includes(profile.projectedGrossSales > 3000000 ? "vat_registered" : profile.taxType),
   (rule, profile) => !rule.taxpayerType || rule.taxpayerType.includes(profile.taxpayerType),
   (rule, profile) => !rule.deductionMethod || rule.deductionMethod.includes(profile.deductionMethod ?? "osd"),
   (rule, profile) =>

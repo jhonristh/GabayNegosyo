@@ -3,7 +3,6 @@ import videos from "../data/filingVideos.json";
 interface FilingVideo { id: string; title: string; description?: string; category?: string; videoUrl: string }
 
 const YT = /(?:youtu\.be\/|youtube\.com\/(?:watch\?v=|embed\/|shorts\/))([\w-]{11})/;
-const START = /[?&]t=(\d+)s?/;
 
 /**
  * Filing tutorial videos. Add entries to data/filingVideos.json as
@@ -45,14 +44,14 @@ export default function FilingTutorialVideos() {
             return (
               <article className="v06-media-card" key={v.id}>
                 <div className="v06-video-art">
-                  {id ? <iframe title={`Video: ${v.title}`} src={`https://www.youtube-nocookie.com/embed/${id}${START.test(v.videoUrl) ? `?start=${v.videoUrl.match(START)?.[1]}` : ""}`} allow="encrypted-media; picture-in-picture" allowFullScreen loading="lazy" /> : <span className="v06-video-pending">VIDEO</span>}
+                  {id ? <a className="gn-video-link" href={v.videoUrl} target="_blank" rel="noopener noreferrer" aria-label={`Watch ${v.title} on YouTube (opens a new tab)`}><span className="gn-video-play" aria-hidden="true">▶</span><span>Watch on YouTube ↗</span></a> : <span className="v06-video-pending">Video link awaiting verification</span>}
                 </div>
                 <div className="v06-media-content">
                   {v.category && <p className="v06-eyebrow">{v.category}</p>}
                   <h3>{v.title}</h3>
                   {v.description && <p>{v.description}</p>}
                   <p className="hint">Videos are from YouTube and belong to their creators.</p>
-                  {!id && <a className="tutorial-link" href={v.videoUrl} target="_blank" rel="noopener noreferrer">Watch video ↗</a>}
+                  {id && <a className="tutorial-link" href={v.videoUrl} target="_blank" rel="noopener noreferrer">Watch on YouTube ↗</a>}
                 </div>
               </article>
             );

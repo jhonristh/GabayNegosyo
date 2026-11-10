@@ -159,6 +159,6 @@ export function estimateBirPenalty(input: { taxDue: number; daysLate: number; ti
 
 /** Consultant-approved 8% tax-due estimation (FL-16: mixed-income excludes ₱250k deduction pending confirmation). */
 export function estimateEightPercentTaxDue(grossSales:number, mixedIncome=false):number|null {
-  if (!isValidAmount(grossSales) || grossSales>=3000000) return null;
+  if (!isValidAmount(grossSales) || grossSales>3000000) return null;
   return Math.max(0,(grossSales-(mixedIncome?0:250000))*0.08);
 }

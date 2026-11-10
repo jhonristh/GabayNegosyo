@@ -32,6 +32,7 @@ export default function PdfPreviewButton({ url, title, label = "Preview form" }:
             ×
           </button>
         </div>
+        <p className="form-reference-note" role="note">The form provided is a sample form of the prescribed BIR form for reference purposes only. Actual filing must be completed through the applicable BIR electronic filing system, such as eBIRForms or eFPS.</p>
         <div className="v06-pdf-wrap">
           <iframe src={`${url}#toolbar=0`} title={`PDF preview of ${title}`} loading="lazy" />
           <p>If the PDF does not display on your device, open it from the official source.</p>

@@ -18,6 +18,7 @@ export default function FormPreviewCard({ resource }: { resource: ResourceItem }
     </div><p className="verified">Source checked: {resource.lastVerified}</p></div>
     {pdf && <dialog ref={dialog} className="v06-preview-dialog" onClose={() => setOpen(false)} aria-label={`Preview ${resource.title}`}>
       <div className="v06-dialog-header"><div><p className="v06-eyebrow">{resource.agencyId.toUpperCase()} · OFFICIAL PDF</p><h2>{resource.title}</h2></div><button type="button" className="v06-close" onClick={() => dialog.current?.close()} aria-label="Close preview">×</button></div>
+      <p className="form-reference-note" role="note">The form provided is a sample form of the prescribed BIR form for reference purposes only. Actual filing must be completed through the applicable BIR electronic filing system, such as eBIRForms or eFPS.</p>
       <div className="v06-pdf-wrap"><iframe src={`${resource.url}#toolbar=0`} title={`PDF preview of ${resource.title}`} loading="lazy" /><p>If the PDF does not display on your device, open it from the official source.</p></div>
       <div className="v06-dialog-actions"><a className="primary-btn" href={resource.url} target="_blank" rel="noopener noreferrer">Open official PDF ↗</a><button type="button" className="secondary-btn" onClick={() => dialog.current?.close()}>Close</button></div>
     </dialog>}
