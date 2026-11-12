@@ -1,4 +1,6 @@
 #!/usr/bin/env node
+import { readFileSync } from "node:fs";
+
 /**
  * CONTRAST CHECK (T6, D3)
  * ────────────────────────
@@ -7,10 +9,8 @@
  * eyeballing it. Run with `npm run contrast-check`; output is also saved
  * to docs/CONTRAST_REPORT.md by this script.
  *
- * Pairs are hand-listed below (matching the color tokens in globals.css)
- * rather than parsed from the CSS automatically — the app's palette is
- * small and stable, and an explicit list is easier to audit than a CSS
- * parser that could silently miss a rule.
+ * The pairs are listed explicitly. Night Shift palette values and status
+ * badge declarations are read from the CSS to keep the checks current.
  */
 
 function luminance([r, g, b]) {
@@ -41,14 +41,21 @@ const inkMuted = blend(ink, sand, 0.64);
 const inkFaint = blend(ink, sand, 0.66);
 
 // Threshold: 4.5:1 for normal text, 3:1 for large text / UI boundaries.
-// Design-kit pairs (styles/kits.css). Night Shift values mirror html[data-theme="night"].
-const nightCanvas = [21, 25, 23];
-const nightPanel = [32, 39, 32];
-const nightInk = [245, 247, 243];
-const lime = [160, 237, 89];
-const limeText = [196, 242, 143];
-const limeOnTint = [43, 58, 37];
-const darkOnLime = [16, 34, 24];
+const hex = (value) => [1, 3, 5].map((i) => parseInt(value.slice(i, i + 2), 16));
+const kitsCss = readFileSync(new URL("../styles/kits.css", import.meta.url), "utf8");
+const nightPalette = kitsCss.match(/html\[data-theme="night"\]\s*\{([^}]+)\}/)?.[1] ?? "";
+const nightColors = new Map([...nightPalette.matchAll(/(--[\w-]+):\s*(#[0-9a-f]{6})\b/gi)].map(([, key, value]) => [key, hex(value)]));
+function night(token) {
+  const color = nightColors.get(token);
+  if (!color) throw new Error("Missing Night Shift color " + token);
+  return color;
+}
+const nightCanvas = night("--night-canvas");
+const nightPanel = night("--night-panel");
+const nightInk = night("--night-ink");
+const nightMuted = night("--night-muted");
+const mint = night("--night-mint");
+const selected = night("--night-selected");
 const kitCanvas = [237, 241, 234];
 const navOnFg = [15, 74, 38];
 const navOnBg = [228, 241, 225];
@@ -57,9 +64,6 @@ const pairs = [
   { name: "Workspace: body text on cream", fg: [24,61,48], bg: [248,247,242], minimum: 4.5 },
   { name: "Workspace: muted text on soft green", fg: [82,102,91], bg: [237,242,233], minimum: 4.5 },
   { name: "Workspace: gold label on cream", fg: [137,97,25], bg: [248,247,242], minimum: 4.5 },
-  { name: "Workspace night: body text on surface", fg: [236,243,233], bg: [23,43,34], minimum: 4.5 },
-  { name: "Workspace night: muted text on soft green", fg: [183,201,188], bg: [32,56,43], minimum: 4.5 },
-  { name: "Workspace night: gold on canvas", fg: [231,199,128], bg: [16,30,25], minimum: 4.5 },
   { name: "White text on --gn-green (primary button)", fg: white, bg: green, minimum: 4.5 },
   { name: "White text on --gn-green-deep (button hover/press)", fg: white, bg: greenDeep, minimum: 4.5 },
   { name: "--ink on --gn-sand (body text)", fg: ink, bg: sand, minimum: 4.5 },
@@ -80,14 +84,17 @@ const pairs = [
   { name: "Kit: --ink-muted on white panel", fg: blend(ink, white, 0.64), bg: white, minimum: 4.5 },
   // Night Shift
   { name: "Night: body text on canvas", fg: nightInk, bg: nightCanvas, minimum: 4.5 },
-  { name: "Night: muted text on canvas", fg: blend(nightInk, nightCanvas, 0.76), bg: nightCanvas, minimum: 4.5 },
-  { name: "Night: muted text on panel", fg: blend(nightInk, nightPanel, 0.76), bg: nightPanel, minimum: 4.5 },
-  { name: "Night: dark text on lime (primary button, progress card)", fg: darkOnLime, bg: lime, minimum: 4.5 },
-  { name: "Night: lime accent text on canvas", fg: lime, bg: nightCanvas, minimum: 4.5 },
-  { name: "Night: lime accent text on panel", fg: lime, bg: nightPanel, minimum: 4.5 },
-  { name: "Night: active nav text on active nav background", fg: limeText, bg: limeOnTint, minimum: 4.5 },
-  { name: "Night: input/card boundary on panel (UI boundary)", fg: blend(nightInk, nightPanel, 0.46), bg: nightPanel, minimum: 3 },
-  { name: "Night: lime focus/selected outline on canvas (UI boundary)", fg: lime, bg: nightCanvas, minimum: 3 },
+  { name: "Night: muted text on canvas", fg: nightMuted, bg: nightCanvas, minimum: 4.5 },
+  { name: "Night: muted text on raised surface", fg: nightMuted, bg: night("--night-raised"), minimum: 4.5 },
+  { name: "Night: input placeholder on rail", fg: night("--night-faint"), bg: night("--night-rail"), minimum: 4.5 },
+  { name: "Night: primary action label", fg: night("--night-on-mint"), bg: mint, minimum: 4.5 },
+  { name: "Night: mint text on panel", fg: mint, bg: nightPanel, minimum: 4.5 },
+  { name: "Night: selected control label", fg: night("--night-mint-hover"), bg: selected, minimum: 4.5 },
+  { name: "Night: input border on panel", fg: night("--night-control-line"), bg: nightPanel, minimum: 3 },
+  { name: "Night: focus ring on raised surface", fg: mint, bg: night("--night-raised"), minimum: 3 },
+  { name: "Night: error text", fg: night("--gn-clay-deep"), bg: night("--night-danger-bg"), minimum: 4.5 },
+  { name: "Night: warning text", fg: night("--night-gold"), bg: night("--night-warning-bg"), minimum: 4.5 },
+  { name: "Night: progress label on track", fg: nightInk, bg: night("--night-line"), minimum: 4.5 },
 ];
 
 // Tinted status badges, read straight from styles/globals.css so the check
@@ -95,11 +102,9 @@ const pairs = [
 // tint, so it is measured on both surfaces it appears on (white cards, sand page).
 // (Previously only the text color on plain white was tested, which let the
 // Overdue / Completed badges ship at 4.3:1.)
-import { readFileSync } from "node:fs";
 const css = readFileSync(new URL("../styles/globals.css", import.meta.url), "utf8");
 const rootVars = {};
 for (const m of css.matchAll(/(--[\w-]+):\s*(#[0-9a-fA-F]{6})\b/g)) rootVars[m[1]] = m[2];
-const hex = (h) => [1, 3, 5].map((i) => parseInt(h.slice(i, i + 2), 16));
 const badgeRules = [...css.matchAll(/\.badge-(\w+)\s*\{[^}]*?background:\s*rgba\(([^)]+)\)[^}]*?color:\s*var\((--[\w-]+)\)/g)];
 if (badgeRules.length < 5) {
   console.error(`Expected 5 tinted .badge-* rules in styles/globals.css, found ${badgeRules.length}.`);

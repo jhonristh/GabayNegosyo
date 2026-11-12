@@ -10,7 +10,7 @@ import StatusBadge from "../../components/StatusBadge";
 import JourneyStepper, { JourneyNext } from "../../components/JourneyStepper";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
-import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
+import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel, describeUndatedRequirement } from "../../lib/ruleEngine";
 import { hasPremiumAccess } from "../../lib/entitlements";
 import { useToast } from "../../components/ToastProvider";
 import type { RequirementStatus } from "../../lib/types";
@@ -29,7 +29,7 @@ const STATUS_FILTERS: { value: "all" | RequirementStatus; label: string }[] = [
   { value: "due_today", label: "Due today" },
   { value: "due_soon", label: "Due soon" },
   { value: "upcoming", label: "Upcoming" },
-  { value: "no_deadline", label: "No fixed date" },
+  { value: "no_deadline", label: "Unscheduled" },
   { value: "completed", label: "Completed" },
 ];
 
@@ -136,7 +136,7 @@ function ChecklistInner() {
                     <Link href={`/requirements/${req.id}`}>{req.name}</Link>
                   </h4>
                   <p className="deadline">
-                    {dueDate ? `Due ${formatDueLabel(dueDate)}` : `No fixed date: ${req.deadlineDescription}`}
+                    {dueDate ? `Due ${formatDueLabel(dueDate)}` : `${describeUndatedRequirement(req)}: ${req.deadlineDescription}`}
                   </p>
                   <p className="verified">Content last reviewed: {req.lastVerified}</p>
                   {req.contentSource === "prototype_placeholder" && (
@@ -163,6 +163,7 @@ function ChecklistInner() {
 
   return (
     <main className="screen kit-pocket">
+      <p className="hint">Unreviewed agency guidance is excluded from your checklist and progress totals. Confirm coverage with the relevant agency.</p>
       <JourneyStepper current="checklist" />
       <header className="intro">
         <p className="v06-eyebrow">STEP 1 OF 5 · WHAT DO I NEED?</p>

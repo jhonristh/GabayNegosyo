@@ -1,5 +1,6 @@
 import Link from "next/link";
 import GrowthHero from "../components/GrowthHero";
+import KitIcon from "../components/KitIcon";
 import requirements from "../data/requirements.json";
 import credits from "../data/credits.json";
 import { siteConfig } from "../lib/siteConfig";
@@ -39,7 +40,7 @@ export default function LandingPage() {
         <p className="gn-kicker">A CLEARER PATH FOR YOUR BUSINESS</p>
         <h1 id="hero-title">Business compliance, <em>made easier to follow.</em></h1>
         <p className="hero-sub">Know what applies to your business, organize your requirements, and understand the next step, all in one place.</p>
-        <div className="hero-actions"><Link href="/wizard" className="primary-btn">Create my checklist <span aria-hidden="true">↗</span></Link><a href="#how-it-works" className="secondary-btn">Explore the roadmap</a></div>
+        <div className="hero-actions"><Link href="/wizard" className="primary-btn">Create my checklist <KitIcon name="next" size={16} /></Link><a href="#how-it-works" className="secondary-btn">Explore the roadmap</a></div>
         <p className="v05-hero-note">Made for online sellers, freelancers, and small business owners across Metro Manila (NCR).</p>
       </div>
       <div className="gn-hero-art ew-hero-art" role="group" aria-label="Illustrative product preview"><GrowthHero /></div>

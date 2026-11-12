@@ -14,7 +14,7 @@ import { useToast } from "../../../components/ToastProvider";
 import { useAuth } from "../../../lib/auth";
 import { db } from "../../../lib/db";
 import { trackConversion } from "../../../lib/webAnalytics";
-import { resolveObligation, explainApplicability, formatDueLabel } from "../../../lib/ruleEngine";
+import { resolveObligation, explainApplicability, formatDueLabel, describeUndatedRequirement } from "../../../lib/ruleEngine";
 import { hasPremiumAccess } from "../../../lib/entitlements";
 import type { RequirementStatus } from "../../../lib/types";
 
@@ -117,7 +117,7 @@ function RequirementDetailInner() {
         <h1>{requirement.name}</h1>
         <div className="req-detail-meta">
           {premium && <StatusBadge status={status} />}
-          <span className="deadline">{dueDate ? `Due: ${formatDueLabel(dueDate)}` : `No fixed date: ${requirement.deadlineDescription}`}</span>
+          <span className="deadline">{dueDate ? `Due: ${formatDueLabel(dueDate)}` : `${describeUndatedRequirement(requirement)}: ${requirement.deadlineDescription}`}</span>
         </div>
       </header>
 
@@ -153,7 +153,7 @@ function RequirementDetailInner() {
         <p className="verified">
           Content source: {sourceLabel}
           <br />
-          Last verified: {requirement.lastVerified}
+          {requirement.contentSource === "prototype_placeholder" ? "Unreviewed agency guidance" : "Content review date: " + requirement.lastVerified}
         </p>
       </section>
 

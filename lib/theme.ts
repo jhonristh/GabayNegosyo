@@ -22,12 +22,12 @@ export const THEME_CHANGE_EVENT = "gn-theme-change";
 
 export const THEME_COLORS: Record<ResolvedTheme, string> = {
   light: "#145D2D",
-  night: "#151917",
+  night: "#101816",
 };
 
 export const THEME_OPTIONS: { value: ThemePreference; label: string; hint: string }[] = [
   { value: "light", label: "Light", hint: "The standard GabayNegosyo look." },
-  { value: "night", label: "Night Shift", hint: "High-contrast dark workspace." },
+  { value: "night", label: "Night Shift", hint: "Dark forest surfaces with soft mint accents." },
   { value: "system", label: "Match device", hint: "Follow your phone or computer setting." },
 ];
 

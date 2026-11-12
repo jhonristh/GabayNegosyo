@@ -12,10 +12,10 @@
 }
 html:not([data-theme="night"]) { --gn-sand: var(--ew-canvas); --page-tint: var(--ew-canvas); --premium-canvas: var(--ew-canvas); }
 html:not([data-theme="night"]) body { background: var(--ew-canvas); }
-html[data-theme="night"] { --ew-canvas: #101e19; --ew-surface: #172b22; --ew-soft: #20382b; --ew-ink: #ecf3e9; --ew-muted: #b7c9bc; --ew-line: #45604e; --ew-gold: #e7c780; --ew-shadow: none; }
+html[data-theme="night"] { --ew-canvas: var(--night-canvas); --ew-surface: var(--night-panel); --ew-soft: var(--night-raised); --ew-ink: var(--ink); --ew-muted: var(--ink-muted); --ew-line: var(--kit-line); --ew-gold: var(--night-gold); --ew-shadow: var(--premium-shadow); }
 :where(button,input,select,textarea,a) { -webkit-tap-highlight-color: transparent; }
 :where(a,button,input,select,textarea,summary):focus-visible { outline: 3px solid var(--gn-green); outline-offset: 4px; }
-html[data-theme="night"] :where(a,button,input,select,textarea,summary):focus-visible { outline-color: #bde9b7; }
+html[data-theme="night"] :where(a,button,input,select,textarea,summary):focus-visible { outline-color: var(--gn-green); }
 button:disabled { transform: none!important; box-shadow: none!important; }
 :where(.primary-btn,.secondary-btn,.quick-action-btn,.filter-chip) { min-height: 44px; }
 :where(.text-input,select,textarea) { min-height: 48px; border-radius: 10px; }

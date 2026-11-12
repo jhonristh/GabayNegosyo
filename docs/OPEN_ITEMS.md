@@ -11,11 +11,11 @@ Nothing here blocks running the app. Everything here blocks calling it productio
 | Locality required in the wizard, or only for LGU permits? | Affects drop-off | Required (current behaviour) |
 | Approved wording about geographic coverage | Avoid over-claiming | "Metro Manila (NCR). Local permit guidance is general." |
 | Account deletion and data-retention policy | Deletion is permanent and cascades | Delete the auth user and linked rows immediately; no backup-restore promise |
-| Whether `upgrade_to_premium_demo()` stays | Any signed-in user can self-upgrade (no payments) | Keep for the prototype; **remove before real billing** |
+| Confirm the entitlement migration on staging | Migration 006 removes the legacy demo upgrade function and documents verification queries | Confirm migration state and entitlement behavior with designated test accounts |
 | Add DTI as a tracked agency? | DTI is Resource-library-only today; tracking it touches `agencies.json`, admin lists, checklist filters and the "five agencies" wording | Keep DTI in the library and on Renewal only |
 | Tax-type and business-stage questions in the wizard | Tax type is now asked; whether withholding returns (1601-EQ, 0619-E, 1601-FQ) apply to every purely-business user is a domain question | Confirm with the team |
 | "Gabay Negosyo's reference" wording on `/penalties`, and the demo seed deadline (Jan 20, 2026, now past) | Honesty and freshness of demo content | Owner to confirm |
-| Payment provider and price | The checkout page takes no payment; no price shows until `NEXT_PUBLIC_PREMIUM_PRICE_LABEL` is set | Decide provider, price and updated Terms |
+| Subscription policy and payment provider | The checkout displays the advertised ₱199/month price and explains manual access. | Confirm paid term boundaries, renewal and cancellation policy before connecting billing. |
 
 ## Information
 
@@ -72,3 +72,11 @@ Nothing here blocks running the app. Everything here blocks calling it productio
 - **"Mark as completed" does not tick the steps.** Decide whether it should.
 - **Business-type question:** none exists; add only with verified rules.
 - Run the browser script in `docs/USER_JOURNEY_QA.md` section 8 and record the results.
+
+## Final-touches verification
+
+- **P0-03:** Recurring obligation history and cross-period progress still need a persistence migration, compatibility review and rollover tests.
+- **P0-04–05:** Source-backed eligibility and independent calculator validation remain open. Existing automated tests cover app behavior and do not establish regulatory accuracy.
+- **P0-06–09:** Verify deployed policy and auth in isolated staging with two separate accounts, including entitlement expiry and saves across devices. Confirm the paid term and billing policy with the product owner.
+- **P1-06, P1-08, P1-10–13:** Draft resume, durable checklist feedback and undo, physical-device keyboard clearance, accessibility and visual verification require additional work or testing.
+- **P2:** Review actual staging, backups and restore, alerting, CI, privacy/export, support, deployment metadata and rollback against the operational handoff. Test physical iPhone Safari and Android Chrome and measure slow-network performance before release.

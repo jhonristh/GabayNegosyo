@@ -174,7 +174,7 @@ test("employee answers drive exactly the employer requirements", async () => {
   const employerIds = ["sss-employer-reg", "sss-contribution", "philhealth-employer-reg", "pagibig-employer-reg", "bir-1601c-monthly-compensation", "bir-2316-certificate"];
   for (const { key, p } of wizardReachableProfiles()) {
     const ids = new Set(generateApplicableRequirements(p, requirements).map((r) => r.id));
-    for (const id of employerIds) assert.strictEqual(ids.has(id), p.hasEmployees, `${key}: ${id}`);
+    for (const id of employerIds) assert.strictEqual(ids.has(id), p.hasEmployees && requirements.find((r) => r.id === id)?.contentSource !== "prototype_placeholder", `${key}: ${id}`);
   }
 });
 
@@ -481,7 +481,7 @@ test("wizard shows why Continue is unavailable, refuses to pretend a failed save
   const w = read("app/wizard/page.tsx");
   assert.match(w, /wizardStepProblem/);
   assert.match(w, /id="wizard-step-problem"/);
-  assert.match(w, /if \(!db\.saveBusinessProfile\(profile\)\)/);
+  assert.match(w, /await db\.saveConfirmedBusinessProfile\(profile\)/);
   assert.match(w, /deductionMethod: taxType === "graduated"/);
   assert.match(w, /user\?\.dataLoadFailed/);
 });

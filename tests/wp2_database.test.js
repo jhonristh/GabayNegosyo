@@ -289,7 +289,7 @@ test("every upsert's onConflict columns equal that table's primary key", () => {
     return (composite ? composite[1] : inline[1]).split(",").map((c) => c.trim()).sort().join(",");
   };
   const upserts = [...db.matchAll(/from\("([a-z_]+)"\)\s*\.upsert\([\s\S]*?onConflict:\s*"([^"]+)"/g)];
-  assert.ok(upserts.length === 4, `expected 4 upserts, found ${upserts.length}`);
+  assert.ok(upserts.length === 5, `expected 5 upserts, found ${upserts.length}`);
   for (const [, table, onConflict] of upserts) assert.strictEqual(onConflict.split(",").map((c) => c.trim()).sort().join(","), pk(table), `${table} onConflict must be its primary key`);
 });
 

@@ -110,7 +110,7 @@ test("Premium checkout opens in a new tab, collects no payment details, and is l
   assert.ok(account.includes('href="/premium/checkout"') && account.includes('target="_blank"'), "account upgrade opens checkout in a new tab");
   assert.ok(!account.includes("handleUpgrade"), "account no longer runs the inline demo upgrade");
   const checkout = read("app/premium/checkout/page.tsx");
-  assert.ok(!/cvv|card number|cardnumber|expiry|gcash|maya|bank account/i.test(checkout), "checkout must not collect payment details");
+  assert.ok(!/cvv|card number|cardnumber|card expiry|gcash|maya|bank account/i.test(checkout), "checkout must not collect payment details");
   assert.ok(checkout.includes("Payments are not connected yet"), "checkout states payments are not connected");
   assert.ok(checkout.includes("no payment") || checkout.includes("takes no payment") || checkout.includes("Nothing is charged"), "checkout says nothing is charged");
 });

@@ -44,7 +44,7 @@ export function generateApplicableRequirements(
   allRequirements: Requirement[]
 ): Requirement[] {
   return allRequirements
-    .filter((r) => !r.archived)
+    .filter((r) => !r.archived && r.contentSource !== "prototype_placeholder")
     .filter((r) => requirementApplies(r, profile));
 }
 
@@ -206,6 +206,16 @@ export function compareByDue(a: { dueDate: Date | null }, b: { dueDate: Date | n
   if (a.dueDate) return -1;
   if (b.dueDate) return 1;
   return 0;
+}
+
+export function describeUndatedRequirement(requirement: Requirement): string {
+  if (requirement.contentSource === "prototype_placeholder") return "Unverified timing";
+  switch (requirement.deadlineKind) {
+    case "recurring_variable": return "Recurring • date varies";
+    case "event_offset": return "Event-based • needs the event date";
+    case "one_time": return "Event-based • one-time obligation";
+    default: return "Needs more information";
+  }
 }
 
 export function formatDueLabel(d: Date | null): string {

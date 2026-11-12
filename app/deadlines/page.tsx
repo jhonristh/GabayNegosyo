@@ -7,7 +7,7 @@ import DeadlineCalendar from "../../components/DeadlineCalendar";
 import StatusBadge from "../../components/StatusBadge";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
-import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
+import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel, describeUndatedRequirement } from "../../lib/ruleEngine";
 import { hasPremiumAccess } from "../../lib/entitlements";
 
 import { useToast } from "../../components/ToastProvider";
@@ -78,7 +78,7 @@ function DeadlinesInner() {
       <p className="hint">The calendar shows scheduled due dates for each month, whether or not reminders are enabled. Use the arrows to browse other months. Deadlines without a confirmed calendar date are listed below instead of being invented.</p>
       <DeadlineCalendar schedule={applicable} entries={dated.map(i => ({ id: i.req.id, name: i.req.name, date: i.dueDate as Date, status: i.status }))} showStatus={isPremium} />
 
-      {dated.length === 0 && <p className="hint">None of your requirements has a fixed annual date in the current content source. See “No fixed date” below.</p>}
+      {dated.length === 0 && <p className="hint">There are no confirmed calendar dates for your requirements. Review the timing guidance below.</p>}
 
       {[...dated, ...undated].map(({ req, dueDate, status }) => {
         const agency = agencies.find((a) => a.id === req.agencyId)?.name ?? req.agencyId;
@@ -92,7 +92,7 @@ function DeadlinesInner() {
               <div>
                 <span className="req-agency-tag">{agency}</span>
                 <h3>{req.name}</h3>
-                <p className="deadline">{dueDate ? `Due: ${dueLabel}` : `No fixed date: ${req.deadlineDescription}`}</p>
+                <p className="deadline">{dueDate ? `Due: ${dueLabel}` : `${describeUndatedRequirement(req)}: ${req.deadlineDescription}`}</p>
               </div>
               {isPremium && <StatusBadge status={status} />}
             </div>

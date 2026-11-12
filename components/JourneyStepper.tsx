@@ -1,11 +1,34 @@
+"use client";
+
 import Link from "next/link";
+import { useEffect, useRef } from "react";
+import KitIcon from "./KitIcon";
 import { JOURNEY, stageIndex, type JourneyStage } from "../lib/journey";
 
 /** Five-stage progress indicator. Every stage stays a link: users may revisit any section. */
 export default function JourneyStepper({ current }: { current: JourneyStage["key"] }) {
   const at = stageIndex(current);
+  const strip = useRef<HTMLElement>(null);
+  useEffect(() => {
+    const container = strip.current;
+    if (!container) return;
+    function revealCurrent() {
+      const active = container?.querySelector("[aria-current=step]");
+      if (!container || !active) return;
+      const item = active.getBoundingClientRect();
+      const viewport = container.getBoundingClientRect();
+      if (item.left < viewport.left) container.scrollLeft += item.left - viewport.left;
+      else if (item.right > viewport.right) container.scrollLeft += item.right - viewport.right;
+    }
+    revealCurrent();
+    const observer = new ResizeObserver(revealCurrent);
+    observer.observe(container);
+    return () => observer.disconnect();
+  }, [current]);
   return (
-    <nav className="journey-stepper" aria-label="Business lifecycle">
+    <>
+    <p className="hint journey-scroll-cue">Scroll sideways to see more stages.</p>
+    <nav ref={strip} className="journey-stepper" aria-label="Business lifecycle">
       <ol>
         {JOURNEY.map((stage, i) => {
           const state = i < at ? "done" : i === at ? "current" : "upcoming";
@@ -21,6 +44,7 @@ export default function JourneyStepper({ current }: { current: JourneyStage["key
         })}
       </ol>
     </nav>
+    </>
   );
 }
 
@@ -47,9 +71,9 @@ export function JourneyNext({ current }: { current: JourneyStage["key"] }) {
     <div className="journey-next">
       {prev && <Link href={prev.href} className="secondary-btn">← Back to {prev.label}</Link>}
       {next ? (
-        <Link href={next.href} className="primary-btn">Proceed to {next.label} →</Link>
+        <Link href={next.href} className="primary-btn">Proceed to {next.label} <KitIcon name="next" size={16} /></Link>
       ) : (
-        <Link href="/deadlines" className="primary-btn">Keep track of deadlines →</Link>
+        <Link href="/deadlines" className="primary-btn">Keep track of deadlines <KitIcon name="next" size={16} /></Link>
       )}
     </div>
   );

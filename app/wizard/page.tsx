@@ -62,11 +62,14 @@ function WizardInner() {
   const { user } = useAuth();
   const router = useRouter();
   const [step, setStep] = useState(0);
+  const [returnToReview, setReturnToReview] = useState(false);
+  const [taxpayerHelp, setTaxpayerHelp] = useState(false);
+  const [saving, setSaving] = useState(false);
   // Existing answers (if any) so "Review or update answers" starts from what was saved.
   const existing = useMemo(() => (user ? db.getBusinessProfile(user.id) : db.getGuestProfile()), [user]);
 
   const [isRegisteringNewBusiness, setIsRegisteringNewBusiness] = useState<boolean | null>(existing ? existing.isRegisteringNewBusiness : null);
-  const [taxpayerType, setTaxpayerType] = useState<TaxpayerType>(existing?.taxpayerType === "mixed_income_earner" ? "mixed_income_earner" : "self_employment_or_profession");
+  const [taxpayerType, setTaxpayerType] = useState<TaxpayerType | null>(() => TAXPAYER_TYPES.find((option) => option.value === existing?.taxpayerType)?.value ?? null);
   const [locality, setLocality] = useState(localityIdOf(existing));
   const [barangay, setBarangay] = useState(existing?.barangay ?? "");
   const [hasLease, setHasLease] = useState<boolean | null>(existing ? existing.hasLease : null);
@@ -93,6 +96,7 @@ function WizardInner() {
   const [barangayNotListed, setBarangayNotListed] = useState(Boolean(existing?.barangay) && !getBarangays(localityIdOf(existing)).some((b) => b.name === existing?.barangay));
 
   function next() {
+    if (returnToReview) { setReturnToReview(false); setStep(9); return; }
     setStep((s) => Math.min(s + 1, STEPS.length - 1));
   }
   function back() {
@@ -101,6 +105,7 @@ function WizardInner() {
 
   /** Plain-language reason the current step cannot continue yet, or null (lib/validation.ts). */
   function stepProblem(): string | null {
+    if (step === 1 && !taxpayerType) return "Choose a taxpayer classification to continue.";
     return wizardStepProblem(step, {
       isRegisteringNewBusiness,
       localityKnown: Boolean(localityInfo),
@@ -117,7 +122,8 @@ function WizardInner() {
   }
   const problem = stepProblem();
 
-  function generateRoadmap() {
+  async function generateRoadmap() {
+    if (!taxpayerType || saving) return;
     const effectiveTaxType = Number(projectedGrossSales) > 3000000 ? "vat_registered" : taxType;
     const profile: BusinessProfile = {
       id: user ? `biz-${user.id}` : "biz-guest",
@@ -148,8 +154,12 @@ function WizardInner() {
     };
     if (user) {
       // WP4: never move on as if it saved when nothing was saved (for example, the person's data failed to load).
-      if (!db.saveBusinessProfile(profile)) {
-        setSaveError("We could not save your answers because your account data is not loaded. Check your internet connection, reload the page and try again. Your answers on this screen are still here.");
+      setSaving(true);
+      setSaveError(null);
+      const saved = await db.saveConfirmedBusinessProfile(profile);
+      setSaving(false);
+      if (!saved) {
+        setSaveError("We could not save your answers. Check your connection and try again. Your answers are still here.");
         return;
       }
       setSaveError(null);
@@ -191,7 +201,9 @@ function WizardInner() {
 
       {step === 1 && (
         <section className="question">
-          <label className="question-label">Taxpayer Type</label>
+          <h2 className="question-label">Taxpayer Type</h2>
+          <button type="button" className="secondary-btn" aria-expanded={taxpayerHelp} onClick={() => { setTaxpayerType(null); setTaxpayerHelp(!taxpayerHelp); }}>I’m not sure</button>
+          {taxpayerHelp && <p className="hint">A freelancer who also earns a salary may have mixed income. Someone who earns only from their own business or profession may be self-employed. Confirm your classification with the BIR or your adviser before continuing.</p>}
           <div className="option-grid">
             {TAXPAYER_TYPES.map((opt) => (
               <button
@@ -199,7 +211,7 @@ function WizardInner() {
                 type="button"
                 aria-pressed={taxpayerType === opt.value}
                 className={`option-btn ${taxpayerType === opt.value ? "selected" : ""}`}
-                onClick={() => setTaxpayerType(opt.value)}
+                onClick={() => { setTaxpayerType(opt.value); setTaxpayerHelp(false); }}
               >
                 {opt.label}
               </button>
@@ -436,9 +448,9 @@ function WizardInner() {
           <dl>
             <dt>Registering a new business?</dt>
             <dd>{isRegisteringNewBusiness ? "Yes" : "No"}</dd>
-            <dt>Taxpayer Type</dt>
+            <dt>Taxpayer Type <button type="button" className="secondary-btn" onClick={() => { setReturnToReview(true); setStep(1); }}>Edit taxpayer type</button></dt>
             <dd>{TAXPAYER_TYPES.find((t) => t.value === taxpayerType)?.label}</dd>
-            <dt>Barangay</dt>
+            <dt>Barangay <button type="button" className="secondary-btn" onClick={() => { setReturnToReview(true); setStep(2); }}>Edit location</button></dt>
             <dd>{barangay ? formatLocation(barangay, locality) : "—"}</dd>
             <dt>RDO Code</dt>
             <dd>{rdoCode || "Not found for this barangay"}</dd>
@@ -481,8 +493,8 @@ function WizardInner() {
       )}
 
       <div className="wizard-actions">
-        {step > 0 && (
-          <button type="button" className="secondary-btn" onClick={back}>
+        {step > 0 && !returnToReview && (
+          <button type="button" className="secondary-btn" disabled={saving} onClick={back}>
             Back
           </button>
         )}
@@ -492,8 +504,8 @@ function WizardInner() {
           </button>
         )}
         {step === STEPS.length - 1 && (
-          <button type="button" className="primary-btn" onClick={generateRoadmap}>
-            Generate My Compliance Roadmap
+          <button type="button" className="primary-btn" disabled={saving} onClick={generateRoadmap}>
+            {saving ? "Saving your answers…" : saveError ? "Retry saving" : "Generate My Compliance Roadmap"}
           </button>
         )}
       </div>

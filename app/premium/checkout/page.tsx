@@ -49,6 +49,11 @@ function CheckoutInner() {
         </p>
       </section>
 
+      <section className="checklist-card" aria-labelledby="premium-term">
+        <h2 id="premium-term">Expiry, renewal and cancellation</h2>
+        <p>When an administrator sets an expiry date, access ends at that time. Access does not renew automatically. Contact the site owner to request an extension or to have access removed.</p>
+      </section>
+
       <section className="checklist-card" aria-labelledby="included-h">
         <h2 id="included-h">What Premium includes</h2>
         <ul>

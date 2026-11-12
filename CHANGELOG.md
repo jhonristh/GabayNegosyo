@@ -6,6 +6,22 @@ Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V
 
 Release naming consolidated to v1.0.0 across package metadata, the current documentation, archive and archive root folder. Includes all changes through v0.18.3. Previous entries below remain historical. Functionality and previously documented verification limits are unchanged.
 
+### Night Shift refresh
+
+- Unify the public site, workspace, and admin dark theme around forest charcoal, layered panels, and soft mint accents. Improve selected states, form controls, status surfaces, and keyboard focus.
+
+### Final touches
+
+- Require an explicit taxpayer choice and wait for confirmed profile saving before opening the checklist.
+- Exclude prototype guidance from generated roadmaps and distinguish recurring, event-based and unresolved timing.
+- Explain the current manual Premium access process.
+
+### Mobile navigation
+
+- Add direct mobile workspace tabs for Overview, Deadlines, Resources and Tutorials. More opens the remaining workspace pages.
+- Add a touch swipe area and previous/next links below the mobile workspace header.
+- Reflow the public header on small screens and use SVG arrows in the main onboarding buttons.
+
 ## v0.18.3
 
 ### Client-approved Premium price — 2026-11-10

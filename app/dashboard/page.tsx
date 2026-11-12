@@ -15,7 +15,7 @@ import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
 import { localityLabel } from "../../lib/ncr";
 import { businessStageLabel, employeeLabel, taxArrangementLabel } from "../../lib/profileSummary";
-import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel } from "../../lib/ruleEngine";
+import { generateApplicableRequirements, resolveObligation, compareByDue, formatDueLabel, describeUndatedRequirement } from "../../lib/ruleEngine";
 import { hasPremiumAccess } from "../../lib/entitlements";
 import type { BusinessProfile, RequirementStatus } from "../../lib/types";
 
@@ -201,7 +201,7 @@ function DashboardInner() {
         </div>
         {pending.length === 0 && <p className="hint">Nothing pending. Great work.</p>}
         {pending.slice(0, 5).map(({ req, status, dueDate }) => (
-          <RequirementCard key={req.id} requirement={req} status={premium ? status : "upcoming"} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : "No fixed date"} agencyName={agencyName(req.agencyId)} />
+          <RequirementCard key={req.id} requirement={req} status={premium ? status : "upcoming"} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : describeUndatedRequirement(req)} agencyName={agencyName(req.agencyId)} />
         ))}
       </section>
 
@@ -209,7 +209,7 @@ function DashboardInner() {
         <section className="dashboard-section">
           <h2>Completed</h2>
           {completed.map(({ req, status, dueDate }) => (
-            <RequirementCard key={req.id} requirement={req} status={premium ? status : "upcoming"} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : "No fixed date"} agencyName={agencyName(req.agencyId)} />
+            <RequirementCard key={req.id} requirement={req} status={premium ? status : "upcoming"} dueLabel={dueDate ? `Due: ${dueLabel(dueDate)}` : describeUndatedRequirement(req)} agencyName={agencyName(req.agencyId)} />
           ))}
         </section>
       )}

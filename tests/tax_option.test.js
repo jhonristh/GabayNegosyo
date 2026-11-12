@@ -17,7 +17,7 @@ test('only consultant-approved taxpayer categories are offered in the wizard; hi
   assert.match(choices[1],/self_employment_or_profession/);
   assert.match(choices[1],/mixed_income_earner/);
   assert.doesNotMatch(choices[1],/purely_compensation|purely_business/);
-  assert.match(wizard,/existing\?\.taxpayerType === "mixed_income_earner"/);
+  assert.match(wizard,/option\.value === existing\?\.taxpayerType\)\?\.value \?\? null/);
 });
 
 test('8% estimates subtract 250,000 for qualified self-employed, never yield negative tax',async()=>{

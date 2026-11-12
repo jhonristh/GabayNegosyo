@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useAuth } from "../../lib/auth";
 import { db } from "../../lib/db";
-import { generateApplicableRequirements, resolveObligation, formatDueLabel } from "../../lib/ruleEngine";
+import { generateApplicableRequirements, resolveObligation, formatDueLabel, describeUndatedRequirement } from "../../lib/ruleEngine";
 import type { BusinessProfile } from "../../lib/types";
 
 /**
@@ -95,7 +95,7 @@ export default function PreviewPage() {
             return (
               <article key={req.id} className="checklist-card">
                 <h3>{req.name}</h3>
-                <p className="deadline">{dueDate ? `Due ${formatDueLabel(dueDate)}` : `No fixed date: ${req.deadlineDescription}`}</p>
+                <p className="deadline">{dueDate ? `Due ${formatDueLabel(dueDate)}` : `${describeUndatedRequirement(req)}: ${req.deadlineDescription}`}</p>
                 <p>{req.whoItAppliesTo}</p>
               </article>
             );

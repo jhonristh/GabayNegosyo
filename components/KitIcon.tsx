@@ -22,6 +22,9 @@ export type KitIconName =
   | "users"
   | "logout"
   | "moon"
+  | "more"
+  | "previous"
+  | "next"
   | "sun";
 
 const PATHS: Record<KitIconName, string> = {
@@ -39,6 +42,9 @@ const PATHS: Record<KitIconName, string> = {
   users: "M9 11a3.5 3.5 0 1 0 0-7 3.5 3.5 0 0 0 0 7zM2.5 20a6.5 6.5 0 0 1 13 0M16 4.5a3.5 3.5 0 0 1 0 6.5M18 14.2a6.5 6.5 0 0 1 3.5 5.8",
   logout: "M10 4H5v16h5M14 8l4 4-4 4M18 12H9",
   moon: "M20 14.5A8 8 0 0 1 9.5 4a8 8 0 1 0 10.5 10.5z",
+  more: "M4.5 12h1m6 0h1m6 0h1",
+  previous: "M15 5l-7 7 7 7",
+  next: "M9 5l7 7-7 7",
   sun: "M12 16a4 4 0 1 0 0-8 4 4 0 0 0 0 8zM12 2v2M12 20v2M2 12h2M20 12h2M4.9 4.9l1.4 1.4M17.7 17.7l1.4 1.4M4.9 19.1l1.4-1.4M17.7 6.3l1.4-1.4",
 };
 

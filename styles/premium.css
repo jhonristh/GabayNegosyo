@@ -84,10 +84,9 @@ html:not([data-theme="night"]) :where(.kit-side-nav a,.navbar-mobile a) { transi
 html:not([data-theme="night"]) .kit-side-nav a.on { border-radius:10px; }
 .site-footer { margin-top:72px; }
 /* Night Shift: never leave white cards or dark lettering stuck in the night theme. */
-html[data-theme="night"] .gn-hero-copy .gn-kicker { background:rgba(190,242,100,.08); border-color:rgba(190,242,100,.25); }
 html[data-theme="night"] .gn-hero-copy h1 em { color:var(--gn-lime); }
 html[data-theme="night"] .gn-roadmap,html[data-theme="night"] .gn-pillars article,html[data-theme="night"] .gn-trust-grid article,html[data-theme="night"] .gn-home .v05-step-grid article,html[data-theme="night"] .gn-final { background:var(--kit-panel); border-color:var(--kit-line); box-shadow:none; }
-html[data-theme="night"] .gn-feature-band { background:#092f22; }
+html[data-theme="night"] .gn-feature-band { background:var(--night-raised); }
 html[data-theme="night"] .gn-home .v07-plan-grid article { border-color:var(--kit-line); }
 html[data-theme="night"] .gn-home .v07-plan-grid article.featured { border-color:var(--gn-lime); }
 /* Adaptive rules deliberately follow existing 760/859px navigation thresholds. */

@@ -106,7 +106,7 @@ Real data versus prototype content: checklist % and "Up next" come from the rule
 
 - `<html data-theme="light|night">` is the only switch. Preference (`light | night | system`) lives in `localStorage["gn-theme"]`; nothing goes to Supabase. New visitors get **light**; bad or blocked storage falls back to light.
 - `THEME_INIT_SCRIPT` runs in `<head>` before first paint to avoid a white flash, so `<html>` carries `suppressHydrationWarning`.
-- Night Shift remaps tokens under `html[data-theme="night"]` (black canvas, lime accent, lime always paired with dark text). That selector out-specifies `:root`, so **any rule that must change with the theme has to use a token** (`--kit-panel`, `--kit-line`, `--surface-soft`, `--gn-green`, `--gn-green-deep`, `--ink`, `--solid-surface`) rather than a literal colour. Hard-coded `#fff` or `--gn-emerald` text is the usual cause of unreadable Night Shift panels. Note `--kit-mint` does **not** remap; use `--surface-soft` for mint panels.
+- Night Shift uses a forest charcoal canvas, separate rail and card surfaces, and soft mint for actions and focus. The palette lives under html[data-theme="night"] in styles/kits.css. Workspace and route styles consume those same tokens. Use the stronger control border for inputs and the quieter border for panels. Reserve warm colors for warnings and errors.
 - If a rule truly needs a literal light colour, add a `html[data-theme="night"]` override in `kits.css`.
 
 ## 6. Branding
@@ -118,6 +118,9 @@ Real data versus prototype content: checklist % and "Up next" come from the rule
 ## 7. Responsive and accessibility
 
 - At 859px, hero and summary columns stack and the authenticated bottom navigation takes over. At 520px, hero actions fill the width and quick actions form a compact grid. At 390px nothing may scroll horizontally.
+- The mobile workspace bar shows Overview, Checklist, Deadlines, Resources and Tutorials. More opens Business Registration, BIR Forms, Penalties, Renewal, Tax Calculator and Account. Overview returns to the signed-in dashboard.
+- The strip below the mobile workspace header follows the same page order as the desktop sidebar. Swipe left for the next page and right for the previous page, or use the arrow links. The gesture begins in the strip's center, away from the screen edges. Vertical scrolling and pinch zoom are available there.
+- Check page reflow down to 320 CSS px and aim for 48 CSS px touch targets in mobile navigation. The fixed bar includes bottom and side safe-area padding. See [WCAG reflow and pointer gestures](https://www.w3.org/TR/WCAG22/), [Apple's button guidance](https://developer.apple.com/design/human-interface-guidelines/buttons), [Android's touch target guidance](https://developer.android.com/guide/topics/ui/accessibility/views/apps-views) and [WebKit's safe-area guidance](https://webkit.org/blog/7929/designing-websites-for-iphone-x/).
 - Keep comfortable tap targets, visible keyboard focus and `prefers-reduced-motion` support (every new transition must disable under it). Never block zoom: the viewport has no `maximumScale`.
 - Contrast is verified, not eyeballed. `npm run contrast-check` applies the WCAG relative-luminance formula to the token pairs, the Night Shift pairs and the real `.badge-*` rules and hero progress track parsed from `styles/globals.css`, and rewrites [CONTRAST_REPORT.md](CONTRAST_REPORT.md). Re-run it after any token change; it fails if a stronger tint would drop below 4.5:1 (3:1 for UI boundaries). History: `--ink-faint` at 46% opacity measured 2.85:1 and was raised; the dashboard hero progress track was darkened from `#668a7a` to `#3f6655` (white label 3.9 to 6.5:1).
 

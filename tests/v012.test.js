@@ -108,7 +108,8 @@ test("an already-registered business does not get one-time new-registration item
   for (const gone of ["bir-cor", "bir-registration-filing", "lgu-barangay-mayors-clearance", "bir-books-of-accounts", "bir-orus-registration", "bir-1906-authority-to-print"]) {
     assert.ok(!ids.includes(gone), `${gone} should not appear for an existing business`);
   }
-  for (const stays of ["bir-1701q-quarterly", "sss-contribution", "mayor-permit-renewal", "bir-1601c-monthly-compensation"]) {
+  assert.ok(!ids.includes("sss-contribution"), "unreviewed agency guidance is excluded");
+  for (const stays of ["bir-1701q-quarterly", "mayor-permit-renewal", "bir-1601c-monthly-compensation"]) {
     assert.ok(ids.includes(stays), `${stays} should stay for an existing business`);
   }
 });
@@ -165,7 +166,7 @@ test("the wizard is not behind AuthGuard and the landing CTAs go to the wizard",
 test("the free requirement detail shows source and applicability outside the premium gate", () => {
   const src = fs.readFileSync(path.join(root, "app", "requirements", "[id]", "page.tsx"), "utf8");
   const gateStart = src.indexOf("<PremiumGate>");
-  for (const marker of ["Official Resource", "What is this?", "Last verified"]) {
+  for (const marker of ["Official Resource", "What is this?", "Content review date"]) {
     const at = src.indexOf(marker);
     assert.ok(at > -1 && at < gateStart, `${marker} must be before the PremiumGate`);
   }

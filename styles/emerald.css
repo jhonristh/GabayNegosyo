@@ -78,7 +78,7 @@ html[data-theme="night"] .secondary-btn { background: transparent; }
 .navbar-public nav a:not(.primary-btn):hover { color: var(--gn-green); border-color: var(--gn-lime); }
 .navbar-public .nav-cta { border-radius: var(--gn-r-ctl); min-height: 42px; padding: 9px 18px; color: #fff; }
 html[data-theme="night"] .brand, html[data-theme="night"] .navbar-public nav a:not(.primary-btn) { color: #f5f7f3; }
-html[data-theme="night"] .kit-shell--public .navbar-public { background: rgba(21, 25, 23, 0.92); border-color: #33403a; }
+html[data-theme="night"] .kit-shell--public .navbar-public { background: var(--glass-bg-strong); border-color: var(--kit-line); }
 
 /* Signed-in shell picks up emerald via the tokens above; sidebar brand strip gets a hairline. */
 .kit-side-nav a.on { box-shadow: inset 3px 0 0 var(--gn-lime); }
@@ -225,7 +225,7 @@ html[data-theme="night"] .checklist-card, html[data-theme="night"] .req-card, ht
 .option-btn { border-radius: var(--gn-r-ctl); border-color: var(--gn-line); transition: border-color 140ms var(--gn-ease), background 140ms var(--gn-ease); }
 .option-btn:hover { border-color: var(--gn-green); }
 .option-btn.selected { background: var(--gn-mint); border-color: var(--gn-green); color: var(--gn-emerald); font-weight: 700; box-shadow: inset 4px 0 0 var(--gn-lime); }
-html[data-theme="night"] .option-btn.selected { color: #f5f7f3; }
+html[data-theme="night"] .option-btn.selected { color: var(--kit-nav-on-fg); }
 .filter-chip.selected { background: var(--gn-green); }
 
 /* Wizard: readable column, segmented progress (done = emerald, current = emerald→lime) */
@@ -306,12 +306,12 @@ html[data-theme="night"] .doc-checklist { background: transparent; }
 .journey-step a:hover { border-color: var(--gn-green); }
 .journey-step--current a { background: var(--gn-mint); border-color: var(--gn-green); box-shadow: 0 0 0 2px rgba(132, 204, 22, 0.4); }
 .journey-step--current .journey-state { font-weight: 700; color: var(--gn-green-deep); }
-html[data-theme="night"] .journey-step--current a { background: #26301f; box-shadow: 0 0 0 2px rgba(160, 237, 89, 0.45); }
+html[data-theme="night"] .journey-step--current a { background: var(--kit-nav-on-bg); box-shadow: none; }
 html[data-theme="night"] .journey-step--done .journey-num, html[data-theme="night"] .journey-step--current .journey-num { color: #102218; }
 .journey-num { background: var(--kit-mint); }
 .bir-check { background: var(--kit-panel); border-color: var(--kit-line); }
 .bir-check.checked { background: var(--gn-mint); border-color: var(--gn-green); }
-html[data-theme="night"] .bir-check.checked { background: #26301f; }
+html[data-theme="night"] .bir-check.checked { background: var(--kit-nav-on-bg); }
 
 /* Penalty simulator: inputs left, estimate right on desktop; stacked on mobile (DOM order = reading order) */
 .penalty-sim { display: grid; gap: 24px; align-items: start; }
@@ -332,10 +332,10 @@ html[data-theme="night"] .penalty-summary div { border-color: var(--kit-line); }
 
 /* ==========================================================================
    v0.15 — Login, legal pages, credits, footer, admin account panel
-   --surface-soft is the theme-aware "mint" (the old --kit-mint does not remap in Night Shift).
+   --surface-soft is the theme-aware "mint" (both it and --kit-mint remap in Night Shift).
    ========================================================================== */
 :root { --surface-soft: #e8f5ec; }
-html[data-theme="night"] { --surface-soft: #243026; }
+html[data-theme="night"] { --surface-soft: var(--night-raised); }
 
 /* ---------- Login / auth ---------- */
 .auth-shell { max-width: 1040px; margin: 0 auto; padding: 24px 20px calc(56px + env(safe-area-inset-bottom)); display: grid; gap: 16px; align-items: stretch; }
@@ -538,11 +538,6 @@ html[data-theme="night"] { --surface-soft: #243026; }
 .gn-skip-link { position: fixed; top: -100px; left: 12px; z-index: 9999; padding: 12px 16px; border-radius: 8px; background: #064e3b; color: #fff; font-weight: 700; }
 .gn-skip-link:focus-visible { top: 12px; outline: 3px solid #ffda72; outline-offset: 2px; }
 #main-content:focus { outline: none; }
-@media (max-width: 359px) {
-  .navbar-mobile { gap: 0; padding-left: 2px; padding-right: 2px; }
-  .mobile-link { font-size: .59rem; padding-left: 0; padding-right: 0; }
-  .mobile-link .kit-icon { padding-left: 6px; padding-right: 6px; }
-}
 /* Wide tables scroll inside their own region instead of forcing the viewport wider. */
 @media (max-width: 859px) {
   .kit-table { display: block; max-width: 100%; overflow-x: auto; -webkit-overflow-scrolling: touch; }

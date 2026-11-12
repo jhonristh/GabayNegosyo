@@ -2,7 +2,8 @@
 
 import Link from "next/link";
 import Image from "next/image";
-import { usePathname } from "next/navigation";
+import { usePathname, useRouter } from "next/navigation";
+import { useEffect, useRef, type PointerEvent } from "react";
 import { useAuth } from "../lib/auth";
 import KitIcon, { type KitIconName } from "./KitIcon";
 import { ThemeToggle } from "./ThemeControls";
@@ -15,23 +16,25 @@ import { ThemeToggle } from "./ThemeControls";
  * Only presentation lives here; routes, roles and guards are unchanged.
  */
 
-type NavItem = { href: string; label: string; mobileLabel?: string; icon: KitIconName; mobile?: boolean };
+type NavItem = { href: string; label: string; mobileLabel?: string; icon: KitIconName };
 
-// The full desktop list. `mobile: false` keeps Tutorials off the bottom bar,
-// exactly as before (six items is the most a phone bar can hold legibly).
 const USER_LINKS: NavItem[] = [
-  { href: "/dashboard", label: "Overview", icon: "overview", mobile: false },
+  { href: "/dashboard", label: "Overview", icon: "overview" },
   { href: "/checklist", label: "1. Checklist", mobileLabel: "Checklist", icon: "checklist" },
   { href: "/registration", label: "2. Business Registration", mobileLabel: "Register", icon: "guide" },
   { href: "/bir-forms", label: "3. BIR Forms", mobileLabel: "BIR Forms", icon: "requirements" },
   { href: "/penalties", label: "4. Penalties", mobileLabel: "Penalties", icon: "penalties" },
   { href: "/renewal", label: "5. Renewal & Post-Registration", mobileLabel: "Renewal", icon: "renewal" },
-  { href: "/resources", label: "Resources", icon: "resources", mobile: false },
-  { href: "/tutorials", label: "Tutorials", icon: "tutorials", mobile: false },
-  { href: "/deadlines", label: "Deadlines", icon: "deadlines", mobile: false },
-  { href: "/tax-calculator", label: "Tax Calculator", icon: "penalties", mobile: false },
+  { href: "/resources", label: "Resources", icon: "resources" },
+  { href: "/tutorials", label: "Tutorials", icon: "tutorials" },
+  { href: "/deadlines", label: "Deadlines", icon: "deadlines" },
+  { href: "/tax-calculator", label: "Tax Calculator", icon: "penalties" },
   { href: "/account", label: "Account", icon: "account" },
 ];
+
+const MOBILE_TABS = ["/dashboard", "/checklist", "/deadlines", "/resources", "/tutorials"]
+  .map((href) => USER_LINKS.find((link) => link.href === href)!);
+const MORE_LINKS = USER_LINKS.filter((link) => !MOBILE_TABS.includes(link));
 
 const ADMIN_LINKS: NavItem[] = [
   { href: "/admin", label: "Dashboard", icon: "overview" },
@@ -63,6 +66,123 @@ function Brand({ href, size, label, children }: { href: string; size: number; la
   );
 }
 
+function MobilePageSwitcher({ pathname }: { pathname: string | null }) {
+  const router = useRouter();
+  const start = useRef<{ id: number; x: number; y: number } | null>(null);
+  useEffect(() => {
+    function cancelOnAdditionalTouch(event: globalThis.PointerEvent) {
+      if (event.pointerType === "touch" && !event.isPrimary) start.current = null;
+    }
+    document.addEventListener("pointerdown", cancelOnAdditionalTouch, true);
+    return () => document.removeEventListener("pointerdown", cancelOnAdditionalTouch, true);
+  }, []);
+  const index = USER_LINKS.findIndex((link) => link.href === pathname);
+  if (index < 0) return null;
+  const current = USER_LINKS[index];
+  const previous = USER_LINKS[index - 1];
+  const next = USER_LINKS[index + 1];
+
+  function begin(event: PointerEvent<HTMLDivElement>) {
+    start.current = event.pointerType === "touch" && event.isPrimary
+      ? { id: event.pointerId, x: event.clientX, y: event.clientY }
+      : null;
+  }
+
+  function finish(event: PointerEvent<HTMLDivElement>) {
+    const origin = start.current;
+    start.current = null;
+    if (!origin || origin.id !== event.pointerId) return;
+    const dx = event.clientX - origin.x;
+    const dy = event.clientY - origin.y;
+    if (Math.abs(dx) < 56 || Math.abs(dx) < 1.5 * Math.abs(dy)) return;
+    const destination = dx < 0 ? next : previous;
+    if (destination) router.push(destination.href);
+  }
+
+  return (
+    <nav className="mobile-page-switcher" aria-label="Previous and next workspace pages">
+      {previous ? (
+        <Link href={previous.href} aria-label={`Previous page: ${previous.label}`} prefetch={false}>
+          <KitIcon name="previous" />
+        </Link>
+      ) : <span />}
+      <div
+        className="mobile-swipe-area"
+        onPointerDown={begin}
+        onPointerUp={finish}
+        onPointerCancel={() => { start.current = null; }}
+      >
+        <strong>{current.mobileLabel ?? current.label}</strong>
+        <span>Swipe here to switch pages</span>
+      </div>
+      {next ? (
+        <Link href={next.href} aria-label={`Next page: ${next.label}`} prefetch={false}>
+          <KitIcon name="next" />
+        </Link>
+      ) : <span />}
+    </nav>
+  );
+}
+
+function MobileBottomNav({ pathname }: { pathname: string | null }) {
+  const more = useRef<HTMLDetailsElement>(null);
+  const moreButton = useRef<HTMLElement>(null);
+
+  useEffect(() => {
+    function closeOutside(event: globalThis.PointerEvent) {
+      const menu = more.current;
+      if (menu?.open && event.target instanceof Node && !menu.contains(event.target)) {
+        menu.open = false;
+      }
+    }
+    document.addEventListener("pointerdown", closeOutside);
+    return () => document.removeEventListener("pointerdown", closeOutside);
+  }, []);
+
+  return (
+    <nav className="navbar-mobile" aria-label="Primary">
+      {MOBILE_TABS.map((link) => {
+        const active = isActive(pathname, link.href);
+        return (
+          <Link key={link.href} href={link.href} className={active ? "mobile-link active" : "mobile-link"} aria-current={active ? "page" : undefined}>
+            <KitIcon name={link.icon} size={20} />
+            <span>{link.mobileLabel ?? link.label}</span>
+          </Link>
+        );
+      })}
+      <details
+        className="mobile-more"
+        ref={more}
+        onKeyDown={(event) => {
+          if (event.key !== "Escape" || !event.currentTarget.open) return;
+          event.preventDefault();
+          event.currentTarget.open = false;
+          moreButton.current?.focus();
+        }}
+      >
+        <summary ref={moreButton} className={MORE_LINKS.some((link) => isActive(pathname, link.href)) ? "mobile-link active" : "mobile-link"}>
+          <KitIcon name="more" size={20} />
+          <span>More</span>
+        </summary>
+        <div className="mobile-more-links">
+          {MORE_LINKS.map((link) => (
+            <Link
+              key={link.href}
+              href={link.href}
+              prefetch={false}
+              aria-current={isActive(pathname, link.href) ? "page" : undefined}
+              onNavigate={() => { if (more.current) more.current.open = false; }}
+            >
+              <KitIcon name={link.icon} size={18} />
+              <span>{link.label}</span>
+            </Link>
+          ))}
+        </div>
+      </details>
+    </nav>
+  );
+}
+
 export default function Navbar() {
   const { user, logout } = useAuth();
   const pathname = usePathname();
@@ -76,9 +196,13 @@ export default function Navbar() {
           <Link href="/#features">Features</Link>
           <Link href="/#plans">Plans</Link>
           <Link href="/login">Log in</Link>
-          <ThemeToggle className="kit-theme-toggle--icon" />
+          <div className="public-display-desktop"><ThemeToggle className="kit-theme-toggle--icon" /></div>
+          <details className="public-display-mobile">
+            <summary>Display options</summary>
+            <ThemeToggle className="kit-theme-toggle--icon" />
+          </details>
           <Link href="/wizard" className="primary-btn nav-cta">
-            Get started <span className="nav-arrow" aria-hidden="true">↗</span>
+            Get started <KitIcon name="next" size={16} />
           </Link>
         </nav>
       </header>
@@ -145,14 +269,13 @@ export default function Navbar() {
     );
   }
 
-  const mobileLinks = USER_LINKS.filter((link) => link.mobile !== false);
-
   return (
     <>
       <header className="mobile-brand-head">
         <Brand href="/dashboard" size={38} label="GabayNegosyo overview" />
         <ThemeToggle className="kit-theme-toggle--icon" />
       </header>
+      <MobilePageSwitcher key={`switcher:${pathname}`} pathname={pathname} />
 
       {/* Growth Ledger sidebar (desktop) */}
       <aside className="kit-sidebar">
@@ -174,18 +297,7 @@ export default function Navbar() {
         </div>
       </aside>
 
-      {/* Pocket Guide bottom bar (mobile) */}
-      <nav className="navbar-mobile" aria-label="Primary">
-        {mobileLinks.map((link) => {
-          const active = isActive(pathname, link.href);
-          return (
-            <Link key={link.href} href={link.href} className={active ? "mobile-link active" : "mobile-link"} aria-current={active ? "page" : undefined}>
-              <KitIcon name={link.icon} size={20} />
-              <span>{link.mobileLabel ?? link.label}</span>
-            </Link>
-          );
-        })}
-      </nav>
+      <MobileBottomNav key={`bottom-nav:${pathname}`} pathname={pathname} />
     </>
   );
 }

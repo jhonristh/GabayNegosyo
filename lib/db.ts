@@ -385,6 +385,23 @@ export const db = {
     return true;
   },
 
+  /** Wait for the server before exposing the new profile to the workspace. */
+  async saveConfirmedBusinessProfile(profile: BusinessProfile): Promise<boolean> {
+    if (!currentUserId || profile.userId !== currentUserId) return false;
+    if (inDemo()) return db.saveBusinessProfile(profile);
+    const snapshot = userData;
+    try {
+      const { error } = await getSupabase()
+        .from("business_profiles")
+        .upsert({ user_id: profile.userId, data: profile, updated_at: new Date().toISOString() }, { onConflict: "user_id" });
+      if (error || currentUserId !== profile.userId || userData !== snapshot) return false;
+      userData.businessProfile = profile;
+      return true;
+    } catch {
+      return false;
+    }
+  },
+
   // ---- Checklist progress ----
   getProgress(): Record<string, ChecklistItem> {
     return userData.checklistProgress;
