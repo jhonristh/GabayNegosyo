@@ -1,126 +1,118 @@
 # GabayNegosyo
 
-Current release: **v1.0.0** — client-approved Premium pricing at ₱199/month across the website. Includes updated workbook videos, external YouTube links and document cards. Online billing remains unconnected; access is managed by administrators.
+**Version 1.0.0 · Business compliance guidance for Philippine micro-entrepreneurs**
 
-**Your guide to business compliance.**
+GabayNegosyo is a Progressive Web App (PWA) for online sellers, freelancers, and small business owners in Metro Manila. It uses a business profile to produce a personalized roadmap for registration, filing, deadlines, and renewal. It brings relevant requirements, forms, and learning materials together so users can see what applies to them and what to do next.
 
-This ZIP includes the **Entrepreneur's Workspace** visual refinement: an interactive landing preview, cream-and-emerald styling, progress-based storefront artwork, refined dashboard/checklist, and reduced-motion support. See `docs/DESIGN.md` for changes and `docs/TESTING.md` for validation limits. Extract, run `npm ci`, copy `.env.example` to `.env.local`, configure your own values, then run `npm run dev`. The ZIP contains source code rather than installed dependencies or a deployed site.
+The app provides independent information and organization. Actual registration, filing, and payment take place through the relevant agency. Confirm current requirements and calculator assumptions with the issuing agency or a qualified adviser.
 
-GabayNegosyo is a Progressive Web App that puts BIR, SSS, PhilHealth, Pag-IBIG and LGU (business permit) requirements for Philippine micro-entrepreneurs into one personalized checklist. It is built for online sellers, freelancers and small business owners, with Metro Manila (NCR) as the current coverage area.
+## Feasibility study and the problems this build addresses
 
-> GabayNegosyo is an independent informational platform. It is **not** a government agency, does not file documents, and does not replace official services. It began as a feasibility study and academic project. Always verify current forms, deadlines, fees and penalties with the issuing agency before acting.
+The [feasibility study’s executive summary](docs/client-sources/GROUP%201%20-%20FEASIB%20CHA%201.pdf) identifies three core tasks: finding applicable obligations, understanding what they require, and tracking them over time. The table maps those needs to the software. It describes what the product provides, rather than measuring its effect on compliance outcomes or market adoption.
 
-## Included in v1.0.0
-
-The green arrow is restored and the growing shop stays. Try the shop illustration with a click or Enter/Space to turn on its little window light. This does not change your real progress.
-
-- Open **Renewal & Post-Registration** (or the dashboard's **Renewal workspace** shortcut). With a business profile, the overview lists matching renewal requirements. Premium users can choose **Start renewal**, **Continue renewal**, or **Review renewal**.
-- In focus view, select a step, check it when done, undo it, or expand all instructions. Next/Previous only navigate. Completion uses existing checklist records and cycles; it does not submit an application or establish agency approval.
-- Switch **Interface sounds** on in the footer or focus toolbar. The preference is remembered in this browser; it starts off. Sounds are brief confirmation cues, not confirmation that a server write succeeded.
-- Use **Pause decorative motion** under the landing preview, or your device's reduced-motion setting.
-- For a browser-only test, set `NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS=true` in your local environment and choose the Premium demo from Log in. Keep it disabled on your public deployment unless you intentionally want demos available.
-
-## What it does
-
-- **Registration wizard** (guest-friendly): a short questionnaire (new or existing business, taxpayer type, city and barangay, lease, employees, projected sales, tax type) that feeds the rule engine.
-- **Personalized checklist, dashboard and deadlines:** requirements that apply to you, grouped by stage, with per-cycle completion, a monthly deadline calendar, and "No fixed date" shown honestly where the source gives none.
-- **Business guide:** `/registration` and `/renewal` walk through registering, renewing and staying compliant, with BIR form previews (`/bir-forms`), a penalty simulator (`/penalties`), filing tutorial videos and a graduated tax-table reference.
-- **Learning Hub and Resource library:** tutorials, official forms, document checklists and links, searchable and filterable by agency and type. DTI and BMBE resources appear in the library only.
-- **Plans:** Free and Premium (see below). Premium upgrade is a demo: no payment provider is connected.
-- **Reminders:** manual Premium reminder workflow only; no automatic emails in Version 1.
-- **Admin area:** content editors for agencies, requirements, resources and tutorials, plus user and account-sync views. Content edits are saved **per browser only** (see [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md)).
-- **PWA:** installable, offline shell, Night Shift (dark) theme.
-
-### Free vs. Premium — consultant-approved, Nov 2, 2026
-
-| Capability | Free | Premium |
-|---|---|---|
-| Wizard, basic tax-option estimate, personalized checklist (requirement/agency/deadline) | Yes | Yes |
-| Verified YouTube tutorials, with attribution | Yes | Yes |
-| Deadline **status** (overdue / due soon / due today) and completion/progress | No | Yes |
-| Resource library, supporting documents, detailed steps | No | Yes |
-| Penalty details, official penalty reference links, penalty simulator | No | Yes |
-| Manual reminder service | No | Yes |
-
-The client-facing fee reference is available with Premium while the fee-tier decision FL-18 remains OPEN. Payment integration and automated emails are out of scope for Version 1. Do not treat UI gating as a database authorization boundary: server-side validation and RLS are release blockers until independently verified.
-
-## Tech stack
-
-Next.js (App Router, Turbopack), React 18, TypeScript, Supabase (Auth, Postgres with Row Level Security), Vercel (hosting, Analytics); automated email/cron delivery remains disabled for Version 1. Compliance rules live in `data/*.json` and `lib/ruleEngine.ts`, not in UI components.
-
-## Quick start
-
-Requires Node.js 22.18 or newer.
-
-```bash
-npm install
-cp .env.example .env.local   # then fill in the values
-npm run dev                  # http://localhost:3000
-```
-
-The public pages work without Supabase. Sign-in, saved data and admin need a Supabase project: follow **[docs/SETUP.md](docs/SETUP.md)**.
-
-### Scripts
-
-| Command | What it does |
+| Problem identified in the study | How GabayNegosyo addresses it |
 |---|---|
-| `npm run dev` | Development server |
-| `npm run build` | Production build (runs `scripts/check-env.mjs` first) |
-| `npm run start` | Serve the production build |
-| `npm run lint` | Type check (`tsc --noEmit`) |
-| `npm test` | Node's built-in test runner over `tests/*.test.js` |
-| `npm run contrast-check` | WCAG contrast check; rewrites `docs/CONTRAST_REPORT.md` |
+| Guidance is scattered across agencies, each with its own forms, processes, and schedules. | A single workspace brings together requirement details, agency references, BIR forms, the resource library, and registration and renewal guidance. |
+| First-time owners struggle to tell which requirements apply to their business. | The wizard collects business stage, taxpayer classification, NCR location, lease, employees, projected sales, tax choices, and optional BMBE information. A rule engine matches the profile against catalog conditions. |
+| Instructions and supporting documents are difficult to interpret without prior experience. | Requirement pages explain what an item is, who needs it, and why it appears. Premium adds preparation lists and step-by-step guidance. Tutorial links open the creator’s video on YouTube. |
+| Obligations have different dates, triggers, and recurring periods. | The dashboard, checklist, and calendar display dates or timing explanations where supported. Premium adds status and progress tracking. Opted-in users can be included in the administrator’s manual reminder queue. |
+| Late compliance can carry financial consequences that are hard to anticipate. | The penalty simulator and tax estimator provide educational estimates within their stated assumptions. Their results require independent confirmation before use in real decisions. |
+| Owners often manage a single business from a phone and need tools they can try without paying upfront. | The responsive web app offers a guest preview and a Free checklist. The mobile workspace has direct tabs, a More menu, and swipe and arrow navigation. The PWA can be installed in supported browsers. |
 
-Before shipping, run `npm run lint && npm test && npm run contrast-check && npm run build`. A production build (`VERCEL_ENV=production`) **fails** if `NEXT_PUBLIC_SITE_URL` or `NEXT_PUBLIC_CONTACT_EMAIL` is missing; elsewhere it only warns.
+The location selector covers 17 NCR localities. The catalog includes BIR, SSS, PhilHealth, Pag-IBIG, LGU, DTI, and barangay references, with coverage varying by record and module. General local permit guidance does not establish that each LGU’s rules are verified. Barangay-to-RDO matching is partial. Generated roadmaps exclude archived requirements and entries marked as prototype placeholders.
 
-### Demo previews
+## User and administrator workflows
 
-With `NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS=true`, `/login` offers Free / Premium / Admin **previews**. They run only in the visitor's browser with sample data: no Supabase user, no password, no real admin access.
-
-## Project structure
-
-```
-app/            Routes (App Router), API routes (/api/send-email, /api/delete-account,
-                /api/cron/send-reminders, /api/unsubscribe)
-components/     Navbar, guards, cards, badges, gates, legal layout
-lib/            Auth, data access (db.ts), rule engine, penalty maths, email, site config
-data/           Requirements, resources, tutorials, forms, tax table, NCR barangays
-database/       supabase_setup.sql (fresh install) and migrations/
-docs/           Project documentation (index below)
-public/         Manifest, service worker, icons, images
-scripts/        check-env.mjs, contrast-check.mjs
-styles/         globals.css, kits.css, emerald.css (loaded in that order)
-tests/          Node test suite
-```
-
-## Documentation
-
-| File | Contents |
+| Area | Routes and behavior |
 |---|---|
-| [docs/SETUP.md](docs/SETUP.md) | Supabase, auth redirects, Google sign-in, admin, account sync, deploy to Vercel, troubleshooting |
-| [docs/INTEGRATION_AND_QA_v0.17.md](docs/INTEGRATION_AND_QA_v0.17.md) | Migration review, safe rollout order, verification SQL, QA checklist, release blockers |
-| [docs/USER_JOURNEY_QA.md](docs/USER_JOURNEY_QA.md) | Sign-up to checklist completion: results, fixes, owner decisions, browser test script |
-| [docs/ACCOUNT_AND_ACCESS.md](docs/ACCOUNT_AND_ACCESS.md) | Account lifecycle, Premium entitlements, admin controls, migrations 005 and 006 |
-| [docs/REMINDERS_SETUP.md](docs/REMINDERS_SETUP.md) | Daily reminder digest: migration, email provider, staged rollout |
-| [docs/ADMIN_GUIDE.md](docs/ADMIN_GUIDE.md) | Scope, admin workflow, media previews, current limits |
-| [docs/ARCHITECTURE.md](docs/ARCHITECTURE.md) | Runtime, data flow, design-layer boundaries |
-| [docs/PRODUCT.md](docs/PRODUCT.md) | Purpose, scope, plan boundaries, content integrity |
-| [docs/DESIGN.md](docs/DESIGN.md) | Tokens, components, themes, branding, accessibility |
-| [docs/TESTING.md](docs/TESTING.md) | Verification gates and the manual regression checklist |
-| [docs/OPEN_ITEMS.md](docs/OPEN_ITEMS.md) | Decisions, links and content the owner still needs to supply |
-| [docs/CONTRAST_REPORT.md](docs/CONTRAST_REPORT.md) | Generated by `npm run contrast-check` |
-| [data/ncr-barangays/README_REPORT.md](data/ncr-barangays/README_REPORT.md) | NCR barangay and RDO dataset report |
-| [CHANGELOG.md](CHANGELOG.md) | Release history |
-| [AGENTS.md](AGENTS.md) | Working agreement for contributors |
+| Onboarding | `/wizard` and `/preview` let visitors answer questions, explicitly choose a taxpayer classification, and review answers before generating a roadmap. Guest answers stay in session storage. Signed-in wizard submission waits for profile persistence before opening the checklist. |
+| Compliance workspace | `/dashboard`, `/checklist`, `/requirements/[id]`, and `/deadlines` show matching obligations, explanations, calendar dates, and plan-dependent progress or reminder controls. |
+| Guidance and estimates | `/registration`, `/bir-forms`, `/renewal`, `/resources`, `/tutorials`, `/tax-calculator`, and `/penalties` cover guides, forms, external video links, and estimates. Renewal offers a Premium focus view for working through steps. |
+| Account | Sign-up, email or configured Google sign-in, password recovery, profile and preferences, account lifecycle, and Premium information. |
+| Administration | `/admin` links to Agencies, Requirements, Resources, Tutorials, Users, Audit log, and Manual reminders. Administrators can manage account status and Premium, review audit history, and prepare and record external reminder sends. Content edits are saved only in the current browser. |
 
-## Known limitations
+On mobile, the bottom bar links to Overview, Checklist, Deadlines, Resources, and Tutorials. **More** opens Business Registration, BIR Forms, Penalties, Renewal, Tax Calculator, and Account. Users can select Light, Night Shift, or the device setting. The service worker provides a public offline fallback and caches eligible assets; signed-in pages and account writes require a connection.
 
-- Admin content edits live in the browser's `localStorage`; they are not shared with other visitors.
-- Premium upgrade is a demo (`upgrade_to_premium_demo()`); any signed-in user can self-upgrade. Remove it before real billing.
-- LGU permit guidance is generic for all NCR localities and not verified per LGU. Barangay-to-RDO lookup is partial (see the dataset report).
-- Penalty rates are representative and must be confirmed against current agency issuances.
-- Many requirement links point to agency home pages; see [docs/OPEN_ITEMS.md](docs/OPEN_ITEMS.md).
+### Access and subscriptions
 
-### Tutorial videos
+- **Free:** Wizard and basic estimates, personalized checklist, requirement and agency information, basic deadline information, and basic tutorials.
+- **Premium:** Adds deadline status, progress tracking, the resource library, supporting documents, detailed steps, penalty features, and manual reminders.
+- **Admin:** Uses the assigned administrator role for account and content tools. Administrative Premium grants can have an expiry and can be revoked. Account and entitlement actions are recorded in the audit log.
 
-Green **Video Available** panels open the original video on YouTube in a new tab. Check video links in Admin → Tutorials. Video entries awaiting verification display an unavailable message.
+The advertised Premium price is **₱199/month**. Access is granted manually; this version has no connected billing or automatic renewal. The public demo selector offers browser-only Free and Premium sessions when enabled. It does not offer administrator access or modify real accounts.
+
+For manual reminders, an administrator reviews the eligible queue, copies and sends the message through an approved external process, then records the successful send in GabayNegosyo. The record is an administrative confirmation rather than delivery evidence. Keep automated delivery off for the current release.
+
+## Technical stack and architecture
+
+| Layer | Technology and responsibility |
+|---|---|
+| Web application | Next.js 16.4.3 series with App Router and Turbopack, React and React DOM 18.3.1, TypeScript 5.5.4. Server routes handle sensitive operations such as account status and deletion. |
+| Interface | Custom CSS, Inter and Space Grotesk via Fontsource, reusable React components, responsive navigation, theme tokens, focus states, and reduced-motion support. |
+| Authentication and data | Supabase Auth, Supabase JS, and PostgreSQL. SQL migrations define tables, triggers, Row Level Security (RLS), administrative functions, entitlements, audit events, and reminder records. |
+| Compliance logic | Versioned JSON catalogs and typed code under `lib/` for applicability, deadline resolution, eligibility and estimates. Official-source URLs and review metadata travel with catalog records. |
+| Browser storage | Guest wizard answers use session storage. Theme preferences, demo state, and content-editor overrides are browser-local. The signed-in data layer hydrates from Supabase and uses an in-memory cache while the session is active. |
+| Hosting and integrations | Vercel hosts the Next.js build and server routes. Vercel Analytics is available as an integration. Google OAuth depends on provider configuration. Video playback takes place on YouTube. |
+| Tooling | Node.js 22.18.0 or later, npm with `package-lock.json`, Node’s built-in test runner, TypeScript checks, and a contrast-check script. |
+
+The main data flow is **wizard answers → business profile → applicability and timing rules → roadmap and calendar → saved progress**. Real account data and administrative records use Supabase; the reference catalog ships with the source. Premium UI gates control what the app displays. Bundled reference content should be treated as public, while user data and privileged operations rely on database policies and server authorization.
+
+| Directory | Contents |
+|---|---|
+| `app/` | Public, workspace, and admin routes plus server API endpoints |
+| `components/`, `styles/` | Navigation, guards, editors, cards, forms, and design styles |
+| `lib/` | Authentication, database access, entitlements, rules, dates, calculators, and admin functions |
+| `data/` | Agencies, requirements, forms, resources, tutorials, and NCR location data |
+| `database/` | Supabase setup SQL, migrations, verification queries, and local rehearsal |
+| `public/` | PWA manifest, service worker, icons, and application assets |
+| `scripts/`, `tests/`, `docs/` | Build checks, automated tests, setup, operations, and product documentation |
+
+## Set up and run
+
+From the project root, install the locked dependencies and create a local environment file:
+
+```powershell
+npm ci
+Copy-Item .env.example .env.local
+```
+
+On macOS or Linux, use `cp .env.example .env.local` in place of `Copy-Item`. Fill in the relevant settings, then run `npm run dev` and open [http://localhost:3000](http://localhost:3000). For a local demo, set `NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS=true`, restart the dev server, and open Log in.
+
+| Setting | When to configure |
+|---|---|
+| `NEXT_PUBLIC_SUPABASE_URL`, `NEXT_PUBLIC_SUPABASE_ANON_KEY` | Connect authentication and signed-in data to the intended Supabase project. |
+| `SUPABASE_SERVICE_ROLE_KEY` | Server-only credential for privileged routes that need it. Keep it out of public variables, source control, and shared archives. |
+| `NEXT_PUBLIC_SITE_URL`, `NEXT_PUBLIC_CONTACT_EMAIL` | Set the deployed URL and support address. The production environment check requires both. |
+| `NEXT_PUBLIC_ENABLE_DEMO_ACCOUNTS` | Enable local sample sessions for preview or QA. The default is off. |
+| `REMINDERS_MODE` | Keep `off` for this release. The current administrator workflow uses manual sends. |
+
+For connected environments, follow [Supabase setup](docs/SETUP.md) and [account and access setup](docs/ACCOUNT_AND_ACCESS.md). Start with `database/supabase_setup.sql` on a fresh project and reconcile the numbered migrations `001` through `009` against the target schema. On an existing project, review the applied history and use the [verification SQL](database/verification) before applying pending migrations in order. Configure the site URL and allowed redirects for confirmation, recovery, and optional [Google OAuth](docs/GOOGLE_OAUTH_SETUP.md). Assign the administrator role through the documented project setup.
+
+For Vercel, deploy the intended source revision with matching environment settings and test against the corresponding Supabase environment. Deploying application code does not apply or reverse database migrations. Keep production and staging configuration separate and retain a tested database recovery procedure.
+
+## Build, test, and release status
+
+| Command | Purpose |
+|---|---|
+| `npm run dev` | Start the local development server |
+| `npm run lint` | Run TypeScript checks with `tsc --noEmit` |
+| `npm test` | Run the automated tests |
+| `npm run contrast-check` | Check defined contrast pairs and regenerate the [contrast report](docs/CONTRAST_REPORT.md) |
+| `npm run build` | Run the environment check and create the production build |
+| `npm run start` | Serve the completed production build locally |
+
+The v1.0.0 source checks recorded **334 passing tests**, **46 passing contrast pairs**, and a successful local production build. Public and demo routes were checked in desktop and mobile browser layouts. A read-only check reached the configured Supabase Auth endpoint and found email and Google sign-in enabled. This confirms endpoint reachability and provider settings only.
+
+Before signing off on a deployment, verify the deployed revision and migrations. Use staging accounts to test sign-up, OAuth redirects, recovery, cross-device saves, isolation between two users, Premium grant/expiry/revocation, deactivation/reactivation, audit records, and manual reminder recording. Physical-device PWA and accessibility checks, independent calculator and eligibility review, and full recurring-period history remain open. See [testing guidance](docs/TESTING.md) and [open items](docs/OPEN_ITEMS.md).
+
+## Documentation and maintenance
+
+| Reference | Use it for |
+|---|---|
+| [Administrator guide](docs/ADMIN_GUIDE.md) | Content editors, users, account sync, Premium, and troubleshooting |
+| [Manual reminder operations](docs/ADMIN_AND_MANUAL_REMINDERS.md) | Consent, queue eligibility, external sending, and recording |
+| [Architecture](docs/ARCHITECTURE.md) and [account lifecycle](docs/ACCOUNT_AND_ACCESS.md) | Code, data, session, entitlement, and authorization boundaries |
+| [Design](docs/DESIGN.md) and [NCR dataset report](data/ncr-barangays/README_REPORT.md) | Theme and responsive patterns, plus locality and RDO coverage |
+| [Changelog](CHANGELOG.md) and [contributor instructions](AGENTS.md) | Release changes and repository conventions |
+
+When changing a requirement, check the official source and record when it was reviewed. Check form and video links periodically. To publish an approved catalog change for all users, update the maintained source and deploy it. Browser-local admin edits remain on the device where they were saved.
