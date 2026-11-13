@@ -1,6 +1,6 @@
 # GabayNegosyo
 
-Current release: **v1.0.0** — client-approved Premium pricing at ₱199/month across the website. Includes updated workbook videos, shared YouTube players and document cards. Online billing remains unconnected; access is managed by administrators.
+Current release: **v1.0.0** — client-approved Premium pricing at ₱199/month across the website. Includes updated workbook videos, external YouTube links and document cards. Online billing remains unconnected; access is managed by administrators.
 
 **Your guide to business compliance.**
 
@@ -120,3 +120,7 @@ tests/          Node test suite
 - LGU permit guidance is generic for all NCR localities and not verified per LGU. Barangay-to-RDO lookup is partial (see the dataset report).
 - Penalty rates are representative and must be confirmed against current agency issuances.
 - Many requirement links point to agency home pages; see [docs/OPEN_ITEMS.md](docs/OPEN_ITEMS.md).
+
+### Tutorial videos
+
+Green **Video Available** panels open the original video on YouTube in a new tab. Check video links in Admin → Tutorials. Video entries awaiting verification display an unavailable message.

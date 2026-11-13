@@ -26,7 +26,7 @@ function ManualRemindersInner() {
 
   const reload = useCallback(async () => {
     if (previewOnly) { setItems([]); setRecorded([]); setLoading(false); return; }
-    setLoading(true); setError("");
+    setLoading(true); setError(""); setConfirmation("");
     try {
       const [roster, history] = await Promise.all([loadManualReminderQueue(), loadManualReminderHistory()]);
       setItems(manualReminderCandidates(roster, requirements));
@@ -70,8 +70,8 @@ function ManualRemindersInner() {
     {previewOnly && <p role="status" className="hint">Demo preview: real users and reminder records are not displayed.</p>}
     {error && <p role="alert" className="hint" style={{color:"var(--red-text)"}}>{error}</p>}
     {notice && <p role="status" className="hint">{notice}</p>}
-    <button type="button" className="option-btn small" onClick={() => void reload()} disabled={loading || previewOnly}>Refresh queue</button>
-    {loading ? <p className="hint">Loading eligible reminders…</p> : items.length === 0 ? <p className="hint">No eligible upcoming reminders in the next 45 days. This may also mean nobody has opted in.</p> :
+    <button type="button" className="option-btn small" onClick={() => void reload()} disabled={loading || Boolean(busy) || previewOnly}>Refresh queue</button>
+    {loading ? <p className="hint">Loading eligible reminders…</p> : error && items.length === 0 ? null : items.length === 0 ? <p className="hint">No eligible upcoming reminders in the next 45 days. This may also mean nobody has opted in.</p> :
       <div className="kit-table-wrap"><table className="kit-table"><thead><tr><th>Recipient and business</th><th>Compliance deadline</th><th>Manual message</th><th>Record</th></tr></thead><tbody>
       {items.map(item => {
         const id = manualReminderKey(item);
@@ -83,7 +83,7 @@ function ManualRemindersInner() {
           <td><details><summary>Show prepared message</summary><p><strong>{msg.subject}</strong></p><textarea readOnly rows={9} value={msg.body} aria-label={`Prepared message for ${item.email}`} style={{width:"100%"}} /></details>
             <button type="button" className="option-btn small" onClick={() => void copy(item)}>Copy message</button></td>
           <td>{sent ? <span>Recorded as sent</span> : <>
-            <label style={{display:"block"}}><input type="checkbox" checked={confirmation === id} onChange={e => setConfirmation(e.target.checked ? id : "")} /> I confirm this email was sent manually</label>
+            <label style={{display:"block"}}><input type="checkbox" disabled={Boolean(busy)} checked={confirmation === id} onChange={e => setConfirmation(e.target.checked ? id : "")} /> I confirm this email was sent manually</label>
             <button type="button" className="option-btn small" disabled={confirmation !== id || Boolean(busy)} onClick={() => void markSent(item)}>{busy === id ? "Recording…" : "Record manual send"}</button>
           </>}</td>
         </tr>;

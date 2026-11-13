@@ -53,7 +53,7 @@ function AdminInner() {
       </header>
 
       <section className="v07-admin-links" aria-label="Admin sections">
-        {[ ["Manual reminders", "/admin/manual-reminders", "Prepare and record Premium reminders"], ["Users", "/admin/users", "Review Free, Premium, and Admin accounts"], ["Requirements", "/admin/requirements", "Inspect stages and content status"], ["Agencies", "/admin/agencies", "Manage agency references"], ["Resources", "/admin/resources", "Review source links and forms"], ["Tutorials", "/admin/tutorials", "Review learning material"] ].map(([title,href,description]) => <Link key={href} href={href}><strong>{title} →</strong><span>{description}</span></Link>)}
+        {[ ["Manual reminders", "/admin/manual-reminders", "Prepare and record Premium reminders"], ["Users", "/admin/users", "Review Free, Premium, and Admin accounts"], ["Requirements", "/admin/requirements", "Inspect stages and content status"], ["Agencies", "/admin/agencies", "Manage agency references"], ["Resources", "/admin/resources", "Review source links and forms"], ["Tutorials", "/admin/tutorials", "Review learning material"], ["Audit log", "/admin/audit", "Review Premium and account changes"] ].map(([title,href,description]) => <Link key={href} href={href}><strong>{title} →</strong><span>{description}</span></Link>)}
       </section>
       <AdminHelp
         title="Start here"

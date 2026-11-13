@@ -22,7 +22,7 @@ export default function TutorialsPage() {
       <main className="screen v06-library">
         <header className="intro">
           <h1>Learning hub</h1>
-          <p>Watch the supplied registration, renewal and filing walkthroughs directly here.</p>
+          <p>Open registration, renewal and filing walkthroughs on YouTube.</p>
           <p className="hint">
             {tutorials.length} supplied video(s). The videos are hosted on YouTube and belong to their creators (CTTO: credit to the owner).
           </p>

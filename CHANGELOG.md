@@ -6,6 +6,14 @@ Newest first. Earlier entries were merged from the former `PROGRESS.md`, `docs/V
 
 Release naming consolidated to v1.0.0 across package metadata, the current documentation, archive and archive root folder. Includes all changes through v0.18.3. Previous entries below remain historical. Functionality and previously documented verification limits are unchanged.
 
+### Admin controls
+
+- Report browser storage failures, keep content drafts available to retry, and focus the editor when opening a record. Keep account and reminder controls consistent while requests are pending.
+
+### External tutorial links
+
+- Show a green Video Available link for each tutorial. Videos open on YouTube in a new tab from Renewal, Tutorials and requirement details. Admin preview links also open on YouTube.
+
 ### Night Shift refresh
 
 - Unify the public site, workspace, and admin dark theme around forest charcoal, layered panels, and soft mint accents. Improve selected states, form controls, status surfaces, and keyboard focus.

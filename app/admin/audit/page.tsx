@@ -86,7 +86,7 @@ function AuditInner() {
       )}
       {state === "success" && visible.length === 0 && <p className="hint">No admin actions recorded yet.</p>}
 
-      {visible.map((r) => (
+      {state === "success" && visible.map((r) => (
         <article key={r.id} className="checklist-card">
           <h3>{ACTION_LABEL[r.action] ?? r.action}</h3>
           <p className="docs"><strong>By:</strong> {r.actorEmail ?? "removed account"}{r.targetEmail ? <> · <strong>For:</strong> {r.targetEmail}</> : null}</p>

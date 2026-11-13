@@ -1,6 +1,6 @@
 "use client";
 
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useEffect, useRef, useState } from "react";
 import { fetchAccountOverview, syncMissingProfiles, type AccountOverview } from "../lib/adminAccounts";
 import { useAuth } from "../lib/auth";
 
@@ -23,8 +23,10 @@ export default function AccountSyncPanel() {
   const [notice, setNotice] = useState<string | null>(null);
   const [at, setAt] = useState<Date | null>(null);
 
-  const load = useCallback(async () => {
-    if (preview) return;
+  const inFlight = useRef(false);
+  const load = useCallback(async (afterSync = false) => {
+    if (preview || (inFlight.current && !afterSync)) return;
+    inFlight.current = true;
     setBusy(true);
     try {
       setData(await fetchAccountOverview());
@@ -33,6 +35,8 @@ export default function AccountSyncPanel() {
     } catch (e) {
       setError(e instanceof Error ? e.message : "Could not load accounts.");
     } finally {
+      inFlight.current = false;
+      inFlight.current = false;
       setBusy(false);
     }
   }, [preview]);
@@ -40,19 +44,21 @@ export default function AccountSyncPanel() {
   useEffect(() => {
     load();
     if (preview) return;
-    const timer = setInterval(load, REFRESH_MS);
+    const timer = setInterval(() => void load(), REFRESH_MS);
     const onFocus = () => { if (document.visibilityState === "visible") load(); };
     document.addEventListener("visibilitychange", onFocus);
     return () => { clearInterval(timer); document.removeEventListener("visibilitychange", onFocus); };
   }, [load, preview]);
 
   async function syncNow() {
+    if (preview || inFlight.current) return;
+    inFlight.current = true;
     setBusy(true);
     setNotice(null);
     try {
       const created = await syncMissingProfiles();
       setNotice(created === 0 ? "Nothing to sync. Every account already has a profile." : `Created ${created} missing profile${created === 1 ? "" : "s"}.`);
-      await load();
+      await load(true);
     } catch (e) {
       setError(e instanceof Error ? e.message : "Sync failed.");
       setBusy(false);
@@ -72,7 +78,7 @@ export default function AccountSyncPanel() {
           <h2 id="acct-title">Users and sync</h2>
         </div>
         {!preview && (
-          <button type="button" className="secondary-btn acct-refresh" onClick={load} disabled={busy} aria-busy={busy}>
+          <button type="button" className="secondary-btn acct-refresh" onClick={() => void load()} disabled={busy} aria-busy={busy}>
             {busy ? "Refreshing…" : "Refresh"}
           </button>
         )}

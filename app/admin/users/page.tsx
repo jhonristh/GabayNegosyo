@@ -111,6 +111,7 @@ function UsersInner() {
             setState("success");
             return;
           } catch (fallbackErr) {
+            if (cancelled) return;
             setErrorMessage(fallbackErr instanceof Error ? fallbackErr.message : "Could not load users.");
             setState("error");
             return;
@@ -136,6 +137,7 @@ function UsersInner() {
   async function submit(e: FormEvent) {
     e.preventDefault();
     if (!panel || busy || previewOnly) return;
+    if (state !== "success" || reason.trim().length < 3 || reason.trim().length > 300) return;
     setBusy(true);
     setNotice(null);
     try {
@@ -168,7 +170,7 @@ function UsersInner() {
       <AdminHelp
         steps={[
           "Search by name or email, and use the role filter to narrow the list.",
-          "Choose Manage on an account to grant or revoke Premium, or to deactivate or reactivate it. A reason is required.",
+          "Choose an action on an account to grant or revoke Premium, or to deactivate or reactivate it. A reason is required.",
           "Open the Audit log to see who changed what and when.",
         ]}
         warnings={[
@@ -205,14 +207,14 @@ function UsersInner() {
         </div>
       )}
 
-      <form className="question" role="search" onSubmit={(e) => { e.preventDefault(); setPage(0); setQuery(search); }}>
+      <form className="question" role="search" onSubmit={(e) => { e.preventDefault(); if (busy || previewOnly || legacy) return; setPanel(null); setPage(0); setQuery(search.trim()); }}>
         <label className="question-label" htmlFor="user-search">Search accounts</label>
         <input id="user-search" type="search" className="text-input" value={search} onChange={(e) => setSearch(e.target.value)} placeholder="Name or email" disabled={previewOnly || legacy} />
       </form>
 
       <div className="filter-row" role="group" aria-label="Filter accounts by role">
         {(["all", "free", "premium", "admin"] as const).map((role) => (
-          <button type="button" key={role} className={`filter-chip ${filter === role ? "selected" : ""}`} aria-pressed={filter === role} onClick={() => { setFilter(role); setPage(0); }}>
+          <button type="button" key={role} className={`filter-chip ${filter === role ? "selected" : ""}`} aria-pressed={filter === role} disabled={busy} onClick={() => { setPanel(null); setFilter(role); setPage(0); }}>
             {role === "all" ? "All" : role}
           </button>
         ))}
@@ -255,7 +257,7 @@ function UsersInner() {
 
                   {!previewOnly && !legacy && !isAdmin && u.id !== user?.id && (
                     <div className="filter-row" role="group" aria-label={`Manage ${u.email}`}>
-                      {!u.isDemo && <button type="button" className="secondary-btn" onClick={() => openPanel(u.id, "grant")}>Grant Premium</button>}
+                      {!u.isDemo && <button type="button" className="secondary-btn" disabled={busy || state !== "success"} onClick={() => openPanel(u.id, "grant")}>Grant Premium</button>}
                       {(u.planStatus === "premium") && !u.isDemo && <button type="button" className="secondary-btn" onClick={() => openPanel(u.id, "revoke")}>Revoke Premium</button>}
                       {!u.isDemo && (u.deactivatedAt
                         ? <button type="button" className="secondary-btn" onClick={() => openPanel(u.id, "reactivate")}>Reactivate</button>
@@ -277,7 +279,7 @@ function UsersInner() {
                       <input id={`why-${u.id}`} className="text-input" value={reason} onChange={(e) => setReason(e.target.value)} maxLength={300} required minLength={3} />
                       <div className="wizard-actions">
                         <button type="button" className="secondary-btn" onClick={() => setPanel(null)} disabled={busy}>Cancel</button>
-                        <button type="submit" className="primary-btn" disabled={busy || reason.trim().length < 3} aria-busy={busy}>{busy ? "Saving…" : "Confirm"}</button>
+                        <button type="submit" className="primary-btn" disabled={busy || reason.trim().length < 3 || reason.trim().length > 300} aria-busy={busy}>{busy ? "Saving…" : "Confirm"}</button>
                       </div>
                     </form>
                   )}
@@ -287,8 +289,8 @@ function UsersInner() {
           </section>
 
           <div className="wizard-actions">
-            <button type="button" className="secondary-btn" disabled={page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>Previous</button>
-            <button type="button" className="secondary-btn" disabled={!hasNextPage} onClick={() => setPage((p) => p + 1)}>Next</button>
+            <button type="button" className="secondary-btn" disabled={busy || page === 0} onClick={() => setPage((p) => Math.max(0, p - 1))}>Previous</button>
+            <button type="button" className="secondary-btn" disabled={busy || !hasNextPage} onClick={() => setPage((p) => p + 1)}>Next</button>
           </div>
         </>
       )}

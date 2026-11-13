@@ -27,7 +27,7 @@ const cspDirectives = [
   `script-src 'self' 'unsafe-inline'${devScriptSrc} https://va.vercel-scripts.com`,
   "style-src 'self' 'unsafe-inline'",
   "img-src 'self' data: https://i.ytimg.com",
-  "frame-src https://www.youtube-nocookie.com https://bir-cdn.bir.gov.ph",
+  "frame-src https://bir-cdn.bir.gov.ph",
   "font-src 'self' data:",
   "connect-src 'self' https://*.supabase.co https://va.vercel-scripts.com https://vitals.vercel-insights.com https://api.resend.com",
   "frame-ancestors 'none'",
